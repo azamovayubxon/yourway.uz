@@ -1,4 +1,4 @@
-import { getSessionIdFromCookie, isValidAnswer, loadSession, saveAnswers } from "@/lib/session";
+import { getCurrentSession, getSessionIdFromCookie, isValidAnswer, saveAnswers } from "@/lib/session";
 import { TOTAL_QUESTIONS } from "@/lib/assessment/tests";
 
 // Автосохранение ответов: POST /api/session/answers
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
   if (!Array.isArray(answers) || answers.length === 0 || answers.length > TOTAL_QUESTIONS || !answers.every(isValidAnswer)) {
     return Response.json({ error: "bad_answers" }, { status: 400 });
   }
-  const session = await loadSession(cookieId);
+  const session = await getCurrentSession();
   if (!session) {
     return Response.json({ error: "session_not_found" }, { status: 409 });
   }

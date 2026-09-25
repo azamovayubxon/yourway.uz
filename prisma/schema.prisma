@@ -12,6 +12,10 @@ datasource db {
 // Анонимная сессия прохождения тестов. Её id хранится в cookie браузера.
 model TestSession {
   id             String         @id @default(uuid())
+  // Аккаунт, к которому привязана сессия. Пусто, пока человек не зарегистрировался или не вошёл
+  // (тесты проходятся анонимно). Привязанную сессию видит только владелец аккаунта.
+  userId         String?
+  user           User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
   // Выбор на экране-развилке: knows_goal (знаю цель) или no_goal (не знаю, хочу разобраться).
   pathType       String
   // Язык интерфейса в момент начала (для аналитики; тексты вопросов показываются на текущем языке).
@@ -31,6 +35,8 @@ model TestSession {
   updatedAt      DateTime       @updatedAt
   testsDoneAt    DateTime?
   profileDoneAt  DateTime?
+
+  @@index([userId, createdAt])
 }
 
 // Один ответ на один вопрос теста. Пишется в базу сразу после нажатия кнопки.
@@ -120,5 +126,53 @@ model AiCall {
   createdAt        DateTime     @default(now())
 
   @@index([kind, createdAt])
+  @@index([ipHash, createdAt])
+}
+
+// Аккаунт пользователя (этап 5). Только логин и пароль: ФИО, телефон и e-mail не собираются.
+model User {
+  id               String        @id @default(uuid())
+  // Логин в нижнем регистре (латиница, цифры, «_», «.», «-»). Регистр при входе не важен.
+  login            String        @unique
+  // Хеш пароля (argon2id). Сам пароль нигде не хранится.
+  passwordHash     String
+  // Хеш кода восстановления (argon2id). Код показывается один раз при регистрации (и при каждом
+  // восстановлении — новый). После использования старый код перестаёт работать.
+  recoveryCodeHash String
+  // Язык интерфейса при регистрации (uz | ru).
+  locale           String
+  // user (позже, на этапе 8: admin, superadmin).
+  role             String        @default("user")
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  testSessions     TestSession[]
+  authSessions     AuthSession[]
+}
+
+// Вход в аккаунт на одном устройстве. В cookie браузера лежит случайный токен, здесь — только его хеш.
+model AuthSession {
+  id        String   @id @default(uuid())
+  // SHA-256 от токена из cookie.
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// Журнал попыток входа, восстановления и регистрации — для защиты от перебора паролей.
+// Хранится только логин (как ввели, в нижнем регистре) и хеш IP-адреса.
+model AuthAttempt {
+  id        String   @id @default(uuid())
+  // login | recover | register
+  kind      String
+  login     String?
+  ipHash    String?
+  ok        Boolean
+  createdAt DateTime @default(now())
+
+  @@index([login, createdAt])
   @@index([ipHash, createdAt])
 }

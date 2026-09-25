@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getAiMode } from "@/lib/ai/providers";
+import { getCurrentUser } from "@/lib/auth";
 import { uzSixteenTypeName } from "@/lib/ai/uz-resources";
 import type { TeaserContent } from "@/lib/ai/teaser-schema";
 import type { Profile } from "@/lib/assessment/profile";
@@ -84,6 +85,8 @@ export default async function TeaserPage({ searchParams }: { searchParams: Promi
       recommendedLevel={profile.level}
       lowQuality={profile.answer_quality?.level === "low"}
       otherLanguage={otherLanguage}
+      // Выбор уровня и оплата — этап 6; пока после регистрации человек попадает на страницу цен.
+      unlockHref={(await getCurrentUser()) ? "/pricing" : "/register?next=/pricing"}
       footer={
         <div className="mt-8 space-y-1 text-center">
           <Link
