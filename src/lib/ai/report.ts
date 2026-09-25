@@ -77,6 +77,7 @@ export async function runReportPartAttempt(options: {
       temperature: settings.temperature,
       effort: settings.effort,
       timeoutMs: settings.attemptTimeoutMs,
+      cacheTtl: settings.cacheTtl,
       outputSchema: REPORT_PART_OUTPUT_SCHEMAS[part],
       tag: `report:${part}:${pathType}`,
       retry: options.retry

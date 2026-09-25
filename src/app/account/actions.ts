@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { login, logout, recover, register, type AuthError } from "@/lib/auth";
+import { changePassword, deleteAccount, getCurrentUser, login, logout, recover, register, type AuthError } from "@/lib/auth";
 import { safeNextPath } from "@/lib/auth/credentials";
 import { getLocale } from "@/i18n/server";
 
@@ -65,6 +65,44 @@ export async function recoverAction(_prev: AuthFormState, formData: FormData): P
 }
 
 export async function logoutAction() {
+  await logout();
+  redirect("/");
+}
+
+export type PasswordFormState = { status: "idle" } | { status: "error"; error: AuthError | "server" } | { status: "success" };
+
+export async function changePasswordAction(_prev: PasswordFormState, formData: FormData): Promise<PasswordFormState> {
+  const user = await getCurrentUser();
+  if (!user) redirect("/login?next=/account/password");
+  try {
+    const result = await changePassword({
+      userId: user.id,
+      currentPassword: field(formData, "currentPassword"),
+      newPassword: field(formData, "password"),
+    });
+    return result.ok ? { status: "success" } : { status: "error", error: result.error };
+  } catch (e) {
+    console.error("[auth]", e);
+    return { status: "error", error: "server" };
+  }
+}
+
+export type DeleteAccountFormState = { status: "idle" } | { status: "error"; error: AuthError | "server" };
+
+export async function deleteAccountAction(
+  _prev: DeleteAccountFormState,
+  formData: FormData,
+): Promise<DeleteAccountFormState> {
+  const user = await getCurrentUser();
+  if (!user) redirect("/login?next=/account/delete");
+  let result;
+  try {
+    result = await deleteAccount({ userId: user.id, password: field(formData, "password") });
+  } catch (e) {
+    console.error("[auth]", e);
+    return { status: "error", error: "server" };
+  }
+  if (!result.ok) return { status: "error", error: result.error };
   await logout();
   redirect("/");
 }

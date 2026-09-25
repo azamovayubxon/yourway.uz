@@ -2,14 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import type { ReportContent } from "@/lib/ai/report-schema";
-import { uzSixteenTypeName } from "@/lib/ai/uz-resources";
-import type { Profile } from "@/lib/assessment/profile";
-import { SIXTEEN_TYPES } from "@/lib/assessment/tests";
 import { getCurrentUser } from "@/lib/auth";
 import { devToolsEnabled } from "@/lib/dev";
-import { isLevel } from "@/lib/payments";
 import { REPORT_PARTS } from "@/lib/ai/prompts";
 import { getUserReport } from "@/lib/report";
+import { presentReport } from "@/lib/report/present";
 import { partsDone } from "@/lib/report/progress";
 import type { Locale } from "@/i18n/config";
 import { fmt } from "@/i18n/format";
@@ -49,22 +46,8 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
     );
   }
 
-  const profile = report.profile as unknown as Profile;
-  const code = profile.sixteen_type.code;
-  // 16-тип — на языке интерфейса (как в тизере, решение (И)); узбекское название — из глоссария.
-  const typeName =
-    (locale === "uz" ? uzSixteenTypeName(code) : undefined) ?? SIXTEEN_TYPES[code]?.[locale] ?? profile.sixteen_type.nickname;
-  const styles = Array.isArray(profile.learning_style) ? profile.learning_style : [profile.learning_style];
-  const learningStyles = styles
-    .map((s) => t.report.learningStyles[s as keyof typeof t.report.learningStyles])
-    .filter(Boolean);
-  const date = report.createdAt.toLocaleDateString(locale === "uz" ? "uz-Latn-UZ" : "ru-RU", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    timeZone: "Asia/Tashkent",
-  });
   const reportLocale = report.locale as Locale;
+  const presentation = presentReport(report, locale, t);
 
   return (
     <ReportView
@@ -72,16 +55,22 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
       t={t.report}
       content={report.content as unknown as ReportContent}
       reportLocale={reportLocale}
-      levelName={isLevel(report.level) ? t.checkout.levels[report.level].name : report.level}
-      sixteenType={`${code} · ${typeName}`}
-      learningStyles={learningStyles}
-      date={date}
+      levelName={presentation.levelName}
+      sixteenType={presentation.sixteenType}
+      learningStyles={presentation.learningStyles}
+      date={presentation.date}
       mockBadge={mockBadge}
       otherLanguage={
         reportLocale !== locale ? fmt(t.report.otherLanguage, { lang: t.report.languageNames[reportLocale] }) : null
       }
       footer={
         <div className="mt-10 flex flex-col items-center gap-1 text-center print:hidden">
+          <a
+            href={`/api/report/${report.id}/pdf`}
+            className="inline-flex min-h-11 items-center font-semibold text-brand-600"
+          >
+            {t.report.downloadPdf} ↓
+          </a>
           <Link href="/account" className="inline-flex min-h-11 items-center font-semibold text-brand-600">
             {t.report.backToAccount} →
           </Link>

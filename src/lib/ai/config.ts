@@ -82,6 +82,17 @@ export interface ReportSettings {
   // «весит» в токенах в 2–3 раза больше русского. Обрезанный ответ = брак и повтор.
   maxTokens: Record<"portrait_goal" | "main_path" | "finish", number>;
   attemptTimeoutMs: number;
+  // TTL записи кэша системного промпта (этап 7, разбор /dev/ai-log: у «Навигатора» на Opus
+  // cache_read_input_tokens был 0, у «Маршрута» на Sonnet — нет). Причина не в модели и не в длине
+  // промпта (минимум для кэша у Opus даже ниже, чем у Sonnet), а в тайминге: части отчёта генерируются
+  // по одной, следующая попытка начинается только после того, как человек снова откроет страницу
+  // (опрос раз в 3 с) и увидит, что предыдущая часть готова. У «Навигатора» дольше сама генерация
+  // (effort medium на Opus, maxTokens больше — до attemptTimeoutMs = 270 с) — часть этого времени
+  // «съедает» 5-минутный TTL записи, и к началу следующей части кэш чаще успевает истечь. Поэтому
+  // для «Навигатора» — TTL 1 час (дороже на запись в 2×, но при 3 частях + возможных повторах
+  // окупается уже двумя чтениями). «Маршруту» она не нужна: там кэш и так успевает сработать
+  // на 5-минутном TTL, а 1 час обошёлся бы дороже.
+  cacheTtl?: "1h";
 }
 
 export function reportSettings(level: "route" | "navigator"): ReportSettings {
@@ -92,5 +103,6 @@ export function reportSettings(level: "route" | "navigator"): ReportSettings {
     effort: "medium",
     maxTokens: { portrait_goal: 10_000 + extra, main_path: 14_000 + extra, finish: 10_000 + extra },
     attemptTimeoutMs: REPORT_ATTEMPT_TIMEOUT_MS,
+    cacheTtl: level === "navigator" ? "1h" : undefined,
   };
 }

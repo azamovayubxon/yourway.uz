@@ -78,8 +78,16 @@ export const anthropicProvider: AiProvider = {
           max_tokens: request.maxTokens,
           // Системный промпт одинаков для всех пользователей (меняется только язык) — помечаем его
           // для кэширования (prompt caching). Кэш срабатывает, только если промпт длиннее минимума
-          // модели; если короче, запрос просто идёт без кэша, без ошибок.
-          system: [{ type: "text", text: request.system, cache_control: { type: "ephemeral" } }],
+          // модели; если короче, запрос просто идёт без кэша, без ошибок. TTL по умолчанию — 5 минут;
+          // "1h" — когда вызывающий код знает, что до следующего вызова обычно проходит больше 5 минут.
+          system: [
+            {
+              type: "text",
+              text: request.system,
+              cache_control:
+                request.cacheTtl === "1h" ? { type: "ephemeral", ttl: "1h" } : { type: "ephemeral" },
+            },
+          ],
           messages,
           ...(request.temperature !== undefined && supportsTemperature(request.model)
             ? { temperature: request.temperature }

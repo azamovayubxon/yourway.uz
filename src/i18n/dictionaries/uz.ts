@@ -460,6 +460,7 @@ export const uz: Dictionary = {
     disclaimerTitle: "Muhim",
     backToAccount: "Barcha hisobotlarim",
     retake: "Testlardan qaytadan oʻtish",
+    downloadPdf: "PDF yuklab olish",
   },
   devProfile: {
     title: "Sessiya ballari",
@@ -573,6 +574,7 @@ export const uz: Dictionary = {
     passwordLabel: "Parol",
     passwordHint: "Kamida 8 ta belgi.",
     newPasswordLabel: "Yangi parol",
+    currentPasswordLabel: "Joriy parol",
     showPassword: "Parolni koʻrsatish",
     hidePassword: "Parolni yashirish",
     sending: "Bir soniya…",
@@ -627,6 +629,28 @@ export const uz: Dictionary = {
       toCheckout: "Toʻliq hisobotni ochish",
       reportStatus: { pending: "yozilmoqda…", generating: "yozilmoqda…", ready: "tayyor", failed: "qaytadan yozish kerak" },
       open: "Ochish",
+      pdf: "PDF",
+      retake: "Testlardan qaytadan oʻtish",
+      settingsTitle: "Akkaunt sozlamalari",
+      changePasswordLink: "Parolni almashtirish",
+      deleteAccountLink: "Akkauntni oʻchirish",
+    },
+    password: {
+      title: "Parolni almashtirish",
+      subtitle: "Joriy parolingizni kiriting va kamida 8 ta belgidan iborat yangi parol oʻylab toping.",
+      submit: "Yangi parolni saqlash",
+      success:
+        "Parol almashtirildi. Akkauntingizga kirgan boshqa qurilmalarda endi qaytadan kirishingiz kerak boʻladi.",
+      backToAccount: "← Akkauntga qaytish",
+    },
+    deleteAccount: {
+      title: "Akkauntni oʻchirish",
+      subtitle:
+        "Akkaunt va undagi barcha maʼlumotlar butunlay oʻchiriladi: testlarga javoblaringiz, portretingiz va toʻlangan hisobotlar. Bu amalni ortga qaytarib boʻlmaydi.",
+      passwordLabel: "Tasdiqlash uchun parol",
+      confirmLabel: "Tushunaman: maʼlumotlar qaytarib boʻlmaydigan tarzda oʻchiriladi",
+      submit: "Akkauntni butunlay oʻchirish",
+      backToAccount: "← Akkauntga qaytish",
     },
     errors: {
       login_invalid:
@@ -637,6 +661,7 @@ export const uz: Dictionary = {
       password_same_as_login: "Parol login bilan bir xil boʻlmasin.",
       wrong_credentials: "Login yoki parol notoʻgʻri.",
       wrong_code: "Login yoki tiklash kodi notoʻgʻri.",
+      wrong_password: "Parol notoʻgʻri.",
       locked: "Urinishlar juda koʻp boʻldi. Kirish vaqtincha yopildi — {min} daqiqadan keyin qayta urinib koʻring.",
       register_limit: "Tarmogʻingizdan yaqinda juda koʻp akkaunt ochildi. {min} daqiqadan keyin qayta urinib koʻring.",
       server: "Biz tomonda nimadir notoʻgʻri ketdi. Yana bir bor urinib koʻring.",

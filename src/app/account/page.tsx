@@ -12,8 +12,8 @@ import { logoutAction } from "./actions";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { robots: { index: false } };
 
-// Аккаунт: кто вошёл, оплаченные отчёты, переход к портрету и выход.
-// Полный личный кабинет (PDF, смена пароля, удаление аккаунта) — этап 7.
+// Личный кабинет (этап 7): кто вошёл, оплаченные отчёты (открыть, скачать PDF), переход к портрету,
+// повторное прохождение тестов, смена пароля, удаление аккаунта, выход.
 export default async function AccountPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login?next=/account");
@@ -38,10 +38,10 @@ export default async function AccountPage() {
               {reports.map((r) => {
                 const status = reportStatusOf(r.status);
                 return (
-                  <li key={r.id}>
+                  <li key={r.id} className="flex items-stretch gap-2">
                     <Link
                       href={`/report/${r.id}`}
-                      className="flex min-h-16 items-center gap-3 rounded-2xl border border-slate-200 px-4 py-3 hover:border-brand-500"
+                      className="flex min-h-16 flex-1 items-center gap-3 rounded-2xl border border-slate-200 px-4 py-3 hover:border-brand-500"
                     >
                       <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-lg" aria-hidden>
                         🧭
@@ -65,6 +65,15 @@ export default async function AccountPage() {
                       </span>
                       <span className="shrink-0 font-semibold text-brand-600">{a.open} →</span>
                     </Link>
+                    {status === "ready" && (
+                      <a
+                        href={`/api/report/${r.id}/pdf`}
+                        className="flex min-h-16 shrink-0 items-center justify-center rounded-2xl border border-slate-200 px-4 font-semibold text-brand-600 hover:border-brand-500"
+                        aria-label={a.pdf}
+                      >
+                        {a.pdf}
+                      </a>
+                    )}
                   </li>
                 );
               })}
@@ -80,10 +89,26 @@ export default async function AccountPage() {
                 {a.toCheckout} →
               </Link>
             )}
+            <Link href="/start?new=1" className="inline-flex min-h-11 items-center text-sm font-semibold text-muted underline">
+              {a.retake}
+            </Link>
           </div>
         ) : (
           <CtaButton href="/start">{t.auth.account.toTests}</CtaButton>
         )}
+
+        <section className="border-t border-slate-100 pt-5">
+          <h2 className="text-lg font-extrabold">{a.settingsTitle}</h2>
+          <div className="mt-3 flex flex-col gap-2">
+            <Link href="/account/password" className="inline-flex min-h-11 items-center font-semibold text-brand-600">
+              {a.changePasswordLink} →
+            </Link>
+            <Link href="/account/delete" className="inline-flex min-h-11 items-center font-semibold text-rose-600">
+              {a.deleteAccountLink} →
+            </Link>
+          </div>
+        </section>
+
         <form action={logoutAction} className="border-t border-slate-100 pt-5">
           <button
             type="submit"

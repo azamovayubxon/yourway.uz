@@ -28,6 +28,7 @@ export type AuthError =
   | "login_taken"
   | "wrong_credentials"
   | "wrong_code"
+  | "wrong_password"
   | "locked"
   | "register_limit";
 
@@ -229,6 +230,44 @@ export async function recover(input: {
   await startAuthSession(user.id);
   await bindTestSession(user.id);
   return { ok: true, login, recoveryCode };
+}
+
+// Смена пароля из личного кабинета (этап 7): нужен текущий пароль. Вход на других устройствах,
+// где человек входил в этот аккаунт, закрывается — остаётся только текущее.
+export async function changePassword(input: {
+  userId: string;
+  currentPassword: string;
+  newPassword: string;
+}): Promise<AuthResult> {
+  const db = getDb();
+  const user = await db.user.findUnique({ where: { id: input.userId }, select: { login: true, passwordHash: true } });
+  if (!user) return { ok: false, error: "wrong_password" };
+  const weak = validatePassword(input.newPassword, user.login);
+  if (weak) return { ok: false, error: weak };
+  const ok = await verify(user.passwordHash, input.currentPassword).catch(() => false);
+  if (!ok) return { ok: false, error: "wrong_password" };
+
+  const passwordHash = await hash(input.newPassword);
+  const token = (await cookies()).get(AUTH_COOKIE)?.value;
+  await db.$transaction([
+    db.user.update({ where: { id: input.userId }, data: { passwordHash } }),
+    db.authSession.deleteMany({
+      where: { userId: input.userId, ...(token ? { tokenHash: { not: hashToken(token) } } : {}) },
+    }),
+  ]);
+  return { ok: true };
+}
+
+// Удаление аккаунта (этап 7): нужен пароль для подтверждения. Все данные аккаунта (сессии тестов,
+// ответы, профиль, тизеры, оплаты, отчёты) удаляются каскадом на уровне базы (см. schema.prisma).
+export async function deleteAccount(input: { userId: string; password: string }): Promise<AuthResult> {
+  const db = getDb();
+  const user = await db.user.findUnique({ where: { id: input.userId }, select: { passwordHash: true } });
+  if (!user) return { ok: false, error: "wrong_password" };
+  const ok = await verify(user.passwordHash, input.password).catch(() => false);
+  if (!ok) return { ok: false, error: "wrong_password" };
+  await db.user.delete({ where: { id: input.userId } });
+  return { ok: true };
 }
 
 // Выход: закрываем вход на этом устройстве и «забываем» сессию тестов в браузере, чтобы следующий
