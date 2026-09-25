@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { estimateAnthropicCostUsd, supportsTemperature } from "./anthropic";
+import { estimateAnthropicCostUsd, supportsEffort, supportsTemperature } from "./anthropic";
 import { getAiMode, getAiProvider, modelFor } from "./index";
 import { teaserModel } from "../config";
 
@@ -36,6 +36,14 @@ describe("Anthropic: параметры и цена", () => {
     expect(supportsTemperature("claude-opus-4-8")).toBe(false);
     expect(supportsTemperature("claude-sonnet-5")).toBe(false);
     expect(supportsTemperature("claude-opus-5-5")).toBe(false);
+  });
+
+  it("effort (глубина размышлений) передаётся только моделям, которые его принимают", () => {
+    expect(supportsEffort("claude-sonnet-5")).toBe(true);
+    expect(supportsEffort("claude-opus-5-5")).toBe(true);
+    expect(supportsEffort("claude-opus-4-8")).toBe(true);
+    expect(supportsEffort("claude-haiku-4-5")).toBe(false);
+    expect(supportsEffort("claude-sonnet-4-6")).toBe(false);
   });
 
   it("считает примерную стоимость с учётом кэша", () => {

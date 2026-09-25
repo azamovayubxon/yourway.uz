@@ -5,7 +5,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { MockBadge } from "./MockBadge";
 
 // Экран генерации: «Анализируем ваш профиль…» с анимацией. Запускает генерацию тизера
-// (POST /api/teaser), пока она идёт — показывает шаги, потом перезагружает страницу с готовым тизером.
+// (POST /api/teaser отвечает сразу, генерация идёт в фоне), затем раз в 3 секунды спрашивает статус
+// (GET /api/teaser) и, когда тизер готов, перезагружает страницу. Ни один запрос не висит долго.
 
 interface GeneratorDict {
   mockBadge: string;
@@ -22,7 +23,7 @@ interface GeneratorDict {
 
 type Phase = "running" | "failed" | "network" | "limit_session" | "limit_ip";
 
-// Пока генерация идёт в другой вкладке/запросе, спрашиваем статус раз в 3 секунды.
+// Пока генерация идёт в фоне, спрашиваем статус раз в 3 секунды.
 const POLL_MS = 3000;
 // Шаги анимации сменяются каждые 2,5 секунды.
 const STEP_MS = 2500;
@@ -31,7 +32,35 @@ export function TeaserGenerator({ t, mock, restartLabel }: { t: GeneratorDict; m
   const [phase, setPhase] = useState<Phase>("running");
   const started = useRef(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // poll() иногда должен запустить run(), а run() — poll(); ссылка разрывает этот круг.
+  const runRef = useRef<(() => Promise<void>) | null>(null);
 
+  // Опрос статуса (GET): ничего не запускает, только ждёт готовности.
+  const poll = useCallback(async () => {
+    try {
+      const res = await fetch("/api/teaser", { cache: "no-store" });
+      const data = (await res.json()) as { status: string };
+      switch (data.status) {
+        case "ready":
+          // Полная перезагрузка: сервер отрисует готовый тизер (и уберёт ?generate=1 из адреса).
+          window.location.replace("/teaser");
+          return;
+        case "generating":
+          timer.current = setTimeout(() => void poll(), POLL_MS);
+          return;
+        case "none":
+          // Генерация не запущена или зависла — запускаем её (вызов ниже объявлен через ref).
+          void runRef.current?.();
+          return;
+        default:
+          setPhase("failed");
+      }
+    } catch {
+      setPhase("network");
+    }
+  }, []);
+
+  // Запуск генерации (POST): сервер отвечает сразу, сама генерация идёт в фоне.
   const run = useCallback(async () => {
     setPhase("running");
     try {
@@ -39,11 +68,10 @@ export function TeaserGenerator({ t, mock, restartLabel }: { t: GeneratorDict; m
       const data = (await res.json()) as { status: string; reason?: string };
       switch (data.status) {
         case "ready":
-          // Полная перезагрузка: сервер отрисует готовый тизер (и уберёт ?generate=1 из адреса).
           window.location.replace("/teaser");
           return;
         case "generating":
-          timer.current = setTimeout(() => void run(), POLL_MS);
+          timer.current = setTimeout(() => void poll(), POLL_MS);
           return;
         case "limit":
           setPhase(data.reason === "ip" ? "limit_ip" : "limit_session");
@@ -57,7 +85,10 @@ export function TeaserGenerator({ t, mock, restartLabel }: { t: GeneratorDict; m
     } catch {
       setPhase("network");
     }
-  }, []);
+  }, [poll]);
+  useEffect(() => {
+    runRef.current = run;
+  }, [run]);
 
   useEffect(() => {
     // В режиме разработки React вызывает эффект дважды — генерацию запускаем один раз.

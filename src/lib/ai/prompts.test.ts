@@ -9,6 +9,8 @@ import {
   TEASER_SYSTEM_TEMPLATE,
   TEASER_USER_TEMPLATE,
   UZ_RULES_TEMPLATE,
+  TEASER_RETRY_TEMPLATE,
+  buildRetryFeedback,
 } from "./prompts";
 import { getUzExamples, getUzGlossary } from "./uz-resources";
 
@@ -22,6 +24,7 @@ describe("промпты тизера (Приложение Б)", () => {
     expect(codeBlocks).toContain(TEASER_SYSTEM_TEMPLATE);
     expect(codeBlocks).toContain(TEASER_USER_TEMPLATE);
     expect(codeBlocks).toContain(UZ_RULES_TEMPLATE);
+    expect(codeBlocks).toContain(TEASER_RETRY_TEMPLATE);
     expect(doc).toContain("`" + LANGUAGE_LINE + "`");
   });
 
@@ -39,6 +42,12 @@ describe("промпты тизера (Приложение Б)", () => {
   it("системная часть не зависит от профиля (её можно кэшировать)", () => {
     expect(buildTeaserPrompt({ a: 1 }, "ru").system).toBe(buildTeaserPrompt({ b: 2 }, "ru").system);
     expect(buildTeaserPrompt({ a: 1 }, "ru").system).not.toBe(buildTeaserPrompt({ a: 1 }, "uz").system);
+  });
+
+  it("подсказка для повтора перечисляет проблемы по одной на строку", () => {
+    const text = buildRetryFeedback(["обращение на «sen»: «bilasan»", "английское слово: «business»"]);
+    expect(text).toContain("- обращение на «sen»: «bilasan»\n- английское слово: «business»");
+    expect(text).not.toMatch(/\{\{\w+\}\}/);
   });
 
   it("неизвестный плейсхолдер — ошибка, а не тихий пропуск", () => {

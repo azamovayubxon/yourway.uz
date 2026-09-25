@@ -28,25 +28,42 @@ describe("проверка ответа ИИ для тизера", () => {
 
   it("не пропускает суммы в тексте тизера (правило 5)", () => {
     const bad = { ...golden, portrait: golden.portrait + " Уже через год — 2000$ в месяц." };
-    expect(validateTeaser(bad, "ru")).toEqual({ ok: false, error: "rule:money_in_teaser" });
+    expect(validateTeaser(bad, "ru")).toMatchObject({ ok: false, error: "rule:money_in_teaser" });
     const bad2 = {
       ...golden,
       fitting_directions: [{ title: "Дизайн", one_liner: "доход от 10 млн сум" }, golden.fitting_directions[1]],
     };
-    expect(validateTeaser(bad2, "ru")).toEqual({ ok: false, error: "rule:money_in_teaser" });
+    expect(validateTeaser(bad2, "ru")).toMatchObject({ ok: false, error: "rule:money_in_teaser" });
   });
 
   it("не пропускает заглушки вроде [вставьте ...]", () => {
-    expect(validateTeaser({ ...golden, surprise_hook: "[вставьте крючок]" }, "ru")).toEqual({
+    expect(validateTeaser({ ...golden, surprise_hook: "[вставьте крючок]" }, "ru")).toMatchObject({
       ok: false,
       error: "rule:placeholder",
     });
   });
 
   it("проверяет язык: русский тизер для uz и наоборот не проходит", () => {
-    expect(validateTeaser(MOCK_TEASERS.ru, "uz")).toEqual({ ok: false, error: "rule:language_not_uz" });
-    expect(validateTeaser(MOCK_TEASERS.uz, "ru")).toEqual({ ok: false, error: "rule:language_not_ru" });
+    expect(validateTeaser(MOCK_TEASERS.ru, "uz")).toMatchObject({ ok: false, error: "rule:language_not_uz" });
+    expect(validateTeaser(MOCK_TEASERS.uz, "ru")).toMatchObject({ ok: false, error: "rule:language_not_ru" });
     expect(matchesLanguage("Продуктовый UX-дизайн и no-code", "ru")).toBe(true);
+  });
+
+  it("возвращает все найденные проблемы понятным текстом (для повтора и /dev/ai-log)", () => {
+    const bad = {
+      ...MOCK_TEASERS.uz,
+      personality_type_label: "Pragmatist",
+      portrait: "Sen kuchlisan. " + MOCK_TEASERS.uz.portrait,
+    };
+    const result = validateTeaser(bad, "uz", { stopWords: ["pragmatist"], forbiddenPhrases: [] });
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.error).toBe("rule:uz_english:Pragmatist");
+    expect(result.problems).toEqual([
+      "английское слово — нужно узбекское: «Pragmatist»",
+      "обращение на «sen» — нужна форма на «siz»: «Sen»",
+      "обращение на «sen» — нужна форма на «siz»: «kuchlisan»",
+    ]);
   });
 
   it("достаёт JSON из обёртки ```json и текста вокруг", () => {
