@@ -204,11 +204,16 @@ function SectionTitle({ n, title }: { n: number; title: string }) {
 }
 
 function RouteCard({ route, t }: { route: ReportRoute; t: ReportDict }) {
+  const hard = route.effort_level === "hard";
   return (
-    <View style={styles.routeCard} wrap={false}>
+    // Без wrap={false}: у длинных карточек (много шагов) содержимое может не поместиться на одну
+    // страницу целиком, и react-pdf вместо переноса «ломает» вёрстку (текст наезжает друг на друга).
+    <View style={styles.routeCard}>
       <View style={styles.routeHeadRow}>
         <Text style={styles.routeType}>{ROUTE_TYPE_LABEL[route.type](t).toUpperCase()}</Text>
-        <Text style={styles.routeEffort}>{(route.effort_level === "hard" ? "▲▲ " : "▲ ") + t.effort[route.effort_level]}</Text>
+        <Text style={[styles.routeEffort, hard ? { color: "#b45309" } : undefined]}>
+          {t.effort[route.effort_level].toUpperCase()}
+        </Text>
       </View>
       <Text style={styles.routeTitle}>{route.title}</Text>
       <View style={styles.routeStatsRow}>
@@ -224,7 +229,9 @@ function RouteCard({ route, t }: { route: ReportRoute; t: ReportDict }) {
       <Text style={[styles.label, { marginTop: 10 }]}>{t.steps.toUpperCase()}</Text>
       {route.steps.map((step, i) => (
         <View key={i} style={styles.listItem}>
-          <Text style={styles.listBullet}>{i + 1}.</Text>
+          {/* Ширина шире, чем у styles.listBullet: двузначные номера (шагов может быть больше 9)
+              иначе переносятся внутри узкой колонки — "10." ломается на "10-" и "." строкой ниже. */}
+          <Text style={[styles.listBullet, { width: 16 }]}>{i + 1}.</Text>
           <Text style={styles.listText}>{step}</Text>
         </View>
       ))}
@@ -233,7 +240,7 @@ function RouteCard({ route, t }: { route: ReportRoute; t: ReportDict }) {
           <Text style={[styles.label, { marginTop: 8 }]}>{t.requirements.toUpperCase()}</Text>
           {route.requirements.map((r, i) => (
             <View key={i} style={styles.listItem}>
-              <Text style={styles.listBullet}>◆</Text>
+              <Text style={styles.listBullet}>•</Text>
               <Text style={styles.listText}>{r}</Text>
             </View>
           ))}
@@ -303,7 +310,7 @@ export function ReportDocument({
           </View>
         </View>
 
-        <View style={styles.section} wrap={false}>
+        <View style={styles.section}>
           <SectionTitle n={next()} title={t.sections.goal} />
           <View style={styles.panelBordered}>
             <Text style={styles.label}>{(goal.source === "stated" ? t.goalStated : t.goalConstructed).toUpperCase()}</Text>
@@ -352,7 +359,7 @@ export function ReportDocument({
           ))}
         </View>
 
-        <View style={styles.section} wrap={false}>
+        <View style={styles.section}>
           <SectionTitle n={next()} title={t.sections.learning} />
           {learningStyles.length > 0 && (
             <Text style={[styles.strengthChip, { alignSelf: "flex-start", marginBottom: 6 }]}>
@@ -362,7 +369,7 @@ export function ReportDocument({
           <Prose>{path.learning_advice}</Prose>
         </View>
 
-        <View style={styles.section} wrap={false}>
+        <View style={styles.section}>
           <SectionTitle n={next()} title={t.sections.future} />
           <View style={styles.panel}>
             <Prose>{path.future_outlook}</Prose>
@@ -372,7 +379,7 @@ export function ReportDocument({
         <View style={styles.section}>
           <SectionTitle n={next()} title={t.sections.alternatives} />
           {alternatives.map((alt) => (
-            <View key={alt.direction} style={styles.altCard} wrap={false}>
+            <View key={alt.direction} style={styles.altCard}>
               <Text style={styles.altTitle}>{alt.direction}</Text>
               <Text style={styles.altLabel}>{t.whyYou.toUpperCase()}</Text>
               <Text style={styles.altText}>{alt.why_you}</Text>
@@ -389,7 +396,7 @@ export function ReportDocument({
           ))}
         </View>
 
-        <View style={styles.section} wrap={false}>
+        <View style={styles.section}>
           <SectionTitle n={next()} title={t.sections.actNow} />
           {actNow.map((step, i) => (
             <View key={i} style={styles.checklistItem}>
