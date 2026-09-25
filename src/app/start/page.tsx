@@ -21,6 +21,7 @@ export default async function StartPage({ searchParams }: { searchParams: Promis
     return (
       <PageShell title={t.start.surveyDoneTitle}>
         <p className="text-lg text-muted">{t.start.surveyDoneText}</p>
+        <CtaButton href="/teaser">{t.start.toTeaser}</CtaButton>
         {devToolsEnabled() && (
           <Link href={`/dev/profile/${session.id}`} className="block py-2 font-semibold text-brand-600">
             {t.test.devLink} →

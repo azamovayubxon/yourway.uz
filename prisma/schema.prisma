@@ -25,6 +25,8 @@ model TestSession {
   profile        Json?
   answers        TestAnswer[]
   surveyAnswers  SurveyAnswer[]
+  teasers        Teaser[]
+  aiCalls        AiCall[]
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   testsDoneAt    DateTime?
@@ -58,4 +60,65 @@ model SurveyAnswer {
   updatedAt  DateTime    @updatedAt
 
   @@id([sessionId, questionId])
+}
+
+// Бесплатный ИИ-тизер (Приложение Б §4). Не больше одного на язык в сессии:
+// первый — по лимиту TEASER_LIMIT_PER_SESSION, второй (на другом языке) — по TEASER_LANG_REGEN_PER_SESSION.
+model Teaser {
+  id            String      @id @default(uuid())
+  sessionId     String
+  session       TestSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  // Язык, на котором тизер сгенерирован (uz | ru). Тизер остаётся на этом языке (решение (Л)).
+  locale        String
+  // Уровень, с которым генерировался тизер (route | navigator), по умолчанию от развилки (решение (В)).
+  level         String
+  // generating — идёт генерация; ready — готов; failed — не удалось после повторов (можно попробовать ещё раз).
+  status        String      @default("generating")
+  // JSON ответа ИИ по схеме Приложения Б §4 (включая surprise_direction_internal — пользователю не показывается).
+  content       Json?
+  // mock — тестовый режим ИИ; live — настоящий Claude.
+  aiMode        String
+  model         String
+  promptVersion String
+  // Сколько раз вызывали ИИ для этого тизера (включая повторы после неудачной проверки ответа).
+  attempts      Int         @default(0)
+  // Короткий технический код ошибки (для разработчика), если status = failed.
+  error         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  aiCalls       AiCall[]
+
+  @@unique([sessionId, locale])
+}
+
+// Журнал каждого обращения к ИИ: модель, токены, примерная стоимость (для себестоимости в админке, этап 8).
+model AiCall {
+  id               String       @id @default(uuid())
+  // teaser (позже: report)
+  kind             String
+  sessionId        String?
+  session          TestSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  teaserId         String?
+  teaser           Teaser?      @relation(fields: [teaserId], references: [id], onDelete: SetNull)
+  // Хеш IP-адреса: по первым попыткам (attempt = 1) считается мягкий лимит тизеров с одного IP в сутки.
+  ipHash           String?
+  aiMode           String
+  model            String
+  promptVersion    String
+  // Номер попытки (1 — первая, 2–3 — повторы после неудачной проверки ответа).
+  attempt          Int
+  // Ответ ИИ прошёл проверку схемой и правилами.
+  ok               Boolean
+  error            String?
+  inputTokens      Int          @default(0)
+  outputTokens     Int          @default(0)
+  cacheReadTokens  Int          @default(0)
+  cacheWriteTokens Int          @default(0)
+  // Примерная стоимость в долларах США по прайсу из src/lib/ai/config.ts. Пусто, если цена модели неизвестна.
+  costUsd          Float?
+  durationMs       Int
+  createdAt        DateTime     @default(now())
+
+  @@index([kind, createdAt])
+  @@index([ipHash, createdAt])
 }

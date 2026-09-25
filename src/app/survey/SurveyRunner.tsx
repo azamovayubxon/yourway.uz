@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { fmt } from "@/i18n/format";
 
@@ -174,6 +175,14 @@ export function SurveyRunner({ sessionId, sections, initialAnswers, t, devProfil
   }
 
   const answeredCount = items.filter((item) => answers[item.id] !== undefined).length;
+  const allSaved = index >= total && pendingCount === 0 && answeredCount === total;
+
+  // Опрос пройден и всё сохранено на сервере → сразу к генерации тизера (Приложение А §11, шаг 7).
+  const router = useRouter();
+  useEffect(() => {
+    if (allSaved && syncState === "idle") router.replace("/teaser");
+  }, [allSaved, syncState, router]);
+
   const progress = Math.round((Math.min(index, total) / total) * 100);
 
   const status =
@@ -189,7 +198,7 @@ export function SurveyRunner({ sessionId, sections, initialAnswers, t, devProfil
     ) : null;
 
   if (index >= total) {
-    const saved = pendingCount === 0 && answeredCount === total;
+    const saved = allSaved;
     return (
       <div className="mx-auto max-w-2xl px-4 pt-10">
         <ProgressBar value={100} />
