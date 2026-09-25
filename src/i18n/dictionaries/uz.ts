@@ -401,7 +401,7 @@ export const uz: Dictionary = {
       paid: "Toʻlov oʻtdi — hisobot endi doim sizniki.",
       steps: ["Portret va maqsad", "Asosiy yoʻl", "Boshqa yoʻnalishlar va birinchi qadamlar"],
       partOf: "Tayyor qismlar: {total} tadan {n} tasi",
-      wait: "Hisobot katta, odatda 2–5 daqiqa vaqt oladi. Sahifani yopmaganingiz maʼqul. Yopsangiz ham hech narsa yoʻqolmaydi: hisobot akkauntingizda turibdi, uni ochganingizda davom ettiramiz.",
+      wait: "Hisobot katta: odatda 3 daqiqadan 8 daqiqagacha vaqt oladi. Sahifani yopmaganingiz maʼqul. Yopsangiz ham hech narsa yoʻqolmaydi: hisobot akkauntingizda turibdi, uni ochganingizda davom ettiramiz.",
     },
     failedTitle: "Hisobotni yozib boʻlmadi",
     failedText:
