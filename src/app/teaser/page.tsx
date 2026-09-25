@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getAiMode } from "@/lib/ai/providers";
 import { getCurrentUser } from "@/lib/auth";
+import { getDb } from "@/lib/db";
 import { uzSixteenTypeName } from "@/lib/ai/uz-resources";
 import type { TeaserContent } from "@/lib/ai/teaser-schema";
 import type { Profile } from "@/lib/assessment/profile";
@@ -54,6 +55,16 @@ export default async function TeaserPage({ searchParams }: { searchParams: Promi
   const general = [...t.teaser.generalToc];
   general.splice(4, 0, t.teaser.pathToc[profile.path_type]);
 
+  const user = await getCurrentUser();
+  // Уже оплаченный отчёт по этой сессии (любого уровня) — показываем ссылку на него.
+  const report = user
+    ? await getDb().report.findFirst({
+        where: { sessionId: session.id, userId: user.id },
+        orderBy: { createdAt: "desc" },
+        select: { id: true },
+      })
+    : null;
+
   let otherLanguage = null;
   if (teaserLocale !== locale) {
     const canRegen = await canGenerateInLocale(session.id, locale);
@@ -85,8 +96,9 @@ export default async function TeaserPage({ searchParams }: { searchParams: Promi
       recommendedLevel={profile.level}
       lowQuality={profile.answer_quality?.level === "low"}
       otherLanguage={otherLanguage}
-      // Выбор уровня и оплата — этап 6; пока после регистрации человек попадает на страницу цен.
-      unlockHref={(await getCurrentUser()) ? "/pricing" : "/register?next=/pricing"}
+      // Регистрация появляется только перед оплатой; после неё человек сразу попадает на выбор уровня.
+      unlockHref={user ? "/checkout" : "/register?next=/checkout"}
+      reportHref={report ? `/report/${report.id}` : null}
       footer={
         <div className="mt-8 space-y-1 text-center">
           <Link

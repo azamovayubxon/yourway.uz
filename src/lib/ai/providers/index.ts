@@ -31,6 +31,6 @@ export function modelFor(mode: AiMode, configuredModel: string): string {
   return mode === "live" ? configuredModel : MOCK_MODEL;
 }
 
-export { createMockProvider, MOCK_MODEL } from "./mock";
+export { createFailingProvider, createMockProvider, MOCK_MODEL } from "./mock";
 export { AiFatalError, ZERO_USAGE } from "./types";
 export type { AiProvider, AiRequest, AiResponse, TokenUsage } from "./types";

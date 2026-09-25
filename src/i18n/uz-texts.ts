@@ -6,6 +6,7 @@
 // при этом сохраняются (по ключу). Тест uz-texts.test.ts следит, чтобы таблица не отставала от кода.
 
 import surveyRaw from "../../data/tests/context_survey.json";
+import { MOCK_REPORTS } from "@/lib/ai/mock-reports";
 import { MOCK_TEASERS } from "@/lib/ai/mock-teasers";
 import { TESTS } from "@/lib/assessment/tests";
 import { normalizeUzFields } from "@/lib/assessment/uzbek-text";
@@ -34,7 +35,10 @@ function flatten(value: unknown, path = "", out: Record<string, string> = {}): R
 function pairRows(prefix: string, ruValue: unknown, uzValue: unknown): UzTextRow[] {
   const ruFlat = flatten(ruValue);
   const uzFlat = flatten(uzValue);
-  return Object.keys(uzFlat).map((key) => ({ key: `${prefix}.${key}`, ru: ruFlat[key] ?? "", uz: uzFlat[key], fix: "" }));
+  // Пустые строки (например, пустое «adjustment» в образце отчёта) вычитывать нечего — пропускаем.
+  return Object.keys(uzFlat)
+    .filter((key) => uzFlat[key].trim() !== "")
+    .map((key) => ({ key: `${prefix}.${key}`, ru: ruFlat[key] ?? "", uz: uzFlat[key], fix: "" }));
 }
 
 interface RawSurvey {
@@ -73,9 +77,15 @@ function testRows(): UzTextRow[] {
   ]);
 }
 
-// Порядок: интерфейс → заготовка тизера (тестовый режим) → опрос → вопросы тестов.
+// Порядок: интерфейс → заготовки тизера и полного отчёта (тестовый режим) → опрос → вопросы тестов.
 export function collectUzTexts(): UzTextRow[] {
-  return [...pairRows("ui", ru, uz), ...pairRows("mock.teaser", MOCK_TEASERS.ru, MOCK_TEASERS.uz), ...surveyRows(), ...testRows()];
+  return [
+    ...pairRows("ui", ru, uz),
+    ...pairRows("mock.teaser", MOCK_TEASERS.ru, MOCK_TEASERS.uz),
+    ...pairRows("mock.report", MOCK_REPORTS.ru, MOCK_REPORTS.uz),
+    ...surveyRows(),
+    ...testRows(),
+  ];
 }
 
 function csvCell(value: string): string {

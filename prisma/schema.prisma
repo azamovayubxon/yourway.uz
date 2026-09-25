@@ -31,6 +31,8 @@ model TestSession {
   surveyAnswers  SurveyAnswer[]
   teasers        Teaser[]
   aiCalls        AiCall[]
+  payments       Payment[]
+  reports        Report[]
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   testsDoneAt    DateTime?
@@ -100,12 +102,16 @@ model Teaser {
 // Журнал каждого обращения к ИИ: модель, токены, примерная стоимость (для себестоимости в админке, этап 8).
 model AiCall {
   id               String       @id @default(uuid())
-  // teaser (позже: report)
+  // teaser | report
   kind             String
   sessionId        String?
   session          TestSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
   teaserId         String?
   teaser           Teaser?      @relation(fields: [teaserId], references: [id], onDelete: SetNull)
+  reportId         String?
+  report           Report?      @relation(fields: [reportId], references: [id], onDelete: SetNull)
+  // Часть полного отчёта (portrait_goal | main_path | finish), для тизера пусто.
+  part             String?
   // Хеш IP-адреса: по первым попыткам (attempt = 1) считается мягкий лимит тизеров с одного IP в сутки.
   ipHash           String?
   aiMode           String
@@ -133,6 +139,7 @@ model AiCall {
 
   @@index([kind, createdAt])
   @@index([ipHash, createdAt])
+  @@index([reportId])
 }
 
 // Аккаунт пользователя (этап 5). Только логин и пароль: ФИО, телефон и e-mail не собираются.
@@ -153,6 +160,8 @@ model User {
   updatedAt        DateTime      @updatedAt
   testSessions     TestSession[]
   authSessions     AuthSession[]
+  payments         Payment[]
+  reports          Report[]
 }
 
 // Вход в аккаунт на одном устройстве. В cookie браузера лежит случайный токен, здесь — только его хеш.
@@ -181,4 +190,115 @@ model AuthAttempt {
 
   @@index([login, createdAt])
   @@index([ipHash, createdAt])
+}
+
+// Цена уровня полного отчёта (этап 6). Цены хранятся в базе, а не в коде: поменять цену можно
+// без программиста (пока — SQL-запросом в Neon, см. README; на этапе 8 — в админке).
+model Price {
+  // route («Маршрут») | navigator («Навигатор»)
+  level     String   @id
+  // Цена в сумах, целое число.
+  amount    Int
+  updatedAt DateTime @updatedAt
+}
+
+// Промокод на скидку (этап 6). Управление — на этапе 8 в админке; пока — SQL-запросом или
+// служебной страницей /dev/promo (только тестовые коды).
+model PromoCode {
+  id         String    @id @default(uuid())
+  // Код в верхнем регистре (регистр при вводе не важен).
+  code       String    @unique
+  // Скидка в процентах, 1–100. 100 — отчёт бесплатно.
+  percentOff Int
+  active     Boolean   @default(true)
+  // Сколько раз код можно использовать (пусто — без ограничения) и сколько уже использовали.
+  maxUses    Int?
+  usedCount  Int       @default(0)
+  expiresAt  DateTime?
+  // Тестовый код (создан на /dev/promo): работает только там, где включена тестовая оплата,
+  // и никогда на боевом сайте.
+  testOnly   Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  payments   Payment[]
+}
+
+// Оплата полного отчёта. Данные карт у нас НЕ хранятся (их обрабатывает платёжный шлюз):
+// только id транзакции, сумма и статус (CLAUDE.md §8).
+model Payment {
+  id            String      @id @default(uuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId     String
+  session       TestSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  // Уровень отчёта: route | navigator.
+  level         String
+  // Язык интерфейса в момент оплаты: на нём пишется полный отчёт (решение (Л)).
+  locale        String
+  // Цена уровня без скидки и сумма к оплате (после промокода), в сумах.
+  baseAmount    Int
+  amount        Int
+  currency      String      @default("UZS")
+  promoCodeId   String?
+  promoCode     PromoCode?  @relation(fields: [promoCodeId], references: [id], onDelete: SetNull)
+  // test — тестовая оплата (только вне боевого сайта); promo — промокод на 100 %;
+  // позже: payme | click | uzum.
+  provider      String
+  // Id транзакции у платёжного шлюза.
+  providerTxnId String?
+  // pending — ждём оплату; paid — оплачено; cancelled — отменено; failed — отказ шлюза.
+  status        String      @default("pending")
+  createdAt     DateTime    @default(now())
+  paidAt        DateTime?
+  report        Report?
+
+  @@index([userId, createdAt])
+}
+
+// Полный платный отчёт (Приложение Б §5, §7). Генерируется в фоне по частям (см. src/lib/report):
+// каждая часть — отдельный вызов ИИ и отдельный запрос к серверу, чтобы ни один запрос не упёрся
+// в лимит времени хостинга. Оплаченный доступ не теряется: при сбое отчёт можно сгенерировать заново.
+model Report {
+  id            String      @id @default(uuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId     String
+  session       TestSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  paymentId     String      @unique
+  payment       Payment     @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  // route | navigator — выбранный при оплате уровень.
+  level         String
+  // Язык отчёта (uz | ru) = язык интерфейса в момент оплаты.
+  locale        String
+  // knows_goal | no_goal — развилка.
+  pathType      String
+  // pending — оплачен, генерация ещё не началась; generating — идёт; ready — готов;
+  // failed — не удалось после повтора (кнопка «Сгенерировать заново», без повторной оплаты).
+  status        String      @default("pending")
+  // Профиль (Приложение А §9) на момент оплаты, с выбранным уровнем, и JSON тизера (вход Вызова 2).
+  profile       Json
+  teaser        Json
+  // Готовые части отчёта: { "portrait_goal": {...}, "main_path": {...}, ... }.
+  parts         Json        @default("{}")
+  // Собранный отчёт по схеме Приложения Б §7 (когда status = ready).
+  content       Json?
+  aiMode        String
+  model         String
+  promptVersion String
+  // Попытка текущей части (0 — ещё не начинали) и данные для повтора с подсказкой:
+  // { previousResponse, problems }.
+  partAttempt   Int         @default(0)
+  retry         Json?
+  // Когда сервер взялся за очередную часть. Пусто — никто не генерирует (можно брать следующую).
+  lockedAt      DateTime?
+  // Сколько всего раз вызывали ИИ для этого отчёта.
+  attempts      Int         @default(0)
+  // Короткий технический код ошибки, если status = failed.
+  error         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  readyAt       DateTime?
+  aiCalls       AiCall[]
+
+  @@index([userId, createdAt])
+  @@index([sessionId])
 }

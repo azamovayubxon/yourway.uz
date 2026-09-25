@@ -4,6 +4,7 @@ import type { TeaserContent } from "@/lib/ai/teaser-schema";
 import type { TocItem } from "@/lib/teaser/toc";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
+import { titleFontSize } from "@/components/typeTitle";
 import { MockBadge } from "./MockBadge";
 
 // Страница бесплатного тизера (ТЗ 3.7.1): тип, портрет, сильные стороны, 2–3 направления,
@@ -27,6 +28,8 @@ interface Props {
   otherLanguage: ReactNode;
   // Куда ведёт «Открыть полный отчёт»: без аккаунта — на регистрацию (она появляется только перед оплатой).
   unlockHref: string;
+  // Ссылка на уже оплаченный полный отчёт этой сессии (null — отчёта ещё нет).
+  reportHref: string | null;
   footer: ReactNode;
 }
 
@@ -41,6 +44,7 @@ export function TeaserView({
   lowQuality,
   otherLanguage,
   unlockHref,
+  reportHref,
   footer,
 }: Props) {
   const strengths = content.top_strengths.slice(0, 3);
@@ -169,6 +173,18 @@ export function TeaserView({
         </ol>
       </section>
 
+      {reportHref && (
+        <section className="mt-8 rounded-[2rem] border-2 border-emerald-200 bg-emerald-50 p-6 text-center">
+          <h2 className="text-xl font-extrabold text-emerald-950">✓ {t.haveReportTitle}</h2>
+          <Link
+            href={reportHref}
+            className="mt-4 inline-flex min-h-14 w-full items-center justify-center rounded-2xl bg-emerald-600 px-6 text-lg font-bold text-white shadow-lg shadow-emerald-600/25"
+          >
+            {t.haveReportCta} →
+          </Link>
+        </section>
+      )}
+
       {/* Призыв открыть полный отчёт. Уровень, подходящий по развилке, — рекомендуемый (решение (В)). */}
       <section className="mt-8 rounded-[2rem] bg-gradient-to-br from-brand-50 to-fuchsia-50 p-6 text-center">
         <h2 className="text-2xl font-extrabold">{t.unlockTitle}</h2>
@@ -189,21 +205,6 @@ export function TeaserView({
       {footer}
     </div>
   );
-}
-
-// Название типа — как можно крупнее, но так, чтобы самое длинное слово целиком помещалось
-// в строку на любом телефоне (иначе браузер режет слово посередине). Слово с дефисом
-// («Исследователь-Творец») может переноситься после дефиса, поэтому считаем его части отдельно.
-function titleFontSize(label: string): string {
-  const longest = Math.max(
-    4,
-    ...label
-      .split(/\s+/)
-      .flatMap((w) => w.split(/(?<=-)/))
-      .map((w) => w.length),
-  );
-  // 5rem — поля страницы и карточки; 0.72em — средняя ширина жирной буквы.
-  return `min(3rem, calc((100vw - 5rem) / ${(longest * 0.72).toFixed(2)}))`;
 }
 
 function LockIcon({ className, open = false }: { className?: string; open?: boolean }) {

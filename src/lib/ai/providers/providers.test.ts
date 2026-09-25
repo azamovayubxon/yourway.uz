@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { estimateAnthropicCostUsd, supportsEffort, supportsTemperature } from "./anthropic";
 import { getAiMode, getAiProvider, modelFor } from "./index";
-import { teaserModel } from "../config";
+import { reportModel, teaserModel } from "../config";
 
 describe("выбор режима ИИ", () => {
   afterEach(() => vi.unstubAllEnvs());
@@ -68,5 +68,18 @@ describe("модель тизера по языку", () => {
     vi.stubEnv("MODEL_TEASER_UZ", "model-uz");
     expect(teaserModel("ru")).toBe("model-ru");
     expect(teaserModel("uz")).toBe("model-uz");
+  });
+});
+
+describe("модели полного отчёта", () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("«Маршрут» — MODEL_ROUTE (по умолчанию Sonnet 5), «Навигатор» — MODEL_NAVIGATOR (по умолчанию Opus 5.5)", () => {
+    vi.stubEnv("MODEL_ROUTE", "");
+    vi.stubEnv("MODEL_NAVIGATOR", "");
+    expect(reportModel("route")).toBe("claude-sonnet-5");
+    expect(reportModel("navigator")).toBe("claude-opus-5-5");
+    vi.stubEnv("MODEL_NAVIGATOR", "claude-opus-5");
+    expect(reportModel("navigator")).toBe("claude-opus-5");
   });
 });

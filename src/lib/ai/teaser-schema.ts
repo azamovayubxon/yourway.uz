@@ -73,7 +73,7 @@ function insightTexts(t: TeaserContent): string[] {
 }
 
 // Недописанные заглушки вроде «[вставьте ...]», «{{...}}», «TODO», «...» вместо текста.
-const PLACEHOLDER = /\[[^\]]*(встав|insert|todo|placeholder)[^\]]*\]|\{\{|\bTODO\b|\blorem ipsum\b/i;
+export const PLACEHOLDER = /\[[^\]]*(встав|insert|todo|placeholder)[^\]]*\]|\{\{|\bTODO\b|\blorem ipsum\b/i;
 
 // Суммы денег: «$2000», «2000$», «5 млн сум», «10 000 so'm», «USD».
 const MONEY = /[$€₽]\s?\d|\d\s?[$€₽]|\d[\d\s.,]*\s?(сум|so[ʻ'’`]?m|млн|тыс|mln|ming|usd|долл|dollar)|\busd\b/i;
@@ -94,7 +94,7 @@ export function matchesLanguage(value: string, language: TeaserLanguage): boolea
 }
 
 // uzRules — стоп-слова и запрещённые конструкции из глоссария (для узбекского ответа).
-const UZ_RULE_TEXT: Record<UzIssueRule, string> = {
+export const UZ_RULE_TEXT: Record<UzIssueRule, string> = {
   cyrillic: "кириллица в узбекском тексте",
   tu: "слово «Tu» — нужно «Siz»",
   sen: "обращение на «sen» — нужна форма на «siz»",

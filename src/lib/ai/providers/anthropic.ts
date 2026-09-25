@@ -70,7 +70,9 @@ export const anthropicProvider: AiProvider = {
         // Structured outputs: модель обязана вернуть JSON заданной формы.
         ...(request.outputSchema ? { format: zodOutputFormat(request.outputSchema) } : {}),
       };
-      const response = await getClient().messages.create(
+      // Потоковый ответ (stream): полный отчёт — длинный текст, и так соединение не простаивает
+      // минутами без данных (некоторые прокси такие соединения обрывают). Ждём целиком — finalMessage().
+      const stream = getClient().messages.stream(
         {
           model: request.model,
           max_tokens: request.maxTokens,
@@ -84,10 +86,14 @@ export const anthropicProvider: AiProvider = {
             : {}),
           ...(Object.keys(outputConfig).length > 0 ? { output_config: outputConfig } : {}),
         },
-        // Лимит времени задан вызывающим кодом: тогда без скрытых повторов внутри SDK,
-        // иначе одна «попытка» могла длиться вдвое дольше лимита.
-        request.timeoutMs ? { timeout: request.timeoutMs, maxRetries: 0 } : undefined,
+        // Лимит времени задан вызывающим кодом: тогда без скрытых повторов внутри SDK, иначе одна
+        // «попытка» могла длиться вдвое дольше лимита. timeout SDK ждёт только начала ответа, поэтому
+        // на весь поток целиком ставим ещё и signal.
+        request.timeoutMs
+          ? { timeout: request.timeoutMs, maxRetries: 0, signal: AbortSignal.timeout(request.timeoutMs) }
+          : undefined,
       );
+      const response = await stream.finalMessage();
       const text = response.content
         .filter((block) => block.type === "text")
         .map((block) => block.text)

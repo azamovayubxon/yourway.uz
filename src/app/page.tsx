@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FaqList, PricingPlans, Steps } from "@/components/blocks";
 import { CtaButton, Section } from "@/components/ui";
+import { getPricesSafe } from "@/lib/payments/prices";
 import { getI18n } from "@/i18n/server";
 
 // Лендинг (ТЗ 3.1.1). Все тексты — в src/i18n/dictionaries/uz.ts и ru.ts, раздел `landing`.
@@ -87,7 +88,7 @@ export default async function HomePage() {
       {/* Цены */}
       <Section id="pricing" title={l.pricing.title}>
         <p className="-mt-3 mb-5 text-muted">{l.pricing.subtitle}</p>
-        <PricingPlans t={t} />
+        <PricingPlans t={t} prices={await getPricesSafe()} />
       </Section>
 
       {/* FAQ */}
