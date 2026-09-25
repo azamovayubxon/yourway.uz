@@ -1,6 +1,6 @@
 import { surveyQuestionsFor } from "@/lib/assessment/survey";
 import type { PathType } from "@/lib/assessment/tests";
-import { getSessionIdFromCookie, isValidSurveyAnswer, loadSession, saveSurveyAnswers } from "@/lib/session";
+import { getCurrentSession, getSessionIdFromCookie, isValidSurveyAnswer, saveSurveyAnswers } from "@/lib/session";
 import { getLocale } from "@/i18n/server";
 
 // Автосохранение ответов опроса: POST /api/session/survey
@@ -21,7 +21,7 @@ export async function POST(request: Request) {
   if (!cookieId || cookieId !== sessionId) {
     return Response.json({ error: "session_mismatch" }, { status: 409 });
   }
-  const session = await loadSession(cookieId);
+  const session = await getCurrentSession();
   if (!session) {
     return Response.json({ error: "session_not_found" }, { status: 409 });
   }

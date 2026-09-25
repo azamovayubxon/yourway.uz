@@ -1,5 +1,6 @@
 import "server-only";
 import { cookies } from "next/headers";
+import { getCurrentUser } from "@/lib/auth/current";
 import { getDb } from "@/lib/db";
 import { buildProfile } from "@/lib/assessment/profile";
 import { computeScores, countAnswered } from "@/lib/assessment/scoring";
@@ -15,17 +16,22 @@ import type { Locale } from "@/i18n/config";
 // Анонимная сессия прохождения тестов: id хранится в cookie, ответы — в базе.
 export const SESSION_COOKIE = "yw_session";
 // Сколько помнить незаконченную сессию: 180 дней.
-const SESSION_COOKIE_MAX_AGE = 60 * 60 * 24 * 180;
+export const SESSION_COOKIE_MAX_AGE = 60 * 60 * 24 * 180;
 
 export async function getSessionIdFromCookie(): Promise<string | null> {
   return (await cookies()).get(SESSION_COOKIE)?.value ?? null;
 }
 
 // Текущая сессия вместе с ответами (или null, если её нет).
+// Сессия, привязанная к аккаунту, доступна только тому, кто вошёл в этот аккаунт: после выхода
+// (или если cookie осталась от другого человека) её как будто нет.
 export async function getCurrentSession() {
   const id = await getSessionIdFromCookie();
   if (!id) return null;
-  return loadSession(id);
+  const session = await loadSession(id);
+  if (!session) return null;
+  if (session.userId && session.userId !== (await getCurrentUser())?.id) return null;
+  return session;
 }
 
 export async function loadSession(id: string) {
@@ -41,8 +47,10 @@ export async function loadSession(id: string) {
   return { ...session, answerMap: rowsToAnswers(session.answers), surveyAnswerMap };
 }
 
+// Новая сессия. Если человек уже вошёл в аккаунт, она сразу привязывается к нему.
 export async function createSession(pathType: PathType, locale: Locale): Promise<string> {
-  const session = await getDb().testSession.create({ data: { pathType, locale } });
+  const user = await getCurrentUser();
+  const session = await getDb().testSession.create({ data: { pathType, locale, userId: user?.id ?? null } });
   (await cookies()).set(SESSION_COOKIE, session.id, {
     path: "/",
     maxAge: SESSION_COOKIE_MAX_AGE,
