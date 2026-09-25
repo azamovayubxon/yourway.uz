@@ -1,0 +1,12 @@
+// Схема базы данных yourway.uz.
+// Этап 1: только подключение. Таблицы появятся со следующих этапов
+// (TestSession — этап 2). Схема пишется под PostgreSQL (Neon).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
