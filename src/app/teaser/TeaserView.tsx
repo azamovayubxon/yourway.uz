@@ -25,6 +25,8 @@ interface Props {
   lowQuality: boolean;
   // Блок «портрет на другом языке» (решение (Л)); null — тизер на языке интерфейса.
   otherLanguage: ReactNode;
+  // Куда ведёт «Открыть полный отчёт»: без аккаунта — на регистрацию (она появляется только перед оплатой).
+  unlockHref: string;
   footer: ReactNode;
 }
 
@@ -38,6 +40,7 @@ export function TeaserView({
   recommendedLevel,
   lowQuality,
   otherLanguage,
+  unlockHref,
   footer,
 }: Props) {
   const strengths = content.top_strengths.slice(0, 3);
@@ -175,7 +178,7 @@ export function TeaserView({
           <b>{t.levels[recommendedLevel]}</b>
         </p>
         <Link
-          href="/pricing"
+          href={unlockHref}
           className="mt-4 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-brand-500 to-indigo-600 px-6 text-lg font-bold text-white shadow-lg shadow-brand-500/30 transition-transform active:scale-[0.98]"
         >
           <LockIcon className="size-5" open />

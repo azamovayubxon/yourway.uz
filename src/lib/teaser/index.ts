@@ -1,5 +1,4 @@
 import "server-only";
-import { createHash } from "node:crypto";
 import { Prisma } from "@/generated/prisma/client";
 import { getDb } from "@/lib/db";
 import { teaserLimits, teaserModel } from "@/lib/ai/config";
@@ -22,17 +21,8 @@ export type TeaserState =
   | { status: "limit"; reason: LimitReason }
   | { status: "not_ready" };
 
-// Сам IP-адрес не храним: только его хеш (нужен, чтобы считать мягкий лимит по IP).
-export function hashIp(ip: string | null): string | null {
-  if (!ip) return null;
-  return createHash("sha256").update(`yourway-ip:${ip}`).digest("hex").slice(0, 32);
-}
-
-// IP посетителя из заголовков прокси (Vercel и обычный nginx ставят x-forwarded-for).
-export function clientIp(headers: Headers): string | null {
-  const forwarded = headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  return forwarded || headers.get("x-real-ip")?.trim() || null;
-}
+// Хеш IP и IP из заголовков — общие для тизера и входа в аккаунт (src/lib/ip.ts).
+export { clientIp, hashIp } from "@/lib/ip";
 
 export async function getSessionTeasers(sessionId: string) {
   return getDb().teaser.findMany({ where: { sessionId }, orderBy: { createdAt: "asc" } });
