@@ -105,11 +105,17 @@ model AiCall {
   aiMode           String
   model            String
   promptVersion    String
-  // Номер попытки (1 — первая, 2–3 — повторы после неудачной проверки ответа).
+  // Номер попытки (1 — первая, 2 — повтор после неудачной проверки ответа).
   attempt          Int
   // Ответ ИИ прошёл проверку схемой и правилами.
   ok               Boolean
   error            String?
+  // Язык генерации (uz | ru) — для /dev/ai-log и сравнения скорости по языкам.
+  locale           String?
+  // Все проблемы, найденные проверкой ответа (список строк), — пусто, если ответ принят.
+  problems         Json?
+  // Сырой текст ответа ИИ (для разбора брака в /dev/ai-log). Обрезается до 20 000 символов.
+  responseText     String?
   inputTokens      Int          @default(0)
   outputTokens     Int          @default(0)
   cacheReadTokens  Int          @default(0)

@@ -93,9 +93,14 @@ export default async function TeaserPage({ searchParams }: { searchParams: Promi
             {t.start.restart}
           </Link>
           {devToolsEnabled() && (
-            <Link href={`/dev/profile/${session.id}`} className="block py-2 text-sm font-semibold text-brand-600">
-              {t.teaser.devLink} →
-            </Link>
+            <>
+              <Link href={`/dev/profile/${session.id}`} className="block py-2 text-sm font-semibold text-brand-600">
+                {t.teaser.devLink} →
+              </Link>
+              <Link href="/dev/ai-log" className="block py-2 text-sm font-semibold text-brand-600">
+                {t.teaser.devAiLogLink} →
+              </Link>
+            </>
           )}
         </div>
       }

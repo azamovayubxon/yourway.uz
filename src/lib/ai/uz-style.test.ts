@@ -39,6 +39,17 @@ describe("проверка узбекского текста", () => {
     expect(findUzIssues(text, rules)).toEqual([]);
   });
 
+  it("ловит формы на «sen» и в словах с апострофом", () => {
+    expect(rulesOf("Siz boʻlasan emas, boʻlasiz")).toEqual(["sen:boʻlasan"]);
+    expect(rulesOf("yoʻlingni topding")).toEqual(["sen:yoʻlingni", "sen:topding"]);
+  });
+
+  it("не считает формами на «sen» наречия на -san и заимствования на -ing (ложные срабатывания)", () => {
+    const text =
+      "Asosan, shaxsan va xususan siz marketingda, treningga, konsaltingda, reytingdan, xoldingda va brendingda ishlay olasiz.";
+    expect(findUzIssues(text, rules)).toEqual([]);
+  });
+
   it("ловит английские слова из стоп-списка в любом регистре", () => {
     expect(rulesOf("Startup vs. established Business")).toEqual(["english:Startup", "english:vs", "english:Business"]);
     // Узбекские заимствования — не английские слова.

@@ -2,7 +2,7 @@
 // Ответ, не прошедший проверку, считается неудачным: генерация повторяется (до 2 раз).
 
 import { z } from "zod";
-import { findUzIssues, type UzRules } from "./uz-style";
+import { findUzIssues, type UzIssueRule, type UzRules } from "./uz-style";
 
 const text = z.string().trim().min(1);
 
@@ -19,27 +19,34 @@ export const TeaserOutputSchema = z.object({
 });
 
 // Строгая схема для проверки на нашей стороне.
+// Ограничения длины — с запасом: узбекский текст заметно длиннее русского, и слишком тесные
+// рамки браковали нормальные ответы (этап 4б).
 export const TeaserSchema = z.object({
   personality_type_label: text.max(80),
-  portrait: text.max(1200),
+  portrait: text.max(1600),
   // Промпт просит 3 сильные стороны, ТЗ 3.7.1 — 2–3. Принимаем 2–4, показываем первые 3.
-  top_strengths: z.array(text.max(160)).min(2).max(4),
+  top_strengths: z.array(text.max(200)).min(2).max(4),
   // Промпт: 2–3 сферы. Небольшой запас (4), на экране — первые 3.
   fitting_directions: z
-    .array(z.object({ title: text.max(120), one_liner: text.max(300) }))
+    .array(z.object({ title: text.max(150), one_liner: text.max(400) }))
     .min(2)
     .max(4),
-  surprise_hook: text.max(500),
+  surprise_hook: text.max(700),
   surprise_direction_internal: text.max(200),
   // Промпт просит 8–12 пунктов. Проверка мягкая (решение (Г)): 7 пунктов из golden example тоже принимаются.
-  locked_toc: z.array(text.max(160)).min(5).max(15),
+  locked_toc: z.array(text.max(200)).min(5).max(15),
 });
 
 export type TeaserContent = z.infer<typeof TeaserSchema>;
 
 export type TeaserLanguage = "ru" | "uz";
 
-export type ValidationResult = { ok: true; content: TeaserContent } | { ok: false; error: string };
+// error — короткий код первой проблемы (для журнала и статистики);
+// problems — все найденные проблемы понятным текстом: они показываются в /dev/ai-log
+// и передаются ИИ при повторной попытке, чтобы он исправил именно их.
+export type ValidationResult =
+  | { ok: true; content: TeaserContent }
+  | { ok: false; error: string; problems: string[] };
 
 // Поля, которые видит пользователь (surprise_direction_internal — нет, оно только для Вызова 2).
 function visibleTexts(t: TeaserContent): string[] {
@@ -87,26 +94,49 @@ export function matchesLanguage(value: string, language: TeaserLanguage): boolea
 }
 
 // uzRules — стоп-слова и запрещённые конструкции из глоссария (для узбекского ответа).
+const UZ_RULE_TEXT: Record<UzIssueRule, string> = {
+  cyrillic: "кириллица в узбекском тексте",
+  tu: "слово «Tu» — нужно «Siz»",
+  sen: "обращение на «sen» — нужна форма на «siz»",
+  english: "английское слово — нужно узбекское",
+  phrase: "запрещённая конструкция — перефразируйте",
+};
+
 export function validateTeaser(raw: unknown, language: TeaserLanguage, uzRules?: Partial<UzRules>): ValidationResult {
   const parsed = TeaserSchema.safeParse(raw);
   if (!parsed.success) {
     const issue = parsed.error.issues[0];
-    return { ok: false, error: `schema:${issue.path.join(".")}:${issue.code}` };
+    return {
+      ok: false,
+      error: `schema:${issue.path.join(".")}:${issue.code}`,
+      problems: parsed.error.issues.map((i) => `поле ${i.path.join(".") || "(ответ)"}: ${i.message}`),
+    };
   }
   const content = parsed.data;
-
   const visible = visibleTexts(content);
-  if (visible.some((v) => PLACEHOLDER.test(v))) return { ok: false, error: "rule:placeholder" };
-  if (insightTexts(content).some((v) => MONEY.test(v))) return { ok: false, error: "rule:money_in_teaser" };
-  if (!matchesLanguage(visible.join(" "), language)) return { ok: false, error: `rule:language_not_${language}` };
+  const found: { code: string; text: string }[] = [];
+
+  if (visible.some((v) => PLACEHOLDER.test(v))) {
+    found.push({ code: "rule:placeholder", text: "в тексте осталась заглушка вроде «[вставьте …]»" });
+  }
+  if (insightTexts(content).some((v) => MONEY.test(v))) {
+    found.push({ code: "rule:money_in_teaser", text: "в тизере есть суммы денег — их быть не должно" });
+  }
+  if (!matchesLanguage(visible.join(" "), language)) {
+    found.push({ code: `rule:language_not_${language}`, text: `текст не на нужном языке (${language})` });
+  }
 
   // Узбекский: нет кириллицы, «Tu», форм на «sen», английских слов и запрещённых конструкций.
   // Проверяем и скрытое поле surprise_direction_internal: оно уйдёт в полный отчёт.
   if (language === "uz") {
-    const issue = findUzIssues([...visible, content.surprise_direction_internal].join("\n"), uzRules)[0];
-    if (issue) return { ok: false, error: `rule:uz_${issue.rule}:${issue.word}` };
+    for (const issue of findUzIssues([...visible, content.surprise_direction_internal].join("\n"), uzRules)) {
+      found.push({ code: `rule:uz_${issue.rule}:${issue.word}`, text: `${UZ_RULE_TEXT[issue.rule]}: «${issue.word}»` });
+    }
   }
 
+  if (found.length > 0) {
+    return { ok: false, error: found[0].code, problems: [...new Set(found.map((f) => f.text))] };
+  }
   return { ok: true, content };
 }
 

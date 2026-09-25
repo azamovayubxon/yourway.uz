@@ -12,7 +12,7 @@ import {
 } from "./uz-resources";
 
 // Версия промпта тизера. Сохраняется в Teaser.promptVersion и в журнале вызовов ИИ.
-export const TEASER_PROMPT_VERSION = "teaser-1.1";
+export const TEASER_PROMPT_VERSION = "teaser-1.2";
 
 // §2. Философия продукта: общий контекст обоих вызовов (кэшируется).
 export const PHILOSOPHY_BLOCK = `Вы — карьерный навигатор и профконсультант сервиса yourway.uz для аудитории Узбекистана.
@@ -95,6 +95,16 @@ USLUB NAMUNALARI:
 Quyidagi matnlarni oʻzbek tilida soʻzlashadigan odam yozgan. Ulardan faqat ohang va yozish uslubini oling. Namunalardagi faktlarni, tip nomlarini va yoʻnalishlarni koʻchirmang — har bir profil uchun hammasini yangidan yozing.
 
 {{examples}}`;
+
+// §4. Сообщение для повторной попытки тизера: ИИ получает свой прошлый ответ и список проблем.
+export const TEASER_RETRY_TEMPLATE = `Ваш предыдущий ответ не прошёл проверку. Что нужно исправить:
+{{problems}}
+
+Верните исправленный тизер целиком — строго валидный JSON по той же схеме. Исправьте только перечисленное, остальное оставьте как было.`;
+
+export function buildRetryFeedback(problems: string[]): string {
+  return fillTemplate(TEASER_RETRY_TEMPLATE, { problems: problems.map((p) => `- ${p}`).join("\n") });
+}
 
 export const PHILOSOPHY_PLACEHOLDER = "[БЛОК ФИЛОСОФИИ ИЗ РАЗДЕЛА 2]";
 

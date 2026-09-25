@@ -32,6 +32,13 @@ export function estimateAnthropicCostUsd(model: string, usage: TokenUsage): numb
   return Math.round(usd * 1_000_000) / 1_000_000;
 }
 
+// Параметр effort (глубина «размышлений») принимают Sonnet 5, Opus 4.5+ и Fable; Haiku 4.5 — нет.
+// У Sonnet 5 размышления включены по умолчанию на уровне high: для короткого тизера это лишние
+// десятки секунд и токены, которые съедали лимит ответа (этап 4б).
+export function supportsEffort(model: string): boolean {
+  return /^claude-(sonnet-5|opus-(4-[5-9]|5)|fable-)/.test(model);
+}
+
 // Параметр temperature принимают только старые модели (Haiku, Sonnet 4.x, Opus до 4.6 включительно).
 // Новые (Sonnet 5, Opus 4.7+ и 5.x) отвечают на него ошибкой, поэтому им его не передаём.
 export function supportsTemperature(model: string): boolean {
@@ -51,20 +58,36 @@ export const anthropicProvider: AiProvider = {
 
   async call(request) {
     try {
-      const response = await getClient().messages.create({
-        model: request.model,
-        max_tokens: request.maxTokens,
-        // Системный промпт одинаков для всех пользователей (меняется только язык) — помечаем его
-        // для кэширования (prompt caching). Кэш срабатывает, только если промпт длиннее минимума
-        // модели (у Haiku 4.5 — 4096 токенов); если короче, запрос просто идёт без кэша, без ошибок.
-        system: [{ type: "text", text: request.system, cache_control: { type: "ephemeral" } }],
-        messages: [{ role: "user", content: request.user }],
-        ...(request.temperature !== undefined && supportsTemperature(request.model)
-          ? { temperature: request.temperature }
-          : {}),
+      const messages: Anthropic.MessageParam[] = [{ role: "user", content: request.user }];
+      if (request.retry) {
+        messages.push(
+          { role: "assistant", content: request.retry.previousResponse },
+          { role: "user", content: request.retry.feedback },
+        );
+      }
+      const outputConfig = {
+        ...(request.effort && supportsEffort(request.model) ? { effort: request.effort } : {}),
         // Structured outputs: модель обязана вернуть JSON заданной формы.
-        ...(request.outputSchema ? { output_config: { format: zodOutputFormat(request.outputSchema) } } : {}),
-      });
+        ...(request.outputSchema ? { format: zodOutputFormat(request.outputSchema) } : {}),
+      };
+      const response = await getClient().messages.create(
+        {
+          model: request.model,
+          max_tokens: request.maxTokens,
+          // Системный промпт одинаков для всех пользователей (меняется только язык) — помечаем его
+          // для кэширования (prompt caching). Кэш срабатывает, только если промпт длиннее минимума
+          // модели; если короче, запрос просто идёт без кэша, без ошибок.
+          system: [{ type: "text", text: request.system, cache_control: { type: "ephemeral" } }],
+          messages,
+          ...(request.temperature !== undefined && supportsTemperature(request.model)
+            ? { temperature: request.temperature }
+            : {}),
+          ...(Object.keys(outputConfig).length > 0 ? { output_config: outputConfig } : {}),
+        },
+        // Лимит времени задан вызывающим кодом: тогда без скрытых повторов внутри SDK,
+        // иначе одна «попытка» могла длиться вдвое дольше лимита.
+        request.timeoutMs ? { timeout: request.timeoutMs, maxRetries: 0 } : undefined,
+      );
       const text = response.content
         .filter((block) => block.type === "text")
         .map((block) => block.text)

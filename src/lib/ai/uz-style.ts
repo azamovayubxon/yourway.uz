@@ -46,23 +46,66 @@ const SEN_WORDS = new Set([
   "o'zingcha",
 ]);
 
+// В словах бывает апостроф (boʻlasan, oʻzing), поэтому основа — буквы и «'».
 const SEN_PATTERNS: RegExp[] = [
   // Глаголы 2-го лица ед. числа: bilasan, qilyapsan, boʻlgansan, bilasanmi, istasang, qilding.
-  /^\p{L}{2,}(san|sanmi|sang|ding|dingmi)$/u,
+  /^[\p{L}']{2,}(san|sanmi|sang|ding|dingmi)$/u,
   // Повелительное на «sen»: qilgin, bergin.
-  /^\p{L}{2,}gin$/u,
+  /^[\p{L}']{2,}gin$/u,
   // Притяжательное «твои …»: kuchli tomonlaring, qobiliyatlaring.
-  /^\p{L}{2,}laring$/u,
+  /^[\p{L}']{2,}laring$/u,
   // Притяжательное «твой» + падеж: maqsadingni, profilingga, portretingda, yoʻlingdan.
   /^[\p{L}']{2,}ing(ni|ga|da|dan|ning|cha|gacha)$/u,
 ];
 
-// Слова, которые похожи на формы «sen», но ими не являются.
-const SEN_EXCEPTIONS = new Set(["hasan", "insan", "ehsan", "hozirgacha", "login", "plagin", "begin"]);
+// Слова, которые похожи на формы «sen», но ими не являются (найдено при разборе ложных
+// срабатываний, этап 4б): наречия на -san (asosan «в основном», shaxsan «лично», xususan
+// «в частности»), имена и заимствования.
+const SEN_EXCEPTIONS = new Set([
+  "asosan",
+  "shaxsan",
+  "xususan",
+  "hasan",
+  "insan",
+  "ehsan",
+  "hozirgacha",
+  "login",
+  "plagin",
+  "begin",
+  "tizgin",
+]);
+
+// Заимствования на -ing: с падежом дают «marketingda», «treningga», «konsaltingda», «xoldingda» —
+// это не «твой …». Слово, которое начинается с такой основы, формой на «sen» не считается.
+const LOANWORDS_ING = [
+  "marketing",
+  "trening",
+  "konsalting",
+  "reyting",
+  "miting",
+  "lizing",
+  "brending",
+  "xolding",
+  "kasting",
+  "parking",
+  "monitoring",
+  "injiniring",
+  "skrining",
+  "xosting",
+  "kemping",
+  "shoping",
+  "shopping",
+  "treyding",
+  "fandrayzing",
+  "autsorsing",
+  "koworking",
+  "kouching",
+];
 
 function isSenForm(word: string): boolean {
   if (SEN_EXCEPTIONS.has(word)) return false;
   if (SEN_WORDS.has(word)) return true;
+  if (LOANWORDS_ING.some((stem) => word.startsWith(stem))) return false;
   return SEN_PATTERNS.some((re) => re.test(word));
 }
 
