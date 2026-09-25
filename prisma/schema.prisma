@@ -1,6 +1,4 @@
-// Схема базы данных yourway.uz.
-// Этап 1: только подключение. Таблицы появятся со следующих этапов
-// (TestSession — этап 2). Схема пишется под PostgreSQL (Neon).
+// Схема базы данных yourway.uz. Пишется под PostgreSQL (Neon).
 
 generator client {
   provider = "prisma-client"
@@ -9,4 +7,36 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+// Анонимная сессия прохождения тестов. Её id хранится в cookie браузера.
+model TestSession {
+  id          String       @id @default(uuid())
+  // Выбор на экране-развилке: knows_goal (знаю цель) или no_goal (не знаю, хочу разобраться).
+  pathType    String
+  // Язык интерфейса в момент начала (для аналитики; тексты вопросов показываются на текущем языке).
+  locale      String
+  // in_progress — идут тесты; tests_done — все 4 теста пройдены и баллы посчитаны.
+  status      String       @default("in_progress")
+  // Посчитанные баллы (см. src/lib/assessment/scoring.ts, тип Scores). Пусто, пока тесты не пройдены.
+  scores      Json?
+  answers     TestAnswer[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  testsDoneAt DateTime?
+}
+
+// Один ответ на один вопрос теста. Пишется в базу сразу после нажатия кнопки.
+model TestAnswer {
+  sessionId  String
+  session    TestSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  // big_five | riasec | values | perception
+  test       String
+  // Номер вопроса из data/tests/*.json
+  questionId Int
+  // Ответ по шкале 1–5
+  value      Int
+  updatedAt  DateTime    @updatedAt
+
+  @@id([sessionId, test, questionId])
 }
