@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CtaButton, PageShell } from "@/components/ui";
 import { getCurrentUser } from "@/lib/auth";
+import { isLevel } from "@/lib/payments";
+import { listUserReports, reportStatusOf } from "@/lib/report";
 import { getCurrentSession } from "@/lib/session";
 import { getI18n } from "@/i18n/server";
 import { logoutAction } from "./actions";
@@ -9,21 +12,75 @@ import { logoutAction } from "./actions";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { robots: { index: false } };
 
-// Аккаунт: кто вошёл, переход к портрету и выход.
+// Аккаунт: кто вошёл, оплаченные отчёты, переход к портрету и выход.
+// Полный личный кабинет (PDF, смена пароля, удаление аккаунта) — этап 7.
 export default async function AccountPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login?next=/account");
-  const { t } = await getI18n();
-  const session = await getCurrentSession();
+  const { locale, t } = await getI18n();
+  const a = t.auth.account;
+  const [session, reports] = await Promise.all([getCurrentSession(), listUserReports(user.id)]);
+  const sessionHasReport = !!session && reports.some((r) => r.sessionId === session.id);
 
   return (
-    <PageShell title={t.auth.account.title}>
+    <PageShell title={a.title}>
       <div className="max-w-md space-y-5">
         <p className="rounded-2xl bg-slate-50 px-4 py-3">
-          <span className="text-muted">{t.auth.account.loggedInAs}</span> <b className="break-all">{user.login}</b>
+          <span className="text-muted">{a.loggedInAs}</span> <b className="break-all">{user.login}</b>
         </p>
+
+        <section>
+          <h2 className="text-lg font-extrabold">{a.reportsTitle}</h2>
+          {reports.length === 0 ? (
+            <p className="mt-2 text-muted">{a.noReports}</p>
+          ) : (
+            <ul className="mt-3 space-y-2.5">
+              {reports.map((r) => {
+                const status = reportStatusOf(r.status);
+                return (
+                  <li key={r.id}>
+                    <Link
+                      href={`/report/${r.id}`}
+                      className="flex min-h-16 items-center gap-3 rounded-2xl border border-slate-200 px-4 py-3 hover:border-brand-500"
+                    >
+                      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-lg" aria-hidden>
+                        🧭
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block font-bold">
+                          {isLevel(r.level) ? t.checkout.levels[r.level].name : r.level}
+                        </span>
+                        <span className="block text-sm text-muted">
+                          {r.createdAt.toLocaleDateString(locale === "uz" ? "uz-Latn-UZ" : "ru-RU", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                            timeZone: "Asia/Tashkent",
+                          })}{" "}
+                          ·{" "}
+                          <span className={status === "ready" ? "text-emerald-700" : status === "failed" ? "text-amber-700" : ""}>
+                            {a.reportStatus[status]}
+                          </span>
+                        </span>
+                      </span>
+                      <span className="shrink-0 font-semibold text-brand-600">{a.open} →</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+
         {session?.status === "survey_done" ? (
-          <CtaButton href="/teaser">{t.auth.account.toPortrait}</CtaButton>
+          <div className="flex flex-col gap-2">
+            <CtaButton href="/teaser">{t.auth.account.toPortrait}</CtaButton>
+            {!sessionHasReport && (
+              <Link href="/checkout" className="inline-flex min-h-11 items-center font-semibold text-brand-600">
+                {a.toCheckout} →
+              </Link>
+            )}
+          </div>
         ) : (
           <CtaButton href="/start">{t.auth.account.toTests}</CtaButton>
         )}
@@ -32,9 +89,9 @@ export default async function AccountPage() {
             type="submit"
             className="inline-flex min-h-11 items-center rounded-2xl border-2 border-slate-200 px-5 font-semibold text-ink hover:border-slate-300"
           >
-            {t.auth.account.logout}
+            {a.logout}
           </button>
-          <p className="mt-2 text-sm text-muted">{t.auth.account.logoutNote}</p>
+          <p className="mt-2 text-sm text-muted">{a.logoutNote}</p>
         </form>
       </div>
     </PageShell>

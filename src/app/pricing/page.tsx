@@ -1,5 +1,6 @@
 import { PricingPlans } from "@/components/blocks";
 import { CtaButton, PageShell, PlaceholderNote } from "@/components/ui";
+import { getPricesSafe } from "@/lib/payments/prices";
 import { getI18n } from "@/i18n/server";
 
 export async function generateMetadata() {
@@ -14,7 +15,7 @@ export default async function PricingPage() {
     <PageShell title={p.title}>
       <PlaceholderNote>{t.common.placeholderNote}</PlaceholderNote>
       <p className="text-lg text-muted">{p.intro}</p>
-      <PricingPlans t={t} />
+      <PricingPlans t={t} prices={await getPricesSafe()} />
       <p className="text-sm text-muted">{p.paymentNote}</p>
       <div className="pt-4">
         <CtaButton href="/start">{t.common.startFree}</CtaButton>

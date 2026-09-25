@@ -118,6 +118,7 @@ export async function generateTeaser(options: {
         effort: TEASER_EFFORT,
         timeoutMs: Math.min(TEASER_ATTEMPT_TIMEOUT_MS, remaining),
         outputSchema: TeaserOutputSchema,
+        tag: "teaser",
         retry,
       });
       usage = response.usage;

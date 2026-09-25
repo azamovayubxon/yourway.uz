@@ -3,6 +3,10 @@ import { notFound } from "next/navigation";
 import { PageShell, PlaceholderNote } from "@/components/ui";
 import { getDb } from "@/lib/db";
 import { devToolsEnabled } from "@/lib/dev";
+import Link from "next/link";
+import { isLevel } from "@/lib/payments";
+import { summarizeReportCalls } from "@/lib/report/ai-log";
+import { reportStatusOf } from "@/lib/report";
 import { summarizeTeaserDurations } from "@/lib/teaser/ai-log";
 import { fmt } from "@/i18n/format";
 import { getI18n } from "@/i18n/server";
@@ -11,26 +15,43 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = { robots: { index: false } };
 
 // Сколько последних вызовов показывать списком и по скольким тизерам считать среднее.
-const LIST_SIZE = 20;
+const LIST_SIZE = 30;
 const SUMMARY_TEASERS = 20;
+const SUMMARY_REPORTS = 10;
 
 const seconds = (ms: number) => (ms / 1000).toFixed(1);
 
 // Служебная страница: журнал вызовов ИИ (время, язык, модель, длительность, результат проверки,
-// текст ответа) и средняя длительность тизера по языкам. На боевом сайте отдаёт 404.
+// текст ответа), средняя длительность тизера по языкам и время/стоимость полных отчётов.
+// На боевом сайте отдаёт 404.
 export default async function AiLogPage() {
   if (!devToolsEnabled()) notFound();
   const { t } = await getI18n();
   const d = t.devAiLog;
   const db = getDb();
 
-  const [calls, recentForSummary] = await Promise.all([
+  const [calls, recentForSummary, reports] = await Promise.all([
     db.aiCall.findMany({ orderBy: { createdAt: "desc" }, take: LIST_SIZE }),
     db.aiCall.findMany({
       where: { kind: "teaser" },
       orderBy: { createdAt: "desc" },
       take: SUMMARY_TEASERS * 2 * 3,
       select: { teaserId: true, locale: true, durationMs: true, ok: true, createdAt: true },
+    }),
+    db.report.findMany({
+      orderBy: { createdAt: "desc" },
+      take: SUMMARY_REPORTS,
+      select: {
+        id: true,
+        level: true,
+        locale: true,
+        status: true,
+        model: true,
+        createdAt: true,
+        aiCalls: {
+          select: { durationMs: true, costUsd: true, inputTokens: true, outputTokens: true, cacheReadTokens: true },
+        },
+      },
     }),
   ]);
   const summary = summarizeTeaserDurations(recentForSummary, SUMMARY_TEASERS);
@@ -40,6 +61,15 @@ export default async function AiLogPage() {
   return (
     <PageShell title={d.title}>
       <PlaceholderNote>{d.note}</PlaceholderNote>
+      <p className="flex flex-wrap gap-x-4 text-sm">
+        <span className="text-muted">{d.toolsTitle}:</span>
+        <Link href="/dev/promo" className="font-semibold text-brand-600">
+          {d.promoLink}
+        </Link>
+        <Link href="/dev/ai-fail" className="font-semibold text-brand-600">
+          {d.aiFailLink}
+        </Link>
+      </p>
 
       {calls.length === 0 ? (
         <p className="text-muted">{d.empty}</p>
@@ -64,6 +94,35 @@ export default async function AiLogPage() {
             </ul>
           </section>
 
+          {reports.length > 0 && (
+            <section className="mt-6 rounded-2xl border border-slate-200 p-4">
+              <h2 className="font-bold">{d.reportsTitle}</h2>
+              <p className="mt-1 text-sm text-muted">{fmt(d.reportsNote, { n: SUMMARY_REPORTS })}</p>
+              <ul className="mt-3 space-y-3 text-sm">
+                {reports.map((r) => {
+                  const sum = summarizeReportCalls(r.aiCalls);
+                  return (
+                    <li key={r.id} className="border-t border-slate-100 pt-3 first:border-0 first:pt-0">
+                      <p className="flex flex-wrap gap-x-2">
+                        <b>{isLevel(r.level) ? t.checkout.levels[r.level].name : r.level}</b>
+                        <span>· {langName(r.locale)}</span>
+                        <span className="text-muted">· {d.reportStatus[reportStatusOf(r.status)]}</span>
+                        <span className="font-mono text-xs text-muted">{r.createdAt.toISOString().replace("T", " ").slice(0, 16)} UTC</span>
+                      </p>
+                      <dl className="mt-1 space-y-0.5">
+                        <Row label={d.model} value={r.model} mono />
+                        <Row label={d.calls} value={String(sum.calls)} />
+                        <Row label={d.genTime} value={fmt(d.seconds, { s: seconds(sum.totalMs) })} />
+                        <Row label={d.cost} value={sum.costUsd === null ? "—" : `$${sum.costUsd.toFixed(4)}`} mono />
+                        <Row label={d.tokens} value={`${sum.inputTokens} / ${sum.outputTokens} / ${sum.cacheReadTokens}`} mono />
+                      </dl>
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          )}
+
           <h2 className="mt-8 font-bold">{d.listTitle}</h2>
           <ul className="mt-3 space-y-3">
             {calls.map((call) => {
@@ -78,7 +137,11 @@ export default async function AiLogPage() {
                   <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                     <span className="font-mono text-xs text-muted">{call.createdAt.toISOString().replace("T", " ").slice(0, 19)} UTC</span>
                     <span className="font-semibold">{langName(call.locale)}</span>
-                    <span className="text-muted">· {call.kind} · {fmt(d.attempt, { n: call.attempt })}</span>
+                    <span className="text-muted">
+                      · {call.kind}
+                      {call.part && ` · ${fmt(d.part, { part: d.partNames[call.part as keyof typeof d.partNames] ?? call.part })}`} ·{" "}
+                      {fmt(d.attempt, { n: call.attempt })}
+                    </span>
                     <span className={"ml-auto font-bold " + (call.ok ? "text-emerald-700" : "text-amber-700")}>
                       {call.ok ? d.accepted : d.rejected}
                     </span>

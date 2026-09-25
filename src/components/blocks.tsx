@@ -1,3 +1,4 @@
+import { formatSum } from "@/i18n/format";
 import type { Dictionary } from "@/i18n/dictionaries";
 
 // Общие блоки: используются и на лендинге, и на отдельных страницах.
@@ -18,7 +19,11 @@ export function Steps({ t }: { t: Dictionary }) {
   );
 }
 
-export function PricingPlans({ t }: { t: Dictionary }) {
+// Цены платных уровней берутся из базы (prices); если база недоступна — из словаря.
+// Порядок карточек в словаре: бесплатно, «Маршрут», «Навигатор».
+const PLAN_LEVELS = [null, "route", "navigator"] as const;
+
+export function PricingPlans({ t, prices }: { t: Dictionary; prices: Partial<Record<"route" | "navigator", number>> }) {
   return (
     <div className="grid gap-4 md:grid-cols-3">
       {t.landing.pricing.plans.map((plan, i) => (
@@ -31,7 +36,11 @@ export function PricingPlans({ t }: { t: Dictionary }) {
         >
           <h3 className="text-lg font-bold">{plan.name}</h3>
           <p className="mt-2 text-2xl font-extrabold">
-            {plan.price}
+            {(() => {
+              const level = PLAN_LEVELS[i];
+              const amount = level ? prices[level] : undefined;
+              return amount !== undefined ? formatSum(amount, t.common.sum) : plan.price;
+            })()}
             {i > 0 && <span className="ml-2 text-sm font-medium text-muted">{t.landing.pricing.oneTime}</span>}
           </p>
           <ul className="mt-4 space-y-2 text-sm">
