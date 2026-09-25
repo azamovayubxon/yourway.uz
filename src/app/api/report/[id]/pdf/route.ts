@@ -6,6 +6,8 @@ import { renderReportPdf } from "@/lib/pdf/render";
 import type { Locale } from "@/i18n/config";
 import { fmt } from "@/i18n/format";
 import { getI18n } from "@/i18n/server";
+import { logPdfDownload } from "@/lib/admin/funnel";
+import { getSessionIdFromCookie } from "@/lib/session";
 
 // Скачивание PDF готового отчёта: GET /api/report/<id>/pdf. Доступен только владельцу аккаунта
 // (как и сама страница отчёта); чужой, несуществующий или ещё не готовый отчёт — 404.
@@ -37,6 +39,8 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     mockNote,
     otherLanguage,
   });
+
+  await logPdfDownload(report.locale as Locale, await getSessionIdFromCookie());
 
   const filename = pdfFileName(report.level, report.locale as Locale, report.createdAt);
   return new Response(new Uint8Array(pdf), {

@@ -1,7 +1,8 @@
 import "server-only";
 import { Prisma } from "@/generated/prisma/client";
 import { getDb } from "@/lib/db";
-import { teaserLimits, teaserModel } from "@/lib/ai/config";
+import { teaserLimits } from "@/lib/ai/config";
+import { resolveTeaserModel } from "@/lib/admin/models";
 import { getAiMode, getAiProvider, modelFor } from "@/lib/ai/providers";
 import { TEASER_PROMPT_VERSION } from "@/lib/ai/prompts";
 import { generateTeaser } from "@/lib/ai/teaser";
@@ -95,7 +96,7 @@ export async function requestTeaser(options: {
 
   const aiMode = getAiMode();
   const provider = getAiProvider(aiMode);
-  const model = modelFor(aiMode, teaserModel(locale));
+  const model = modelFor(aiMode, await resolveTeaserModel(locale));
   const fields = {
     aiMode,
     model,

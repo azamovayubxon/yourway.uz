@@ -16,7 +16,7 @@ export function normalizePromoCode(input: string): string {
   return input.replace(/\s+/g, "").toUpperCase().slice(0, 64);
 }
 
-// Можно ли применить промокод сейчас. Тестовые коды (созданные на /dev/promo) работают только
+// Можно ли применить промокод сейчас. Тестовые коды (testOnly, для проверки оплаты) работают только
 // там, где включена тестовая оплата, — на боевом сайте их как будто нет.
 export function checkPromo(
   promo: PromoRow | null,
