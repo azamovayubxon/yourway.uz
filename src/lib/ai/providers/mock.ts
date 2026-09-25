@@ -7,7 +7,7 @@ import { ZERO_USAGE, type AiProvider } from "./types";
 // Название «модели» в журнале и в базе для тестового режима.
 export const MOCK_MODEL = "mock";
 
-// Пауза, чтобы в тестовом режиме был виден экран «анализируем твой профиль…».
+// Пауза, чтобы в тестовом режиме был виден экран «анализируем ваш профиль…».
 const MOCK_DELAY_MS = 2500;
 
 export function createMockProvider(delayMs: number = MOCK_DELAY_MS): AiProvider {

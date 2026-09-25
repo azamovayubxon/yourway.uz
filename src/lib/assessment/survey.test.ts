@@ -13,13 +13,13 @@ describe("контекстный опрос: разделы и вопросы", 
     expect(SURVEY_SECTIONS.some((s) => s.id === "goal_fork")).toBe(false);
   });
 
-  it("путь «знаю цель»: о тебе (3) + ресурсы (9) + цель (6) = 18 вопросов", () => {
+  it("путь «знаю цель»: о вас (3) + ресурсы (9) + цель (6) = 18 вопросов", () => {
     const qs = surveyQuestionsFor("knows_goal");
     expect(qs).toHaveLength(18);
     expect(qs.some((q) => q.id === "goal_text")).toBe(true);
   });
 
-  it("путь «не знаю»: о тебе (3) + ресурсы (9) = 12 вопросов, блока цели нет вообще", () => {
+  it("путь «не знаю»: о вас (3) + ресурсы (9) = 12 вопросов, блока цели нет вообще", () => {
     const qs = surveyQuestionsFor("no_goal");
     expect(qs).toHaveLength(12);
     expect(qs.some((q) => q.id.startsWith("goal") || ["desired_income", "employment_type", "timeframe", "risk", "lifestyle"].includes(q.id))).toBe(

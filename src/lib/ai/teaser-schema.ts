@@ -2,6 +2,7 @@
 // Ответ, не прошедший проверку, считается неудачным: генерация повторяется (до 2 раз).
 
 import { z } from "zod";
+import { findUzIssues, type UzRules } from "./uz-style";
 
 const text = z.string().trim().min(1);
 
@@ -78,14 +79,15 @@ export function cyrillicShare(value: string): number {
   return cyr / letters.length;
 }
 
-// Проверка языка: русский текст — в основном кириллица, узбекский (латиница) — почти без кириллицы.
-// Английские термины («UX», «no-code») допускаются, поэтому пороги не жёсткие.
+// Проверка языка: русский текст — в основном кириллица (английские термины вроде «UX» допускаются).
+// Узбекский (латиница) — без единой кириллической буквы (этап 4б).
 export function matchesLanguage(value: string, language: TeaserLanguage): boolean {
   const share = cyrillicShare(value);
-  return language === "ru" ? share >= 0.6 : share <= 0.1;
+  return language === "ru" ? share >= 0.6 : share === 0;
 }
 
-export function validateTeaser(raw: unknown, language: TeaserLanguage): ValidationResult {
+// uzRules — стоп-слова и запрещённые конструкции из глоссария (для узбекского ответа).
+export function validateTeaser(raw: unknown, language: TeaserLanguage, uzRules?: Partial<UzRules>): ValidationResult {
   const parsed = TeaserSchema.safeParse(raw);
   if (!parsed.success) {
     const issue = parsed.error.issues[0];
@@ -97,6 +99,13 @@ export function validateTeaser(raw: unknown, language: TeaserLanguage): Validati
   if (visible.some((v) => PLACEHOLDER.test(v))) return { ok: false, error: "rule:placeholder" };
   if (insightTexts(content).some((v) => MONEY.test(v))) return { ok: false, error: "rule:money_in_teaser" };
   if (!matchesLanguage(visible.join(" "), language)) return { ok: false, error: `rule:language_not_${language}` };
+
+  // Узбекский: нет кириллицы, «Tu», форм на «sen», английских слов и запрещённых конструкций.
+  // Проверяем и скрытое поле surprise_direction_internal: оно уйдёт в полный отчёт.
+  if (language === "uz") {
+    const issue = findUzIssues([...visible, content.surprise_direction_internal].join("\n"), uzRules)[0];
+    if (issue) return { ok: false, error: `rule:uz_${issue.rule}:${issue.word}` };
+  }
 
   return { ok: true, content };
 }

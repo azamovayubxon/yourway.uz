@@ -81,7 +81,7 @@ export async function requestTeaser(options: {
 
   const aiMode = getAiMode();
   const provider = getAiProvider(aiMode);
-  const model = modelFor(aiMode, teaserModel());
+  const model = modelFor(aiMode, teaserModel(locale));
   const fields = {
     aiMode,
     model,

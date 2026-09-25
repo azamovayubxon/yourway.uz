@@ -3,6 +3,7 @@ import type { Profile } from "@/lib/assessment/profile";
 import { MOCK_TEASERS } from "./mock-teasers";
 import { AiFatalError, createMockProvider, ZERO_USAGE, type AiProvider, type AiResponse } from "./providers";
 import { generateTeaser, normalizeUzTeaser, profileForLanguage, type AttemptLog } from "./teaser";
+import { getUzGlossary } from "./uz-resources";
 
 const profile = {
   language: "ru",
@@ -94,5 +95,48 @@ describe("генерация тизера", () => {
     expect(uz.sixteen_type.code).toBe("INFP");
     expect(uz.sixteen_type.nickname).not.toBe("Посредник");
     expect(profile.language).toBe("ru");
+  });
+
+  it("узбекское название 16-типа для ИИ берётся из глоссария", () => {
+    const row = getUzGlossary().tables.sixteen_types.find((r) => r.code === "INFP")!;
+    expect(profileForLanguage(profile, "uz").sixteen_type.nickname).toBe(row.uz);
+  });
+
+  it("узбекский ответ на «sen», с «Tu», кириллицей или английским словом — повторная генерация", async () => {
+    const good = MOCK_TEASERS.uz;
+    const provider = scripted([
+      ok({ ...good, portrait: "Sen amaliy odamsan va erkinlikni qadrlaysan." }),
+      ok({ ...good, personality_type_label: "Pragmatist-Entrepreneur" }),
+      ok({ ...good, portrait: good.portrait + " Tu kuchli odamsiz." }),
+      ok(good),
+    ]);
+    const logs: AttemptLog[] = [];
+    const result = await generateTeaser({ profile, locale: "uz", model: "m", provider, onAttempt: (l) => void logs.push(l) });
+    // 3 попытки (1 + 2 повтора): все три отбракованы проверкой узбекского.
+    expect(result).toMatchObject({ ok: false, attempts: 3 });
+    expect(logs.map((l) => l.error)).toEqual(["rule:uz_sen:Sen", "rule:uz_english:Entrepreneur", "rule:uz_tu:Tu"]);
+
+    const retry = scripted([ok({ ...good, top_strengths: ["Kuchli tomonlaring", "Tez oʻrganasiz"] }), ok(good)]);
+    expect(await generateTeaser({ profile, locale: "uz", model: "m", provider: retry })).toMatchObject({
+      ok: true,
+      attempts: 2,
+    });
+  });
+
+  it("в узбекский промпт попадают правила на узбекском, глоссарий и эталоны", async () => {
+    let system = "";
+    const spy: AiProvider = {
+      name: "spy",
+      estimateCostUsd: () => null,
+      async call(request) {
+        system = request.system;
+        return ok(MOCK_TEASERS.uz);
+      },
+    };
+    await generateTeaser({ profile, locale: "uz", model: "m", provider: spy });
+    expect(system).toContain("OʻZBEK TILIDA YOZISH QOIDALARI");
+    expect(system).toContain("USLUB NAMUNALARI");
+    await generateTeaser({ profile, locale: "ru", model: "m", provider: spy });
+    expect(system).not.toContain("OʻZBEK TILIDA YOZISH QOIDALARI");
   });
 });

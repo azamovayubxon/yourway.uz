@@ -19,16 +19,16 @@
   "sections": [
     {
       "id": "about",
-      "title_ru": "О тебе",
-      "title_uz": "Sen haqingda",
+      "title_ru": "О вас",
+      "title_uz": "Siz haqingizda",
       "questions": [
         {
           "id": "age",
           "maps_to": "demographics.age",
           "type": "number",
           "required": true,
-          "text_ru": "Сколько тебе лет?",
-          "text_uz": "Yoshing nechada?",
+          "text_ru": "Сколько вам лет?",
+          "text_uz": "Yoshingiz nechada?",
           "input": {
             "min": 10,
             "max": 80,
@@ -40,8 +40,8 @@
           "maps_to": "demographics.gender",
           "type": "single_select",
           "required": true,
-          "text_ru": "Твой пол",
-          "text_uz": "Jinsing",
+          "text_ru": "Ваш пол",
+          "text_uz": "Jinsingiz",
           "options": [
             {
               "value": "m",
@@ -65,8 +65,8 @@
           "maps_to": "resources.status",
           "type": "single_select",
           "required": true,
-          "text_ru": "Твоя текущая ситуация",
-          "text_uz": "Hozirgi holating",
+          "text_ru": "Ваша текущая ситуация",
+          "text_uz": "Hozir nima bilan bandsiz?",
           "options": [
             {
               "value": "school",
@@ -94,16 +94,16 @@
     },
     {
       "id": "resources",
-      "title_ru": "Твои ресурсы (где ты сейчас)",
-      "title_uz": "Resurslaring (hozir qayerdasan)",
+      "title_ru": "Ваши возможности (где вы сейчас)",
+      "title_uz": "Imkoniyatlaringiz (hozir qayerdasiz)",
       "questions": [
         {
           "id": "budget",
           "maps_to": "resources.budget_range",
           "type": "single_select",
           "required": true,
-          "text_ru": "Сколько ты примерно готов вложить в обучение (в год)?",
-          "text_uz": "O'qishga taxminan qancha mablag' ajrata olasan (bir yilda)?",
+          "text_ru": "Сколько вы примерно готовы вложить в обучение (в год)?",
+          "text_uz": "O'qishga yiliga taxminan qancha pul ajrata olasiz?",
           "input": {
             "unit": "сум/год"
           },
@@ -140,8 +140,8 @@
           "maps_to": "resources.hours_per_week",
           "type": "single_select",
           "required": true,
-          "text_ru": "Сколько времени в неделю можешь уделять учёбе/развитию?",
-          "text_uz": "Haftasiga o'qish/rivojlanishga qancha vaqt ajrata olasan?",
+          "text_ru": "Сколько времени в неделю вы можете уделять учёбе/развитию?",
+          "text_uz": "Haftasiga o'qish va o'z ustingizda ishlashga qancha vaqt ajrata olasiz?",
           "options": [
             {
               "value": "<5",
@@ -175,8 +175,8 @@
           "maps_to": "resources.languages",
           "type": "multi_select",
           "required": true,
-          "text_ru": "Какими языками владеешь?",
-          "text_uz": "Qaysi tillarni bilasan?",
+          "text_ru": "Какими языками вы владеете?",
+          "text_uz": "Qaysi tillarni bilasiz?",
           "options": [
             {
               "value": "uz",
@@ -205,8 +205,8 @@
           "maps_to": "resources.english_level",
           "type": "single_select",
           "required": true,
-          "text_ru": "Твой уровень английского",
-          "text_uz": "Ingliz tili darajang",
+          "text_ru": "Ваш уровень английского",
+          "text_uz": "Ingliz tilini qay darajada bilasiz?",
           "options": [
             {
               "value": "none",
@@ -235,8 +235,8 @@
           "maps_to": "resources.relocation",
           "type": "single_select",
           "required": true,
-          "text_ru": "Готов ли ты к переезду ради учёбы или работы?",
-          "text_uz": "O'qish yoki ish uchun ko'chib o'tishga tayyormisan?",
+          "text_ru": "Готовы ли вы к переезду ради учёбы или работы?",
+          "text_uz": "O'qish yoki ish uchun boshqa joyga ko'chib o'tishga tayyormisiz?",
           "options": [
             {
               "value": "no",
@@ -260,8 +260,8 @@
           "maps_to": "resources.online_ok",
           "type": "single_select",
           "required": true,
-          "text_ru": "Готов ли учиться онлайн?",
-          "text_uz": "Onlayn o'qishga tayyormisan?",
+          "text_ru": "Готовы ли вы учиться онлайн?",
+          "text_uz": "Onlayn o'qishga tayyormisiz?",
           "options": [
             {
               "value": "yes",
@@ -285,8 +285,8 @@
           "maps_to": "resources.experience_level",
           "type": "single_select",
           "required": true,
-          "text_ru": "Есть ли у тебя опыт работы или навыки в какой-либо сфере?",
-          "text_uz": "Biror sohada ish tajribang yoki ko'nikmalaring bormi?",
+          "text_ru": "Есть ли у вас опыт работы или навыки в какой-либо сфере?",
+          "text_uz": "Biror sohada ish tajribangiz yoki qo'lingizdan keladigan ishingiz bormi?",
           "options": [
             {
               "value": "none",
@@ -310,8 +310,8 @@
           "maps_to": "resources.current_skills",
           "type": "text",
           "required": false,
-          "text_ru": "Опиши свои навыки или опыт, если есть (необязательно)",
-          "text_uz": "Bor bo'lsa, ko'nikma yoki tajribangni yoz (majburiy emas)",
+          "text_ru": "Опишите свои навыки или опыт, если есть (необязательно)",
+          "text_uz": "Tajribangiz yoki nimalarni qila olishingiz haqida yozing (majburiy emas)",
           "input": {
             "max_len": 300
           }
@@ -321,8 +321,8 @@
           "maps_to": "resources.interests_note",
           "type": "text",
           "required": false,
-          "text_ru": "Что тебе нравится делать? Чем увлекаешься? (необязательно)",
-          "text_uz": "Nima qilish yoqadi? Nimaga qiziqasan? (majburiy emas)",
+          "text_ru": "Что вам нравится делать? Чем вы увлекаетесь? (необязательно)",
+          "text_uz": "Nima qilishni yoqtirasiz? Nimalarga qiziqasiz? (majburiy emas)",
           "input": {
             "max_len": 300
           }
@@ -331,16 +331,16 @@
     },
     {
       "id": "goal_fork",
-      "title_ru": "Твоя цель",
-      "title_uz": "Maqsading",
+      "title_ru": "Ваша цель",
+      "title_uz": "Maqsadingiz",
       "questions": [
         {
           "id": "path_type",
           "maps_to": "path_type",
           "type": "single_select",
           "required": true,
-          "text_ru": "Знаешь ли ты, кем хочешь стать / какую цель хочешь достичь?",
-          "text_uz": "Kim bo'lishni / qanday maqsadga erishishni bilasanmi?",
+          "text_ru": "Знаете ли вы, кем хотите стать / какую цель хотите достичь?",
+          "text_uz": "Kim bo'lishni yoki qanday maqsadga erishishni xohlashingizni bilasizmi?",
           "note_ru": "Может быть уже выбрано на экране-развилке до тестов.",
           "options": [
             {
@@ -351,7 +351,7 @@
             {
               "value": "no_goal",
               "label_ru": "Нет, хочу разобраться",
-              "label_uz": "Yo'q, aniqlashtirmoqchiman"
+              "label_uz": "Yo'q, buni aniqlab olmoqchiman"
             }
           ]
         }
@@ -371,8 +371,8 @@
           "maps_to": "goal.statement",
           "type": "text",
           "required": true,
-          "text_ru": "Опиши свою цель своими словами",
-          "text_uz": "Maqsadingni o'z so'zlaring bilan yoz",
+          "text_ru": "Опишите свою цель своими словами",
+          "text_uz": "Maqsadingizni o'z so'zlaringiz bilan yozing",
           "input": {
             "max_len": 300
           },
@@ -386,8 +386,8 @@
           "maps_to": "goal.desired_income",
           "type": "single_select",
           "required": true,
-          "text_ru": "Какой доход в месяц ты хочешь в будущем?",
-          "text_uz": "Kelajakda oyiga qancha daromad istaysan?",
+          "text_ru": "Какой доход в месяц вы хотите в будущем?",
+          "text_uz": "Kelajakda oyiga qancha daromad olishni xohlaysiz?",
           "input": {
             "unit": "сум/мес"
           },
@@ -428,8 +428,8 @@
           "maps_to": "goal.employment_type",
           "type": "single_select",
           "required": true,
-          "text_ru": "Какой формат работы тебе ближе?",
-          "text_uz": "Qaysi ish formati senga yaqinroq?",
+          "text_ru": "Какой формат работы вам ближе?",
+          "text_uz": "Qanday ishlash sizga yaqinroq?",
           "show_if": {
             "question_id": "path_type",
             "equals": "knows_goal"
@@ -467,8 +467,8 @@
           "maps_to": "goal.timeframe",
           "type": "single_select",
           "required": true,
-          "text_ru": "За какой срок хочешь достичь цели?",
-          "text_uz": "Maqsadga qancha muddatda erishmoqchisan?",
+          "text_ru": "За какой срок вы хотите достичь цели?",
+          "text_uz": "Maqsadingizga qancha vaqtda erishmoqchisiz?",
           "show_if": {
             "question_id": "path_type",
             "equals": "knows_goal"
@@ -501,8 +501,8 @@
           "maps_to": "goal.risk",
           "type": "single_select",
           "required": true,
-          "text_ru": "Как ты относишься к риску?",
-          "text_uz": "Tavakkalga qanday qaraysan?",
+          "text_ru": "Как вы относитесь к риску?",
+          "text_uz": "Tavakkalga qanday qaraysiz?",
           "show_if": {
             "question_id": "path_type",
             "equals": "knows_goal"
@@ -530,8 +530,8 @@
           "maps_to": "goal.lifestyle",
           "type": "multi_select",
           "required": true,
-          "text_ru": "Что для тебя важно в образе жизни? (можно несколько)",
-          "text_uz": "Turmush tarzida sen uchun nima muhim? (bir nechta bo'lishi mumkin)",
+          "text_ru": "Что для вас важно в образе жизни? (можно несколько)",
+          "text_uz": "Hayot tarzida siz uchun nima muhim? (bir nechtasini tanlash mumkin)",
           "show_if": {
             "question_id": "path_type",
             "equals": "knows_goal"

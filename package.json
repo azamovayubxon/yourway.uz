@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "uz:export": "UPDATE_UZ_TEXTS=1 vitest run src/i18n/uz-texts.test.ts"
   },
   "engines": {
     "node": "22.x"

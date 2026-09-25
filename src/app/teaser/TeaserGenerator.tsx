@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MockBadge } from "./MockBadge";
 
-// Экран генерации: «Анализируем твой профиль…» с анимацией. Запускает генерацию тизера
+// Экран генерации: «Анализируем ваш профиль…» с анимацией. Запускает генерацию тизера
 // (POST /api/teaser), пока она идёт — показывает шаги, потом перезагружает страницу с готовым тизером.
 
 interface GeneratorDict {

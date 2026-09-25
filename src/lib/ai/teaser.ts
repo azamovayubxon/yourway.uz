@@ -4,23 +4,28 @@
 import type { Locale } from "@/i18n/config";
 import type { Profile } from "@/lib/assessment/profile";
 import { SIXTEEN_TYPES } from "@/lib/assessment/tests";
-import { normalizeUzApostrophes } from "@/lib/assessment/uzbek-text";
 import { TEASER_MAX_RETRIES, TEASER_MAX_TOKENS, TEASER_TEMPERATURE } from "./config";
-import { buildTeaserPrompt } from "./prompts";
+import { buildTeaserPrompt, type UzPromptResources } from "./prompts";
 import { AiFatalError, ZERO_USAGE, type AiProvider, type TokenUsage } from "./providers";
 import { extractJson, TeaserOutputSchema, validateTeaser, type TeaserContent } from "./teaser-schema";
+import { getUzExamples, getUzGlossary, normalizeUz, uzSixteenTypeName } from "./uz-resources";
 
 // Профиль для ИИ на нужном языке. Язык генерации = язык интерфейса (CLAUDE.md §7), поэтому
 // language и название 16-типа берутся для выбранного языка, а не для языка, на котором шёл опрос.
+// Узбекское название 16-типа — из глоссария docs/uz-glossary.md (этап 4б).
 export function profileForLanguage(profile: Profile, locale: Locale): Profile {
-  const nickname = SIXTEEN_TYPES[profile.sixteen_type.code]?.[locale] ?? profile.sixteen_type.nickname;
+  const code = profile.sixteen_type.code;
+  const nickname =
+    (locale === "uz" ? uzSixteenTypeName(code) : undefined) ??
+    SIXTEEN_TYPES[code]?.[locale] ??
+    profile.sixteen_type.nickname;
   return { ...profile, language: locale, sixteen_type: { ...profile.sixteen_type, nickname } };
 }
 
 // Узбекский текст от ИИ: разные виды апострофов (‘ ’ ` ') приводим к oʻ gʻ и ʼ (решение (Б)).
 export function normalizeUzTeaser(content: unknown): unknown {
   const unify = (value: unknown): unknown => {
-    if (typeof value === "string") return normalizeUzApostrophes(value.replace(/[‘’`]/g, "'"));
+    if (typeof value === "string") return normalizeUz(value);
     if (Array.isArray(value)) return value.map(unify);
     if (value && typeof value === "object") {
       return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, unify(v)]));
@@ -56,9 +61,12 @@ export async function generateTeaser(options: {
   model: string;
   provider: AiProvider;
   onAttempt?: (log: AttemptLog) => Promise<void> | void;
+  // Глоссарий и эталоны для узбекского; по умолчанию читаются из docs/ (для тестов можно подменить).
+  uz?: UzPromptResources;
 }): Promise<TeaserResult> {
   const { locale, model, provider, onAttempt } = options;
-  const prompt = buildTeaserPrompt(profileForLanguage(options.profile, locale), locale);
+  const uz = locale === "uz" ? (options.uz ?? { glossary: getUzGlossary(), examples: getUzExamples() }) : undefined;
+  const prompt = buildTeaserPrompt(profileForLanguage(options.profile, locale), locale, uz);
   const maxAttempts = 1 + TEASER_MAX_RETRIES;
   let lastError = "unknown";
 
@@ -85,7 +93,7 @@ export async function generateTeaser(options: {
         result =
           json === null
             ? { ok: false, error: "json:invalid" }
-            : validateTeaser(locale === "uz" ? normalizeUzTeaser(json) : json, locale);
+            : validateTeaser(locale === "uz" ? normalizeUzTeaser(json) : json, locale, uz?.glossary);
       }
     } catch (error) {
       fatal = error instanceof AiFatalError;
