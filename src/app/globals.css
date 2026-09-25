@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+/* Фирменные цвета. Меняются здесь — и по всему сайту. */
+@theme {
+  --color-brand-50: #eef6ff;
+  --color-brand-100: #d9eaff;
+  --color-brand-500: #2f6fed;
+  --color-brand-600: #1f57d0;
+  --color-brand-700: #1a46a8;
+  --color-ink: #14203a;
+  --color-muted: #5b6780;
+  /* Системные шрифты: быстро грузятся на слабых телефонах и поддерживают
+     кириллицу и узбекские буквы oʻ gʻ (U+02BB). */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  @apply bg-white text-ink antialiased;
+}
