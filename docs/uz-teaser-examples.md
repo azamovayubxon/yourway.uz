@@ -18,15 +18,15 @@
 
 ## Namuna 1
 
-Автор: носитель языка (владелец), сентябрь 2026. Первая часть тизера: тип, портрет, подходящие направления.
+Автор: носитель языка (владелец), сентябрь 2026. Первая часть тизера: тип, портрет, подходящие направления. По решению владельца «Pragmatist-tadbirkor» заменено на «Amaliyotchi tadbirkor», «e-commerce» — на «internet-savdo».
 
-Sizning yo‘nalishingiz — Pragmatist-tadbirkor
+Sizning yo‘nalishingiz — Amaliyotchi tadbirkor
 Siz amaliy fikrlaydigan, mustaqil qaror qilishni yaxshi ko‘radigan odamsiz. Tayyor yo‘ldan yurishdan ko‘ra, o‘z yo‘lingizni topish sizga yaqinroq.
 Tajribangiz shuni ko‘rsatadiki, siz sharoitga tez moslasha olasiz, imkoniyatni ko‘rsangiz esa uni sinab ko‘rishdan qo‘rqmaysiz. Pul siz uchun shunchaki daromad emas — u ko‘proq erkinlik, tanlov va o‘z ishingizni qurish imkonini anglatadi.
 Sizga ayniqsa o‘z g‘oyangizni hayotga tatbiq qilish, natijani o‘z qo‘lingiz bilan yaratish va qilgan ishingizning samarasini ko‘rish muhim.
 Sizga mos yo‘nalishlar
 
-1. Onlayn biznes va e-commerce. Amaliy tajribangiz va texnologiyaga qiziqishingiz internet orqali biznes qurish uchun yaxshi asos bo‘la oladi.
+1. Onlayn biznes va internet-savdo. Amaliy tajribangiz va texnologiyaga qiziqishingiz internet orqali biznes qurish uchun yaxshi asos bo‘la oladi.
 2. Konsalting va biznes maslahati. Muammoni tez tushunish, yechim topish va boshqalarga yo‘l ko‘rsatish — kuchli tomonlaringizdan biri.
 3. Xalqaro startaplar. Mustaqillikka intilishingiz, tavakkalni hisobga olib qaror qilishingiz va bir nechta tilni bilishingiz xalqaro loyihalarda sizga qo‘l kelishi mumkin.
 

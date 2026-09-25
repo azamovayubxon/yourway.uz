@@ -121,6 +121,9 @@
 <!-- section: stop_words -->
 
 - entrepreneur
+- pragmatist
+- commerce
+- ecommerce
 - business
 - advisory
 - consulting

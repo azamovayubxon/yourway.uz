@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { devToolsEnabled } from "@/lib/dev";
-import { isValidAnswer, rowsToAnswers } from "./answers";
+import { dedupeLast, isValidAnswer, rowsToAnswers } from "./answers";
 
 describe("проверка ответа из браузера", () => {
   it("принимает существующий вопрос и ответ 1–5", () => {
@@ -47,5 +47,22 @@ describe("страницы /dev", () => {
     expect(devToolsEnabled()).toBe(false);
     vi.stubEnv("NODE_ENV", "development");
     expect(devToolsEnabled()).toBe(true);
+  });
+});
+
+describe("пачка ответов для сохранения одним запросом", () => {
+  it("повтор одного вопроса в пачке: остаётся последний ответ", () => {
+    const batch = dedupeLast(
+      [
+        { test: "big_five", questionId: 1, value: 2 },
+        { test: "riasec", questionId: 1, value: 3 },
+        { test: "big_five", questionId: 1, value: 5 },
+      ],
+      (a) => `${a.test}:${a.questionId}`,
+    );
+    expect(batch).toEqual([
+      { test: "big_five", questionId: 1, value: 5 },
+      { test: "riasec", questionId: 1, value: 3 },
+    ]);
   });
 });

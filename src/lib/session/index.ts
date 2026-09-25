@@ -5,7 +5,7 @@ import { buildProfile } from "@/lib/assessment/profile";
 import { computeScores, countAnswered } from "@/lib/assessment/scoring";
 import { surveyQuestionsFor } from "@/lib/assessment/survey";
 import { TOTAL_QUESTIONS, type PathType } from "@/lib/assessment/tests";
-import { rowsToAnswers, type AnswerInput } from "./answers";
+import { dedupeLast, rowsToAnswers, type AnswerInput } from "./answers";
 import type { SurveyAnswerInput } from "./survey-answers";
 
 export { isValidAnswer } from "./answers";
@@ -56,15 +56,19 @@ export async function createSession(pathType: PathType, locale: Locale): Promise
 // Сохраняет ответы. Когда отвечены все 110 вопросов, считает баллы и сохраняет их в сессии.
 export async function saveAnswers(sessionId: string, answers: AnswerInput[]) {
   const db = getDb();
-  await db.$transaction(
-    answers.map((a) =>
-      db.testAnswer.upsert({
-        where: { sessionId_test_questionId: { sessionId, test: a.test, questionId: a.questionId } },
-        create: { sessionId, test: a.test, questionId: a.questionId, value: a.value },
-        update: { value: a.value },
-      }),
-    ),
-  );
+  // Все ответы — одним запросом (INSERT … ON CONFLICT DO UPDATE). Раньше каждый ответ был отдельным
+  // запросом внутри транзакции: при 110 ответах (после обрыва связи или в /dev/quick-start) и удалённой
+  // базе (Vercel → Neon) транзакция не укладывалась в 5 секунд Prisma и запрос падал с ошибкой 500.
+  const batch = dedupeLast(answers, (a) => `${a.test}:${a.questionId}`);
+  if (batch.length > 0) {
+    await db.$executeRaw`
+      INSERT INTO "TestAnswer" ("sessionId", "test", "questionId", "value", "updatedAt")
+      SELECT ${sessionId}, a.test, a.question_id, a.value, NOW()
+      FROM unnest(${batch.map((a) => a.test)}::text[], ${batch.map((a) => a.questionId)}::int[], ${batch.map((a) => a.value)}::int[])
+        AS a(test, question_id, value)
+      ON CONFLICT ("sessionId", "test", "questionId")
+      DO UPDATE SET "value" = EXCLUDED."value", "updatedAt" = EXCLUDED."updatedAt"`;
+  }
 
   const rows = await db.testAnswer.findMany({ where: { sessionId } });
   const answerMap = rowsToAnswers(rows);
@@ -94,15 +98,17 @@ export async function saveSurveyAnswers(
   answers: SurveyAnswerInput[],
 ) {
   const db = getDb();
-  await db.$transaction(
-    answers.map((a) =>
-      db.surveyAnswer.upsert({
-        where: { sessionId_questionId: { sessionId, questionId: a.questionId } },
-        create: { sessionId, questionId: a.questionId, value: JSON.parse(JSON.stringify(a.value)) },
-        update: { value: JSON.parse(JSON.stringify(a.value)) },
-      }),
-    ),
-  );
+  // Одним запросом, как и ответы тестов (см. saveAnswers).
+  const batch = dedupeLast(answers, (a) => a.questionId);
+  if (batch.length > 0) {
+    await db.$executeRaw`
+      INSERT INTO "SurveyAnswer" ("sessionId", "questionId", "value", "updatedAt")
+      SELECT ${sessionId}, a.question_id, a.value::jsonb, NOW()
+      FROM unnest(${batch.map((a) => a.questionId)}::text[], ${batch.map((a) => JSON.stringify(a.value))}::text[])
+        AS a(question_id, value)
+      ON CONFLICT ("sessionId", "questionId")
+      DO UPDATE SET "value" = EXCLUDED."value", "updatedAt" = EXCLUDED."updatedAt"`;
+  }
 
   const total = surveyQuestionsFor(pathType).length;
   const validIds = new Set(surveyQuestionsFor(pathType).map((q) => q.id));

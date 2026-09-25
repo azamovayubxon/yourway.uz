@@ -114,7 +114,7 @@ describe("генерация тизера", () => {
     const result = await generateTeaser({ profile, locale: "uz", model: "m", provider, onAttempt: (l) => void logs.push(l) });
     // 3 попытки (1 + 2 повтора): все три отбракованы проверкой узбекского.
     expect(result).toMatchObject({ ok: false, attempts: 3 });
-    expect(logs.map((l) => l.error)).toEqual(["rule:uz_sen:Sen", "rule:uz_english:Entrepreneur", "rule:uz_tu:Tu"]);
+    expect(logs.map((l) => l.error)).toEqual(["rule:uz_sen:Sen", "rule:uz_english:Pragmatist", "rule:uz_tu:Tu"]);
 
     const retry = scripted([ok({ ...good, top_strengths: ["Kuchli tomonlaring", "Tez oʻrganasiz"] }), ok(good)]);
     expect(await generateTeaser({ profile, locale: "uz", model: "m", provider: retry })).toMatchObject({

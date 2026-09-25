@@ -36,7 +36,7 @@ describe("узбекский глоссарий (docs/uz-glossary.md)", () => {
   });
 
   it("стоп-список и запрещённые конструкции прочитаны", () => {
-    expect(glossary.stopWords).toEqual(expect.arrayContaining(["entrepreneur", "business", "startup", "venture"]));
+    expect(glossary.stopWords).toEqual(expect.arrayContaining(["entrepreneur", "pragmatist", "commerce", "business", "startup", "venture"]));
     expect(glossary.forbiddenPhrases).toEqual(
       expect.arrayContaining(["A nuqta", "B nuqta", "halol oraliq", "reallikka tekshir"]),
     );
@@ -71,6 +71,10 @@ describe("эталонные тексты (docs/uz-teaser-examples.md)", () => {
       expect(text).not.toMatch(/Автор:|##/);
       expect(text).not.toMatch(/['‘’`]/);
     }
+  });
+
+  it("написаны на «siz», без английских слов и запрещённых конструкций", () => {
+    for (const text of getUzExamples()) expect(findUzIssues(text, glossary)).toEqual([]);
   });
 
   it("берёт только разделы «## Namuna …»", () => {
