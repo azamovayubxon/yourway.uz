@@ -13,7 +13,7 @@ Next.js (App Router) + TypeScript, Tailwind CSS, PostgreSQL + Prisma, Vitest. Х
 
 ## Как запустить у себя
 
-Нужны Node.js 20.9+ (рекомендуется 22) и PostgreSQL.
+Нужны Node.js 22 и PostgreSQL.
 
 ```bash
 npm install              # установить зависимости (заодно сгенерируется клиент Prisma)
@@ -35,7 +35,7 @@ npm run dev              # запустить сайт на http://localhost:300
 | `npm run db:migrate` | создать новую миграцию после правки `prisma/schema.prisma` (для разработки) |
 | `npm run db:deploy` | применить миграции к базе |
 
-На Vercel сборка идёт через `npm run vercel-build`: генерация клиента Prisma → миграции → сборка сайта.
+На Vercel сборка идёт через `npm run vercel-build`: генерация клиента Prisma → миграции (`scripts/migrate-deploy.mjs`) → сборка сайта. Пока миграций нет, шаг миграций пропускается и к базе во время сборки не подключается. Если миграции не применились, в логе сборки будут строки `[migrate]` с причиной.
 
 ## Где что лежит
 
