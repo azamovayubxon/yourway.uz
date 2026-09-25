@@ -1,0 +1,571 @@
+{
+  "meta": {
+    "test_name": "Контекстный опрос (точка А → точка Б) для yourway.uz",
+    "platform": "yourway.uz",
+    "version": "1.0",
+    "languages": [
+      "ru",
+      "uz"
+    ],
+    "purpose_ru": "Собирает данные, которые тесты не дают: демографию, ресурсы (точка А) и цель (точка Б). Вместе с баллами тестов формирует профиль для ИИ. Блок цели показывается только тем, кто выбрал «знаю цель».",
+    "notes_ru": [
+      "Язык интерфейса берётся из настройки сайта (не спрашивается здесь).",
+      "Вопрос path_type может быть уже задан на экране-развилке до тестов; тогда здесь он пропускается, а значение переносится.",
+      "Типы вопросов: single_select (один вариант), multi_select (несколько), number (число), text (свободный ввод).",
+      "show_if — условие показа вопроса.",
+      "Суммы указаны в узбекских сумах (сум/мес или сум/год, см. unit)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "about",
+      "title_ru": "О тебе",
+      "title_uz": "Sen haqingda",
+      "questions": [
+        {
+          "id": "age",
+          "maps_to": "demographics.age",
+          "type": "number",
+          "required": true,
+          "text_ru": "Сколько тебе лет?",
+          "text_uz": "Yoshing nechada?",
+          "input": {
+            "min": 10,
+            "max": 80,
+            "unit": "лет"
+          }
+        },
+        {
+          "id": "gender",
+          "maps_to": "demographics.gender",
+          "type": "single_select",
+          "required": true,
+          "text_ru": "Твой пол",
+          "text_uz": "Jinsing",
+          "options": [
+            {
+              "value": "m",
+              "label_ru": "Мужской",
+              "label_uz": "Erkak"
+            },
+            {
+              "value": "f",
+              "label_ru": "Женский",
+              "label_uz": "Ayol"
+            },
+            {
+              "value": "na",
+              "label_ru": "Не указывать",
+              "label_uz": "Ko'rsatmaslik"
+            }
+          ]
+        },
+        {
+          "id": "status",
+          "maps_to": "resources.status",
+          "type": "single_select",
+          "required": true,
+          "text_ru": "Твоя текущая ситуация",
+          "text_uz": "Hozirgi holating",
+          "options": [
+            {
+              "value": "school",
+              "label_ru": "Школьник / выпускник школы",
+              "label_uz": "Maktab o'quvchisi / bitiruvchi"
+            },
+            {
+              "value": "student",
+              "label_ru": "Студент",
+              "label_uz": "Talaba"
+            },
+            {
+              "value": "working",
+              "label_ru": "Работаю",
+              "label_uz": "Ishlayapman"
+            },
+            {
+              "value": "not_working",
+              "label_ru": "Сейчас не работаю и не учусь",
+              "label_uz": "Hozir ishlamayman va o'qimayman"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "resources",
+      "title_ru": "Твои ресурсы (где ты сейчас)",
+      "title_uz": "Resurslaring (hozir qayerdasan)",
+      "questions": [
+        {
+          "id": "budget",
+          "maps_to": "resources.budget_range",
+          "type": "single_select",
+          "required": true,
+          "text_ru": "Сколько ты примерно готов вложить в обучение (в год)?",
+          "text_uz": "O'qishga taxminan qancha mablag' ajrata olasan (bir yilda)?",
+          "input": {
+            "unit": "сум/год"
+          },
+          "options": [
+            {
+              "value": "none",
+              "label_ru": "Пока нет бюджета",
+              "label_uz": "Hozircha byudjet yo'q"
+            },
+            {
+              "value": "low",
+              "label_ru": "До 5 млн сум",
+              "label_uz": "5 mln so'mgacha"
+            },
+            {
+              "value": "mid",
+              "label_ru": "5–20 млн сум",
+              "label_uz": "5–20 mln so'm"
+            },
+            {
+              "value": "high",
+              "label_ru": "20–50 млн сум",
+              "label_uz": "20–50 mln so'm"
+            },
+            {
+              "value": "very_high",
+              "label_ru": "Более 50 млн сум",
+              "label_uz": "50 mln so'mdan ko'p"
+            }
+          ]
+        },
+        {
+          "id": "hours",
+          "maps_to": "resources.hours_per_week",
+          "type": "single_select",
+          "required": true,
+          "text_ru": "Сколько времени в неделю можешь уделять учёбе/развитию?",
+          "text_uz": "Haftasiga o'qish/rivojlanishga qancha vaqt ajrata olasan?",
+          "options": [
+            {
+              "value": "<5",
+              "label_ru": "Меньше 5 часов",
+              "label_uz": "5 soatdan kam"
+            },
+            {
+              "value": "5-10",
+              "label_ru": "5–10 часов",
+              "label_uz": "5–10 soat"
+            },
+            {
+              "value": "10-20",
+              "label_ru": "10–20 часов",
+              "label_uz": "10–20 soat"
+            },
+            {
+              "value": "20-40",
+              "label_ru": "20–40 часов",
+              "label_uz": "20–40 soat"
+            },
+            {
+              "value": "40+",
+              "label_ru": "Более 40 часов",
+              "label_uz": "40 soatdan ko'p"
+            }
+          ]
+        },
+        {
+          "id": "languages",
+          "maps_to": "resources.languages",
+          "type": "multi_select",
+          "required": true,
+          "text_ru": "Какими языками владеешь?",
+          "text_uz": "Qaysi tillarni bilasan?",
+          "options": [
+            {
+              "value": "uz",
+              "label_ru": "Узбекский",
+              "label_uz": "O'zbek"
+            },
+            {
+              "value": "ru",
+              "label_ru": "Русский",
+              "label_uz": "Rus"
+            },
+            {
+              "value": "en",
+              "label_ru": "Английский",
+              "label_uz": "Ingliz"
+            },
+            {
+              "value": "other",
+              "label_ru": "Другой",
+              "label_uz": "Boshqa"
+            }
+          ]
+        },
+        {
+          "id": "english_level",
+          "maps_to": "resources.english_level",
+          "type": "single_select",
+          "required": true,
+          "text_ru": "Твой уровень английского",
+          "text_uz": "Ingliz tili darajang",
+          "options": [
+            {
+              "value": "none",
+              "label_ru": "Не владею",
+              "label_uz": "Bilmayman"
+            },
+            {
+              "value": "basic",
+              "label_ru": "Базовый",
+              "label_uz": "Boshlang'ich"
+            },
+            {
+              "value": "intermediate",
+              "label_ru": "Средний",
+              "label_uz": "O'rta"
+            },
+            {
+              "value": "advanced",
+              "label_ru": "Свободный",
+              "label_uz": "Erkin"
+            }
+          ]
+        },
+        {
+          "id": "relocation",
+          "maps_to": "resources.relocation",
+          "type": "single_select",
+          "required": true,
+          "text_ru": "Готов ли ты к переезду ради учёбы или работы?",
+          "text_uz": "O'qish yoki ish uchun ko'chib o'tishga tayyormisan?",
+          "options": [
+            {
+              "value": "no",
+              "label_ru": "Нет, только там, где живу",
+              "label_uz": "Yo'q, faqat yashaydigan joyimda"
+            },
+            {
+              "value": "within_country",
+              "label_ru": "Да, в пределах Узбекистана",
+              "label_uz": "Ha, O'zbekiston ichida"
+            },
+            {
+              "value": "abroad",
+              "label_ru": "Да, в том числе за рубеж",
+              "label_uz": "Ha, chet elga ham"
+            }
+          ]
+        },
+        {
+          "id": "online_ok",
+          "maps_to": "resources.online_ok",
+          "type": "single_select",
+          "required": true,
+          "text_ru": "Готов ли учиться онлайн?",
+          "text_uz": "Onlayn o'qishga tayyormisan?",
+          "options": [
+            {
+              "value": "yes",
+              "label_ru": "Да",
+              "label_uz": "Ha"
+            },
+            {
+              "value": "maybe",
+              "label_ru": "Возможно",
+              "label_uz": "Balki"
+            },
+            {
+              "value": "no",
+              "label_ru": "Предпочитаю очно",
+              "label_uz": "Yuzma-yuz afzal"
+            }
+          ]
+        },
+        {
+          "id": "experience",
+          "maps_to": "resources.experience_level",
+          "type": "single_select",
+          "required": true,
+          "text_ru": "Есть ли у тебя опыт работы или навыки в какой-либо сфере?",
+          "text_uz": "Biror sohada ish tajribang yoki ko'nikmalaring bormi?",
+          "options": [
+            {
+              "value": "none",
+              "label_ru": "Нет опыта",
+              "label_uz": "Tajriba yo'q"
+            },
+            {
+              "value": "some",
+              "label_ru": "Немного, начинающий",
+              "label_uz": "Bir oz, boshlang'ich"
+            },
+            {
+              "value": "experienced",
+              "label_ru": "Есть заметный опыт",
+              "label_uz": "Sezilarli tajriba bor"
+            }
+          ]
+        },
+        {
+          "id": "skills_text",
+          "maps_to": "resources.current_skills",
+          "type": "text",
+          "required": false,
+          "text_ru": "Опиши свои навыки или опыт, если есть (необязательно)",
+          "text_uz": "Bor bo'lsa, ko'nikma yoki tajribangni yoz (majburiy emas)",
+          "input": {
+            "max_len": 300
+          }
+        },
+        {
+          "id": "interests_text",
+          "maps_to": "resources.interests_note",
+          "type": "text",
+          "required": false,
+          "text_ru": "Что тебе нравится делать? Чем увлекаешься? (необязательно)",
+          "text_uz": "Nima qilish yoqadi? Nimaga qiziqasan? (majburiy emas)",
+          "input": {
+            "max_len": 300
+          }
+        }
+      ]
+    },
+    {
+      "id": "goal_fork",
+      "title_ru": "Твоя цель",
+      "title_uz": "Maqsading",
+      "questions": [
+        {
+          "id": "path_type",
+          "maps_to": "path_type",
+          "type": "single_select",
+          "required": true,
+          "text_ru": "Знаешь ли ты, кем хочешь стать / какую цель хочешь достичь?",
+          "text_uz": "Kim bo'lishni / qanday maqsadga erishishni bilasanmi?",
+          "note_ru": "Может быть уже выбрано на экране-развилке до тестов.",
+          "options": [
+            {
+              "value": "knows_goal",
+              "label_ru": "Да, у меня есть цель",
+              "label_uz": "Ha, maqsadim bor"
+            },
+            {
+              "value": "no_goal",
+              "label_ru": "Нет, хочу разобраться",
+              "label_uz": "Yo'q, aniqlashtirmoqchiman"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "goal_details",
+      "title_ru": "Подробнее о цели",
+      "title_uz": "Maqsad haqida batafsil",
+      "show_if": {
+        "question_id": "path_type",
+        "equals": "knows_goal"
+      },
+      "questions": [
+        {
+          "id": "goal_text",
+          "maps_to": "goal.statement",
+          "type": "text",
+          "required": true,
+          "text_ru": "Опиши свою цель своими словами",
+          "text_uz": "Maqsadingni o'z so'zlaring bilan yoz",
+          "input": {
+            "max_len": 300
+          },
+          "show_if": {
+            "question_id": "path_type",
+            "equals": "knows_goal"
+          }
+        },
+        {
+          "id": "desired_income",
+          "maps_to": "goal.desired_income",
+          "type": "single_select",
+          "required": true,
+          "text_ru": "Какой доход в месяц ты хочешь в будущем?",
+          "text_uz": "Kelajakda oyiga qancha daromad istaysan?",
+          "input": {
+            "unit": "сум/мес"
+          },
+          "show_if": {
+            "question_id": "path_type",
+            "equals": "knows_goal"
+          },
+          "options": [
+            {
+              "value": "<5m",
+              "label_ru": "До 5 млн сум",
+              "label_uz": "5 mln so'mgacha"
+            },
+            {
+              "value": "5-10m",
+              "label_ru": "5–10 млн сум",
+              "label_uz": "5–10 mln so'm"
+            },
+            {
+              "value": "10-20m",
+              "label_ru": "10–20 млн сум",
+              "label_uz": "10–20 mln so'm"
+            },
+            {
+              "value": "20-50m",
+              "label_ru": "20–50 млн сум",
+              "label_uz": "20–50 mln so'm"
+            },
+            {
+              "value": "50m+",
+              "label_ru": "Более 50 млн сум",
+              "label_uz": "50 mln so'mdan ko'p"
+            }
+          ]
+        },
+        {
+          "id": "employment_type",
+          "maps_to": "goal.employment_type",
+          "type": "single_select",
+          "required": true,
+          "text_ru": "Какой формат работы тебе ближе?",
+          "text_uz": "Qaysi ish formati senga yaqinroq?",
+          "show_if": {
+            "question_id": "path_type",
+            "equals": "knows_goal"
+          },
+          "options": [
+            {
+              "value": "employee",
+              "label_ru": "Найм в компании",
+              "label_uz": "Kompaniyada ishlash"
+            },
+            {
+              "value": "gov",
+              "label_ru": "Госслужба",
+              "label_uz": "Davlat xizmati"
+            },
+            {
+              "value": "business",
+              "label_ru": "Свой бизнес",
+              "label_uz": "O'z biznesi"
+            },
+            {
+              "value": "freelance",
+              "label_ru": "Фриланс / удалёнка",
+              "label_uz": "Frilans / masofaviy"
+            },
+            {
+              "value": "unsure",
+              "label_ru": "Пока не знаю",
+              "label_uz": "Hali bilmayman"
+            }
+          ]
+        },
+        {
+          "id": "timeframe",
+          "maps_to": "goal.timeframe",
+          "type": "single_select",
+          "required": true,
+          "text_ru": "За какой срок хочешь достичь цели?",
+          "text_uz": "Maqsadga qancha muddatda erishmoqchisan?",
+          "show_if": {
+            "question_id": "path_type",
+            "equals": "knows_goal"
+          },
+          "options": [
+            {
+              "value": "1y",
+              "label_ru": "Около года",
+              "label_uz": "Taxminan bir yil"
+            },
+            {
+              "value": "2-3y",
+              "label_ru": "2–3 года",
+              "label_uz": "2–3 yil"
+            },
+            {
+              "value": "3-5y",
+              "label_ru": "3–5 лет",
+              "label_uz": "3–5 yil"
+            },
+            {
+              "value": "5y+",
+              "label_ru": "Более 5 лет",
+              "label_uz": "5 yildan ko'p"
+            }
+          ]
+        },
+        {
+          "id": "risk",
+          "maps_to": "goal.risk",
+          "type": "single_select",
+          "required": true,
+          "text_ru": "Как ты относишься к риску?",
+          "text_uz": "Tavakkalga qanday qaraysan?",
+          "show_if": {
+            "question_id": "path_type",
+            "equals": "knows_goal"
+          },
+          "options": [
+            {
+              "value": "low",
+              "label_ru": "Низкий: стабильность важнее",
+              "label_uz": "Past: barqarorlik muhimroq"
+            },
+            {
+              "value": "medium",
+              "label_ru": "Средний: готов на разумный риск",
+              "label_uz": "O'rta: oqilona tavakkalga tayyorman"
+            },
+            {
+              "value": "high",
+              "label_ru": "Высокий: готов рисковать ради большего",
+              "label_uz": "Yuqori: ko'proq uchun tavakkal qilaman"
+            }
+          ]
+        },
+        {
+          "id": "lifestyle",
+          "maps_to": "goal.lifestyle",
+          "type": "multi_select",
+          "required": true,
+          "text_ru": "Что для тебя важно в образе жизни? (можно несколько)",
+          "text_uz": "Turmush tarzida sen uchun nima muhim? (bir nechta bo'lishi mumkin)",
+          "show_if": {
+            "question_id": "path_type",
+            "equals": "knows_goal"
+          },
+          "options": [
+            {
+              "value": "flexible",
+              "label_ru": "Свободный график",
+              "label_uz": "Erkin jadval"
+            },
+            {
+              "value": "stable",
+              "label_ru": "Стабильный график",
+              "label_uz": "Barqaror jadval"
+            },
+            {
+              "value": "remote",
+              "label_ru": "Удалёнка / путешествия",
+              "label_uz": "Masofaviy / sayohat"
+            },
+            {
+              "value": "fast_growth",
+              "label_ru": "Быстрый карьерный рост",
+              "label_uz": "Tez martaba o'sishi"
+            },
+            {
+              "value": "balance",
+              "label_ru": "Спокойствие и баланс",
+              "label_uz": "Xotirjamlik va muvozanat"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "profile_mapping_note_ru": "Каждый ответ пишется в поле профиля из maps_to. Итоговый профиль (демография + ресурсы + цель) объединяется с баллами тестов (riasec, big_five, values_ranked, learning_style, 16-type) и передаётся в промпты ИИ по схеме из Приложения Б."
+}

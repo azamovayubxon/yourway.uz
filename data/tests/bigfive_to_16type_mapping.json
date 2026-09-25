@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "name": "Big Five → 16-типный ярлык (деривация для yourway.uz)",
+    "version": "1.0",
+    "purpose_ru": "Вычисление MBTI-подобного 4-буквенного типа и красивого названия ИЗ результатов Big Five (IPIP-NEO-60). Отдельный MBTI-тест не проводится. Тип используется только для вовлечения и шеринга ('карточка типа'), НЕ как научная основа выводов отчёта — выводы строятся на Big Five + RIASEC.",
+    "input": "Проценты (0-100) по 5 шкалам Big Five после подсчёта scoring-движком.",
+    "note_ru": "Соответствия приблизительные. E/I и J/P опираются на сильные корреляции (Экстраверсия, Сознательность). S/N (Открытость) — умеренная. T/F (Доброжелательность) — самая слабая и связана с полом; допустима как развлекательный ярлык, но не как диагностика."
+  },
+  "letter_rules": {
+    "E_I": {
+      "source_scale": "extraversion",
+      "high_pole": "E",
+      "low_pole": "I",
+      "rule": "если extraversion_pct >= threshold → E, иначе → I"
+    },
+    "S_N": {
+      "source_scale": "openness",
+      "high_pole": "N",
+      "low_pole": "S",
+      "rule": "если openness_pct >= threshold → N, иначе → S"
+    },
+    "T_F": {
+      "source_scale": "agreeableness",
+      "high_pole": "F",
+      "low_pole": "T",
+      "rule": "если agreeableness_pct >= threshold → F, иначе → T"
+    },
+    "J_P": {
+      "source_scale": "conscientiousness",
+      "high_pole": "J",
+      "low_pole": "P",
+      "rule": "если conscientiousness_pct >= threshold → J, иначе → P"
+    }
+  },
+  "threshold": 50,
+  "tie_rule_ru": "При значении ровно 50 выбирается low_pole (I, S, T, P) как более консервативный вариант, ИЛИ показывается пометка 'сбалансированный' по этой оси. Рекомендуется: если |pct - 50| <= 5, помечать ось как слабо выраженную ('X') во внутренней аналитике, но в карточке всё равно показывать доминирующую букву.",
+  "neuroticism_note_ru": "Шкала Нейротизма не участвует в 4 буквах типа. Её результат используется отдельно в отчёте (устойчивость к стрессу, темп, риск) и может добавлять модификатор к описанию типа (напр. 'Напряжённый'/'Спокойный').",
+  "types": {
+    "INTJ": {"nickname_ru": "Стратег", "nickname_uz_lat": "Strateg"},
+    "INTP": {"nickname_ru": "Аналитик", "nickname_uz_lat": "Tahlilchi"},
+    "ENTJ": {"nickname_ru": "Командир", "nickname_uz_lat": "Qo'mondon"},
+    "ENTP": {"nickname_ru": "Новатор", "nickname_uz_lat": "Novator"},
+    "INFJ": {"nickname_ru": "Вдохновитель", "nickname_uz_lat": "Ilhomlantiruvchi"},
+    "INFP": {"nickname_ru": "Идеалист", "nickname_uz_lat": "Idealist"},
+    "ENFJ": {"nickname_ru": "Наставник", "nickname_uz_lat": "Murabbiy"},
+    "ENFP": {"nickname_ru": "Вдохновляющий искатель", "nickname_uz_lat": "Ilhomli izlanuvchi"},
+    "ISTJ": {"nickname_ru": "Хранитель", "nickname_uz_lat": "Qo'riqchi"},
+    "ISFJ": {"nickname_ru": "Защитник", "nickname_uz_lat": "Himoyachi"},
+    "ESTJ": {"nickname_ru": "Управленец", "nickname_uz_lat": "Boshqaruvchi"},
+    "ESFJ": {"nickname_ru": "Дипломат", "nickname_uz_lat": "Diplomat"},
+    "ISTP": {"nickname_ru": "Мастер", "nickname_uz_lat": "Usta"},
+    "ISFP": {"nickname_ru": "Творец", "nickname_uz_lat": "Ijodkor"},
+    "ESTP": {"nickname_ru": "Деятель", "nickname_uz_lat": "Tashabbuskor"},
+    "ESFP": {"nickname_ru": "Вдохновитель-практик", "nickname_uz_lat": "Amaliy ilhomchi"}
+  },
+  "algorithm_pseudocode": [
+    "e_i = extraversion_pct >= 50 ? 'E' : 'I'",
+    "s_n = openness_pct     >= 50 ? 'N' : 'S'",
+    "t_f = agreeableness_pct>= 50 ? 'F' : 'T'",
+    "j_p = conscientiousness_pct >= 50 ? 'J' : 'P'",
+    "type_code = e_i + s_n + t_f + j_p",
+    "label = types[type_code]",
+    "card_title = type_code + ' — ' + label.nickname (на языке пользователя)"
+  ],
+  "output_example": {
+    "input": {"openness": 88, "conscientiousness": 55, "extraversion": 40, "agreeableness": 62, "neuroticism": 50},
+    "derived_code": "INFP",
+    "card_title_ru": "INFP — Идеалист"
+  }
+}

@@ -1,0 +1,1833 @@
+{
+  "meta": {
+    "test_name": "IPIP-NEO-60 — Big Five (короткая версия для yourway.uz)",
+    "platform": "yourway.uz",
+    "version": "1.0-short",
+    "derived_from": "ipip_neo_120_full_v2 (v2.0)",
+    "languages": [
+      "ru",
+      "uz"
+    ],
+    "model": "Big Five: Нейротизм, Экстраверсия, Открытость, Доброжелательность, Сознательность. 30 фасетов по 2 пункта (1 прямой + 1 обратный), 60 пунктов.",
+    "item_count": 60,
+    "construction_note_ru": "Короткая форма для потребительской воронки. Из каждого из 30 фасетов исходной 120-пунктовой версии отобрано по 2 пункта (первый прямой + первый обратный). Все 5 шкал сбалансированы: 12 пунктов каждая (6 прямых + 6 обратных), raw 12-60. Поле original_id хранит ссылку на пункт исходной версии.",
+    "usage_disclaimer": {
+      "ru": "Данная матрица предназначена исключительно для профессионального использования HR-специалистами. Результаты не являются диагностическим заключением и должны интерпретироваться в совокупности с результатами структурированного интервью и иных оценочных инструментов.",
+      "uz": "Ushbu matritsa faqat HR mutaxassislarining professional foydalanishi uchun mo'ljallangan. Natijalar diagnostik xulosa hisoblanmaydi va tuzilgan intervyu hamda boshqa baholash vositalari natijalari bilan birgalikda talqin etilishi kerak."
+    }
+  },
+  "questions": [
+    {
+      "id": 1,
+      "original_id": 1,
+      "factor": "Neuroticism",
+      "facet": "Anxiety",
+      "text_ru": "Часто беспокоюсь по пустякам.",
+      "text_uz": "Arzimagan narsalar tufayli tez-tez xavotirlanaman.",
+      "is_reverse": false
+    },
+    {
+      "id": 2,
+      "original_id": 2,
+      "factor": "Neuroticism",
+      "facet": "Anxiety",
+      "text_ru": "В большинстве ситуаций чувствую себя спокойно и расслабленно.",
+      "text_uz": "Ko'p vaziyatlarda o'zimni xotirjam va bo'shashgan his qilaman.",
+      "is_reverse": true
+    },
+    {
+      "id": 3,
+      "original_id": 5,
+      "factor": "Neuroticism",
+      "facet": "Angry Hostility",
+      "text_ru": "Легко выхожу из себя, когда что-то идёт не по плану.",
+      "text_uz": "Biror narsa rejaga muvofiq bo'lmaganda, tez jahlim chiqadi.",
+      "is_reverse": false
+    },
+    {
+      "id": 4,
+      "original_id": 7,
+      "factor": "Neuroticism",
+      "facet": "Angry Hostility",
+      "text_ru": "Обычно я сдержан даже в раздражающих ситуациях.",
+      "text_uz": "Odatda asabiylashtiradigan vaziyatlarda ham o'zimni tuta olaman.",
+      "is_reverse": true
+    },
+    {
+      "id": 5,
+      "original_id": 9,
+      "factor": "Neuroticism",
+      "facet": "Depression",
+      "text_ru": "Временами я чувствую себя совершенно подавленным.",
+      "text_uz": "Ba'zan o'zimni butunlay ezilgan his qilaman.",
+      "is_reverse": false
+    },
+    {
+      "id": 6,
+      "original_id": 10,
+      "factor": "Neuroticism",
+      "facet": "Depression",
+      "text_ru": "В целом я доволен своей жизнью и работой.",
+      "text_uz": "Umuman olganda, hayotim va ishimdan qoniqqanman.",
+      "is_reverse": true
+    },
+    {
+      "id": 7,
+      "original_id": 13,
+      "factor": "Neuroticism",
+      "facet": "Self-Consciousness",
+      "text_ru": "В присутствии незнакомых людей я чувствую себя неловко.",
+      "text_uz": "Notanish odamlar oldida o'zimni noqulay his qilaman.",
+      "is_reverse": false
+    },
+    {
+      "id": 8,
+      "original_id": 14,
+      "factor": "Neuroticism",
+      "facet": "Self-Consciousness",
+      "text_ru": "Меня не беспокоит, что обо мне думают окружающие.",
+      "text_uz": "Atrofdagilar men haqimda nima deb o'ylashini bilish meni bezovta qilmaydi.",
+      "is_reverse": true
+    },
+    {
+      "id": 9,
+      "original_id": 17,
+      "factor": "Neuroticism",
+      "facet": "Immoderation",
+      "text_ru": "Мне сложно устоять перед соблазнами, даже когда я знаю, что это во вред.",
+      "text_uz": "Zararli ekanligini bilsam ham vasvasalarga qarshilik qilish menga qiyin.",
+      "is_reverse": false
+    },
+    {
+      "id": 10,
+      "original_id": 18,
+      "factor": "Neuroticism",
+      "facet": "Immoderation",
+      "text_ru": "Я хорошо контролирую свои импульсивные желания.",
+      "text_uz": "Men o'zining impulsiv istaklarini yaxshi nazorat qilaman.",
+      "is_reverse": true
+    },
+    {
+      "id": 11,
+      "original_id": 21,
+      "factor": "Neuroticism",
+      "facet": "Vulnerability",
+      "text_ru": "В стрессовых ситуациях я нередко теряюсь и не знаю, что делать.",
+      "text_uz": "Stressli vaziyatlarda ko'pincha adashib qolaman va nima qilishni bilmayman.",
+      "is_reverse": false
+    },
+    {
+      "id": 12,
+      "original_id": 22,
+      "factor": "Neuroticism",
+      "facet": "Vulnerability",
+      "text_ru": "Я сохраняю ясность мышления даже под значительным давлением.",
+      "text_uz": "Sezilarli bosim ostida ham fikrning ravshanligini saqlab qolaman.",
+      "is_reverse": true
+    },
+    {
+      "id": 13,
+      "original_id": 25,
+      "factor": "Extraversion",
+      "facet": "Friendliness",
+      "text_ru": "Я легко схожусь с новыми людьми.",
+      "text_uz": "Yangi odamlar bilan osongina til topishaman.",
+      "is_reverse": false
+    },
+    {
+      "id": 14,
+      "original_id": 26,
+      "factor": "Extraversion",
+      "facet": "Friendliness",
+      "text_ru": "Мне требуется немало времени, чтобы почувствовать себя комфортно с незнакомцами.",
+      "text_uz": "Notanish odamlar bilan qulay his qilish uchun menga ko'p vaqt kerak.",
+      "is_reverse": true
+    },
+    {
+      "id": 15,
+      "original_id": 29,
+      "factor": "Extraversion",
+      "facet": "Gregariousness",
+      "text_ru": "Мне нравится бывать на многолюдных мероприятиях.",
+      "text_uz": "Ko'p odamlar qatnashadigan tadbirlarda bo'lishni yaxshi ko'raman.",
+      "is_reverse": false
+    },
+    {
+      "id": 16,
+      "original_id": 30,
+      "factor": "Extraversion",
+      "facet": "Gregariousness",
+      "text_ru": "Я предпочитаю небольшие компании большим собраниям.",
+      "text_uz": "Katta yig'ilishlarga qaraganda kichik kompaniyalarni afzal ko'raman.",
+      "is_reverse": true
+    },
+    {
+      "id": 17,
+      "original_id": 33,
+      "factor": "Extraversion",
+      "facet": "Assertiveness",
+      "text_ru": "В групповых обсуждениях я, как правило, беру слово первым.",
+      "text_uz": "Guruhiy muhokamalar paytida odatda birinchi bo'lib so'z olaman.",
+      "is_reverse": false
+    },
+    {
+      "id": 18,
+      "original_id": 34,
+      "factor": "Extraversion",
+      "facet": "Assertiveness",
+      "text_ru": "Я предпочитаю уступать инициативу другим, а не брать её на себя.",
+      "text_uz": "Tashabbusni o'zimga olishdan ko'ra uni boshqalarga berishni afzal ko'raman.",
+      "is_reverse": true
+    },
+    {
+      "id": 19,
+      "original_id": 37,
+      "factor": "Extraversion",
+      "facet": "Activity Level",
+      "text_ru": "Я обычно занят и веду активный образ жизни.",
+      "text_uz": "Men odatda band bo'laman va faol hayot tarzini olib boraman.",
+      "is_reverse": false
+    },
+    {
+      "id": 20,
+      "original_id": 38,
+      "factor": "Extraversion",
+      "facet": "Activity Level",
+      "text_ru": "Мне нравится не спешить и работать в спокойном темпе.",
+      "text_uz": "Shoshilmaslik va tinch sur'atda ishlashni yaxshi ko'raman.",
+      "is_reverse": true
+    },
+    {
+      "id": 21,
+      "original_id": 41,
+      "factor": "Extraversion",
+      "facet": "Excitement-Seeking",
+      "text_ru": "Меня привлекают ситуации, связанные с определённым риском и адреналином.",
+      "text_uz": "Ma'lum xavf va adrenalin bilan bog'liq vaziyatlar meni jalb qiladi.",
+      "is_reverse": false
+    },
+    {
+      "id": 22,
+      "original_id": 42,
+      "factor": "Extraversion",
+      "facet": "Excitement-Seeking",
+      "text_ru": "Я предпочитаю предсказуемость и стабильность острым ощущениям.",
+      "text_uz": "Men o'tkir hissiyotlardan ko'ra bashorat qilinish va barqarorlikni afzal ko'raman.",
+      "is_reverse": true
+    },
+    {
+      "id": 23,
+      "original_id": 45,
+      "factor": "Extraversion",
+      "facet": "Positive Emotions",
+      "text_ru": "Большую часть времени я настроен оптимистично и радостно.",
+      "text_uz": "Ko'p vaqt davomida optimistik va quvnoq kayfiyatdaman.",
+      "is_reverse": false
+    },
+    {
+      "id": 24,
+      "original_id": 46,
+      "factor": "Extraversion",
+      "facet": "Positive Emotions",
+      "text_ru": "Я редко испытываю искренний энтузиазм или воодушевление.",
+      "text_uz": "Men kamdan-kam chin entuziastlik yoki ilhom his qilaman.",
+      "is_reverse": true
+    },
+    {
+      "id": 25,
+      "original_id": 49,
+      "factor": "Agreeableness",
+      "facet": "Trust",
+      "text_ru": "Я склонен доверять людям, пока они не дадут мне повод усомниться в них.",
+      "text_uz": "Odamlar menga shubha qilish uchun sabab bermaguncha, ularga ishonishga moyilman.",
+      "is_reverse": false
+    },
+    {
+      "id": 26,
+      "original_id": 50,
+      "factor": "Agreeableness",
+      "facet": "Trust",
+      "text_ru": "Мне кажется, что большинство людей преследуют скрытые интересы.",
+      "text_uz": "Ko'pchilik odamlar yashirin manfaatlarni ko'zlaydigan ko'rinadi.",
+      "is_reverse": true
+    },
+    {
+      "id": 27,
+      "original_id": 53,
+      "factor": "Agreeableness",
+      "facet": "Morality",
+      "text_ru": "Я считаю, что честность важна даже тогда, когда правда неудобна.",
+      "text_uz": "Haqiqat noqulay bo'lgan paytda ham halollik muhim deb hisoblayman.",
+      "is_reverse": false
+    },
+    {
+      "id": 28,
+      "original_id": 54,
+      "factor": "Agreeableness",
+      "facet": "Morality",
+      "text_ru": "Иногда небольшая ложь во благо вполне оправдана.",
+      "text_uz": "Ba'zan ezgulik uchun kichik yolg'on to'liq oqlangan.",
+      "is_reverse": true
+    },
+    {
+      "id": 29,
+      "original_id": 57,
+      "factor": "Agreeableness",
+      "facet": "Altruism",
+      "text_ru": "Мне приносит удовольствие помогать другим, даже если это требует усилий.",
+      "text_uz": "Harakat talab qilsa ham, boshqalarga yordam berish menga zavq beradi.",
+      "is_reverse": false
+    },
+    {
+      "id": 30,
+      "original_id": 58,
+      "factor": "Agreeableness",
+      "facet": "Altruism",
+      "text_ru": "Я считаю, что каждый должен решать свои проблемы самостоятельно.",
+      "text_uz": "Har kim o'z muammolarini mustaqil hal qilishi kerak deb hisoblayman.",
+      "is_reverse": true
+    },
+    {
+      "id": 31,
+      "original_id": 61,
+      "factor": "Agreeableness",
+      "facet": "Cooperation",
+      "text_ru": "Я стараюсь находить компромисс, когда возникают разногласия.",
+      "text_uz": "Kelishmovchiliklar yuzaga kelganda murosaga erishishga harakat qilaman.",
+      "is_reverse": false
+    },
+    {
+      "id": 32,
+      "original_id": 62,
+      "factor": "Agreeableness",
+      "facet": "Cooperation",
+      "text_ru": "В споре я настаиваю на своём, пока не убеждён в правоте оппонента.",
+      "text_uz": "Tortishuvda raqibimning haqligiga ishonmaguncha o'z fikrimda turaman.",
+      "is_reverse": true
+    },
+    {
+      "id": 33,
+      "original_id": 65,
+      "factor": "Agreeableness",
+      "facet": "Modesty",
+      "text_ru": "Я не склонен выставлять свои достижения напоказ.",
+      "text_uz": "Men o'z yutuqlarimni namoyish qilishga moyil emasman.",
+      "is_reverse": false
+    },
+    {
+      "id": 34,
+      "original_id": 66,
+      "factor": "Agreeableness",
+      "facet": "Modesty",
+      "text_ru": "Я заслуживаю большего признания, чем обычно получаю.",
+      "text_uz": "Men odatda olayotganimdan ko'ra ko'proq tan olinishga loyiqman.",
+      "is_reverse": true
+    },
+    {
+      "id": 35,
+      "original_id": 69,
+      "factor": "Agreeableness",
+      "facet": "Sympathy",
+      "text_ru": "Чужая боль отзывается во мне так, словно это моя собственная.",
+      "text_uz": "Begonaning og'rig'i go'yo o'zimnikinday ichimda aks-sado beradi.",
+      "is_reverse": false
+    },
+    {
+      "id": 36,
+      "original_id": 70,
+      "factor": "Agreeableness",
+      "facet": "Sympathy",
+      "text_ru": "Меня мало трогают чужие жалобы — каждый сам строит свою судьбу.",
+      "text_uz": "Boshqalarning shikoyatlari meni unchalik qiynaltiravermaydi — har kim o'z taqdirini o'zi qurar.",
+      "is_reverse": true
+    },
+    {
+      "id": 37,
+      "original_id": 73,
+      "factor": "Conscientiousness",
+      "facet": "Self-Efficacy",
+      "text_ru": "Я уверен в своей способности справляться со сложными задачами.",
+      "text_uz": "Murakkab vazifalarni bajarish qobiliyatimga ishonaman.",
+      "is_reverse": false
+    },
+    {
+      "id": 38,
+      "original_id": 74,
+      "factor": "Conscientiousness",
+      "facet": "Self-Efficacy",
+      "text_ru": "Столкнувшись с трудным заданием, я нередко сомневаюсь в своих силах.",
+      "text_uz": "Qiyin vazifa bilan to'qnashganda, ko'pincha o'z kuchimga shubha qilaman.",
+      "is_reverse": true
+    },
+    {
+      "id": 39,
+      "original_id": 77,
+      "factor": "Conscientiousness",
+      "facet": "Orderliness",
+      "text_ru": "На моём рабочем месте всегда поддерживается порядок.",
+      "text_uz": "Mening ish joyimda doim tartib saqlanadi.",
+      "is_reverse": false
+    },
+    {
+      "id": 40,
+      "original_id": 78,
+      "factor": "Conscientiousness",
+      "facet": "Orderliness",
+      "text_ru": "Мне сложно поддерживать порядок в документах и файлах.",
+      "text_uz": "Hujjatlar va fayllarda tartibni saqlash menga qiyin.",
+      "is_reverse": true
+    },
+    {
+      "id": 41,
+      "original_id": 81,
+      "factor": "Conscientiousness",
+      "facet": "Dutifulness",
+      "text_ru": "Я выполняю взятые на себя обязательства, даже если это неудобно.",
+      "text_uz": "Noqulay bo'lsa ham, o'z zimmamdagi majburiyatlarni bajaraman.",
+      "is_reverse": false
+    },
+    {
+      "id": 42,
+      "original_id": 82,
+      "factor": "Conscientiousness",
+      "facet": "Dutifulness",
+      "text_ru": "Иногда я нарушаю правила, если считаю их излишними.",
+      "text_uz": "Ba'zan qoidalarni ortiqcha deb hisoblasam, ularni buzaman.",
+      "is_reverse": true
+    },
+    {
+      "id": 43,
+      "original_id": 85,
+      "factor": "Conscientiousness",
+      "facet": "Achievement Striving",
+      "text_ru": "Я ставлю перед собой амбициозные цели и прилагаю усилия для их достижения.",
+      "text_uz": "Men o'z oldimga ambitsiyali maqsadlar qo'yaman va ularga erishish uchun harakat qilaman.",
+      "is_reverse": false
+    },
+    {
+      "id": 44,
+      "original_id": 86,
+      "factor": "Conscientiousness",
+      "facet": "Achievement Striving",
+      "text_ru": "Мне достаточно выполнять работу на приемлемом уровне — перфекционизм меня не привлекает.",
+      "text_uz": "Menga ishni qabul qilinadigan darajada bajarish yetarli — perfektsionizm meni o'ziga tortmaydi.",
+      "is_reverse": true
+    },
+    {
+      "id": 45,
+      "original_id": 89,
+      "factor": "Conscientiousness",
+      "facet": "Self-Discipline",
+      "text_ru": "Я придерживаюсь намеченного плана, даже когда хочется отложить дело.",
+      "text_uz": "Ishni keyinga qoldirmoqchi bo'lsam ham, belgilangan rejaga amal qilaman.",
+      "is_reverse": false
+    },
+    {
+      "id": 46,
+      "original_id": 90,
+      "factor": "Conscientiousness",
+      "facet": "Self-Discipline",
+      "text_ru": "Мне трудно заставить себя взяться за задачу, которая кажется скучной.",
+      "text_uz": "Zerikarli ko'rinadigan vazifaga kirishishga o'zimni majburlash menga qiyin.",
+      "is_reverse": true
+    },
+    {
+      "id": 47,
+      "original_id": 93,
+      "factor": "Conscientiousness",
+      "facet": "Cautiousness",
+      "text_ru": "Прежде чем действовать, я тщательно обдумываю возможные последствия.",
+      "text_uz": "Harakat qilishdan oldin mumkin bo'lgan oqibatlarni puxta o'ylab ko'raman.",
+      "is_reverse": false
+    },
+    {
+      "id": 48,
+      "original_id": 94,
+      "factor": "Conscientiousness",
+      "facet": "Cautiousness",
+      "text_ru": "Я нередко принимаю решения импульсивно, не задумываясь о последствиях.",
+      "text_uz": "Ko'pincha oqibatlarni o'ylamasdan impulsiv qarorlar qabul qilaman.",
+      "is_reverse": true
+    },
+    {
+      "id": 49,
+      "original_id": 97,
+      "factor": "Openness",
+      "facet": "Imagination",
+      "text_ru": "У меня богатое воображение, и я часто погружаюсь в собственные фантазии.",
+      "text_uz": "Mening kuchli tasavvurim bor va tez-tez o'z xayollarimga cho'mib ketaman.",
+      "is_reverse": false
+    },
+    {
+      "id": 50,
+      "original_id": 98,
+      "factor": "Openness",
+      "facet": "Imagination",
+      "text_ru": "Я предпочитаю факты и реальность, а не абстрактные идеи и фантазии.",
+      "text_uz": "Abstrakt g'oyalar va xayollardan ko'ra faktlar va haqiqatni afzal ko'raman.",
+      "is_reverse": true
+    },
+    {
+      "id": 51,
+      "original_id": 101,
+      "factor": "Openness",
+      "facet": "Artistic Interests",
+      "text_ru": "Меня глубоко трогает музыка, живопись или литература.",
+      "text_uz": "Musiqa, rassomlik yoki adabiyot meni chuqur ta'sirlantiradi.",
+      "is_reverse": false
+    },
+    {
+      "id": 52,
+      "original_id": 102,
+      "factor": "Openness",
+      "facet": "Artistic Interests",
+      "text_ru": "Я редко нахожу время или интерес для занятий искусством или культурой.",
+      "text_uz": "San'at yoki madaniyat bilan shug'ullanish uchun kamdan-kam vaqt yoki qiziqish topaman.",
+      "is_reverse": true
+    },
+    {
+      "id": 53,
+      "original_id": 105,
+      "factor": "Openness",
+      "facet": "Emotionality",
+      "text_ru": "Я хорошо осознаю свои эмоции и понимаю, что именно их вызывает.",
+      "text_uz": "O'z his-tuyg'ularimni yaxshi anglayman va ularni nima keltirib chiqarishini tushunaman.",
+      "is_reverse": false
+    },
+    {
+      "id": 54,
+      "original_id": 107,
+      "factor": "Openness",
+      "facet": "Emotionality",
+      "text_ru": "Я редко задумываюсь о своих внутренних переживаниях.",
+      "text_uz": "O'z ichki kechinmalarim haqida kamdan-kam o'ylayman.",
+      "is_reverse": true
+    },
+    {
+      "id": 55,
+      "original_id": 109,
+      "factor": "Openness",
+      "facet": "Adventurousness",
+      "text_ru": "Я охотно пробую новые виды деятельности, даже если не знаю, чего ожидать.",
+      "text_uz": "Nima kutishni bilmasam ham, yangi faoliyat turlarini xursandchilik bilan sinab ko'raman.",
+      "is_reverse": false
+    },
+    {
+      "id": 56,
+      "original_id": 110,
+      "factor": "Openness",
+      "facet": "Adventurousness",
+      "text_ru": "Я предпочитаю привычные маршруты и устоявшийся распорядок новым экспериментам.",
+      "text_uz": "Yangi tajribalardan ko'ra tanish yo'nalishlar va o'rnatilgan tartibni afzal ko'raman.",
+      "is_reverse": true
+    },
+    {
+      "id": 57,
+      "original_id": 113,
+      "factor": "Openness",
+      "facet": "Intellect",
+      "text_ru": "Мне нравится размышлять над сложными философскими или научными вопросами.",
+      "text_uz": "Murakkab falsafiy yoki ilmiy savollar ustida o'ylashni yaxshi ko'raman.",
+      "is_reverse": false
+    },
+    {
+      "id": 58,
+      "original_id": 114,
+      "factor": "Openness",
+      "facet": "Intellect",
+      "text_ru": "Абстрактные теоретические дискуссии меня быстро утомляют.",
+      "text_uz": "Abstrakt nazariy munozaralar meni tez charchatadi.",
+      "is_reverse": true
+    },
+    {
+      "id": 59,
+      "original_id": 117,
+      "factor": "Openness",
+      "facet": "Liberalism",
+      "text_ru": "Я считаю, что общественные нормы должны меняться вместе с развитием общества.",
+      "text_uz": "Jamiyat me'yorlari jamiyat rivojlanishi bilan birga o'zgarishi kerak deb hisoblayman.",
+      "is_reverse": false
+    },
+    {
+      "id": 60,
+      "original_id": 118,
+      "factor": "Openness",
+      "facet": "Liberalism",
+      "text_ru": "Мне кажется, что проверенные временем традиции важнее новомодных идей.",
+      "text_uz": "Vaqt sinovidan o'tgan an'analar yangi moda g'oyalardan muhimroq ko'rinadi.",
+      "is_reverse": true
+    }
+  ],
+  "scoring": {
+    "method_ru": "Каждый пункт оценивается по 5-балльной шкале Ликерта (1–5). Для прямых пунктов (is_reverse=false) балл равен выбранному значению. Для обратных пунктов (is_reverse=true) балл инвертируется по формуле 6 − значение (1→5, 2→4, 3→3, 4→2, 5→1). Баллы суммируются отдельно по каждой из 5 шкал.",
+    "response_scale": [
+      {
+        "value": 1,
+        "label_ru": "Совершенно не про меня / полностью не согласен",
+        "label_uz": "Umuman men haqimda emas"
+      },
+      {
+        "value": 2,
+        "label_ru": "Скорее не про меня",
+        "label_uz": "Ko'proq men haqimda emas"
+      },
+      {
+        "value": 3,
+        "label_ru": "Нейтрально / затрудняюсь ответить",
+        "label_uz": "Neytral"
+      },
+      {
+        "value": 4,
+        "label_ru": "Скорее про меня",
+        "label_uz": "Ko'proq men haqimda"
+      },
+      {
+        "value": 5,
+        "label_ru": "Полностью про меня / полностью согласен",
+        "label_uz": "To'liq men haqimda"
+      }
+    ],
+    "reverse_rule": "score = 6 - answer (применяется только к пунктам с is_reverse=true)",
+    "scales": {
+      "neuroticism": {
+        "scale_name_ru": "Нейротизм (эмоциональная нестабильность)",
+        "item_count": 12,
+        "raw_min": 12,
+        "raw_max": 60,
+        "item_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ]
+      },
+      "extraversion": {
+        "scale_name_ru": "Экстраверсия",
+        "item_count": 12,
+        "raw_min": 12,
+        "raw_max": 60,
+        "item_ids": [
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24
+        ]
+      },
+      "agreeableness": {
+        "scale_name_ru": "Доброжелательность (кооперативность)",
+        "item_count": 12,
+        "raw_min": 12,
+        "raw_max": 60,
+        "item_ids": [
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36
+        ]
+      },
+      "conscientiousness": {
+        "scale_name_ru": "Сознательность (добросовестность)",
+        "item_count": 12,
+        "raw_min": 12,
+        "raw_max": 60,
+        "item_ids": [
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48
+        ]
+      },
+      "openness": {
+        "scale_name_ru": "Открытость опыту",
+        "item_count": 12,
+        "raw_min": 12,
+        "raw_max": 60,
+        "item_ids": [
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60
+        ]
+      }
+    }
+  },
+  "interpretation": {
+    "note_ru": "Диапазоны заданы по перцентилю (0–100) равными третями достижимого диапазона 20–100. Границы: Низкий ≤ 46, Средний 47–73, Высокий ≥ 74. Тексты портретов, сильных сторон и рисков взяты из исходной HR-матрицы без изменений; добавлены числовые диапазоны и рекомендации по найму. В версии 2.0 расширена до всех 10 возможных пар факторов.",
+    "scales": {
+      "neuroticism": {
+        "scale_name_ru": "Нейротизм (эмоциональная нестабильность)",
+        "item_count": 24,
+        "score_direction_note_ru": "Высокий балл по шкале означает сниженную эмоциональную стабильность (больше тревоги, реактивности, риска выгорания). Низкий балл = высокая стабильность.",
+        "bands": {
+          "low": {
+            "label_ru": "Низкий",
+            "percentile_range": [
+              20,
+              46
+            ],
+            "raw_range": [
+              24,
+              56
+            ],
+            "hr_summary_ru": "Тестируемый демонстрирует высокую эмоциональную стабильность, устойчивость к стрессу и способность сохранять когнитивную ясность в условиях давления. Кандидат редко испытывает интенсивные негативные эмоции на рабочем месте, быстро восстанавливается после неудач и воспринимает неопределённость как нейтральный или стимулирующий фактор. Такой сотрудник является ресурсом стабильности для команды в кризисных ситуациях. Эмоциональная выдержка позволяет принимать рациональные решения при высокой нагрузке.",
+            "strengths_ru": "Высокая работоспособность в условиях стресса, неопределённости и кризиса. Стабилизирующее влияние на команду в напряжённых ситуациях. Объективность принятия решений при давлении. Способность к длительной работе в высокотребовательных средах без деградации качества.",
+            "risks_ru": "Возможное снижение эмпатии и чувствительности к эмоциональному состоянию команды. Риск недооценки эмоционального дистресса коллег. Потенциальная склонность к принятию рисков, не вызывающих тревоги. Возможное восприятие коллегами как «холодного» или недоступного.",
+            "management_tips_ru": "Руководителю рекомендуется развивать навыки эмоционального интеллекта как компенсаторный фактор. Следует обеспечивать регулярный сбор обратной связи от команды для компенсации сниженной эмоциональной чувствительности. Данный профиль идеально подходит для ролей с высокими требованиями к стрессоустойчивости.",
+            "job_fitness_ru": "Рекомендуемые роли: Crisis Manager, Emergency Response, C-Level Executive, M&A Lead, Surgeon (medical), Air Traffic Controller, Security Operations, Military/Police Leadership, High-Frequency Trader. Требует развития EQ в: HR, Customer Support, Teaching, Healthcare (patient-facing).",
+            "hiring_recommendation_ru": {
+              "verdict": "Рекомендован",
+              "note_ru": "Высокая эмоциональная стабильность и стрессоустойчивость. Идеален для ролей с высоким давлением (кризис-менеджмент, C-level, операции). Развивать эмоциональный интеллект для клиентских, HR и наставнических ролей."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yuqori hissiy barqarorlik, stressga chidamlilik va bosim sharoitida kognitiv aniqlikni saqlab qolish qobiliyatini namoyon etadi. Nomzod ish joyida intensiv salbiy his-tuyg'ularni kamdan-kam boshdan kechiradi, muvaffaqiyatsizliklardan tez tiklanadi va noaniqlikni neytral yoki rag'batlantiruvchi omil sifatida qabul qiladi. Bunday xodim inqirozli vaziyatlarda jamoa uchun barqarorlik resursi hisoblanadi.",
+              "strengths": "Stress, noaniqlik va inqirozli sharoitlarda yuqori mehnat qobiliyati. Keskin vaziyatlarda jamoaga barqarorlashtiruvchi ta'sir. Bosim ostida qaror qabul qilishda ob'ektivlik. Sifat degradatsiyasiz yuqori talabli muhitlarda uzoq muddatli ishlash qobiliyati.",
+              "risks": "Jamoa hissiy holatiga nisbatan empatiya va sezgirlikning pasayishi mumkin. Hamkasblarning hissiy distressini past baholash xavfi. Tashvish uyg'otmaydigan xavflarni qabul qilishga potensial moyillik. Hamkasblar tomonidan 'sovuq' yoki erishib bo'lmaydigan sifatida qabul qilinishi mumkin.",
+              "management_tips": "Rahbarga kompensator omil sifatida hissiy intellekt ko'nikmalarini rivojlantirishni tavsiya etiladi. Pasaytirilgan hissiy sezgirlikni qoplash uchun jamoadan muntazam fikr-mulohaza yig'ishni ta'minlash kerak. Ushbu profil stressga chidamlilikka yuqori talablar bilan rollarda ideal mos keladi.",
+              "job_fitness": "Tavsiya etiladigan rollar: Crisis Manager, Emergency Response, C-Level Executive, M&A Lead, Surgeon (tibbiy), Air Traffic Controller, Security Operations, Harbiy/Politsiya rahbariyati, High-Frequency Trader. EQ rivojlantirishni talab qiladi: HR, Customer Support, Ta'lim, Healthcare (bemorlarga yo'naltirilgan)."
+            }
+          },
+          "medium": {
+            "label_ru": "Средний",
+            "percentile_range": [
+              47,
+              73
+            ],
+            "raw_range": [
+              57,
+              88
+            ],
+            "hr_summary_ru": "Тестируемый демонстрирует умеренную эмоциональную реактивность: способен переживать стресс и негативные эмоции без существенного снижения функциональности. Кандидат восстанавливается после неудач в разумные сроки и сохраняет работоспособность в большинстве рабочих ситуаций. Эмоциональный профиль сбалансирован: достаточная чувствительность для эмпатии и внимания к рискам, при этом — достаточная устойчивость для работы в стрессовых условиях.",
+            "strengths_ru": "Реалистичное восприятие рисков без гиперболизации. Способность к эмпатии и понимания эмоционального климата команды. Восстановление после неудач без длительного негативного эффекта. Функциональная работа в условиях умеренного стресса.",
+            "risks_ru": "При длительном хроническом стрессе возможно смещение в сторону высокого нейротизма. Эмоциональные реакции могут проявляться ситуативно при определённых триггерах.",
+            "management_tips_ru": "Рекомендуется мониторировать уровень стресса в периоды пиковой нагрузки. Обеспечить доступ к ресурсам психологической поддержки как профилактическую меру.",
+            "job_fitness_ru": "Подходит для большинства корпоративных ролей. Хорошо функционирует в: Scrum-командах, клиентских ролях, управленческих позициях с умеренным уровнем давления.",
+            "hiring_recommendation_ru": {
+              "verdict": "Рекомендован",
+              "note_ru": "Умеренная эмоциональная реактивность без потери функциональности. Подходит для большинства ролей; мониторить стресс в пиковые периоды."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi o'rtacha hissiy reaktivlikni namoyon etadi: funksionallikning sezilarli pasayishisiz stress va salbiy his-tuyg'ularni boshdan kechirish qobiliyatiga ega. Nomzod muvaffaqiyatsizliklardan oqilona muddatlarda tiklanaladi va ko'pchilik ish vaziyatlarida mehnat qobiliyatini saqlab qoladi.",
+              "strengths": "Xavflarni mubolag'asiz realistik idrok etish. Empatiya va jamoa hissiy iqlimini tushunish qobiliyati. Uzoq muddatli salbiy ta'sirsiz muvaffaqiyatsizliklardan tiklanish. O'rtacha stress sharoitida funksional ish.",
+              "risks": "Uzoq surunkali stress davrida yuqori neyrotizm tomonga siljish mumkin. Hissiy reaktsiyalar ma'lum triggerlarda vaziyatli namoyon bo'lishi mumkin.",
+              "management_tips": "Cho'qqi yuklama davrlarida stress darajasini monitoring qilish tavsiya etiladi. Profilaktik chora sifatida psixologik qo'llab-quvvatlash resurslaridan foydalanish imkoniyatini ta'minlash.",
+              "job_fitness": "Ko'pchilik korporativ rollar uchun mos. Quyidagilarda yaxshi ishlaydi: Scrum-jamoalar, mijozlar rollari, o'rtacha bosim darajasi bilan boshqaruv pozitsiyalari."
+            }
+          },
+          "high": {
+            "label_ru": "Высокий",
+            "percentile_range": [
+              74,
+              100
+            ],
+            "raw_range": [
+              89,
+              120
+            ],
+            "hr_summary_ru": "Тестируемый демонстрирует выраженную эмоциональную реактивность и склонность к переживанию отрицательных аффективных состояний — тревоги, неуверенности, раздражения — в ответ на рабочие стрессоры. Кандидат склонен к повышенному самоконтролю, критическому анализу собственных действий и нередко воспринимает неопределённость как угрозу. В периоды стабильности может демонстрировать высокую эффективность; в кризисных ситуациях — значительное снижение продуктивности. Устойчивый высокий нейротизм коррелирует с риском профессионального выгорания.",
+            "strengths_ru": "Высокая чувствительность к рискам и потенциальным проблемам — полезна в QA, аудите, compliance. Детальный самоанализ и критическое мышление в отношении качества собственной работы. Потенциально высокая мотивация к достижению для снижения тревоги несоответствия.",
+            "risks_ru": "Высокий риск профессионального выгорания при хроническом стрессе. Возможное снижение когнитивных функций в условиях давления (дедлайны, конфликты). Склонность к катастрофизации нейтральных событий. Потенциальные трудности в ролях с высокими требованиями к эмоциональной стабильности. Риск формирования негативного климата в команде.",
+            "management_tips_ru": "Руководителю крайне важно обеспечить психологически безопасную среду с предсказуемой обратной связью. Следует минимизировать неожиданные изменения приоритетов и неопределённость в ожиданиях. Необходимо проводить регулярные 1-on-1 для снижения тревоги неизвестности. Рекомендуется рассмотреть направление на программы управления стрессом. Нагрузку следует мониторировать с особой тщательностью.",
+            "job_fitness_ru": "Может быть продуктивен в: QA (детализированный контроль качества), Compliance, Risk Management, Audit при условии структурированной среды. Не рекомендуется без поддержки: Crisis Management, Emergency Response, High-frequency Trading, руководство командой в условиях неопределённости, публичные коммуникации.",
+            "hiring_recommendation_ru": {
+              "verdict": "Условно, с повышенным вниманием",
+              "note_ru": "Высокий нейротизм = сниженная эмоциональная стабильность. Продуктивен в QA, аудите, комплаенс, риск-менеджменте при структурированной среде. Не рекомендован без поддержки для кризис-менеджмента, публичных ролей и руководства в условиях неопределённости; высокий риск выгорания — мониторить нагрузку."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi ish stressorlariga javoban — tashvish, ishonchsizlik, ta'sirlanuvchanlik — salbiy affektiv holatlarni boshdan kechirishga yaqqol hissiy reaktivlik va moyillikni namoyon etadi. Nomzod kuchaytirilgan o'z-o'zini nazorat qilishga, o'z harakatlarini tanqidiy tahlil qilishga va ko'pincha noaniqlikni tahdid sifatida qabul qilishga moyil. Barqarorlik davrlarida yuqori samaradorlik ko'rsatishi mumkin; inqirozli vaziyatlarda — unumdorlikning sezilarli pasayishi. Barqaror yuqori neyrotizm kasbiy burnout xavfi bilan korrelyatsiya qiladi.",
+              "strengths": "Xavflar va potensial muammolarga yuqori sezgirlik — QA, audit, compliance da foydali. O'z ishlari sifatiga nisbatan batafsil o'z-o'zini tahlil qilish va tanqidiy fikrlash. Muvofiqsizlik tashvishini kamaytirish uchun yutuqqa erishishda potensial yuqori motivatsiya.",
+              "risks": "Surunkali stress sharoitida kasbiy burnout ning yuqori xavfi. Bosim sharoitida (muddatlar, ziddiyatlar) kognitiv funksiyalarning pasayishi mumkin. Neytral hodisalarni falokatlashtirish moyilligi. Hissiy barqarorlikka yuqori talablar bilan rollarda potensial qiyinchiliklar. Jamoada salbiy iqlim shakllanish xavfi.",
+              "management_tips": "Rahbar uchun bashorat qilinadigan fikr-mulohaza bilan psixologik jihatdan xavfsiz muhitni ta'minlash juda muhim. Ustuvorliklarning kutilmagan o'zgarishlari va kutishlardagi noaniqlikni kamaytirish kerak. Noma'lumlik tashvishini kamaytirish uchun muntazam 1-on-1 o'tkazish zarur. Stress boshqaruvi dasturlariga yo'naltirish ko'rib chiqilishi tavsiya etiladi. Yuklamani alohida diqqat bilan monitoring qilish kerak.",
+              "job_fitness": "Quyidagilarda samarali bo'lishi mumkin: tuzilgan muhit sharti bilan QA (batafsil sifat nazorati), Compliance, Risk Management, Audit. Qo'llab-quvvatlashsiz tavsiya etilmaydi: Inqirozni boshqarish, Favqulodda vaziyatlarga javob berish, yuqori chastotali savdo, noaniqlik sharoitida jamoani boshqarish, ommaviy kommunikatsiyalar."
+            }
+          }
+        }
+      },
+      "extraversion": {
+        "scale_name_ru": "Экстраверсия",
+        "item_count": 24,
+        "score_direction_note_ru": null,
+        "bands": {
+          "low": {
+            "label_ru": "Низкий",
+            "percentile_range": [
+              20,
+              46
+            ],
+            "raw_range": [
+              24,
+              56
+            ],
+            "hr_summary_ru": "Тестируемый демонстрирует выраженную интровертность: предпочитает глубокую независимую работу, ограниченный круг коммуникаций и среды с низкой социальной стимуляцией. Кандидат черпает энергию из уединённой работы, тщательного анализа и автономной деятельности. Такой сотрудник нередко демонстрирует высокую концентрацию, точность и глубину мышления в задачах, требующих продолжительного сосредоточения. Социальные взаимодействия воспринимаются как энергозатратные, что не означает социальной некомпетентности.",
+            "strengths_ru": "Исключительная способность к глубокой концентрации (deep work) и аналитической работе. Высокая точность в задачах, требующих тщательного внимания к деталям. Независимость от социального одобрения при принятии решений. Способность к продолжительной автономной работе без снижения качества.",
+            "risks_ru": "Возможные трудности с публичными презентациями и переговорами. Риск профессиональной изоляции в среде с высокими требованиями к нетворкингу. Склонность к избеганию конфликта вместо его конструктивного разрешения. Недостаточная видимость достижений для руководства.",
+            "management_tips_ru": "Руководителю рекомендуется обеспечить возможность глубокой работы: минимизировать прерывания, предоставить асинхронные форматы коммуникации. Достижения сотрудника необходимо активно транслировать в организации, так как сам он склонен к скромности. Для развития коммуникативных навыков — предоставить безопасные условия: небольшие презентации, письменная коммуникация.",
+            "job_fitness_ru": "Рекомендуемые роли: Backend Developer, Data Scientist, Security Engineer, Researcher, Financial Analyst, Technical Writer, Database Administrator, ML Engineer. Требует поддержки в: Sales, Account Management, HR Business Partner, Public Relations, Team Lead.",
+            "hiring_recommendation_ru": {
+              "verdict": "Условно (зависит от роли)",
+              "note_ru": "Рекомендован для аналитических, технических и исследовательских ролей с глубокой концентрацией. Требует поддержки в продажах, публичных коммуникациях и клиентских ролях."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yaqqol introvertlikni namoyon etadi: chuqur mustaqil ish, cheklangan kommunikatsiyalar doirasi va past ijtimoiy stimulyatsiya muhitlarini afzal ko'radi. Nomzod yolg'iz ish, puxta tahlil va avtonom faoliyatdan energiya oladi. Bunday xodim ko'pincha uzoq konsentratsiyani talab qiladigan vazifalarda yuqori konsentratsiya, aniqlik va fikrlash chuqurligini namoyon etadi.",
+              "strengths": "Chuqur konsentratsiya (deep work) va analitik ish uchun ajoyib qobiliyat. Ko'rsatkichlarga puxta diqqat talab qiladigan vazifalarda yuqori aniqlik. Qaror qabul qilishda ijtimoiy tasdiqlashdan mustaqillik. Sifatni pasaytirmasdan uzoq davom etgan avtonom ish qobiliyati.",
+              "risks": "Ommaviy taqdimotlar va muzokaralarda mumkin bo'lgan qiyinchiliklar. Networking bo'yicha yuqori talablar bilan muhitda professional izolyatsiya xavfi. Konstruktiv hal etish o'rniga ziddiyatdan qochishga moyillik. Rahbariyat uchun yutuqlarning yetarli ko'rinmasligi.",
+              "management_tips": "Rahbarga chuqur ish imkoniyatini ta'minlash tavsiya etiladi: uzilishlarni kamaytirish, asinxron kommunikatsiya formatlarini taqdim etish. Xodimning yutuqlari tashkilotda faol tarqatilishi kerak, chunki u o'zi kamtarlikka moyil. Kommunikativ ko'nikmalarni rivojlantirish uchun xavfsiz sharoit: kichik taqdimotlar, yozma kommunikatsiya.",
+              "job_fitness": "Tavsiya etiladigan rollar: Backend Developer, Data Scientist, Security Engineer, Researcher, Financial Analyst, Technical Writer, Database Administrator, ML Engineer. Qo'llab-quvvatlashni talab qiladi: Sales, Account Management, HR Business Partner, Public Relations, Team Lead."
+            }
+          },
+          "medium": {
+            "label_ru": "Средний",
+            "percentile_range": [
+              47,
+              73
+            ],
+            "raw_range": [
+              57,
+              88
+            ],
+            "hr_summary_ru": "Тестируемый демонстрирует амбивертный профиль: способен эффективно функционировать как в социально насыщенных, так и в независимых рабочих контекстах. Кандидат участвует в коммуникациях по мере необходимости, не избегая социального взаимодействия, но и не нуждаясь в нём как в основном источнике энергии. Такой сотрудник хорошо адаптируется к гибридным форматам работы и командам с разнородным составом по экстраверсии.",
+            "strengths_ru": "Адаптивность к различным командным культурам. Способность к как глубокой концентрированной работе, так и к эффективным коммуникациям. Меньший риск доминирования или самоустранения в групповых обсуждениях. Хорошая совместимость с большинством типов организационных структур.",
+            "risks_ru": "В критических ситуациях может не проявить достаточной настойчивости ни в отстаивании позиции, ни в самостоятельной работе. Возможна нечёткость ролевого позиционирования в командах.",
+            "management_tips_ru": "Рекомендуется использовать гибкость профиля для назначения в разнообразные кросс-функциональные роли. Полезно уточнять индивидуальные предпочтения по формату взаимодействия для оптимизации условий работы.",
+            "job_fitness_ru": "Подходит для: большинства корпоративных ролей — от Backend Developer до HR Manager. Особенно эффективен в Project Manager, Scrum Master, Business Analyst, Middle Management.",
+            "hiring_recommendation_ru": {
+              "verdict": "Рекомендован",
+              "note_ru": "Амбивертный профиль, гибок к разным командным культурам. Подходит для большинства ролей, особенно координационных (PM, Scrum Master, BA)."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi ambivert profilini namoyon etadi: ham ijtimoiy jihatdan to'yingan, ham mustaqil ish kontekstlarida samarali faoliyat ko'rsatish qobiliyatiga ega. Nomzod ijtimoiy o'zaro munosabatdan qochmasdan, lekin uni asosiy energiya manbai sifatida ham kerak qilmasdan, zarur bo'lganda kommunikatsiyalarda ishtirok etadi.",
+              "strengths": "Turli jamoa madaniyatlariga moslashuvchanlik. Ham chuqur konsentratsiyali ish, ham samarali kommunikatsiyalar qobiliyati. Guruh muhokamalarida hukmronlik yoki o'z-o'zidan chekinish xavfining kamayishi. Ko'pchilik tashkiliy tuzilma turlari bilan yaxshi muvofiqlik.",
+              "risks": "Muhim vaziyatlarda na pozitsiyani himoya qilishda, na mustaqil ishlashda yetarli qat'iyatlilikni namoyon etmaslik mumkin. Jamoalarda rol pozitsiyasining noaniqligi mumkin.",
+              "management_tips": "Turli kross-funksional rollarga tayinlash uchun profil moslashuvchanligidan foydalanish tavsiya etiladi. Ish sharoitlarini optimallashtirish uchun o'zaro munosabat formati bo'yicha individual afzalliklarni aniqlashtirish foydali.",
+              "job_fitness": "Quyidagilarga mos: Backend Developerdan HR Managergacha ko'pchilik korporativ rollar. Ayniqsa samarali: Project Manager, Scrum Master, Business Analyst, O'rta menejment."
+            }
+          },
+          "high": {
+            "label_ru": "Высокий",
+            "percentile_range": [
+              74,
+              100
+            ],
+            "raw_range": [
+              89,
+              120
+            ],
+            "hr_summary_ru": "Тестируемый демонстрирует выраженную социальную энергию, инициативность в коммуникации и склонность к доминированию в групповых взаимодействиях. Кандидат черпает мотивацию из социальных контактов, легко устанавливает отношения и комфортно функционирует в публичном пространстве. Такой сотрудник активно участвует в совещаниях, берёт на себя неформальное лидерство и формирует широкие профессиональные сети. Эффективен в переговорах, публичных презентациях и ролях, предполагающих интенсивное взаимодействие с внешними аудиториями.",
+            "strengths_ru": "Высокая эффективность в переговорах, продажах и клиентских коммуникациях. Способность быстро строить доверие с новыми стейкхолдерами. Естественное лидерство в командных дискуссиях. Генерация энергии и вовлечённости в команде. Продуктивное нетворкинг-поведение для роста бизнеса.",
+            "risks_ru": "Риск «перетягивания одеяла» в командных обсуждениях, подавляя интровертов. Склонность к поверхностной вовлечённости при высоком количестве контактов. Возможные трудности с работой в условиях социальной изоляции (remote, deep work). Риск принятия решений на основе социального консенсуса, а не данных.",
+            "management_tips_ru": "Руководителю рекомендуется создавать структурированные форматы совещаний, обеспечивающие участие всех членов команды. Полезно назначать сотрудника в роли «амбассадора» для внешних коммуникаций и нетворкинга. Необходимо обеспечить баланс между публичными задачами и задачами, требующими глубокой концентрации.",
+            "job_fitness_ru": "Рекомендуемые роли: Sales Manager, Business Development, Account Executive, PR/Communications, HR Business Partner, DevRel, Team Lead, Event Manager, Customer Success. Не рекомендуется: монотонная удалённая работа, глубокий технический анализ без коммуникационной составляющей.",
+            "hiring_recommendation_ru": {
+              "verdict": "Условно (зависит от роли)",
+              "note_ru": "Рекомендован для клиентских, переговорных, лидерских и публичных ролей (Sales, BD, HRBP, DevRel). Не рекомендован для монотонной удалённой работы и глубокого технического анализа без коммуникационной части."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yaqqol ijtimoiy energiya, muloqotda tashabbuskorlik va guruh o'zaro munosabatlarida hukmronlikka moyillikni namoyon etadi. Nomzod ijtimoiy aloqalardan motivatsiya oladi, munosabatlarni osongina o'rnatadi va ommaviy maydonda qulay faoliyat ko'rsatadi. Bunday xodim yig'ilishlarda faol ishtirok etadi, norasmiy rahbarlikni o'z zimmasiga oladi va keng professional tarmoqlar shakllantiradi. Muzokaralar, ommaviy taqdimotlar va tashqi auditoriyalar bilan intensiv o'zaro munosabatni nazarda tutuvchi rollarda samarali.",
+              "strengths": "Muzokaralar, savdo va mijozlar kommunikatsiyasida yuqori samaradorlik. Yangi manfaatdor tomonlar bilan tez ishonch qurish qobiliyati. Jamoa muhokamalarida tabiiy rahbarlik. Jamoada energiya va ishtirokni generatsiya qilish. Biznesni o'sishi uchun samarali networking xatti-harakati.",
+              "risks": "Jamoaviy muhokamalarida introvertlarni bostirish orqali 'yostiq tortishish' xavfi. Ko'p sonli kontaktlar bilan yuza ishtirokka moyillik. Ijtimoiy izolyatsiya sharoitida (masofaviy, chuqur ish) ishlashda mumkin bo'lgan qiyinchiliklar. Ma'lumotlar emas, ijtimoiy konsensus asosida qaror qabul qilish xavfi.",
+              "management_tips": "Rahbarga barcha jamoa a'zolarining ishtirokini ta'minlovchi tuzilgan yig'ilish formatlarini yaratish tavsiya etiladi. Xodimni tashqi kommunikatsiyalar va networking uchun 'elchi' sifatida tayinlash foydali. Ommaviy vazifalar va chuqur konsentratsiyani talab qiladigan vazifalar o'rtasida muvozanatni ta'minlash zarur.",
+              "job_fitness": "Tavsiya etiladigan rollar: Sales Manager, Business Development, Account Executive, PR/Communications, HR Business Partner, DevRel, Team Lead, Event Manager, Customer Success. Tavsiya etilmaydi: monoton masofaviy ish, kommunikatsiya komponenti bo'lmagan chuqur texnik tahlil."
+            }
+          }
+        }
+      },
+      "agreeableness": {
+        "scale_name_ru": "Доброжелательность (кооперативность)",
+        "item_count": 24,
+        "score_direction_note_ru": null,
+        "bands": {
+          "low": {
+            "label_ru": "Низкий",
+            "percentile_range": [
+              20,
+              46
+            ],
+            "raw_range": [
+              24,
+              56
+            ],
+            "hr_summary_ru": "Тестируемый демонстрирует сниженную просоциальную ориентацию: ставит личные цели и интересы выше командных, комфортно функционирует в конкурентной среде и не испытывает дискомфорта от конфронтации. Кандидат склонен к скептицизму в отношении мотивов коллег, настойчивому отстаиванию собственных позиций и прямолинейности в коммуникации. В рабочей среде такой сотрудник демонстрирует независимость суждений и устойчивость к групповому давлению.",
+            "strengths_ru": "Высокая эффективность в переговорах и ситуациях конкурентного давления. Способность принимать непопулярные, но необходимые решения. Устойчивость к манипуляции и неоправданному социальному давлению. Прямолинейная обратная связь, ценная в культурах с высокой ценностью честности.",
+            "risks_ru": "Риск деструктивных конфликтов и подрыва командного климата. Трудности с построением долгосрочных доверительных отношений. Возможное снижение вовлечённости команды при наличии управленческих полномочий. Репутационные риски в клиентских коммуникациях.",
+            "management_tips_ru": "Руководителю необходимо чётко устанавливать поведенческие ожидания в части командного взаимодействия. Сильные стороны лучше всего реализуются в ролях с высокой степенью автономии и переговорной составляющей. Важно включать в команды с высокой Доброжелательностью для балансирования динамики.",
+            "job_fitness_ru": "Рекомендуемые роли: Sales (B2B enterprise), M&A Analyst, Investigative Journalist, Legal (adversarial), Security Researcher, Procurement. Не рекомендуется без дополнительной поддержки: управленческие роли с большой командой, HR, Customer Support, Teaching.",
+            "hiring_recommendation_ru": {
+              "verdict": "Условно (зависит от роли)",
+              "note_ru": "Рекомендован для переговорных, B2B-enterprise и adversarial-ролей (Legal, M&A, Procurement). Не рекомендован без поддержки для управления большой командой, HR, Customer Support и преподавания."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi pasaytirilgan prosotsiyal yo'nalishni namoyon etadi: shaxsiy maqsad va manfaatlarni jamoaviy manfaatlardan ustun qo'yadi, raqobatbardosh muhitda qulay faoliyat ko'rsatadi va qarama-qarshilikdan noqulaylik sezmaydii. Nomzod hamkasblar motivlariga shubha bilan qarashga, o'z pozitsiyasini qat'iyat bilan himoya qilishga va kommunikatsiyada to'g'ridan-to'g'rilikka moyil.",
+              "strengths": "Muzokaralar va raqobat bosimi vaziyatlarida yuqori samaradorlik. Mashhur bo'lmagan, lekin zaruriy qarorlar qabul qilish qobiliyati. Manipulyatsiya va asossiz ijtimoiy bosimga chidamlilik. Halollik qiymati yuqori madaniyatlarda qimmatli to'g'ridan-to'g'ri fikr-mulohaza.",
+              "risks": "Destruktiv ziddiyatlar va jamoa iqlimini buzish xavfi. Uzoq muddatli ishonchli munosabatlar qurishda qiyinchiliklar. Boshqaruv vakolatlari mavjud bo'lganda jamoaning ishtiyoqi kamayishi mumkin. Mijozlar kommunikatsiyasida obro'-e'tibor xavflari.",
+              "management_tips": "Rahbar jamoa o'zaro munosabatlari qismida xulq-atvor kutishlarini aniq belgilashi kerak. Kuchli tomonlar eng yaxshi yuqori darajadagi avtonom va muzokaralar komponentiga ega rollarda ro'yobga chiqadi. Dinamikani muvozanatlash uchun yuqori Kelishuvchanligi bo'lgan jamoalarga kiritish muhim.",
+              "job_fitness": "Tavsiya etiladigan rollar: Sales (B2B enterprise), M&A Analyst, Investigative Journalist, Legal (adversarial), Security Researcher, Procurement. Qo'shimcha qo'llab-quvvatlashsiz tavsiya etilmaydi: katta jamoa bilan boshqaruv rollari, HR, Customer Support, Ta'lim."
+            }
+          },
+          "medium": {
+            "label_ru": "Средний",
+            "percentile_range": [
+              47,
+              73
+            ],
+            "raw_range": [
+              57,
+              88
+            ],
+            "hr_summary_ru": "Тестируемый демонстрирует сбалансированный просоциальный профиль: способен к кооперации и эмпатии, однако сохраняет способность к отстаиванию собственных позиций и принятию непопулярных решений. Кандидат хорошо функционирует как в кооперативных, так и в конкурентных рабочих средах. Такой сотрудник является психологически устойчивым участником команды, способным балансировать между интересами группы и организации.",
+            "strengths_ru": "Способность сотрудничать без потери автономии. Комфортное функционирование как в консенсусных, так и в директивных культурах. Реалистичная оценка мотивов коллег. Устойчивость к манипуляции при сохранении открытости.",
+            "risks_ru": "Может проявлять непоследовательность в ситуациях высокого давления. Профиль менее выражен — прогностическая ценность для специфических ролей ниже.",
+            "management_tips_ru": "Рекомендуется уточнять ситуационные предпочтения сотрудника. Данный профиль хорошо работает в большинстве корпоративных контекстов без специальных условий.",
+            "job_fitness_ru": "Универсальный профиль. Рекомендуемые роли: Product Manager, Team Lead, Account Manager, Marketing Manager, Operations Manager, Business Analyst.",
+            "hiring_recommendation_ru": {
+              "verdict": "Рекомендован",
+              "note_ru": "Сбалансированный профиль: кооперативность без потери автономии. Подходит для большинства корпоративных контекстов без специальных условий."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi muvozanatli prosotsiyal profilini namoyon etadi: hamkorlik va empatiya qobiliyatiga ega, ammo o'z pozitsiyasini himoya qilish va mashhur bo'lmagan qarorlar qabul qilish qobiliyatini saqlab qoladi. Nomzod ham kooperativ, ham raqobatbardosh ish muhitlarida yaxshi faoliyat ko'rsatadi.",
+              "strengths": "Avtonomiyani yo'qotmasdan hamkorlik qilish qobiliyati. Ham konsensusli, ham direktiv madaniyatlarda qulay faoliyat. Hamkasblar motivlarini realistik baholash. Ochiqlikni saqlab qolgan holda manipulyatsiyaga chidamlilik.",
+              "risks": "Yuqori bosim vaziyatlarida izchilsizlikni namoyon etishi mumkin. Profil kamroq ifodalangan — o'ziga xos rollar uchun prognoz qiymati pastroq.",
+              "management_tips": "Xodimning vaziyatli afzalliklarini aniqlashtirish tavsiya etiladi. Ushbu profil maxsus shartlarsiz ko'pchilik korporativ kontekstlarda yaxshi ishlaydi.",
+              "job_fitness": "Universal profil. Tavsiya etiladigan rollar: Product Manager, Team Lead, Account Manager, Marketing Manager, Operations Manager, Business Analyst."
+            }
+          },
+          "high": {
+            "label_ru": "Высокий",
+            "percentile_range": [
+              74,
+              100
+            ],
+            "raw_range": [
+              89,
+              120
+            ],
+            "hr_summary_ru": "Тестируемый демонстрирует выраженную просоциальную ориентацию, эмпатию и склонность к кооперации. Кандидат ставит интересы команды выше личных, избегает конфронтации и стремится к гармонии в рабочих отношениях. Такой сотрудник является ценным медиатором при конфликтах, формирует психологическую безопасность в команде и демонстрирует высокую вовлечённость в потребности коллег. Склонен к альтруистическому поведению: готов брать на себя дополнительные задачи, если это помогает команде.",
+            "strengths_ru": "Формирование психологически безопасной командной среды. Высокая эффективность в ролях с требованиями к эмпатии (HR, Customer Support, Healthcare). Медиация конфликтов и построение консенсуса. Лояльность и долгосрочная приверженность организации. Стимулирование сотрудничества в кросс-функциональных командах.",
+            "risks_ru": "Риск избегания необходимого конфликта и трудных разговоров. Склонность к избыточному соглашательству (yes-man effect) в ущерб качеству решений. Уязвимость к манипуляции и эксплуатации менее добросовестными коллегами. Трудности с выставлением чётких границ и отстаиванием своих интересов. Возможное снижение производительности ввиду частых просьб о помощи.",
+            "management_tips_ru": "Руководителю следует активно развивать навыки конструктивного несогласия и assertiveness. Необходимо защищать сотрудника от перегрузки просьбами коллег. При оценке результативности важно разграничивать вклад в командный климат и индивидуальные достижения. Рекомендуется ставить чёткие личные KPI.",
+            "job_fitness_ru": "Рекомендуемые роли: HR Business Partner, Customer Success, Support Engineer, Teacher/Trainer, Healthcare, Social Work, Scrum Master. Требует поддержки в: Sales (жёсткие переговоры), Legal (adversarial contexts), Management (необходимость принимать непопулярные решения).",
+            "hiring_recommendation_ru": {
+              "verdict": "Условно (зависит от роли)",
+              "note_ru": "Рекомендован для HR, поддержки, командных и сервисных ролей. Требует поддержки в жёстких переговорах и в роли руководителя (непопулярные решения); развивать assertiveness, защищать от перегрузки."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yaqqol prosotsiyal yo'nalish, empatiya va hamkorlikka moyillikni namoyon etadi. Nomzod jamoa manfaatlarini shaxsiy manfaatlardan ustun qo'yadi, qarama-qarshilikdan qochadi va ish munosabatlarida uyg'unlikka intiladi. Bunday xodim ziddiyatlar paytida qimmatli vositachi hisoblanadi, jamoada psixologik xavfsizlikni shakllantiradi va hamkasblar ehtiyojiga yuqori ishtiyoq ko'rsatadi.",
+              "strengths": "Psixologik jihatdan xavfsiz jamoa muhitini shakllantirish. Empatiyaga talablar bilan rollarda yuqori samaradorlik (HR, Customer Support, Healthcare). Ziddiyatlarni tartibga solish va konsensus qurish. Tashkilotga sadoqat va uzoq muddatli sodiqlik. Kross-funksional jamoalarda hamkorlikni rag'batlantirish.",
+              "risks": "Zaruriy ziddiyat va qiyin suhbatlardan qochish xavfi. Qarorlar sifatiga zarar etkazuvchi ortiqcha kelishuvga moyillik (ha-odamlar effekti). Kamroq vijdonli hamkasblar tomonidan manipulyatsiya va ekspluatatsiyaga zaiflik. Aniq chegaralar o'rnatish va o'z manfaatlarini himoya qilishda qiyinchiliklar. Yordam so'rovlarining ko'pligi tufayli samaradorlikning kamayishi mumkin.",
+              "management_tips": "Rahbar konstruktiv kelishmovchilik va assertivlik ko'nikmalarini faol rivojlantirishi kerak. Xodimni hamkasblarning so'rovlari bilan ortiqcha yuklanishdan himoya qilish zarur. Samaradorlikni baholashda jamoa iqlimiga hissa va individual yutuqlarni farqlash muhim. Aniq shaxsiy KPI qo'yish tavsiya etiladi.",
+              "job_fitness": "Tavsiya etiladigan rollar: HR Business Partner, Customer Success, Support Engineer, Teacher/Trainer, Healthcare, Social Work, Scrum Master. Qo'llab-quvvatlashni talab qiladi: Sales (qattiq muzokaralar), Legal (raqobatbardosh kontekstlar), Management (mashhur bo'lmagan qarorlar qabul qilish zarurati)."
+            }
+          }
+        }
+      },
+      "conscientiousness": {
+        "scale_name_ru": "Сознательность (добросовестность)",
+        "item_count": 24,
+        "score_direction_note_ru": null,
+        "bands": {
+          "low": {
+            "label_ru": "Низкий",
+            "percentile_range": [
+              20,
+              46
+            ],
+            "raw_range": [
+              24,
+              56
+            ],
+            "hr_summary_ru": "Тестируемый демонстрирует сниженную склонность к самодисциплине, планированию и систематическому выполнению задач. Кандидат может проявлять импульсивность в принятии решений, откладывать сложные задачи и испытывать трудности с соблюдением дедлайнов в отсутствие внешнего контроля. В рабочей среде такой сотрудник может демонстрировать вспышки высокой продуктивности, сменяемые периодами низкой эффективности. Ценит автономию, однако не всегда способен продуктивно ею распорядиться.",
+            "strengths_ru": "Высокая спонтанность и способность действовать в условиях неопределённости без паралича анализа. Гибкость и способность быстро менять приоритеты в кризисных ситуациях. Устойчивость к монотонии при условии частой смены задач.",
+            "risks_ru": "Систематический риск срыва сроков и снижения качества без внешнего контроля. Трудности с завершением долгосрочных проектов. Возможные конфликты с клиентами и стейкхолдерами из-за непредсказуемости. Риск критических ошибок в процессах, требующих точности.",
+            "management_tips_ru": "Руководителю необходимо внедрить высокочастотные контрольные точки (ежедневные или еженедельные стендапы). Рекомендуется назначать краткосрочные задачи с частыми дедлайнами вместо долгосрочных. Избегать роли, требующих полной автономии. Рассмотреть возможность создания структурированной системы внешней ответственности (buddy-система, PM-поддержка).",
+            "job_fitness_ru": "Возможно эффективен в: кризисном менеджменте (краткосрочные задачи), Incident Response, некоторых sales-ролях (охота), творческих спринтах. Не рекомендуется: финансовый контроль, юридическая практика, QA, управление критической инфраструктурой, Project Management без PM-инструментов.",
+            "hiring_recommendation_ru": {
+              "verdict": "Не рекомендован без жёсткой внешней структуры",
+              "note_ru": "Систематический риск срыва сроков и качества без постоянного контроля. Не назначать на автономные, удалённые и руководящие роли. Возможен в кризис-менеджменте и коротких спринтах при высокочастотном контроле."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi o'z-intizomga, rejalashtirish va vazifalarni tizimli bajarishga kamaygan moyillikni namoyon etadi. Nomzod qaror qabul qilishda impulsivlik ko'rsatishi, murakkab vazifalarni kechiktirishi va tashqi nazorat yo'qligida muddatlarni saqlashda qiyinchilik boshdan kechirishi mumkin. Ish muhitida bunday xodim past samaradorlik davrlariga almashinuvchi yuqori unumdorlikning portlashlari ko'rsatishi mumkin.",
+              "strengths": "Tahlil falajisiz noaniqlik sharoitida harakat qilish qobiliyati va yuqori spontanlik. Inqirozli vaziyatlarda moslashuvchanlik va ustuvorliklarni tez o'zgartirish qobiliyati. Vazifalarni tez-tez almashtirish sharti bilan monotoniyaga chidamlilik.",
+              "risks": "Tashqi nazorat yo'qligida muddatlarni buzish va sifatni pasaytirish uchun tizimli xavf. Uzoq muddatli loyihalarni yakunlashda qiyinchiliklar. Bashorat qilinmaslik tufayli mijozlar va manfaatdor tomonlar bilan mumkin bo'lgan ziddiyatlar. Aniqlik talab qiladigan jarayonlarda kritik xatolar xavfi.",
+              "management_tips": "Rahbar yuqori chastotali nazorat nuqtalarini joriy etishi kerak (kunlik yoki haftalik stendaplar). Uzoq muddatli o'rniga tez-tez muddatlari bo'lgan qisqa muddatli vazifalar tayinlash tavsiya etiladi. To'liq avtonomiya talab qiladigan rollardan qochish. Tuzilgan tashqi mas'uliyat tizimini (buddy tizimi, PM qo'llab-quvvatlash) yaratishni ko'rib chiqish.",
+              "job_fitness": "Quyidagilarda samarali bo'lishi mumkin: inqirozni boshqarish (qisqa muddatli vazifalar), Incident Response, ba'zi savdo rollari (ov qilish), ijodiy sprintlar. Tavsiya etilmaydi: moliyaviy nazorat, yuridik amaliyot, QA, muhim infratuzilmani boshqarish, PM vositalarsiz loyiha boshqaruvi."
+            }
+          },
+          "medium": {
+            "label_ru": "Средний",
+            "percentile_range": [
+              47,
+              73
+            ],
+            "raw_range": [
+              57,
+              88
+            ],
+            "hr_summary_ru": "Тестируемый демонстрирует достаточный уровень самоорганизации для выполнения большинства рабочих задач при наличии внешней структуры. Кандидат способен планировать и соблюдать сроки, однако при значительной нагрузке или в условиях многозадачности может нуждаться в дополнительной координации. Такой сотрудник гибко балансирует между тщательностью и скоростью, не впадая в крайности ни перфекционизма, ни безответственности.",
+            "strengths_ru": "Способность адаптировать уровень тщательности к требованиям задачи. Достаточная самостоятельность при наличии чётких приоритетов. Хорошая совместимость с большинством типов руководства. Продуктивная работа как в структурированных, так и в относительно гибких средах.",
+            "risks_ru": "При высокой нагрузке возможно снижение контроля качества. Могут потребоваться внешние системы напоминаний и контрольные точки. Риск откладывания задач при отсутствии жёстких дедлайнов.",
+            "management_tips_ru": "Рекомендуется внедрить чёткие системы отчётности с промежуточными контрольными точками. Полезны инструменты управления задачами (Jira, Asana, Linear). Мотивация через постановку амбициозных, но достижимых целей по системе OKR.",
+            "job_fitness_ru": "Рекомендуемые роли: Frontend Developer, Marketing Specialist, Customer Success Manager, HR Manager, Content Manager, Sales Manager. Подходит для большинства корпоративных функций при наличии систем управления задачами.",
+            "hiring_recommendation_ru": {
+              "verdict": "Рекомендован",
+              "note_ru": "Продуктивен при наличии систем управления задачами и промежуточных контрольных точек. Подходит для большинства функций."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi tashqi tuzilma mavjudligida ko'pgina ish vazifalarini bajarish uchun yetarli o'z-o'zini tashkil etish darajasini namoyon etadi. Nomzod rejalashtirish va muddatlarni saqlash qobiliyatiga ega, ammo sezilarli yuklama yoki ko'p vazifali sharoitlarda qo'shimcha koordinatsiyaga muhtoj bo'lishi mumkin. Bunday xodim perfektsionizm ham, mas'uliyatsizlik ham ekstremallariga yiqilmasdan ehtiyotkorlik va tezlik o'rtasida moslashuvchan muvozanat saqlaydi.",
+              "strengths": "Ehtiyotkorlik darajasini vazifa talablariga moslashtirish qobiliyati. Aniq ustuvorliklar mavjudligida yetarli mustaqillik. Ko'pchilik rahbarlik turlari bilan yaxshi muvofiqlik. Tuzilgan va nisbatan moslashuvchan muhitlarda ham samarali ish.",
+              "risks": "Yuqori yuklamada sifat nazoratining pasayishi mumkin. Tashqi eslatma tizimlari va nazorat nuqtalari talab qilinishi mumkin. Qat'iy muddatlar yo'qligida vazifalarni kechiktirish xavfi.",
+              "management_tips": "Oraliq nazorat nuqtalari bilan aniq hisobot tizimlarini joriy etish tavsiya etiladi. Vazifalarni boshqarish vositalari (Jira, Asana, Linear) foydali. OKR tizimi bo'yicha ambitsiyali, lekin erishish mumkin bo'lgan maqsadlar qo'yish orqali motivatsiya.",
+              "job_fitness": "Tavsiya etiladigan rollar: Frontend Developer, Marketing Specialist, Customer Success Manager, HR Manager, Content Manager, Sales Manager. Vazifalarni boshqarish tizimlari mavjudligida ko'pchilik korporativ funktsiyalar uchun mos."
+            }
+          },
+          "high": {
+            "label_ru": "Высокий",
+            "percentile_range": [
+              74,
+              100
+            ],
+            "raw_range": [
+              89,
+              120
+            ],
+            "hr_summary_ru": "Тестируемый демонстрирует высокий уровень самоорганизации, дисциплины и ориентации на результат. Кандидат отличается выраженной склонностью к планированию, соблюдению сроков и стандартов качества. Такой сотрудник систематически управляет своей рабочей нагрузкой, редко допускает ошибки по невнимательности и принимает ответственность за результат. В коллективе воспринимается как надёжный исполнитель и часто выступает неформальным стандартом качества. Склонен к методичной работе, структурированию информации и формализации процессов.",
+            "strengths_ru": "Высокая надёжность выполнения задач в срок и в полном объёме. Способность самостоятельно управлять сложными многоэтапными проектами. Формирование культуры качества в команде. Минимальная потребность во внешнем контроле. Устойчивость к соблазну срезать углы в процессах.",
+            "risks_ru": "Риск перфекционизма, ведущего к overdelivery и снижению скорости. Трудности с делегированием ввиду высоких личных стандартов. Возможный конфликт с менее организованными коллегами. Риск выгорания при длительной перегрузке без внешней регуляции. Склонность к микроменеджменту при переходе в роль руководителя.",
+            "management_tips_ru": "Руководителю необходимо регулярно калибровать ожидания по качеству: обозначать, когда 'достаточно хорошо' является приемлемым результатом. Следует контролировать загрузку и вовремя снимать задачи низкого приоритета. При назначении на руководящую роль — проводить коучинг по делегированию. Рекомендуется включать в задачи с чёткими критериями приёмки.",
+            "job_fitness_ru": "Рекомендуемые роли: Project Manager, QA Lead, Financial Controller, Legal, Compliance, Operations Manager, Backend Developer, Data Engineer, Executive Assistant. Может испытывать стресс в: стартапах с постоянно меняющимися приоритетами, creative-роли без чётких критериев.",
+            "hiring_recommendation_ru": {
+              "verdict": "Рекомендован",
+              "note_ru": "Надёжный исполнитель с минимальной потребностью в контроле. Учесть риск перфекционизма и трудностей с делегированием; калибровать стандарты и нагрузку."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi o'z-o'zini tashkil etish, intizom va natijaga yo'nalganlikning yuqori darajasini namoyon etadi. Nomzod rejalashtirish, muddatlar va sifat standartlarini saqlashga yaqqol moyillik bilan ajralib turadi. Bunday xodim ish yukini tizimli boshqaradi, e'tiborsizlik tufayli kamdan-kam xato qiladi va natija uchun javobgarlikni qabul qiladi. Jamoada ishonchli ijrochi sifatida qabul qilinadi va ko'pincha norasmiy sifat standarti sifatida chiqadi.",
+              "strengths": "Vazifalarni muddatida va to'liq hajmda bajarishning yuqori ishonchliligi. Murakkab ko'p bosqichli loyihalarni mustaqil boshqarish qobiliyati. Jamoada sifat madaniyatini shakllantirish. Tashqi nazoratga minimal ehtiyoj. Jarayonlarda burchakni qirqish vasvasasiga chidamlilik.",
+              "risks": "Haddan tashqari etkazib berish va tezlikni pasaytiruvchi perfektsionizm xavfi. Yuqori shaxsiy standartlar tufayli delegatsiya qilishda qiyinchiliklar. Kamroq uyushgan hamkasblar bilan potensial ziddiyat. Tashqi tartibga solishsiz uzoq davom etgan ortiqcha yuklama sharoitida burnout xavfi. Rahbarlik roliga o'tishda mikromenejmentga moyillik.",
+              "management_tips": "Rahbar muntazam ravishda sifat bo'yicha kutishlarni kalibrlashi kerak: qachon 'yetarlicha yaxshi' qabul qilinishi mumkin bo'lgan natija ekanligini belgilash. Yuklamani nazorat qilish va past ustuvorlikdagi vazifalarni o'z vaqtida olib tashlash kerak. Rahbarlik roliga tayinlashda delegatsiya bo'yicha kouching o'tkazish. Aniq qabul qilish mezonlari bilan vazifalarga kiritish tavsiya etiladi.",
+              "job_fitness": "Tavsiya etiladigan rollar: Project Manager, QA Lead, Financial Controller, Legal, Compliance, Operations Manager, Backend Developer, Data Engineer, Executive Assistant. Quyidagilarda stress boshdan kechirishi mumkin: doimiy o'zgaruvchan ustuvorliklar bilan startaplar, aniq mezonsiz ijodiy rollar."
+            }
+          }
+        }
+      },
+      "openness": {
+        "scale_name_ru": "Открытость опыту",
+        "item_count": 24,
+        "score_direction_note_ru": null,
+        "bands": {
+          "low": {
+            "label_ru": "Низкий",
+            "percentile_range": [
+              20,
+              46
+            ],
+            "raw_range": [
+              24,
+              56
+            ],
+            "hr_summary_ru": "Тестируемый демонстрирует выраженную ориентацию на конкретность, практичность и доказанные методы работы. Кандидат предпочитает чёткие инструкции, устоявшиеся процессы и предсказуемые рабочие среды. Такой сотрудник скептически относится к изменениям без очевидного обоснования и может сопротивляться реструктуризации. В стабильных, регламентированных контекстах показывает высокую надёжность и точность. Ценит конкретные, измеримые результаты над абстрактными концепциями.",
+            "strengths_ru": "Высокая точность в выполнении стандартизированных процессов. Устойчивость к «шуму» непроверенных идей. Надёжность в критически важных, регламентированных операциях. Последовательность и предсказуемость рабочего поведения.",
+            "risks_ru": "Сопротивление организационным изменениям и инновациям. Трудности с адаптацией в быстро меняющихся индустриях. Риск технологического устаревания при отсутствии внешнего побуждения к обучению. Возможный конфликт с коллегами с высокой Открытостью.",
+            "management_tips_ru": "Руководителю следует обосновывать изменения через конкретные данные и практические примеры, а не через «тренды» или «визию». Необходимо обеспечить структурированные программы повышения квалификации с чёткими стандартами завершения. Данный сотрудник наиболее продуктивен в ролях с высокой операционной стабильностью.",
+            "job_fitness_ru": "Рекомендуемые роли: QA Engineer, Compliance Officer, Financial Analyst, Legal Counsel, Operations Manager, Database Administrator, Accountant, IT Support. Не рекомендуется: стартап-среда, R&D, Creative Director, Product Innovation.",
+            "hiring_recommendation_ru": {
+              "verdict": "Условно (зависит от роли)",
+              "note_ru": "Рекомендован для регламентных, контрольных и операционно-стабильных ролей. Не рекомендован для стартап-среды, R&D и креативных ролей без внешней поддержки."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi konkretlikka, amaliylikka va isbotlangan ish usullariga yaqqol yo'nalganligini namoyon etadi. Nomzod aniq ko'rsatmalar, o'rnatilgan jarayonlar va bashorat qilinadigan ish muhitlarini afzal ko'radi. Bunday xodim aniq asossiz o'zgarishlarga shubha bilan qaradi va qayta tuzilishga qarshilik ko'rsatishi mumkin. Barqaror, tartibga solingan kontekstlarda yuqori ishonchlilik va aniqlik ko'rsatadi.",
+              "strengths": "Standartlashtirilgan jarayonlarni bajarishda yuqori aniqlik. Tekshirilmagan g'oyalar 'shovqiniga' chidamlilik. Muhim, tartibga solingan operatsiyalarda ishonchlilik. Ish xatti-harakatlarining izchilligi va bashorat qilinishi.",
+              "risks": "Tashkiliy o'zgarishlar va innovatsiyalarga qarshilik. Tez o'zgaruvchan sohalarda moslashish qiyinchiliklari. Tashqi o'quv undovi bo'lmasa texnologik eskirish xavfi. Yuqori Ochiqlikka ega hamkasblar bilan potensial ziddiyat.",
+              "management_tips": "Rahbar o'zgarishlarni 'trendlar' yoki 'viziya' emas, balki aniq ma'lumotlar va amaliy misollar orqali asoslashi kerak. Aniq yakunlash standartlari bilan tuzilgan malaka oshirish dasturlari ta'minlanishi zarur. Bu xodim yuqori operatsion barqarorlikka ega rollarda eng samarali.",
+              "job_fitness": "Tavsiya etiladigan rollar: QA Engineer, Compliance Officer, Financial Analyst, Legal Counsel, Operations Manager, Database Administrator, Accountant, IT Support. Tavsiya etilmaydi: startap muhiti, R&D, Creative Director, mahsulot innovatsiyasi."
+            }
+          },
+          "medium": {
+            "label_ru": "Средний",
+            "percentile_range": [
+              47,
+              73
+            ],
+            "raw_range": [
+              57,
+              88
+            ],
+            "hr_summary_ru": "Тестируемый демонстрирует сбалансированное сочетание прагматизма и открытости к новому. Кандидат способен генерировать идеи и адаптироваться к изменениям, однако сохраняет ориентацию на практический результат. Такой сотрудник хорошо функционирует в средах, где инновации необходимы, но не являются самоцелью. Он способен работать как с концептуальными задачами, так и с их операционной реализацией. В коллективе выступает медиатором между «визионерами» и «исполнителями», способен переводить абстрактные концепции в конкретные планы.",
+            "strengths_ru": "Способность работать как на стратегическом, так и на тактическом уровне. Реалистичная оценка инновационных идей. Устойчивость к хаосу без потери операционной эффективности. Гибкость в принятии обоснованных изменений при сохранении структуры процессов.",
+            "risks_ru": "Может уступать узким специалистам как в генерации идей, так и в их исполнении. Риск «усреднённости» при отсутствии ролевой ясности. В условиях высокой неопределённости может проявлять нерешительность.",
+            "management_tips_ru": "Рекомендуется чётко определить, в какой пропорции от сотрудника ожидается инновационная активность vs. операционная надёжность. Задачи с умеренным уровнем новизны будут наиболее продуктивны. Полезно включать в кросс-функциональные группы в роли координатора.",
+            "job_fitness_ru": "Рекомендуемые роли: Project Manager, Business Analyst, Team Lead (технический), HR Business Partner, Marketing Manager, Account Manager. Универсально подходит для большинства корпоративных функций при чёткой ролевой постановке.",
+            "hiring_recommendation_ru": {
+              "verdict": "Рекомендован",
+              "note_ru": "Универсальный профиль: сочетает прагматизм и открытость. Подходит для большинства корпоративных функций при чёткой ролевой постановке."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi pragmatizm va yangilikka ochiqlikning muvozanatli kombinatsiyasini namoyon etadi. Nomzod g'oyalar generatsiya qilish va o'zgarishlarga moslashish qobiliyatiga ega, ammo amaliy natijaga yo'nalganligini saqlab qoladi. Bunday xodim innovatsiyalar zarur, lekin o'z-o'zidan maqsad bo'lmagan muhitlarda yaxshi faoliyat ko'rsatadi. U ham kontseptual vazifalar, ham ularning operatsion amalga oshirilishi bilan ishlash qobiliyatiga ega. Jamoada 'visionerlar' va 'ijrochilar' o'rtasida vositachi sifatida chiqadi.",
+              "strengths": "Strategik va taktik darajada ishlash qobiliyati. Innovatsion g'oyalarni realistik baholash. Jarayon tuzilmasini saqlab qolgan holda operatsion samaradorlikni yo'qotmasdan xaosga chidamlilik. Asoslangan o'zgarishlarni qabul qilishda moslashuvchanlik.",
+              "risks": "Tor mutaxassislarga nisbatan ham g'oya generatsiyasida, ham ularni amalga oshirishda ortda qolishi mumkin. Rol aniqligining yo'qligi sharoitida 'o'rtachalik' xavfi. Yuqori noaniqlik sharoitida qat'iyatsizlik namoyon bo'lishi mumkin.",
+              "management_tips": "Xodimdan qancha innovatsion faollik va qancha operatsion ishonchlilik kutilayotganini aniq belgilash tavsiya etiladi. O'rtacha yangilik darajasidagi vazifalar eng samarali bo'ladi. Kross-funksional guruhlarga koordinator sifatida kiritish foydali.",
+              "job_fitness": "Tavsiya etiladigan rollar: Project Manager, Business Analyst, Team Lead (texnik), HR Business Partner, Marketing Manager, Account Manager. Ko'pchilik korporativ funktsiyalar uchun universal mos keladi."
+            }
+          },
+          "high": {
+            "label_ru": "Высокий",
+            "percentile_range": [
+              74,
+              100
+            ],
+            "raw_range": [
+              89,
+              120
+            ],
+            "hr_summary_ru": "Тестируемый демонстрирует выраженную интеллектуальную любознательность и широкий диапазон когнитивных интересов. Кандидат активно ищет новый опыт, нестандартные решения и нередко генерирует идеи, опережающие текущие задачи команды. Такой сотрудник комфортно работает с неопределённостью, хорошо адаптируется к изменениям и склонен к абстрактному мышлению. В рабочей среде он тяготеет к экспериментированию, задаёт вопросы о смысле процессов и демонстрирует готовность пересматривать устоявшиеся подходы. Эстетическое восприятие развито: кандидат ценит качество UX, визуальную коммуникацию и нарратив продукта.",
+            "strengths_ru": "Высокая адаптивность к изменяющимся условиям рынка. Генерация нестандартных идей и кросс-доменное мышление. Способность к обучению в условиях быстро устаревающих знаний. Комфорт при работе в условиях стратегической неопределённости. Проактивное исследование проблемного пространства до постановки задачи.",
+            "risks_ru": "Склонность к незавершению начатого ввиду переключения на новые интересы. Риск генерации идей без их операционализации. Возможное пренебрежение рутинными, но критичными процессами. Трудности с принятием жёстких стандартов и регламентов. Потенциальный конфликт с культурой 'делай как всегда'.",
+            "management_tips_ru": "Руководителю рекомендуется предоставлять сотруднику пространство для исследовательских задач с чётко обозначенными дедлайнами. Следует назначать 'партнёра по реализации' — коллегу с высокой Сознательностью — для доведения идей до продукта. Оценка результативности должна включать метрику внедрения, а не только генерации идей. Рекомендуется регулярный 1-on-1 с фокусом на приоритизации текущего портфеля задач.",
+            "job_fitness_ru": "Рекомендуемые роли: Product Manager, UX/UI Designer, R&D, Data Scientist, Solutions Architect, DevRel, Content Strategist, Innovation Lead. Требует поддержки в ролях: QA (монотонный регрессионный цикл), Operations, Compliance, Финансовый контроллинг.",
+            "hiring_recommendation_ru": {
+              "verdict": "Условно (зависит от роли)",
+              "note_ru": "Рекомендован для инновационных, продуктовых, исследовательских и креативных ролей. Требует поддержки/структуры в рутинно-регламентных функциях (QA, операции, комплаенс, финконтроль)."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yuqori intellektual qiziquvchanlik va keng kognitiv qiziqishlar doirasini namoyon etadi. Nomzod faol ravishda yangi tajriba, nostandart yechimlar izlaydi va ko'pincha jamoa vazifalaridan oldinda g'oyalar generatsiya qiladi. Bunday xodim noaniqlik sharoitida qulay ishlaydi, o'zgarishlarga yaxshi moslashadi va abstrakt fikrlashga moyil. Ish muhitida u tajriba o'tkazishga intiladi, jarayonlarning ma'nosini so'raydi va mavjud yondashuvlarni qayta ko'rib chiqishga tayyor ekanligini namoyon etadi. Estetik idrok rivojlangan: nomzod UX sifatini, vizual kommunikatsiyani va mahsulot narrativini qadriydi.",
+              "strengths": "Bozor sharoitlarining o'zgarishiga yuqori moslashuvchanlik. Nostandart g'oyalar generatsiyasi va kross-domen fikrlash. Tez eskirayotgan bilimlar sharoitida o'qish qobiliyati. Strategik noaniqlik sharoitida ishlashda qulaylik. Vazifa qo'yilishidan oldin muammo maydonini proaktiv tadqiq etish.",
+              "risks": "Yangi qiziqishlarga o'tish tufayli boshlangan ishni yakunlamaslikka moyillik. G'oyalarni operatsionalizatsiya qilmasdan generatsiya qilish xavfi. Monoton, lekin muhim jarayonlarni e'tiborsiz qoldirish ehtimoli. Qattiq standartlar va reglamentlarni qabul qilishda qiyinchiliklar. 'Har doim shunday qilinar' madaniyati bilan potensial ziddiyat.",
+              "management_tips": "Rahbarga aniq belgilangan muddatlar bilan xodimga tadqiqot vazifalari uchun fazo berish tavsiya etiladi. G'oyalarni mahsulotga etkazish uchun yuqori Vijdonlilikka ega hamkasb — 'amalga oshirish sherigi' tayinlash kerak. Samaradorlikni baholash faqat g'oya generatsiyasi emas, balki joriy etish metrikasini ham o'z ichiga olishi kerak. Joriy vazifalar portfelini ustuvorlashtirish fokusida muntazam 1-on-1 o'tkazish tavsiya etiladi.",
+              "job_fitness": "Tavsiya etiladigan rollar: Product Manager, UX/UI Designer, R&D, Data Scientist, Solutions Architect, DevRel, Content Strategist, Innovation Lead. Qo'llab-quvvatlashni talab qiladi: QA (monoton regressiv tsikl), Operations, Compliance, Moliyaviy nazorat."
+            }
+          }
+        }
+      }
+    },
+    "combined_dyads": {
+      "matrix_name": "Big Five Combined Interpretations — HR Dyad Matrix (полная, 10 пар)",
+      "version": "2.0",
+      "languages": [
+        "ru",
+        "uz"
+      ],
+      "usage_note": {
+        "ru": "Матрица предназначена для интерпретации пар факторов в контексте рабочего поведения. Используется в совокупности с полным профилем IPIP-NEO-120 и результатами структурированного интервью.",
+        "uz": "Matritsa ish xatti-harakati kontekstida omillar juftini talqin qilish uchun mo'ljallangan. To'liq IPIP-NEO-120 profili va tuzilgan intervyu natijalari bilan birgalikda ishlatiladi."
+      },
+      "combined_interpretations": {
+        "extraversion_conscientiousness": {
+          "dyad_title_ru": "Стиль лидерства и выполнения задач",
+          "dyad_title_uz": "Yetakchilik uslubi va vazifalarni bajarish",
+          "high_high": {
+            "type_title_ru": "Динамичный лидер-организатор",
+            "type_title_uz": "Dinamik yetakchi-tashkilotchi",
+            "ru": {
+              "portrait": "Тестируемый сочетает высокую социальную энергию с выраженной дисциплиной и ориентацией на результат. Кандидат демонстрирует способность не только инициировать активность и вдохновлять команду, но и доводить начатое до конца в установленные сроки. Такой сотрудник органично берёт на себя руководящую роль, задаёт стандарты исполнения и держит команду в фокусе. В коммуникации — напорист и убедителен, в работе — методичен и надёжен. Именно данная комбинация наиболее часто встречается среди эффективных операционных лидеров и руководителей проектов.",
+              "strengths": "Способность одновременно мотивировать команду и обеспечивать операционную дисциплину. Высокая эффективность в роли руководителя, где требуется баланс между вдохновением и контролем. Формирование культуры исполнительности и ответственности. Устойчивость к хаосу при сохранении высокой коммуникационной активности. Продуктивное взаимодействие с клиентами и стейкхолдерами при одновременном соблюдении внутренних стандартов.",
+              "risks": "Риск выгорания при попытке контролировать всё лично. Склонность к перегрузке команды собственным темпом и стандартами. Возможное подавление инициативы менее активных, но компетентных сотрудников. Трудности с признанием ошибок ввиду высоких личных амбиций.",
+              "management_tips": "Руководителю следует направлять данного сотрудника в роли, требующие одновременно лидерства и операционной ответственности: Team Lead, Project Manager, Operations Director. Необходимо обеспечить достаточный масштаб полномочий — недостаток автономии быстро демотивирует. Рекомендуется развивать навыки делегирования и управления через доверие, а не через личный контроль."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yuqori ijtimoiy energiyani yaqqol intizom va natijaga yo'nalganlik bilan uyg'unlashtiradi. Nomzod nafaqat faollikni boshlash va jamoani ilhomlantirish, balki belgilangan muddatlarda boshlangan ishni yakunlash qobiliyatini namoyon etadi. Bunday xodim organik ravishda rahbarlik rolini o'z zimmasiga oladi, ijro standartlarini belgilaydi va jamoani fokusda ushlab turadi. Kommunikatsiyada — qat'iyatli va ishontiruvchi, ishda — uslubiy va ishonchli.",
+              "strengths": "Jamoani bir vaqtning o'zida motivatsiya qilish va operatsion intizomni ta'minlash qobiliyati. Ilhom va nazorat o'rtasida muvozanat talab qilinadigan rahbar rolida yuqori samaradorlik. Ijrochilik va mas'uliyat madaniyatini shakllantirish. Yuqori kommunikatsion faollikni saqlab qolgan holda xaosga chidamlilik. Ichki standartlarni saqlab qolgan holda mijozlar va manfaatdor tomonlar bilan samarali o'zaro munosabat.",
+              "risks": "Hamma narsani shaxsan nazorat qilishga urinishda burnout xavfi. Jamoani o'z sur'ati va standartlari bilan ortiqcha yuklashga moyillik. Kamroq faol, lekin kompetentli xodimlarning tashabbusini bostirish mumkin. Yuqori shaxsiy ambitsiyalar tufayli xatolarni tan olishda qiyinchiliklar.",
+              "management_tips": "Rahbar bu xodimni bir vaqtning o'zida yetakchilik va operatsion mas'uliyatni talab qiladigan rollarga yo'naltirishi kerak: Team Lead, Project Manager, Operations Director. Etarli vakolatlar ko'lami ta'minlanishi zarur — avtonomiyaning yetishmasligi tez demotivatsiyaga olib keladi. Shaxsiy nazorat emas, ishonch orqali boshqarish ko'nikmalarini rivojlantirish tavsiya etiladi."
+            }
+          },
+          "high_low": {
+            "type_title_ru": "Импульсивный активист",
+            "type_title_uz": "Impulsiv faolchi",
+            "ru": {
+              "portrait": "Тестируемый демонстрирует высокую социальную энергию, инициативность и напор при сниженной склонности к систематическому планированию и завершению задач. Кандидат генерирует значительный объём идей и активности, однако значительная её часть остаётся нереализованной или передаётся другим без должного сопровождения. Такой сотрудник создаёт вокруг себя ощущение движения и прогресса, которое не всегда подкреплено реальными результатами. Эффективен в краткосрочных всплесках активности, слабее в поддержании долгосрочных обязательств.",
+              "strengths": "Быстрое установление контактов и сетей. Генерация идей и нетривиальных предложений. Высокая энергетика в команде, способность запускать новые инициативы. Продуктивен в ролях, требующих экспансивной коммуникации и краткосрочных результатов.",
+              "risks": "Систематический риск срыва сроков и незавершённых проектов. Создание информационного шума без операционной ценности. Перегрузка команды незавершёнными инициативами. Репутационные риски перед клиентами и партнёрами. Конфликты с сотрудниками с высокой Сознательностью, вынужденными «подчищать» незавершённое.",
+              "management_tips": "Руководителю необходимо внедрить жёсткую систему контрольных точек и отчётности. Рекомендуется ограничивать количество одновременно активных инициатив. Оптимальное использование — роли, где важен запуск, а не завершение: Business Development, Sales Hunter, PR. Следует назначить «партнёра по завершению» с высокой Сознательностью."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi tizimli rejalashtirish va vazifalarni yakunlashga kamaytirilgan moyillik bilan yuqori ijtimoiy energiya, tashabbuskorlik va qat'iyatlilikni namoyon etadi. Nomzod sezilarli miqdorda g'oyalar va faollik generatsiya qiladi, ammo uning katta qismi amalga oshirilmagan holda qoladi yoki tegishli kuzatuvsiz boshqalarga o'tkaziladi. Bunday xodim atrofida har doim haqiqiy natijalar bilan qo'llab-quvvatlanmaydigan harakat va taraqqiyot hissi yaratadi.",
+              "strengths": "Tezkor aloqa va tarmoqlar o'rnatish. G'oyalar va noodatiy takliflar generatsiyasi. Jamoada yuqori energetika, yangi tashabbuslarni boshlash qobiliyati. Ekspansiv kommunikatsiya va qisqa muddatli natijalarni talab qiladigan rollarda samarali.",
+              "risks": "Muddatlarni buzish va yakunlanmagan loyihalarning tizimli xavfi. Operatsion qiymatisiz axborot shovqinini yaratish. Jamoani yakunlanmagan tashabbuslar bilan ortiqcha yuklash. Mijozlar va hamkorlar oldida obro'-e'tibor xavflari. Yakunlanmagan ishlarni 'tozilashga' majbur bo'lgan yuqori Vijdonlilikka ega xodimlar bilan ziddiyatlar.",
+              "management_tips": "Rahbar qat'iy nazorat nuqtalari va hisobot tizimini joriy etishi kerak. Bir vaqtning o'zida faol tashabbuslar sonini cheklash tavsiya etiladi. Optimal foydalanish — yakunlash emas, boshlash muhim bo'lgan rollar: Business Development, Sales Hunter, PR. Yuqori Vijdonlilikka ega 'yakunlash sherigi' tayinlash kerak."
+            }
+          },
+          "low_high": {
+            "type_title_ru": "Надёжный автономный эксперт",
+            "type_title_uz": "Ishonchli avtonom mutaxassis",
+            "ru": {
+              "portrait": "Тестируемый демонстрирует высокую самодисциплину, методичность и ориентацию на качество в сочетании с предпочтением к независимой, сосредоточенной работе. Кандидат не нуждается во внешней стимуляции и поддерживает высокий уровень продуктивности в условиях ограниченного социального взаимодействия. Такой сотрудник — носитель глубокой экспертизы, который последовательно и точно выполняет сложные задачи. В команде воспринимается как надёжная опора, чьи результаты предсказуемы и не требуют перепроверки.",
+              "strengths": "Исключительная надёжность в выполнении сложных долгосрочных задач без внешнего контроля. Глубокая фокусировка на качестве и деталях. Устойчивость к отвлекающим факторам и социальному давлению. Стабильная высокая производительность в автономных и удалённых форматах работы.",
+              "risks": "Ограниченная видимость достижений: результаты есть, но они не транслируются. Трудности с публичным отстаиванием своей позиции и ресурсов. Риск профессиональной изоляции в командных средах. Возможные трудности с делегированием задач другим.",
+              "management_tips": "Руководителю необходимо активно «видеть» и транслировать достижения данного сотрудника в организации. Рекомендуется не перегружать коммуникационными обязанностями — обеспечить асинхронные форматы. Оптимальные роли: Senior Developer, Data Engineer, Technical Lead, Research Analyst, Financial Analyst. Создать безопасную площадку для постепенного развития навыков коммуникации."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi mustaqil, konsentrlangan ishni afzal ko'rish bilan birgalikda yuqori o'z-intizom, uslubiylik va sifatga yo'nalganlikni namoyon etadi. Nomzod tashqi stimulyatsiyaga muhtoj emas va cheklangan ijtimoiy o'zaro munosabat sharoitida yuqori unumdorlik darajasini saqlab qoladi. Bunday xodim — natijalar taxmin qilinadigan va qayta tekshirishni talab qilmaydigan ishonchli tayanch sifatida jamoada qabul qilinadigan chuqur ekspertiza egasi.",
+              "strengths": "Tashqi nazorat bo'lmagan holda murakkab uzoq muddatli vazifalarni bajarishda ajoyib ishonchlilik. Sifat va tafsilotlarga chuqur e'tibor. Chalg'ituvchi omillar va ijtimoiy bosimga chidamlilik. Avtonom va masofaviy ish formatlarida barqaror yuqori unumdorlik.",
+              "risks": "Cheklangan yutuqlar ko'rinishi: natijalar bor, lekin ular tarqatilmaydi. O'z pozitsiyasi va resurslarini ommaviy himoya qilishda qiyinchiliklar. Jamoa muhitlarida professional izolyatsiya xavfi. Vazifalarni boshqalarga delegatsiya qilishda mumkin bo'lgan qiyinchiliklar.",
+              "management_tips": "Rahbar tashkilotda ushbu xodimning yutuqlarini faol 'ko'rish' va tarqatish kerak. Kommunikatsion majburiyatlar bilan ortiqcha yuklamaslik tavsiya etiladi — asinxron formatlarni ta'minlash. Optimal rollar: Senior Developer, Data Engineer, Technical Lead, Research Analyst, Financial Analyst. Kommunikatsiya ko'nikmalarini bosqichma-bosqich rivojlantirish uchun xavfsiz maydon yaratish."
+            }
+          },
+          "low_low": {
+            "type_title_ru": "Пассивный исполнитель — зона риска",
+            "type_title_uz": "Passiv ijrochi — xavf zonasi",
+            "ru": {
+              "portrait": "Тестируемый демонстрирует сниженный уровень как инициативности и социальной активности, так и самоорганизации и дисциплины. Кандидат не склонен брать на себя лидерство, генерировать инициативы или поддерживать систематическое выполнение задач без значительного внешнего управления. Такой сотрудник в условиях высокой автономии, как правило, демонстрирует низкую продуктивность и уходит от ответственности за результат. Данная комбинация является наиболее уязвимой с точки зрения рабочей эффективности и требует особого внимания при найме и управлении.",
+              "strengths": "В условиях высокой внешней структуры и жёсткого управления способен стабильно выполнять ограниченный набор чётко определённых задач. Низкая конкурентность снижает риск деструктивных внутренних конфликтов.",
+              "risks": "Критический риск хронически низкой производительности без постоянного контроля. Неспособность к самостоятельному управлению приоритетами. Риск демотивирующего влияния на команду. Высокая вероятность систематического срыва сроков. Полная зависимость от качества внешнего менеджмента.",
+              "management_tips": "Перед наймом необходимо провести дополнительное поведенческое интервью для верификации рабочих паттернов. При наличии в команде — обеспечить максимальную структуру, ежедневный контроль и чёткие KPI. Рассмотреть программу performance improvement (PIP) при наличии в текущем штате. Не назначать в автономные, удалённые или руководящие роли."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi ham tashabbuskorlik va ijtimoiy faollik, ham o'z-o'zini tashkil etish va intizomning pasaytirilgan darajasini namoyon etadi. Nomzod rahbarlikni o'z zimmasiga olishga, tashabbuslar generatsiya qilishga yoki sezilarli tashqi boshqaruvsiz vazifalarni tizimli bajarishni qo'llab-quvvatlashga moyil emas. Bunday xodim yuqori avtonomiya sharoitida, qoida tariqasida, past unumdorlik ko'rsatadi va natija uchun mas'uliyatdan qochadi.",
+              "strengths": "Yuqori tashqi tuzilma va qattiq boshqaruv sharoitida aniq belgilangan cheklangan vazifalar to'plamini barqaror bajarish qobiliyati. Past raqobatbardoshlik destruktiv ichki ziddiyatlar xavfini kamaytiradi.",
+              "risks": "Doimiy nazorat bo'lmagan holda surunkali past unumdorlikning kritik xavfi. Ustuvorliklarni mustaqil boshqarish qobiliyatining yo'qligi. Jamoaga demotivatsion ta'sir xavfi. Muddatlarni tizimli buzish ehtimolining yuqoriligi. Tashqi menejment sifatiga to'liq bog'liqlik.",
+              "management_tips": "Ishga olishdan oldin ish naqshlarini tasdiqlash uchun qo'shimcha xulq-atvor intervyusi o'tkazish zarur. Jamoada mavjud bo'lganda — maksimal tuzilma, kunlik nazorat va aniq KPI ta'minlash kerak. Joriy shtatda mavjud bo'lsa, ishlash yaxshilash dasturini (PIP) ko'rib chiqish. Avtonom, masofaviy yoki rahbarlik rollariga tayinlamaslik."
+            }
+          }
+        },
+        "neuroticism_conscientiousness": {
+          "dyad_title_ru": "Стрессоустойчивость и риск выгорания",
+          "dyad_title_uz": "Stressga chidamlilik va burnout xavfi",
+          "high_high": {
+            "type_title_ru": "Тревожный перфекционист",
+            "type_title_uz": "Tashvishli perfektsionist",
+            "ru": {
+              "portrait": "Тестируемый сочетает высокую эмоциональную реактивность с выраженным стремлением к качеству и дисциплиной исполнения. Кандидат ставит перед собой высокие стандарты и болезненно переживает любое отклонение от них. Такой сотрудник демонстрирует высокую производительность в стабильных условиях, однако при хроническом стрессе и перегрузке вступает в зону критического риска выгорания. Тревога служит мощным мотивационным топливом, которое при истощении превращается в паралич. Нередко воспринимается командой как образцовый исполнитель, скрывающий внутреннее напряжение.",
+              "strengths": "Исключительное внимание к качеству и деталям. Высокая ответственность и доведение задач до совершенства. Способность обнаруживать риски и ошибки, невидимые другим. Устойчивая продуктивность в стабильных, хорошо структурированных условиях.",
+              "risks": "Критически высокий риск профессионального выгорания при хроническом стрессе. Склонность к катастрофизации при отклонениях от плана. Трудности с делегированием ввиду недоверия к чужому стандарту качества. Возможные психосоматические проявления при длительном перенапряжении. Риск снижения производительности именно в кризисные моменты.",
+              "management_tips": "Руководителю крайне важно регулярно калибровать стандарты качества: обозначать, когда допустим результат «достаточно хорошо». Необходимо мониторировать признаки накопленного стресса и проводить разгрузочные 1-on-1. Следует явно ограничивать рабочую нагрузку и вводить обязательные периоды восстановления. Рекомендуется направление в программы управления стрессом и осознанности."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yaqqol sifatga intilish va ijro intizomi bilan yuqori hissiy reaktivlikni birlashtiradi. Nomzod o'z oldiga yuqori standartlar qo'yadi va ulardan har qanday og'ishni og'riqli boshdan kechiradi. Bunday xodim barqaror sharoitlarda yuqori unumdorlik ko'rsatadi, ammo surunkali stress va ortiqcha yuklamada burnoutning kritik xavf zonasiga kiradi. Tashvish qudratli motivatsion yoqilg'i vazifasini o'taydi, bu esa tuganganda falajga aylanadi.",
+              "strengths": "Sifat va tafsilotlarga ajoyib e'tibor. Yuqori mas'uliyat va vazifalarni mukammallikka etkazish. Boshqalarga ko'rinmaydigan xatolar va xavflarni aniqlash qobiliyati. Barqaror, yaxshi tuzilgan sharoitlarda barqaror unumdorlik.",
+              "risks": "Surunkali stress sharoitida kasbiy burnoutning kritik yuqori xavfi. Rejadan og'ishda falokatlashtirishga moyillik. Begona sifat standartiga ishonmaslik tufayli delegatsiyada qiyinchiliklar. Uzoq muddatli ortiqcha zo'riqishda mumkin bo'lgan psixosomatik ko'rinishlar. Aynan inqirozli paytlarda unumdorlikning pasayish xavfi.",
+              "management_tips": "Rahbar uchun sifat standartlarini muntazam kalibrlash juda muhim: natija 'yetarlicha yaxshi' qabul qilinishi mumkin bo'lganda belgilash. To'plangan stress belgilarini kuzatib borish va yukni kamaytiruvchi 1-on-1 o'tkazish zarur. Ish yukini aniq cheklash va majburiy tiklanish davrlarini kiritish kerak. Stress va mindfulness boshqarish dasturlariga yo'naltirish tavsiya etiladi."
+            }
+          },
+          "high_low": {
+            "type_title_ru": "Нестабильный в кризисе",
+            "type_title_uz": "Inqirozda beqaror",
+            "ru": {
+              "portrait": "Тестируемый демонстрирует высокую эмоциональную реактивность в сочетании со сниженной самоорганизацией и дисциплиной. Кандидат остро переживает стрессовые ситуации, при этом не располагает устойчивыми поведенческими стратегиями для их преодоления. Такой сотрудник в условиях давления склонен к импульсивным реакциям, хаотичным действиям или полному уходу от задачи. Период восстановления после стрессового эпизода длителен и плохо управляем. Данная комбинация является наиболее уязвимой с точки зрения надёжности в критических рабочих ситуациях.",
+              "strengths": "В условиях минимального стресса и при наличии сильной внешней структуры может демонстрировать удовлетворительную производительность. Высокая чувствительность позволяет улавливать проблемы на ранних стадиях.",
+              "risks": "Критически высокий суммарный риск: срывы дедлайнов, импульсивные решения под давлением, длительные периоды восстановления. Непредсказуемость поведения в кризисных ситуациях. Риск создания токсичной атмосферы в команде при эмоциональных срывах. Высокая вероятность системного снижения производительности при хроническом стрессе.",
+              "management_tips": "Руководителю необходимо максимально снизить уровень стрессоров в рабочей среде: чёткие ожидания, предсказуемые дедлайны, отсутствие неопределённости. Категорически не рекомендуется назначение на роли с высоким давлением, кризисным управлением или постоянной неопределённостью. При найме — обязательное поведенческое интервью с фокусом на реакции в стрессовых ситуациях."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi pasaytirilgan o'z-o'zini tashkil etish va intizom bilan birgalikda yuqori hissiy reaktivlikni namoyon etadi. Nomzod stressli vaziyatlarni o'tkir boshdan kechiradi, ammo ularni engish uchun barqaror xulq-atvor strategiyalariga ega emas. Bunday xodim bosim sharoitida impulsiv reaktsiyalarga, xaotik harakatlarga yoki vazifadan butunlay uzoqlashishga moyil. Stressli epizoddan keyin tiklanish davri uzoq va yomon boshqariladi.",
+              "strengths": "Minimal stress va kuchli tashqi tuzilma mavjudligida qoniqarli unumdorlik ko'rsatish mumkin. Yuqori sezgirlik muammolarni erta bosqichda aniqlash imkonini beradi.",
+              "risks": "Kritik yuqori umumiy xavf: muddatlarni buzish, bosim ostida impulsiv qarorlar, uzoq tiklanish davrlari. Inqirozli vaziyatlarda xatti-harakatning bashorat qilinmasligi. Hissiy sinishlar paytida jamoada toksik muhit yaratish xavfi. Surunkali stress sharoitida unumdorlikning tizimli pasayish ehtimolining yuqoriligi.",
+              "management_tips": "Rahbar ish muhitidagi stressor darajasini maksimal darajada kamaytirishi kerak: aniq kutishlar, bashorat qilinadigan muddatlar, noaniqlikning yo'qligi. Yuqori bosim, inqirozni boshqarish yoki doimiy noaniqlik bilan rollarga tayinlash qat'iyan tavsiya etilmaydi. Ishga olishda — stressli vaziyatlardagi reaktsiyalarga fokuslangan majburiy xulq-atvor intervyusi."
+            }
+          },
+          "low_high": {
+            "type_title_ru": "Железный человек — идеальный кризис-менеджер",
+            "type_title_uz": "Temir odam — ideal inqiroz menejeri",
+            "ru": {
+              "portrait": "Тестируемый демонстрирует исключительное сочетание: высокую эмоциональную стабильность, подкреплённую системной дисциплиной и организованностью. Кандидат сохраняет когнитивную ясность и структурированность действий именно тогда, когда большинство теряет самообладание. Такой сотрудник является якорем стабильности для команды в условиях кризиса: принимает рациональные решения, не поддаётся панике, придерживается приоритетов и методично движется к результату. Данная комбинация является наиболее ценной для ролей с высокими требованиями к стрессоустойчивости.",
+              "strengths": "Исключительная надёжность в условиях кризиса, неопределённости и давления. Стабилизирующее влияние на команду в напряжённых ситуациях. Способность принимать взвешенные решения при дефиците времени и информации. Устойчивая высокая производительность вне зависимости от внешних условий. Минимальный риск выгорания при правильно откалиброванной нагрузке.",
+              "risks": "Риск недооценки эмоционального состояния команды и коллег. Возможное восприятие как «холодного» или недоступного руководителя. Потенциальная склонность к принятию неоправданных рисков в силу отсутствия тревоги. Риск игнорирования ранних сигналов дистресса у подчинённых.",
+              "management_tips": "Руководителю рекомендуется развивать эмоциональный интеллект данного сотрудника как стратегическую компетенцию. Следует обеспечивать регулярный сбор обратной связи от команды. Оптимальные роли: Crisis Manager, C-Level Executive, Operations Director, Risk Manager, Military/Emergency Leadership."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi ajoyib kombinatsiyani namoyon etadi: tizimli intizom va uyushganlik bilan qo'llab-quvvatlangan yuqori hissiy barqarorlik. Nomzod aksariyat o'z-o'zini yo'qotayotganda kognitiv ravshanlik va harakatlarning tuzilganligini saqlab qoladi. Bunday xodim inqiroz sharoitida jamoa uchun barqarorlik langaridir: mantiqiy qarorlar qabul qiladi, vahimaga tushmaydii, ustuvorliklarni saqlab qoladi va natijaga metodic yaqinlashadi.",
+              "strengths": "Inqiroz, noaniqlik va bosim sharoitida ajoyib ishonchlilik. Keskin vaziyatlarda jamoaga barqarorlashtiruvchi ta'sir. Vaqt va ma'lumot taqchilligi sharoitida muvozanatli qarorlar qabul qilish qobiliyati. Tashqi sharoitdan qat'i nazar barqaror yuqori unumdorlik. To'g'ri kalibrlangan yuklamada burnout xavfining minimalligi.",
+              "risks": "Jamoa va hamkasblarning hissiy holatini past baholash xavfi. 'Sovuq' yoki erishib bo'lmaydigan rahbar sifatida qabul qilinishi mumkin. Tashvishning yo'qligi tufayli asossiz xavflarni qabul qilishga potensial moyillik. Bo'ysunuvchilardagi distressning erta signallarini e'tiborsiz qoldirish xavfi.",
+              "management_tips": "Rahbarga ushbu xodimda hissiy intellektni strategik kompetensiya sifatida rivojlantirish tavsiya etiladi. Jamoadan muntazam fikr-mulohaza yig'ishni ta'minlash kerak. Optimal rollar: Crisis Manager, C-Level Executive, Operations Director, Risk Manager, Harbiy/Favqulodda vaziyatlar rahbariyati."
+            }
+          },
+          "low_low": {
+            "type_title_ru": "Равнодушный — слишком расслабленный",
+            "type_title_uz": "Befarq — haddan tashqari bo'shashgan",
+            "ru": {
+              "portrait": "Тестируемый демонстрирует низкую тревожность и высокую эмоциональную стабильность в сочетании со сниженной самодисциплиной и мотивацией к достижению результата. Кандидат редко испытывает стресс и не подвержен выгоранию, однако это достигается не за счёт высокой устойчивости, а за счёт низкой вовлечённости в рабочие процессы. Такой сотрудник производит впечатление спокойного и уравновешенного, однако в условиях высоких требований и нагрузки не демонстрирует ожидаемой мобилизации.",
+              "strengths": "Устойчивость к стрессу и выгоранию — стабилен даже в трудные периоды. Способность сохранять хладнокровие там, где другие теряются. Редко создаёт конфликтов, не генерирует напряжения в команде.",
+              "risks": "Хронически низкая мотивация к достижению при отсутствии внешних стимулов. Риск инертности и сопротивления любым изменениям. Недостаточная вовлечённость в результат, воспринимаемая как безразличие. Трудности с мобилизацией в критических ситуациях, когда требуется усиленная работа.",
+              "management_tips": "Руководителю необходимо внедрить систему ощутимых внешних стимулов и регулярных контрольных точек. Для активизации рекомендуется система KPI с привязкой к значимым для сотрудника вознаграждениям. Следует исключить из ролей, требующих высокой автономии и самомотивации. Регулярные 1-on-1 с явным обсуждением вовлечённости и карьерного прогресса."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi pasaytirilgan o'z-intizom va natijaga erishish motivatsiyasi bilan birgalikda past tashvish va yuqori hissiy barqarorlikni namoyon etadi. Nomzod kamdan-kam stress boshdan kechiradi va burnoutga moyil emas, ammo bu yuqori chidamlilik hisobiga emas, balki ish jarayonlariga past ishtiyoq hisobiga erishiladi. Bunday xodim sokin va muvozanatli taassurot qoldiradi, ammo yuqori talablar va yuklamalarda kutilgan safarbarlikni ko'rsatmaydi.",
+              "strengths": "Stressga va burnoutga chidamlilik — qiyin davrlar davomida ham barqaror. Boshqalar yo'qolayotganda sovuqqonlikni saqlash qobiliyati. Kamdan-kam ziddiyatlar yaratadi, jamoada taranglik generatsiya qilmaydi.",
+              "risks": "Tashqi stimullar yo'qligida natijaga erishish uchun surunkali past motivatsiya. Inertsiya va har qanday o'zgarishlarga qarshilik xavfi. Befarqlik sifatida qabul qilinadigan natijaga yetarli ishtiyoqning yo'qligi. Kuchaytirilgan ish talab qilinadigan kritik vaziyatlarda safarbar bo'lishda qiyinchiliklar.",
+              "management_tips": "Rahbar sezilmaydigan tashqi stimullar va muntazam nazorat nuqtalari tizimini joriy etishi kerak. Faollashtirish uchun xodim uchun muhim mukofotlarga bog'liq KPI tizimi tavsiya etiladi. Yuqori avtonomiya va o'z-motivatsiyani talab qiladigan rollardan chetlashtirish zarur. Ishtiyoq va kasbiy rivojlanishni ochiq muhokama qilgan holda muntazam 1-on-1 o'tkazish."
+            }
+          }
+        },
+        "agreeableness_extraversion": {
+          "dyad_title_ru": "Стиль командного взаимодействия",
+          "dyad_title_uz": "Jamoa o'zaro ta'sir uslubi",
+          "high_high": {
+            "type_title_ru": "Душа команды — идеальный фасилитатор",
+            "type_title_uz": "Jamoa ruhi — ideal fasilitator",
+            "ru": {
+              "portrait": "Тестируемый сочетает высокую эмпатию, просоциальную ориентацию с выраженной социальной энергией и коммуникационной активностью. Кандидат является естественным объединителем: создаёт инклюзивную атмосферу, в которой каждый чувствует себя услышанным, и при этом обладает достаточной энергией, чтобы активно направлять групповые процессы. Такой сотрудник превосходно справляется с фасилитацией, медиацией и ролями, требующими одновременно высокой эмпатии и публичного присутствия. Является «клеем» в кросс-функциональных командах.",
+              "strengths": "Формирование высоко психологически безопасной и продуктивной командной среды. Исключительная эффективность в фасилитации, медиации и клиентских ролях. Способность интегрировать разнородные группы в единую команду. Высокое влияние на вовлечённость и лояльность сотрудников.",
+              "risks": "Риск избыточного компромисса в ущерб оптимальному решению. Склонность к избеганию необходимых конфронтаций ради сохранения гармонии. Возможная перегруженность социальными запросами от коллег. Риск манипуляции со стороны более жёстких коллег.",
+              "management_tips": "Рекомендуемые роли: HR Business Partner, Scrum Master, Team Lead (servant leadership), Customer Success Director, L&D Specialist. Руководителю следует развивать навыки assertiveness и конструктивного несогласия. Защищать от перегрузки запросами."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yaqqol ijtimoiy energiya va kommunikatsion faollik bilan yuqori empatiya, prosotsiyal yo'nalishni birlashtiradi. Nomzod tabiiy birlashtiruvchi: har bir kishi tinglanganini his qiladigan inklyuziv muhit yaratadi va bir vaqtning o'zida guruh jarayonlarini faol yo'naltirish uchun yetarli energiyaga ega. Bunday xodim fasilitatsiya, mediatsiya va bir vaqtning o'zida yuqori empatiya va ommaviy huzurni talab qiladigan rollarda ajoyib natijalar ko'rsatadi.",
+              "strengths": "Psixologik jihatdan xavfsiz va samarali jamoa muhitini shakllantirish. Fasilitatsiya, mediatsiya va mijozlar rollarida ajoyib samaradorlik. Xilma-xil guruhlarni yagona jamoaga integratsiya qilish qobiliyati. Xodimlarning ishtiyoqi va sadoqatiga yuqori ta'sir.",
+              "risks": "Optimal yechimga zarar etkazuvchi ortiqcha murosaga moyillik. Uyg'unlikni saqlash uchun zaruriy qarama-qarshiliklardan qochish. Hamkasblarning ijtimoiy so'rovlari bilan ortiqcha yuklanish mumkin. Qattiqroq hamkasblar tomonidan manipulyatsiya xavfi.",
+              "management_tips": "Tavsiya etiladigan rollar: HR Business Partner, Scrum Master, Team Lead (xizmat ko'rsatuvchi rahbarlik), Customer Success Director, L&D Specialist. Rahbar assertivlik va konstruktiv kelishmovchilik ko'nikmalarini rivojlantirishi kerak. So'rovlar bilan ortiqcha yuklanishdan himoya qilish."
+            }
+          },
+          "high_low": {
+            "type_title_ru": "Тихий дипломат",
+            "type_title_uz": "Jim diplomat",
+            "ru": {
+              "portrait": "Тестируемый демонстрирует высокую эмпатию, доброжелательность и кооперативность в сочетании с интровертной ориентацией и предпочтением к ограниченному кругу коммуникаций. Кандидат является исключительно ценным участником небольших команд: глубоко понимает нужды коллег, чуток к атмосфере в коллективе, однако не стремится к публичности и предпочитает влиять через личные, приватные взаимодействия. Нередко выступает неформальным доверенным лицом в команде. Отличается тихой, но мощной поддерживающей силой.",
+              "strengths": "Глубокое эмпатическое понимание коллег и высокая способность к индивидуальной поддержке. Формирование доверия через последовательность и надёжность. Исключительно эффективен в небольших командах и ролях 1-on-1. Снижает уровень конфликтов тихими, незаметными методами.",
+              "risks": "Склонность к избеганию необходимых конфронтаций даже в ущерб результату. Низкая видимость вклада: значительная работа остаётся незамеченной руководством. Риск подавления собственных потребностей в пользу чужих. Трудности в ролях с требованиями к публичным коммуникациям.",
+              "management_tips": "Рекомендуемые роли: Mentor, Internal Coach, L&D Specialist, Technical Support, Research. Руководителю необходимо активно транслировать ценность вклада сотрудника. Создавать условия для письменной обратной связи как альтернативы публичным выступлениям."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi introvert yo'nalish va cheklangan kommunikatsiyalar doirasini afzal ko'rish bilan birgalikda yuqori empatiya, xayrixohlik va hamkorlikni namoyon etadi. Nomzod kichik jamoalar uchun ajoyib qimmatli ishtirokchi: hamkasblarning ehtiyojlarini chuqur tushunadi, jamoaviy muhitga sezgir, ammo ommaviylikka intilmaydi va shaxsiy, xususiy o'zaro munosabatlar orqali ta'sir o'tkazishni afzal ko'radi.",
+              "strengths": "Hamkasblarni chuqur empatik tushunish va individual qo'llab-quvvatlashning yuqori qobiliyati. Izchillik va ishonchlilik orqali ishonch shakllantirish. Kichik jamoalar va 1-on-1 rollarda ajoyib samaradorlik. Ziddiyatlar darajasini jim, sezilmas usullar orqali kamaytirish.",
+              "risks": "Natijaga zarar etkazgan holda ham zaruriy qarama-qarshiliklardan qochish moyilligi. Past hissa ko'rinishi: sezilarli ish rahbariyat tomonidan e'tiborga olinmaydi. O'z ehtiyojlarini boshqaларnikига foyda uchun bostirish xavfi. Ommaviy kommunikatsiya talablariga ega rollarda qiyinchiliklar.",
+              "management_tips": "Tavsiya etiladigan rollar: Mentor, Ichki Koucher, L&D Specialist, Technical Support, Tadqiqot. Rahbar xodimning hissasining qiymatini faol tarqatishi kerak. Ommaviy chiqishga alternativa sifatida yozma fikr-mulohaza uchun sharoit yaratish."
+            }
+          },
+          "low_high": {
+            "type_title_ru": "Доминантный спикер — авторитарный лидер",
+            "type_title_uz": "Dominant spiker — avtoritar yetakchi",
+            "ru": {
+              "portrait": "Тестируемый демонстрирует высокую социальную активность и напор при сниженной просоциальной ориентации. Кандидат уверенно занимает пространство в любом обсуждении, настойчиво продвигает собственную повестку и не склонен уступать позиции под социальным давлением. Такой сотрудник эффективен в ролях, требующих переговорной силы и умения «пробивать» решения. Однако в командных средах с горизонтальными структурами может создавать напряжение и снижать вовлечённость более тихих коллег.",
+              "strengths": "Высокая переговорная сила и способность отстаивать интересы организации. Быстрое принятие решений и готовность к конфронтации. Эффективность в жёстких деловых переговорах и ситуациях конкурентного давления. Устойчивость к социальным манипуляциям.",
+              "risks": "Риск подавления инициативы и голоса других членов команды. Сниженная способность к построению долгосрочного доверия. Возможное ухудшение климата в команде при наличии управленческих полномочий. Репутационные риски в сервисных и клиентских ролях.",
+              "management_tips": "Рекомендуемые роли: Sales Director, Negotiator, Lawyer (adversarial), Business Development, Senior Individual Contributor. Руководителю необходимо устанавливать чёткие поведенческие ожидания в команде. Развивать эмпатию и навыки активного слушания как компенсаторные компетенции."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi pasaytirilgan prosotsiyal yo'nalish bilan birgalikda yuqori ijtimoiy faollik va qat'iyatlilikni namoyon etadi. Nomzod har qanday muhokamada makonni ishonchli egallaydi, o'z kun tartibini qat'iyat bilan ilgari suradi va ijtimoiy bosim ostida pozitsiyasini bo'shatishga moyil emas. Bunday xodim muzokaralar kuchi va qarorlarni 'o'tkazib yuborish' qobiliyatini talab qiladigan rollarda samarali.",
+              "strengths": "Yuqori muzokaralar kuchi va tashkilot manfaatlarini himoya qilish qobiliyati. Tezkor qaror qabul qilish va qarama-qarshilikka tayyorlik. Qattiq biznes muzokaralari va raqobat bosimi vaziyatlarida samaradorlik. Ijtimoiy manipulyatsiyalarga chidamlilik.",
+              "risks": "Jamoa a'zolarining tashabbusi va ovozini bostirish xavfi. Uzoq muddatli ishonch qurishning pasaytirilgan qobiliyati. Boshqaruv vakolatlari mavjud bo'lganda jamoaviy iqlimning yomonlashishi mumkin. Xizmat va mijozlar rollarida obro'-e'tibor xavflari.",
+              "management_tips": "Tavsiya etiladigan rollar: Sales Director, Muzokarachi, Lawyer (raqobatbardosh), Business Development, Yetakchi Individual Hissador. Rahbar jamoada aniq xulq-atvor kutishlarini belgilashi kerak. Kompensator kompetensiya sifatida empatiya va faol tinglash ko'nikmalarini rivojlantirish."
+            }
+          },
+          "low_low": {
+            "type_title_ru": "Отстранённый одиночка — индивидуальный игрок",
+            "type_title_uz": "Uzoqlashgan yolg'iz — individual o'yinchi",
+            "ru": {
+              "portrait": "Тестируемый демонстрирует низкую просоциальную ориентацию в сочетании с интровертностью. Кандидат функционирует преимущественно автономно, редко инициирует взаимодействие и не испытывает потребности в социальном признании или командной принадлежности. Такой сотрудник наиболее продуктивен в изолированных, технически сложных ролях, где от него не требуется интенсивного взаимодействия с командой. В командных контекстах воспринимается как труднодоступный и незаинтересованный в общих целях.",
+              "strengths": "Полная независимость от социального одобрения и командной динамики. Высокая автономность и способность к длительной независимой работе. Устойчивость к давлению социального консенсуса. Объективность суждений, не искажённых эмоциональными отношениями.",
+              "risks": "Риск полной профессиональной изоляции в командных средах. Трудности с построением рабочих отношений и получением поддержки. Ограниченная эффективность в ролях, требующих сотрудничества и коммуникации. Риск восприятия как демотивирующего элемента в командах с сильной культурой.",
+              "management_tips": "Рекомендуемые роли: Individual Contributor (Senior/Principal), Security Researcher, Solo Developer, Data Analyst, Scientist. Руководителю следует минимизировать требования к командному взаимодействию и обеспечить достаточную автономию. Чётко разграничивать индивидуальные и командные KPI."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi introvertlik bilan birgalikda past prosotsiyal yo'nalishni namoyon etadi. Nomzod asosan avtonom faoliyat ko'rsatadi, o'zaro munosabatlarni kamdan-kam boshlaydi va ijtimoiy tan olinish yoki jamoa mansubligiga ehtiyoj sezmaydii. Bunday xodim jamoaviy intensiv o'zaro munosabat talab qilinmaydigan izolyatsiyalangan, texnik jihatdan murakkab rollarda eng samarali.",
+              "strengths": "Ijtimoiy tasdiqlash va jamoa dinamikasidan to'liq mustaqillik. Yuqori avtonom va uzoq mustaqil ish qobiliyati. Ijtimoiy konsensus bosimiga chidamlilik. Hissiy munosabatlar bilan buzilmagan mulohazalarning ob'ektivligi.",
+              "risks": "Jamoa muhitlarida to'liq professional izolyatsiya xavfi. Ish munosabatlari qurish va qo'llab-quvvatlash olishda qiyinchiliklar. Hamkorlik va kommunikatsiyani talab qiladigan rollarda cheklangan samaradorlik. Kuchli madaniyatga ega jamoalarda demotivatsion element sifatida qabul qilinish xavfi.",
+              "management_tips": "Tavsiya etiladigan rollar: Individual Hissador (Senior/Principal), Security Researcher, Yolg'iz Developer, Data Analyst, Olim. Rahbar jamoaviy o'zaro munosabat talablarini minimallashtirib, yetarli avtonomiyani ta'minlashi kerak. Individual va jamoa KPIlarini aniq ajratish."
+            }
+          }
+        },
+        "openness_conscientiousness": {
+          "dyad_title_ru": "Инновации против процессов",
+          "dyad_title_uz": "Innovatsiyalar jarayonlarga qarshi",
+          "high_high": {
+            "type_title_ru": "Стратегический инноватор — системный архитектор",
+            "type_title_uz": "Strategik innovator — tizimli me'mor",
+            "ru": {
+              "portrait": "Тестируемый демонстрирует редкую и высокоценную комбинацию: способность генерировать новаторские идеи и видеть системные возможности в сочетании с дисциплиной, позволяющей эти идеи воплощать. Кандидат не только мыслит стратегически и нестандартно, но и создаёт устойчивые операционные системы, которые переживают его личное участие. Такой сотрудник является двигателем трансформации: он переводит абстрактные концепции в конкретные, воспроизводимые процессы. Данная комбинация наиболее часто встречается среди успешных CTO, Product Lead и Strategy Directors.",
+              "strengths": "Способность создавать инновационные решения, которые реально масштабируются. Системное мышление: видит и большую картину, и операционные детали. Высокая ценность при построении новых продуктов, функций или организаций с нуля. Способность к качественному технологическому или методологическому лидерству. Баланс между видением и исполнением — редкое сочетание.",
+              "risks": "Риск завышенных ожиданий от себя и команды. Возможное разочарование в организациях с низкой культурой инноваций. Перфекционизм в сочетании с широким видением может замедлять принятие решений. Риск нетерпимости к коллегам с ограниченным кругозором.",
+              "management_tips": "Рекомендуемые роли: CTO, Product Lead, Solutions Architect, Strategy Director, R&D Head, Innovation Lead. Руководителю следует обеспечить масштаб, достойный уровня амбиций. Критически важно — организационная культура, поддерживающая инновации."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi noyob va yuqori qimmatli kombinatsiyani namoyon etadi: bu g'oyalarni hayotga tatbiq etish imkonini beruvchi intizom bilan birgalikda innovatsion g'oyalar generatsiya qilish va tizimli imkoniyatlarni ko'rish qobiliyati. Nomzod nafaqat strategik va nostandart fikrlaydi, balki o'zining shaxsiy ishtirokidan omon qoladigan barqaror operatsion tizimlar yaratadi. Bunday xodim transformatsiya dvigateli: u abstrakt kontseptsiyalarni aniq, takrorlanadigan jarayonlarga tarjima qiladi.",
+              "strengths": "Haqiqatdan miqyoslanadigan innovatsion yechimlar yaratish qobiliyati. Tizimli fikrlash: katta rasmni ham, operatsion tafsilotlarni ham ko'radi. Noldan yangi mahsulotlar, funktsiyalar yoki tashkilotlarni qurish paytida yuqori qiymat. Sifatli texnologik yoki metodologik yetakchilik qobiliyati. Vizyon va ijro o'rtasidagi muvozanat — noyob kombinatsiya.",
+              "risks": "O'z va jamoa kutishlarini bo'rttirib yuborish xavfi. Innovatsiyalar madaniyati past bo'lgan tashkilotlarda mumkin bo'lgan umidsizlik. Keng vizyon bilan birgalikda perfektsionizm qaror qabul qilishni sekinlashtirishi mumkin. Cheklangan dunyoqarashli hamkasblar bilan toqatsizlik xavfi.",
+              "management_tips": "Tavsiya etiladigan rollar: CTO, Product Lead, Solutions Architect, Strategy Director, R&D Head, Innovation Lead. Rahbar ambitsiyalar darajasiga munosib ko'lamni ta'minlashi kerak. Muhim omil — innovatsiyalarni qo'llab-quvvatlovchi tashkiliy madaniyat."
+            }
+          },
+          "high_low": {
+            "type_title_ru": "Свободный художник — креативщик без дедлайнов",
+            "type_title_uz": "Erkin rassom — muddatsiz ijodkor",
+            "ru": {
+              "portrait": "Тестируемый демонстрирует высокую творческую энергию, интеллектуальную любознательность и способность к нестандартному мышлению при сниженной склонности к структурированию, планированию и завершению задач. Кандидат генерирует значительный поток идей и ассоциаций, однако трансляция этого потока в конкретный, измеримый результат представляет для него системную сложность. Такой сотрудник наиболее продуктивен в ранних стадиях проекта — divergent-мышление, исследование проблемного пространства, генерация концепций — и значительно менее эффективен на стадии реализации.",
+              "strengths": "Исключительная генерация нестандартных идей и творческих концепций. Высокая адаптивность и комфорт в условиях неопределённости. Ценность в brainstorming-сессиях и discovery-фазах. Способность находить нетривиальные связи между разнородными областями.",
+              "risks": "Систематический риск срыва сроков и незавершённости. Трудности с переходом от концепции к реализации. Возможный конфликт с операционными требованиями организации. Риск создания долга (technical debt, process debt) из-за пренебрежения деталями.",
+              "management_tips": "Рекомендуемые роли: Creative Director (с операционной поддержкой), UX Researcher, Innovation Strategist, R&D Analyst. Руководителю необходимо назначить структурного «партнёра» для конвертации идей в результаты. Оценивать вклад через влияние на продукт, а не через соблюдение процессов."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi tuzish, rejalashtirish va vazifalarni yakunlashga kamaytirilgan moyillik bilan birgalikda yuqori ijodiy energiya, intellektual qiziquvchanlik va nostandart fikrlash qobiliyatini namoyon etadi. Nomzod g'oyalar va assotsiatsiyalarning sezilarli oqimini generatsiya qiladi, ammo bu oqimni aniq, o'lchanadigan natijaga tarjima qilish u uchun tizimli qiyinchilikni ifodalaydi.",
+              "strengths": "Nostandart g'oyalar va ijodiy kontseptsiyalarning ajoyib generatsiyasi. Yuqori moslashuvchanlik va noaniqlik sharoitida qulaylik. Brainstorming sessiyalari va discovery bosqichlarida qiymat. Xilma-xil sohalari o'rtasida noodatiy aloqalar topish qobiliyati.",
+              "risks": "Muddatlarni buzish va yakunlanmaslikning tizimli xavfi. Kontseptsiyadan amalga oshirishga o'tishda qiyinchiliklar. Tashkilotning operatsion talablari bilan mumkin bo'lgan ziddiyat. Tafsilotlarni e'tiborsiz qoldirish tufayli qarz (texnik qarz, jarayon qarzi) yaratish xavfi.",
+              "management_tips": "Tavsiya etiladigan rollar: Creative Director (operatsion qo'llab-quvvatlash bilan), UX Researcher, Innovation Strategist, R&D Analyst. Rahbar g'oyalarni natijalarga aylantirish uchun tuzilgan 'sherik' tayinlashi kerak. Jarayonlarga rioya qilish emas, mahsulotga ta'sir orqali hissani baholash."
+            }
+          },
+          "low_high": {
+            "type_title_ru": "Консервативный контролёр — идеальный процессник",
+            "type_title_uz": "Konservativ nazoratchi — ideal jarayon odami",
+            "ru": {
+              "portrait": "Тестируемый демонстрирует высокую приверженность структурам, регламентам и проверенным методам работы в сочетании с выраженной дисциплиной и системностью. Кандидат является гарантом операционной надёжности: он следует установленным процессам, поддерживает стандарты качества и обеспечивает предсказуемость результатов. Такой сотрудник — незаменимый элемент в зрелых организациях, где требуется высокая операционная дисциплина, соответствие регуляторным требованиям и минимизация операционных рисков.",
+              "strengths": "Исключительная надёжность в выполнении регламентированных процессов. Строгое соответствие стандартам, регуляторным требованиям и протоколам. Стабильное качество результатов в длительной перспективе. Снижение операционных рисков в критических системах.",
+              "risks": "Сопротивление любым изменениям, даже обоснованным. Риск устаревания методологии при отсутствии внешних стимулов к обновлению. Ограниченная ценность в средах, требующих быстрой адаптации или инноваций. Возможные конфликты с инновационно ориентированными коллегами.",
+              "management_tips": "Рекомендуемые роли: Compliance Officer, QA Lead, Financial Controller, Legal Counsel, IT Security, Operations Manager. Руководителю рекомендуется обосновывать изменения через данные и конкретные результаты. Включать в проекты, требующие аудита и стандартизации."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yaqqol intizom va tizimlilik bilan birgalikda tuzilmalarga, reglamentlarga va isbotlangan ish usullariga yuqori sadoqatni namoyon etadi. Nomzod operatsion ishonchlilik kafolati: belgilangan jarayonlarga amal qiladi, sifat standartlarini qo'llab-quvvatlaydi va natijalarning bashorat qilinishini ta'minlaydi. Bunday xodim — yuqori operatsion intizom, tartibga soluvchi talablarga muvofiqlik va operatsion xavflarni minimallashtirishni talab qiladigan yetuk tashkilotlarda ajralmas element.",
+              "strengths": "Tartibga solingan jarayonlarni bajarishda ajoyib ishonchlilik. Standartlar, tartibga soluvchi talablar va protokollarga qat'iy muvofiqlik. Uzoq muddatli istiqbolda natijalarning barqaror sifati. Muhim tizimlarda operatsion xavflarni kamaytirish.",
+              "risks": "Asoslangan bo'lsa ham har qanday o'zgarishlarga qarshilik. Yangilash uchun tashqi stimullar yo'qligida metodologiyaning eskirish xavfi. Tez moslashish yoki innovatsiyalarni talab qiladigan muhitlarda cheklangan qiymat. Innovatsiyaga yo'nalgan hamkasblar bilan mumkin bo'lgan ziddiyatlar.",
+              "management_tips": "Tavsiya etiladigan rollar: Compliance Officer, QA Lead, Financial Controller, Legal Counsel, IT Security, Operations Manager. Rahbarga o'zgarishlarni ma'lumotlar va aniq natijalar orqali asoslash tavsiya etiladi. Audit va standartlashtirishni talab qiladigan loyihalarga kiritish."
+            }
+          },
+          "low_low": {
+            "type_title_ru": "Рутинный исполнитель без инициативы",
+            "type_title_uz": "Tashabbussiz odatiy ijrochi",
+            "ru": {
+              "portrait": "Тестируемый демонстрирует сниженную открытость к новому в сочетании с невысокой самодисциплиной. Кандидат не склонен ни к генерации инициатив и новых идей, ни к систематическому, дисциплинированному исполнению задач. В рабочей среде такой сотрудник функционирует в узком диапазоне привычных действий, избегает всего незнакомого и при этом не обеспечивает высокого качества и надёжности выполнения даже рутинных задач. Данная комбинация представляет наибольший риск для организации с точки зрения вклада в долгосрочную эффективность.",
+              "strengths": "В условиях жёсткой структуры и ограниченного набора повторяющихся задач способен обеспечить минимально приемлемую стабильность. Отсутствие инициативы снижает риск несанкционированных изменений в критических процессах.",
+              "risks": "Высокий риск хронически низкой производительности и минимальной добавленной стоимости. Полное отсутствие инициативы и способности к адаптации при изменениях. Риск создания «мёртвой зоны» в команде. Высокая стоимость удержания относительно ценности вклада.",
+              "management_tips": "При найме необходимо провести тщательное поведенческое интервью для верификации прошлых достижений. При наличии в команде — немедленное внедрение чётких KPI и плана развития. Рассмотреть программу performance improvement (PIP). Категорически не рекомендуется для ролей, требующих самостоятельности, творчества или управления людьми."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi past o'z-intizom bilan birgalikda yangilikka pasaytirilgan ochiqlikni namoyon etadi. Nomzod na tashabbuslar va yangi g'oyalar generatsiyasiga, na vazifalarni tizimli, intizomli bajarishga moyil. Ish muhitida bunday xodim tanish harakatlarning tor doirasida faoliyat ko'rsatadi, hamma narsadan noma'lumdan qochadi va bir vaqtning o'zida hatto muntazam vazifalarni ham yuqori sifat va ishonchlilik bilan ta'minlamaydi.",
+              "strengths": "Qattiq tuzilma va cheklangan takrorlanuvchi vazifalar to'plami sharoitida minimal maqbul barqarorlikni ta'minlash qobiliyati. Tashabbusning yo'qligi muhim jarayonlardagi ruxsatsiz o'zgarishlar xavfini kamaytiradi.",
+              "risks": "Surunkali past unumdorlik va minimal qo'shilgan qiymatning yuqori xavfi. Tashabbusning to'liq yo'qligi va o'zgarishlarda moslashish qobiliyati. Jamoada 'o'lik zona' yaratish xavfi. Hissa qiymatiga nisbatan ushlab turishning yuqori qiymati.",
+              "management_tips": "Ishga olishda o'tgan yutuqlarni tasdiqlash uchun puxta xulq-atvor intervyusi o'tkazish zarur. Jamoada mavjud bo'lganda — aniq KPI va rivojlanish rejasini darhol joriy etish. Ishlash yaxshilash dasturini (PIP) ko'rib chiqish. Mustaqillik, ijodkorlik yoki odamlarni boshqarishni talab qiladigan rollar uchun qat'iyan tavsiya etilmaydi."
+            }
+          }
+        },
+        "neuroticism_extraversion": {
+          "dyad_title_ru": "Эмоциональный стиль в социальном взаимодействии",
+          "dyad_title_uz": "Ijtimoiy o'zaro munosabatdagi hissiy uslub",
+          "high_high": {
+            "type_title_ru": "Экспрессивный тревожный коммуникатор",
+            "type_title_uz": "Ekspressiv tashvishli kommunikator",
+            "ru": {
+              "portrait": "Тестируемый сочетает высокую социальную энергию с повышенной эмоциональной реактивностью: активно взаимодействует с людьми, но остро переживает критику, конфликты и неопределённость. Кандидат открыто делится эмоциями и ищет поддержки в общении, однако может демонстрировать заметные перепады настроения на людях. Такой сотрудник эмоционально «заражает» команду — как энтузиазмом, так и тревогой.",
+              "strengths": "Открытое выражение эмоций помогает рано выявлять проблемы в команде. Социальная включённость частично компенсирует тревожность за счёт поддержки окружающих. Энергичен в проектах, где важна быстрая обратная связь и живое обсуждение.",
+              "risks": "Риск эмоциональных вспышек в публичных ситуациях — совещаниях, переговорах. Нестабильное настроение может восприниматься командой как непредсказуемость. Повышенная потребность в одобрении со стороны окружающих.",
+              "management_tips": "Давать обратную связь один на один до публичных обсуждений. Создавать предсказуемую, психологически безопасную рабочую среду. Поощрять опору на поддержку команды как ресурс, а не источник дополнительной тревоги."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yuqori ijtimoiy energiyani kuchaygan hissiy reaktivlik bilan uyg'unlashtiradi: odamlar bilan faol muloqot qiladi, ammo tanqid, ziddiyat va noaniqlikni keskin his qiladi. Nomzod his-tuyg'ularini ochiq baham ko'radi va muloqotda qo'llab-quvvatlash izlaydi, ammo odamlar oldida kayfiyatning sezilarli o'zgarishini namoyon etishi mumkin.",
+              "strengths": "His-tuyg'ularni ochiq ifodalash jamoadagi muammolarni erta aniqlashga yordam beradi. Ijtimoiy jalb qilinganlik atrofdagilarning yordami hisobiga tashvishni qisman qoplaydi. Tezkor fikr-mulohaza va jonli muhokama muhim bo'lgan loyihalarda faol.",
+              "risks": "Ommaviy vaziyatlarda — yig'ilishlar, muzokaralarda — hissiy portlash xavfi. Beqaror kayfiyat jamoa tomonidan bashorat qilib bo'lmaslik sifatida qabul qilinishi mumkin. Atrofdagilar tomonidan tasdiqlanishga kuchaygan ehtiyoj.",
+              "management_tips": "Ommaviy muhokamalardan oldin yakka tartibda fikr-mulohaza berish. Bashorat qilinadigan, psixologik xavfsiz ish muhitini yaratish. Jamoa yordamiga tayanishni qo'shimcha tashvish manbai emas, resurs sifatida rag'batlantirish."
+            }
+          },
+          "high_low": {
+            "type_title_ru": "Тревожный интроверт",
+            "type_title_uz": "Tashvishli introvert",
+            "ru": {
+              "portrait": "Тестируемый сочетает повышенную эмоциональную реактивность с выраженной интровертностью: тревога и переживания остаются по большей части внутренними, редко проговариваются вслух. Кандидат избегает социальных ситуаций, способных стать источником стресса, и предпочитает справляться с трудностями в одиночку, что затрудняет своевременное выявление перегрузки.",
+              "strengths": "Глубокая рефлексия и самоанализ. Аккуратность и осторожность в задачах с высокой ценой ошибки. Низкий риск публичных эмоциональных инцидентов.",
+              "risks": "Высокий риск скрытого выгорания — трудности незаметны до критической точки. Избегание обратной связи и просьб о помощи. Склонность к катастрофизации в одиночестве, без внешней проверки реальности.",
+              "management_tips": "Проводить регулярные приватные check-in, не дожидаясь, пока сотрудник обратится сам. Создавать безопасные асинхронные каналы для раннего сигнала о перегрузке. Не считать отсутствие жалоб признаком отсутствия проблем."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi kuchaygan hissiy reaktivlikni yaqqol introvertlik bilan uyg'unlashtiradi: tashvish va kechinmalar asosan ichida qoladi, kamdan-kam ovoz chiqarib aytiladi. Nomzod stress manbai bo'lishi mumkin bo'lgan ijtimoiy vaziyatlardan qochadi va qiyinchiliklarni yolg'iz hal qilishni afzal ko'radi, bu esa ortiqcha yuklamani o'z vaqtida aniqlashni qiyinlashtiradi.",
+              "strengths": "Chuqur refleksiya va o'z-o'zini tahlil qilish. Xato narxi yuqori bo'lgan vazifalarda ehtiyotkorlik va aniqlik. Ommaviy hissiy insidentlar xavfining pastligi.",
+              "risks": "Yashirin burnout ning yuqori xavfi — qiyinchiliklar kritik nuqtagacha sezilmaydi. Fikr-mulohaza va yordam so'rashdan qochish. Tashqi tekshiruvsiz yolg'izlikda vaziyatni falokatlashtirish moyilligi.",
+              "management_tips": "Xodim o'zi murojaat qilishini kutmasdan, muntazam shaxsiy check-in o'tkazish. Ortiqcha yuklama haqida erta signal uchun xavfsiz asinxron kanallar yaratish. Shikoyatlar yo'qligini muammolar yo'qligi deb hisoblamaslik."
+            }
+          },
+          "low_high": {
+            "type_title_ru": "Устойчивый экстраверт",
+            "type_title_uz": "Barqaror ekstravert",
+            "ru": {
+              "portrait": "Тестируемый сочетает эмоциональную стабильность с высокой социальной энергией: уверенно чувствует себя в публичных ситуациях, легко переносит критику и конфликт, не теряя энтузиазма. Кандидат — естественный источник позитивной энергии для команды и устойчив к стрессу переговоров и презентаций.",
+              "strengths": "Высокая эффективность в кризисных коммуникациях и публичных выступлениях. Стабилизирующее влияние на более тревожных коллег. Способность удерживать оптимистичный настрой команды в сложные периоды.",
+              "risks": "Возможная недооценка эмоционального состояния более тревожных членов команды. Риск излишней самоуверенности при оценке рисков.",
+              "management_tips": "Задействовать в ролях внешнего представительства — переговорах, кризисных коммуникациях. Просить явно проговаривать риски, которые сотрудник интуитивно недооценивает. Назначать наставником для более тревожных младших коллег."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi hissiy barqarorlikni yuqori ijtimoiy energiya bilan uyg'unlashtiradi: ommaviy vaziyatlarda o'zini ishonchli his qiladi, tanqid va ziddiyatni ishtiyoqini yo'qotmasdan osongina qabul qiladi. Nomzod jamoa uchun tabiiy ijobiy energiya manbai bo'lib, muzokaralar va taqdimotlar stressiga chidamli.",
+              "strengths": "Inqiroz kommunikatsiyasi va ommaviy chiqishlarda yuqori samaradorlik. Ko'proq tashvishli hamkasblarga barqarorlashtiruvchi ta'sir. Qiyin davrlarda jamoaning optimistik kayfiyatini saqlab qolish qobiliyati.",
+              "risks": "Jamoaning ko'proq tashvishli a'zolari hissiy holatini past baholash mumkin. Xavflarni baholashda ortiqcha o'ziga ishonch xavfi.",
+              "management_tips": "Tashqi vakillik rollarida — muzokaralar, inqiroz kommunikatsiyasida foydalanish. O'zi intuitiv ravishda past baholaydigan xavflarni aniq ovoz chiqarib aytishni so'rash. Ko'proq tashvishli kichik hamkasblarga murabbiy sifatida tayinlash."
+            }
+          },
+          "low_low": {
+            "type_title_ru": "Спокойный аналитик",
+            "type_title_uz": "Xotirjam analitik",
+            "ru": {
+              "portrait": "Тестируемый сочетает эмоциональную стабильность с интровертностью: невозмутим, независим, предпочитает работать автономно и не нуждается во внешней стимуляции для сохранения работоспособности. Кандидат редко проявляет эмоции внешне и комфортно переносит длительную социальную изоляцию — удалённую работу, глубокую концентрацию.",
+              "strengths": "Исключительная устойчивость в длительных автономных проектах. Хладнокровие в технических кризисах, не имеющих социальной природы. Минимальная потребность в управленческом внимании.",
+              "risks": "Риск восприятия как эмоционально отстранённого или незаинтересованного. Может не сигнализировать о проблемах, поскольку не считает нужным их обсуждать вслух.",
+              "management_tips": "Не путать спокойствие с безразличием — уточнять мнение напрямую. Предоставлять автономию и минимизировать необязательные совещания. Регулярно и явно запрашивать обратную связь, так как сотрудник сам её не инициирует."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi hissiy barqarorlikni introvertlik bilan uyg'unlashtiradi: bosiq, mustaqil, avtonom ishlashni afzal ko'radi va ish qobiliyatini saqlash uchun tashqi stimulyatsiyaga muhtoj emas. Nomzod his-tuyg'ularini tashqarida kamdan-kam namoyon etadi va uzoq ijtimoiy izolyatsiyaga — masofaviy ishga, chuqur konsentratsiyaga — qulay chidaydi.",
+              "strengths": "Uzoq muddatli avtonom loyihalarda ajoyib barqarorlik. Ijtimoiy tabiatga ega bo'lmagan texnik inqirozlarda sovuqqonlik. Boshqaruv e'tiboriga minimal ehtiyoj.",
+              "risks": "Hissiy jihatdan chetlashgan yoki qiziqmagan sifatida qabul qilinish xavfi. Muammolarni ovoz chiqarib muhokama qilish zarur deb hisoblamagani uchun ular haqida signal bermasligi mumkin.",
+              "management_tips": "Xotirjamlikni befarqlik bilan aralashtirmaslik — fikrini to'g'ridan-to'g'ri so'rash. Avtonomiya berish va keraksiz yig'ilishlarni kamaytirish. Xodim o'zi tashabbus ko'rsatmagani uchun muntazam va aniq fikr-mulohaza so'rash."
+            }
+          }
+        },
+        "neuroticism_agreeableness": {
+          "dyad_title_ru": "Эмоциональная реактивность в отношениях с людьми",
+          "dyad_title_uz": "Odamlar bilan munosabatlardagi hissiy reaktivlik",
+          "high_high": {
+            "type_title_ru": "Тревожный миротворец",
+            "type_title_uz": "Tashvishli yarashtiruvchi",
+            "ru": {
+              "portrait": "Тестируемый сочетает эмоциональную чувствительность с выраженной ориентацией на гармонию в отношениях: остро переживает конфликты и стремится их избегать любой ценой, часто в ущерб собственным интересам. Кандидат склонен принимать чужое недовольство на свой счёт и тратит значительный эмоциональный ресурс на поддержание мира в команде.",
+              "strengths": "Высокая чувствительность к назревающим конфликтам — раннее их выявление. Искренняя эмпатия, ценная в поддерживающих и клиентских ролях. Готовность брать на себя эмоциональную работу по сглаживанию напряжённости.",
+              "risks": "Риск хронического эмоционального истощения из-за избегания необходимой конфронтации. Уязвимость к манипуляции через чувство вины. Трудности с отказом и выставлением границ.",
+              "management_tips": "Обучать конструктивным моделям несогласия в безопасной обстановке. Явно защищать от избыточной эмоциональной нагрузки и просьб коллег. Хвалить за отстаивание собственной позиции, а не только за уступчивость."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi hissiy sezgirlikni munosabatlarda uyg'unlikka yaqqol yo'nalganlik bilan uyg'unlashtiradi: ziddiyatlarni keskin his qiladi va ularni har qanday narxda oldini olishga intiladi, ko'pincha o'z manfaatlari hisobidan. Nomzod boshqalarning noroziligini o'ziga qarata qabul qilishga moyil va jamoada tinchlikni saqlash uchun katta hissiy resurs sarflaydi.",
+              "strengths": "Kelib chiqayotgan ziddiyatlarga yuqori sezgirlik — ularni erta aniqlash. Qo'llab-quvvatlovchi va mijozlar rollarida qimmatli chin empatiya. Keskinlikni yumshatish bo'yicha hissiy ishni o'z zimmasiga olishga tayyorlik.",
+              "risks": "Zaruriy qarama-qarshilikdan qochish tufayli surunkali hissiy charchash xavfi. Aybdorlik hissi orqali manipulyatsiyaga zaiflik. Rad etish va chegara qo'yishda qiyinchiliklar.",
+              "management_tips": "Xavfsiz sharoitda konstruktiv kelishmovchilik modellarini o'rgatish. Ortiqcha hissiy yuklama va hamkasblar so'rovlaridan aniq himoya qilish. Faqat moslashuvchanlik uchun emas, o'z pozitsiyasini himoya qilgani uchun ham maqtash."
+            }
+          },
+          "high_low": {
+            "type_title_ru": "Тревожный скептик",
+            "type_title_uz": "Tashvishli skeptik",
+            "ru": {
+              "portrait": "Тестируемый сочетает эмоциональную реактивность со сниженной просоциальной ориентацией: склонен воспринимать критику и конфликт как угрозу, при этом не стремится сглаживать отношения уступчивостью. Кандидат может реагировать на стресс раздражительностью и недоверием к мотивам окружающих.",
+              "strengths": "Реалистичная, не приукрашенная оценка рисков и мотивов людей. Готовность прямо называть проблему, не боясь испортить отношения. Устойчивость к социальному давлению «сохранять хорошую мину».",
+              "risks": "Риск деструктивных конфликтов, усиленных эмоциональной реактивностью. Тенденция к раздражительности в стрессе, воспринимаемая как враждебность. Трудности с восстановлением доверия после конфликта.",
+              "management_tips": "Устанавливать чёткие правила коммуникации в напряжённых ситуациях. Давать обратную связь через факты и данные, а не через призыв к эмпатии. Обеспечивать предсказуемую среду для снижения общего уровня тревоги."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi hissiy reaktivlikni pasaygan prosotsiyal yo'nalish bilan uyg'unlashtiradi: tanqid va ziddiyatni tahdid sifatida qabul qilishga moyil, ammo moslashuvchanlik orqali munosabatlarni yumshatishga intilmaydi. Nomzod stressga ta'sirchanlik va odamlar motivlariga ishonchsizlik bilan javob berishi mumkin.",
+              "strengths": "Odamlar xavflari va motivlarini realistik, bezaksiz baholash. Munosabatlarni buzishdan qo'rqmasdan muammoni to'g'ridan-to'g'ri aytish tayyorligi. 'Yaxshi ko'rinishni saqlash' ijtimoiy bosimiga chidamlilik.",
+              "risks": "Hissiy reaktivlik bilan kuchaytirilgan destruktiv ziddiyatlar xavfi. Stressda dushmanlik sifatida qabul qilinadigan ta'sirchanlikka moyillik. Ziddiyatdan keyin ishonchni tiklashda qiyinchiliklar.",
+              "management_tips": "Keskin vaziyatlarda aniq kommunikatsiya qoidalarini belgilash. Empatiyaga chaqiruv orqali emas, faktlar va ma'lumotlar orqali fikr-mulohaza berish. Umumiy tashvish darajasini kamaytirish uchun bashorat qilinadigan muhitni ta'minlash."
+            }
+          },
+          "low_high": {
+            "type_title_ru": "Спокойный кооператор",
+            "type_title_uz": "Xotirjam hamkor",
+            "ru": {
+              "portrait": "Тестируемый сочетает эмоциональную стабильность с выраженной кооперативностью: сохраняет доброжелательность и готовность к сотрудничеству даже в напряжённых обстоятельствах. Кандидат — надёжный медиатор, способный снижать градус конфликта, не будучи при этом лично уязвимым к стрессу.",
+              "strengths": "Эффективная медиация конфликтов без личного эмоционального выгорания. Стабильное дружелюбие, формирующее психологически безопасную среду. Устойчивость к манипуляции при сохранении открытости.",
+              "risks": "Возможное избегание нужного, но неприятного разговора ради сохранения гармонии. Риск, что стабильность будет истолкована как безразличие к проблемам команды.",
+              "management_tips": "Задействовать как штатного медиатора в межличностных конфликтах. Явно поощрять конструктивное несогласие, а не только гармонию. Давать роли с высокой ответственностью за командный климат."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi hissiy barqarorlikni yaqqol kooperativlik bilan uyg'unlashtiradi: keskin sharoitlarda ham do'stona munosabat va hamkorlikka tayyorlikni saqlaydi. Nomzod — shaxsan stressga zaif bo'lmagan holda ziddiyat darajasini pasaytira oladigan ishonchli vositachi.",
+              "strengths": "Shaxsiy hissiy charchashsiz samarali ziddiyat vositachiligi. Psixologik xavfsiz muhit shakllantiruvchi barqaror do'stonalik. Ochiqlikni saqlagan holda manipulyatsiyaga chidamlilik.",
+              "risks": "Uyg'unlikni saqlash uchun zarur, ammo yoqimsiz suhbatdan qochish mumkin. Barqarorlik jamoa muammolariga befarqlik sifatida talqin qilinishi xavfi.",
+              "management_tips": "Shaxslararo ziddiyatlarda shtatdagi vositachi sifatida foydalanish. Faqat uyg'unlikni emas, konstruktiv kelishmovchilikni ham rag'batlantirish. Jamoa iqlimi uchun yuqori mas'uliyatli rollar berish."
+            }
+          },
+          "low_low": {
+            "type_title_ru": "Прагматичный реалист",
+            "type_title_uz": "Pragmatik realist",
+            "ru": {
+              "portrait": "Тестируемый сочетает эмоциональную стабильность со сниженной просоциальной ориентацией: спокойно и без излишних эмоций отстаивает собственные интересы, не нуждаясь в одобрении окружающих. Кандидат принимает решения на основе объективных данных, а не социального консенсуса, оставаясь при этом ровным в стрессе.",
+              "strengths": "Хладнокровное принятие непопулярных, но необходимых решений. Устойчивость к эмоциональному и социальному давлению одновременно. Эффективность в жёстких переговорах.",
+              "risks": "Риск восприятия коллегами как холодного и отстранённого. Возможное игнорирование эмоционального климата команды при принятии решений.",
+              "management_tips": "Использовать в ролях, требующих непопулярных решений в условиях давления: реструктуризация, жёсткие переговоры. Периодически запрашивать обратную связь от команды о климате, так как сотрудник сам её не инициирует."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi hissiy barqarorlikni pasaygan prosotsiyal yo'nalish bilan uyg'unlashtiradi: atrofdagilarning tasdig'iga muhtoj bo'lmasdan, xotirjam va ortiqcha hissiyotsiz o'z manfaatlarini himoya qiladi. Nomzod qarorlarni ijtimoiy konsensus emas, ob'ektiv ma'lumotlar asosida qabul qiladi va stressda barqaror qoladi.",
+              "strengths": "Mashhur bo'lmagan, lekin zaruriy qarorlarni sovuqqonlik bilan qabul qilish. Hissiy va ijtimoiy bosimga bir vaqtda chidamlilik. Qattiq muzokaralarda samaradorlik.",
+              "risks": "Hamkasblar tomonidan sovuq va chetlashgan sifatida qabul qilinish xavfi. Qaror qabul qilishda jamoaning hissiy iqlimini e'tiborsiz qoldirish mumkin.",
+              "management_tips": "Bosim sharoitida mashhur bo'lmagan qarorlar talab qiladigan rollarda foydalanish: qayta tashkil etish, qattiq muzokaralar. Xodim o'zi tashabbus ko'rsatmagani uchun jamoa iqlimi haqida vaqti-vaqti bilan fikr-mulohaza so'rash."
+            }
+          }
+        },
+        "neuroticism_openness": {
+          "dyad_title_ru": "Эмоциональная реакция на новизну и неопределённость",
+          "dyad_title_uz": "Yangilik va noaniqlikka hissiy reaktsiya",
+          "high_high": {
+            "type_title_ru": "Тревожный новатор",
+            "type_title_uz": "Tashvishli innovator",
+            "ru": {
+              "portrait": "Тестируемый сочетает богатое воображение и любопытство с повышенной эмоциональной реактивностью: генерирует множество идей, но остро переживает их неопределённые последствия. Кандидат склонен к глубокому анализу возможных рисков новых начинаний, иногда доходящему до руминации.",
+              "strengths": "Богатое воображение в сочетании с вниманием к потенциальным подводным камням. Способность заранее продумывать множество сценариев развития идеи. Творческий подход к решению нестандартных проблем.",
+              "risks": "Риск паралича анализа — идеи не доходят до реализации из-за тревоги. Эмоциональное истощение от постоянного прокручивания сценариев. Возможная гиперкритичность к собственным творческим результатам.",
+              "management_tips": "Устанавливать чёткие сроки перехода от идеи к действию. Поощрять быстрые прототипы вместо длительного обдумывания. Обеспечивать поддержку при первых шагах реализации новых идей."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi boy tasavvur va qiziquvchanlikni kuchaygan hissiy reaktivlik bilan uyg'unlashtiradi: ko'plab g'oyalar generatsiya qiladi, ammo ularning noaniq oqibatlarini keskin his qiladi. Nomzod yangi boshlanishlarning mumkin bo'lgan xavflarini chuqur tahlil qilishga moyil, bu ba'zan ruminatsiyagacha yetib boradi.",
+              "strengths": "Potensial nozik jihatlarga e'tibor bilan uyg'unlashgan boy tasavvur. G'oyaning rivojlanishi bo'yicha ko'plab stsenariylarni oldindan o'ylab ko'rish qobiliyati. Nostandart muammolarni hal qilishga ijodiy yondashuv.",
+              "risks": "Tahlil falaji xavfi — g'oyalar tashvish tufayli amalga oshirilmaydi. Stsenariylarni doimiy aylantirishdan hissiy charchash. O'z ijodiy natijalariga nisbatan haddan tashqari tanqidiylik mumkin.",
+              "management_tips": "G'oyadan harakatga o'tish uchun aniq muddatlar belgilash. Uzoq o'ylashdan ko'ra tezkor prototiplarni rag'batlantirish. Yangi g'oyalarni amalga oshirishning dastlabki qadamlarida qo'llab-quvvatlashni ta'minlash."
+            }
+          },
+          "high_low": {
+            "type_title_ru": "Тревожный консерватор",
+            "type_title_uz": "Tashvishli konservator",
+            "ru": {
+              "portrait": "Тестируемый сочетает эмоциональную реактивность с предпочтением привычного и проверенного: неопределённость и новизна воспринимаются как источник тревоги, поэтому кандидат стремится минимизировать изменения в своей работе. Такой сотрудник чувствует себя увереннее в стабильной, предсказуемой среде с чёткими инструкциями.",
+              "strengths": "Высокая надёжность в выполнении стандартизированных, повторяющихся процессов. Осторожность, снижающая риск непродуманных решений. Устойчивость к давлению модных, но непроверенных подходов.",
+              "risks": "Повышенная тревога при организационных изменениях и реструктуризации. Сопротивление инновациям даже там, где они объективно полезны. Возможный стресс в средах с высокой неопределённостью (стартапы, быстрый рост).",
+              "management_tips": "Вводить изменения постепенно, с заблаговременным объяснением причин и последствий. Предоставлять чёткие инструкции и предсказуемый график. Не назначать на роли, требующие частой работы с неопределённостью, без дополнительной поддержки."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi hissiy reaktivlikni odatiy va sinalgan narsalarga afzallik bilan uyg'unlashtiradi: noaniqlik va yangilik tashvish manbai sifatida qabul qilinadi, shuning uchun nomzod o'z ishida o'zgarishlarni minimallashtirishga intiladi. Bunday xodim barqaror, bashorat qilinadigan, aniq ko'rsatmalari bo'lgan muhitda o'zini ishonchliroq his qiladi.",
+              "strengths": "Standartlashtirilgan, takrorlanuvchi jarayonlarni bajarishda yuqori ishonchlilik. O'ylanmagan qarorlar xavfini kamaytiradigan ehtiyotkorlik. Moda, ammo sinalmagan yondashuvlar bosimiga chidamlilik.",
+              "risks": "Tashkiliy o'zgarishlar va qayta tashkil etishda kuchaygan tashvish. Innovatsiyalarga qarshilik, hatto ular ob'ektiv foydali bo'lganda ham. Yuqori noaniqlikka ega muhitlarda (startaplar, tez o'sish) mumkin bo'lgan stress.",
+              "management_tips": "O'zgarishlarni bosqichma-bosqich, sabab va oqibatlarni oldindan tushuntirib kiritish. Aniq ko'rsatmalar va bashorat qilinadigan jadval berish. Qo'shimcha qo'llab-quvvatlashsiz noaniqlik bilan tez-tez ishlashni talab qiladigan rollarga tayinlamaslik."
+            }
+          },
+          "low_high": {
+            "type_title_ru": "Уверенный исследователь",
+            "type_title_uz": "Ishonchli tadqiqotchi",
+            "ru": {
+              "portrait": "Тестируемый сочетает эмоциональную стабильность с высокой открытостью новому опыту: воспринимает неопределённость как стимул, а не угрозу, и уверенно экспериментирует с нестандартными подходами. Кандидат сохраняет ясность мышления при работе с амбициозными и слабоструктурированными задачами.",
+              "strengths": "Продуктивная работа в условиях высокой неопределённости и быстрых изменений. Способность генерировать и хладнокровно тестировать смелые гипотезы. Устойчивость к неудачам экспериментов без потери мотивации.",
+              "risks": "Возможная недооценка рисков из-за общей невозмутимости в отношении новизны. Риск слишком быстрого перехода к следующей идее без должного анализа предыдущей.",
+              "management_tips": "Задействовать в ролях R&D, инновационных проектах, трансформации бизнеса. Периодически просить формально документировать риски, которые сотрудник интуитивно недооценивает. Давать высокую степень автономии в исследовательских задачах."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi hissiy barqarorlikni yangi tajribaga yuqori ochiqlik bilan uyg'unlashtiradi: noaniqlikni tahdid emas, rag'batlantiruvchi omil sifatida qabul qiladi va nostandart yondashuvlar bilan ishonchli tarzda tajriba o'tkazadi. Nomzod ambitsiyali va kam tuzilgan vazifalar bilan ishlashda fikrlash aniqligini saqlaydi.",
+              "strengths": "Yuqori noaniqlik va tez o'zgarishlar sharoitida samarali ish. Jasur gipotezalarni generatsiya qilish va sovuqqonlik bilan sinash qobiliyati. Motivatsiyani yo'qotmasdan tajriba muvaffaqiyatsizliklariga chidamlilik.",
+              "risks": "Yangilikka nisbatan umumiy bosiqlik tufayli xavflarni past baholash mumkin. Oldingi g'oyani yetarlicha tahlil qilmasdan keyingisiga juda tez o'tish xavfi.",
+              "management_tips": "R&D, innovatsion loyihalar, biznes transformatsiyasi rollarida foydalanish. Xodim intuitiv ravishda past baholaydigan xavflarni rasmiy hujjatlashtirishni vaqti-vaqti bilan so'rash. Tadqiqot vazifalarida yuqori darajadagi avtonomiya berish."
+            }
+          },
+          "low_low": {
+            "type_title_ru": "Стабильный практик",
+            "type_title_uz": "Barqaror amaliyotchi",
+            "ru": {
+              "portrait": "Тестируемый сочетает эмоциональную стабильность с предпочтением конкретного и проверенного: работает спокойно и предсказуемо, ориентируясь на устоявшиеся методы, а не на эксперименты. Кандидат не испытывает тревоги в рутине, но и не тяготеет к её изменению.",
+              "strengths": "Надёжное, стабильное выполнение процессов без эмоциональных колебаний. Высокая предсказуемость поведения и результатов для руководства. Устойчивость к монотонии без потери качества.",
+              "risks": "Ограниченная инициатива в предложении новых решений. Возможное отставание от изменений в отрасли из-за низкой тяги к новизне.",
+              "management_tips": "Задействовать в операционных ролях, где ценность — стабильность и предсказуемость. При необходимости инноваций — подключать в паре с более открытыми новому коллегами. Не требовать частой смены подходов без объяснения причин."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi hissiy barqarorlikni aniq va sinalgan narsalarga afzallik bilan uyg'unlashtiradi: tajribalar emas, o'rnashgan usullarga tayanib, xotirjam va bashorat qilinadigan tarzda ishlaydi. Nomzod rutinda tashvish sezmaydi, lekin uni o'zgartirishga ham moyil emas.",
+              "strengths": "Hissiy tebranishlarsiz jarayonlarni ishonchli, barqaror bajarish. Rahbariyat uchun xatti-harakat va natijalarning yuqori bashorat qilinishi. Sifatni yo'qotmasdan monotoniyaga chidamlilik.",
+              "risks": "Yangi yechimlar taklif qilishda cheklangan tashabbus. Yangilikka past moyillik tufayli soha o'zgarishlaridan orqada qolish mumkin.",
+              "management_tips": "Barqarorlik va bashorat qilinishi qadrlanadigan operatsion rollarda foydalanish. Innovatsiya zarur bo'lganda — yangilikka ochiqroq hamkasblar bilan juftlikda jalb qilish. Sabab tushuntirilmasdan yondashuvlarni tez-tez o'zgartirishni talab qilmaslik."
+            }
+          }
+        },
+        "extraversion_openness": {
+          "dyad_title_ru": "Стиль вовлечённости и исследования",
+          "dyad_title_uz": "Jalb bo'lish va tadqiq qilish uslubi",
+          "high_high": {
+            "type_title_ru": "Харизматичный визионер",
+            "type_title_uz": "Xarizmatik vizioner",
+            "ru": {
+              "portrait": "Тестируемый сочетает высокую социальную энергию с широким кругозором и любовью к новым идеям: легко воодушевляет окружающих смелыми концепциями и нестандартными взглядами. Кандидат естественно занимает роль генератора идей и публичного «евангелиста» изменений в организации.",
+              "strengths": "Способность вдохновлять команду на нестандартные инициативы. Широкая сеть контактов, приносящая свежие идеи извне. Эффективность в публичной презентации новых концепций.",
+              "risks": "Риск распыления внимания на слишком много новых направлений одновременно. Возможная поверхностность проработки идей из-за стремления к постоянной новизне.",
+              "management_tips": "Обеспечить сотрудника «партнёром по реализации» с высокой Сознательностью. Ограничивать число параллельных инициатив. Использовать как публичное лицо инновационных проектов."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yuqori ijtimoiy energiyani keng dunyoqarash va yangi g'oyalarga muhabbat bilan uyg'unlashtiradi: atrofdagilarni jasur kontseptsiyalar va nostandart qarashlar bilan osongina ilhomlantiradi. Nomzod tabiiy ravishda g'oyalar generatori va tashkilotdagi o'zgarishlarning ommaviy 'targ'ibotchisi' rolini egallaydi.",
+              "strengths": "Jamoani nostandart tashabbuslarga ilhomlantirish qobiliyati. Tashqaridan yangi g'oyalar keltiradigan keng aloqalar tarmog'i. Yangi kontseptsiyalarni ommaviy taqdim etishda samaradorlik.",
+              "risks": "Bir vaqtning o'zida juda ko'p yangi yo'nalishlarga e'tiborni sochish xavfi. Doimiy yangilikka intilish tufayli g'oyalarni yuzaki ishlab chiqish mumkin.",
+              "management_tips": "Xodimga yuqori Vijdonlilikka ega 'amalga oshirish sherigi'ni ta'minlash. Parallel tashabbuslar sonini cheklash. Innovatsion loyihalarning ommaviy yuzi sifatida foydalanish."
+            }
+          },
+          "high_low": {
+            "type_title_ru": "Энергичный практик",
+            "type_title_uz": "Faol amaliyotchi",
+            "ru": {
+              "portrait": "Тестируемый сочетает высокую социальную энергию с предпочтением конкретного и проверенного: эффективен в коммуникации и нетворкинге, но ориентируется на устоявшиеся методы, а не на эксперименты. Кандидат — надёжный «двигатель» уже отработанных процессов взаимодействия с людьми.",
+              "strengths": "Высокая эффективность в продажах и клиентских коммуникациях по проверенным сценариям. Энергичность в исполнении, а не только в планировании. Предсказуемость поведения в переговорах.",
+              "risks": "Ограниченная гибкость при необходимости менять подход в нестандартной ситуации. Возможное сопротивление новым инструментам или методам коммуникации.",
+              "management_tips": "Использовать в ролях с чёткими, отработанными скриптами взаимодействия (аккаунт-менеджмент, поддержка постоянных клиентов). При внедрении инноваций — обеспечивать пошаговое обучение и практику."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yuqori ijtimoiy energiyani aniq va sinalgan narsalarga afzallik bilan uyg'unlashtiradi: kommunikatsiya va networkingda samarali, ammo tajribalar emas, o'rnashgan usullarga tayanadi. Nomzod — odamlar bilan o'zaro munosabatning allaqachon ishlab chiqilgan jarayonlarining ishonchli 'dvigateli'.",
+              "strengths": "Sinalgan stsenariylar bo'yicha savdo va mijozlar kommunikatsiyasida yuqori samaradorlik. Faqat rejalashtirishda emas, ijroda ham faollik. Muzokaralarda xatti-harakatning bashorat qilinishi.",
+              "risks": "Nostandart vaziyatda yondashuvni o'zgartirish zarurati tug'ilganda cheklangan moslashuvchanlik. Yangi vositalar yoki kommunikatsiya usullariga qarshilik ko'rsatishi mumkin.",
+              "management_tips": "Aniq, ishlab chiqilgan o'zaro munosabat skriptlari bo'lgan rollarda foydalanish (account-menejment, doimiy mijozlarni qo'llab-quvvatlash). Innovatsiyalarni joriy qilishda bosqichma-bosqich o'qitish va amaliyotni ta'minlash."
+            }
+          },
+          "low_high": {
+            "type_title_ru": "Независимый мыслитель",
+            "type_title_uz": "Mustaqil mutafakkir",
+            "ru": {
+              "portrait": "Тестируемый сочетает интровертность с высокой открытостью новому опыту: генерирует глубокие, нестандартные идеи, но предпочитает прорабатывать их в одиночестве, а не в публичном обсуждении. Кандидат — источник оригинальных решений, доносимых чаще письменно, чем в живой презентации.",
+              "strengths": "Глубокая, самостоятельная проработка сложных нестандартных идей. Способность к продолжительной концентрации над творческой или исследовательской задачей. Оригинальность решений без давления группового мышления.",
+              "risks": "Риск, что качественные идеи останутся незамеченными из-за слабой публичной презентации. Возможная изоляция от команды при обсуждении инноваций.",
+              "management_tips": "Обеспечивать письменные и асинхронные каналы для донесения идей (документы, RFC). Назначать более экстравертного коллегу для публичного представления его наработок. Не требовать частых устных презентаций как единственного канала влияния."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi introvertlikni yangi tajribaga yuqori ochiqlik bilan uyg'unlashtiradi: chuqur, nostandart g'oyalarni generatsiya qiladi, ammo ularni ommaviy muhokamada emas, yolg'izlikda ishlab chiqishni afzal ko'radi. Nomzod — ko'pincha jonli taqdimotdan ko'ra yozma tarzda yetkaziladigan original yechimlar manbai.",
+              "strengths": "Murakkab nostandart g'oyalarni chuqur, mustaqil ishlab chiqish. Ijodiy yoki tadqiqot vazifasi ustida uzoq davom etadigan konsentratsiya qobiliyati. Guruh fikrlash bosimisiz yechimlarning originalligi.",
+              "risks": "Zaif ommaviy taqdimot tufayli sifatli g'oyalarning e'tiborsiz qolish xavfi. Innovatsiyalarni muhokama qilishda jamoadan izolyatsiya mumkin.",
+              "management_tips": "G'oyalarni yetkazish uchun yozma va asinxron kanallarni ta'minlash (hujjatlar, RFC). Uning ishlanmalarini ommaviy taqdim etish uchun ko'proq ekstravert hamkasbni tayinlash. Yagona ta'sir kanali sifatida tez-tez og'zaki taqdimotlarni talab qilmaslik."
+            }
+          },
+          "low_low": {
+            "type_title_ru": "Сфокусированный специалист",
+            "type_title_uz": "Fokuslangan mutaxassis",
+            "ru": {
+              "portrait": "Тестируемый сочетает интровертность с предпочтением конкретного и проверенного: работает автономно, глубоко и методично в рамках устоявшейся экспертной области, не стремясь к постоянному расширению кругозора. Кандидат — надёжный носитель узкоспециализированной экспертизы.",
+              "strengths": "Исключительная глубина экспертизы в выбранной предметной области. Высокая продуктивность в автономной, сфокусированной работе. Стабильность и предсказуемость результатов.",
+              "risks": "Ограниченная адаптивность при необходимости быстро осваивать смежные области. Возможное сопротивление ротации или расширению зоны ответственности.",
+              "management_tips": "Использовать в ролях глубокой технической или узкоспециализированной экспертизы. Не форсировать ротацию без необходимости. Расширять зону влияния постепенно, через смежные, но близкие задачи."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi introvertlikni aniq va sinalgan narsalarga afzallik bilan uyg'unlashtiradi: doimiy dunyoqarashni kengaytirishga intilmasdan, o'rnashgan ekspert sohasi doirasida avtonom, chuqur va tizimli ishlaydi. Nomzod — tor ixtisoslashgan ekspertizaning ishonchli tashuvchisi.",
+              "strengths": "Tanlangan predmet sohasida ajoyib ekspertiza chuqurligi. Avtonom, fokuslangan ishda yuqori unumdorlik. Natijalarning barqarorligi va bashorat qilinishi.",
+              "risks": "Qo'shni sohalarni tezda o'zlashtirish zarurati tug'ilganda cheklangan moslashuvchanlik. Rotatsiya yoki mas'uliyat doirasini kengaytirishga qarshilik ko'rsatishi mumkin.",
+              "management_tips": "Chuqur texnik yoki tor ixtisoslashgan ekspertiza rollarida foydalanish. Zaruratsiz rotatsiyani majburlamaslik. Ta'sir doirasini bosqichma-bosqich, yaqin qo'shni vazifalar orqali kengaytirish."
+            }
+          }
+        },
+        "agreeableness_conscientiousness": {
+          "dyad_title_ru": "Надёжность и стиль сотрудничества",
+          "dyad_title_uz": "Ishonchlilik va hamkorlik uslubi",
+          "high_high": {
+            "type_title_ru": "Надёжный командный игрок",
+            "type_title_uz": "Ishonchli jamoaviy o'yinchi",
+            "ru": {
+              "portrait": "Тестируемый сочетает высокую доброжелательность с дисциплиной и ответственностью: искренне заботится о команде и при этом методично выполняет взятые на себя обязательства. Кандидат — один из наиболее предсказуемых и лояльных типов сотрудников, на которого можно положиться и в отношениях, и в задачах.",
+              "strengths": "Высокая надёжность в сочетании с заботой о командном климате. Готовность помогать коллегам без потери собственной результативности. Устойчивая репутация человека слова.",
+              "risks": "Риск перегрузки из-за одновременного стремления помогать всем и доводить всё до идеала. Трудности с отказом коллегам даже в ущерб собственным срокам.",
+              "management_tips": "Помогать расставлять приоритеты между помощью другим и собственными задачами. Явно защищать от перегрузки чужими просьбами. Признавать вклад публично — такой сотрудник редко просит признания сам."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yuqori do'stonalikni intizom va mas'uliyat bilan uyg'unlashtiradi: jamoaga chin dildan g'amxo'rlik qiladi va shu bilan birga o'z zimmasiga olgan majburiyatlarni tizimli bajaradi. Nomzod — ham munosabatlarda, ham vazifalarda tayanish mumkin bo'lgan eng bashorat qilinadigan va sodiq xodim turlaridan biri.",
+              "strengths": "Jamoa iqliga g'amxo'rlik bilan uyg'unlashgan yuqori ishonchlilik. O'z natijadorligini yo'qotmasdan hamkasblarga yordam berishga tayyorlik. So'zida turadigan inson sifatidagi barqaror obro'.",
+              "risks": "Hammaga yordam berish va hamma narsani mukammallikka yetkazishga bir vaqtda intilish tufayli ortiqcha yuklama xavfi. O'z muddatlari hisobidan bo'lsa ham hamkasblarga rad javobini berishda qiyinchiliklar.",
+              "management_tips": "Boshqalarga yordam berish va o'z vazifalari o'rtasida ustuvorliklarni belgilashda yordam berish. Boshqalarning so'rovlari bilan ortiqcha yuklamadan aniq himoya qilish. Hissasini ommaviy tan olish — bunday xodim buni o'zi kamdan-kam so'raydi."
+            }
+          },
+          "high_low": {
+            "type_title_ru": "Отзывчивый импровизатор",
+            "type_title_uz": "Sezgir improvizator",
+            "ru": {
+              "portrait": "Тестируемый сочетает высокую доброжелательность со сниженной дисциплиной: искренне готов помогать и поддерживать коллег, но нерегулярен в самоорганизации и выполнении обязательств по срокам. Кандидат хорошо чувствует потребности других, однако может подводить их же собственной необязательностью.",
+              "strengths": "Искренняя эмпатия и готовность прийти на помощь в моменте. Гибкость и способность подстраиваться под меняющиеся потребности коллег. Лёгкость в установлении доверительных отношений.",
+              "risks": "Риск неисполненных обещаний из-за слабой самодисциплины. Возможное разочарование коллег, ожидающих последовательности от заботливого человека. Трудности с приоритизацией между чужими и собственными задачами.",
+              "management_tips": "Внедрить внешние структуры контроля обязательств — трекеры задач, напоминания. Помогать формализовать обещания в письменном виде. Хвалить не только за отзывчивость, но и за доведение дел до конца."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yuqori do'stonalikni pasaygan intizom bilan uyg'unlashtiradi: hamkasblarga yordam berish va qo'llab-quvvatlashga chin dildan tayyor, ammo o'z-o'zini tashkil etish va muddatlar bo'yicha majburiyatlarni bajarishda beqaror. Nomzod boshqalarning ehtiyojlarini yaxshi his qiladi, ammo o'zining beixtiyorligi bilan ularni xafa qilishi mumkin.",
+              "strengths": "Chin empatiya va lahzada yordamga kelishga tayyorlik. Hamkasblarning o'zgaruvchan ehtiyojlariga moslashish qobiliyati va moslashuvchanlik. Ishonchli munosabatlarni osongina o'rnatish.",
+              "risks": "Zaif o'z-intizomi tufayli bajarilmagan va'dalar xavfi. G'amxo'r insondan izchillikni kutayotgan hamkasblarning hafsalasi pir bo'lishi mumkin. Boshqalarning va o'zining vazifalari o'rtasida ustuvorlik berishda qiyinchiliklar.",
+              "management_tips": "Majburiyatlarni nazorat qilishning tashqi tuzilmalarini joriy etish — vazifa trekerlari, eslatmalar. Va'dalarni yozma shaklda rasmiylashtirishga yordam berish. Faqat sezgirlik uchun emas, ishni oxiriga yetkazgani uchun ham maqtash."
+            }
+          },
+          "low_high": {
+            "type_title_ru": "Принципиальный исполнитель",
+            "type_title_uz": "Prinsipial ijrochi",
+            "ru": {
+              "portrait": "Тестируемый сочетает сниженную просоциальную ориентацию с высокой дисциплиной: методично и качественно выполняет задачи, ориентируясь на объективные стандарты, а не на желание понравиться коллегам. Кандидат прямолинеен в обратной связи и не боится указывать на чужие ошибки ради результата.",
+              "strengths": "Высокое качество результата, не зависящее от желания сохранить хорошие отношения. Прямая, честная обратная связь по существу задачи. Устойчивость к социальному давлению «сгладить углы».",
+              "risks": "Риск восприятия коллегами как излишне жёсткого или бескомпромиссного. Возможное напряжение в команде из-за прямолинейности без смягчения формы.",
+              "management_tips": "Развивать навыки подачи обратной связи в более принимаемой форме. Использовать в ролях контроля качества, аудита, комплаенса. Явно объяснять команде ценность прямоты этого сотрудника, чтобы снизить недопонимание."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi pasaygan prosotsiyal yo'nalishni yuqori intizom bilan uyg'unlashtiradi: hamkasblarga yoqishni emas, ob'ektiv standartlarga tayanib, vazifalarni tizimli va sifatli bajaradi. Nomzod fikr-mulohazada to'g'ridan-to'g'ri va natija uchun boshqalarning xatolarini ko'rsatishdan qo'rqmaydi.",
+              "strengths": "Yaxshi munosabatlarni saqlash istagiga bog'liq bo'lmagan yuqori natija sifati. Vazifa mohiyati bo'yicha to'g'ridan-to'g'ri, halol fikr-mulohaza. 'Burchaklarni yumshatish' ijtimoiy bosimiga chidamlilik.",
+              "risks": "Hamkasblar tomonidan ortiqcha qattiq yoki murosasiz sifatida qabul qilinish xavfi. Shaklni yumshatmasdan to'g'ridan-to'g'rilik tufayli jamoada keskinlik mumkin.",
+              "management_tips": "Fikr-mulohazani ko'proq qabul qilinadigan shaklda berish ko'nikmalarini rivojlantirish. Sifat nazorati, audit, komplaens rollarida foydalanish. Tushunmovchilikni kamaytirish uchun bu xodimning to'g'ridan-to'g'riligi qadrini jamoaga aniq tushuntirish."
+            }
+          },
+          "low_low": {
+            "type_title_ru": "Независимый оппортунист",
+            "type_title_uz": "Mustaqil opportunist",
+            "ru": {
+              "portrait": "Тестируемый сочетает сниженную просоциальную ориентацию со сниженной дисциплиной: действует в первую очередь исходя из собственной выгоды и настроения момента, не будучи связанным ни заботой о команде, ни строгими обязательствами по срокам. Кандидат гибок и независим, но малопредсказуем для окружающих.",
+              "strengths": "Высокая независимость суждений и действий. Готовность быстро менять курс без оглядки на чужие ожидания. Возможная эффективность в краткосрочных, оппортунистических задачах.",
+              "risks": "Систематический риск невыполненных обязательств и напряжённых отношений с командой. Низкая предсказуемость поведения для руководства. Возможное восприятие как ненадёжного сотрудника.",
+              "management_tips": "Вводить чёткие внешние рамки ответственности и частый контроль. Ограничивать автономию до момента демонстрации стабильных результатов. Явно проговаривать последствия невыполнения договорённостей."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi pasaygan prosotsiyal yo'nalishni pasaygan intizom bilan uyg'unlashtiradi: birinchi navbatda o'z manfaati va lahzalik kayfiyatidan kelib chiqib harakat qiladi, na jamoaga g'amxo'rlik, na qat'iy muddat majburiyatlari bilan bog'lanmagan holda. Nomzod moslashuvchan va mustaqil, ammo atrofdagilar uchun kam bashorat qilinadigan.",
+              "strengths": "Fikr va harakatlarda yuqori mustaqillik. Boshqalarning kutishlariga qaramasdan yo'nalishni tezda o'zgartirishga tayyorlik. Qisqa muddatli, opportunistik vazifalarda mumkin bo'lgan samaradorlik.",
+              "risks": "Bajarilmagan majburiyatlar va jamoa bilan keskin munosabatlarning tizimli xavfi. Rahbariyat uchun xatti-harakatning past bashorat qilinishi. Ishonchsiz xodim sifatida qabul qilinishi mumkin.",
+              "management_tips": "Aniq tashqi mas'uliyat chegaralari va tez-tez nazoratni joriy etish. Barqaror natijalar ko'rsatilgunga qadar avtonomiyani cheklash. Kelishuvlarni bajarmaslik oqibatlarini aniq aytib qo'yish."
+            }
+          }
+        },
+        "agreeableness_openness": {
+          "dyad_title_ru": "Открытость во взаимодействии с людьми и идеями",
+          "dyad_title_uz": "Odamlar va g'oyalar bilan o'zaro munosabatdagi ochiqlik",
+          "high_high": {
+            "type_title_ru": "Эмпатичный визионер",
+            "type_title_uz": "Empatik vizioner",
+            "ru": {
+              "portrait": "Тестируемый сочетает высокую доброжелательность с широким кругозором: искренне интересуется как людьми, так и новыми идеями, стремится находить решения, учитывающие интересы всех сторон. Кандидат хорошо подходит для ролей, где важно одновременно вдохновлять и заботиться о команде.",
+              "strengths": "Способность генерировать инклюзивные решения, учитывающие разные точки зрения. Высокая эмпатия в сочетании с открытостью нестандартным подходам. Формирование культуры психологической безопасности при внедрении изменений.",
+              "risks": "Риск избыточного стремления учесть все мнения, замедляющего принятие решений. Возможные трудности с отказом от непродуктивных идей ради сохранения гармонии в обсуждении.",
+              "management_tips": "Устанавливать чёткие дедлайны для завершения фазы обсуждения идей. Поощрять принятие решений даже при неполном консенсусе. Использовать в ролях фасилитации кросс-функциональных инновационных инициатив."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yuqori do'stonalikni keng dunyoqarash bilan uyg'unlashtiradi: ham odamlarga, ham yangi g'oyalarga chin dildan qiziqadi, barcha tomonlarning manfaatlarini hisobga oluvchi yechimlarni topishga intiladi. Nomzod bir vaqtning o'zida ilhomlantirish va jamoaga g'amxo'rlik qilish muhim bo'lgan rollarga yaxshi mos keladi.",
+              "strengths": "Turli nuqtai nazarlarni hisobga oluvchi inklyuziv yechimlar generatsiya qilish qobiliyati. Nostandart yondashuvlarga ochiqlik bilan uyg'unlashgan yuqori empatiya. O'zgarishlarni joriy etishda psixologik xavfsizlik madaniyatini shakllantirish.",
+              "risks": "Barcha fikrlarni hisobga olishga ortiqcha intilish qaror qabul qilishni sekinlashtirishi mumkin. Muhokamadagi uyg'unlikni saqlash uchun samarasiz g'oyalardan voz kechishda qiyinchiliklar mumkin.",
+              "management_tips": "G'oyalarni muhokama qilish bosqichini yakunlash uchun aniq muddatlar belgilash. To'liq konsensus bo'lmasa ham qaror qabul qilishni rag'batlantirish. Kross-funksional innovatsion tashabbuslarni fasilitatsiya qilish rollarida foydalanish."
+            }
+          },
+          "high_low": {
+            "type_title_ru": "Заботливый традиционалист",
+            "type_title_uz": "G'amxo'r an'anaviychi",
+            "ru": {
+              "portrait": "Тестируемый сочетает высокую доброжелательность с предпочтением проверенного и привычного: искренне заботится о людях, но предпочитает делать это через устоявшиеся, надёжные практики, а не эксперименты. Кандидат — стабильная опора команды, к которой обращаются за поддержкой и в предсказуемости.",
+              "strengths": "Надёжная, последовательная забота о команде без резких экспериментов. Стабильность подхода, вызывающая доверие коллег. Эффективность в ролях поддержки, где ценится предсказуемость.",
+              "risks": "Ограниченная инициатива в предложении новых способов поддержки команды или клиентов. Возможное сопротивление изменению устоявшихся практик работы с людьми, даже если они устарели.",
+              "management_tips": "Использовать в ролях с высокой ценностью стабильной, поддерживающей коммуникации (HR, customer support, наставничество). При необходимости обновления практик — вовлекать постепенно, показывая ценность для тех же людей, о которых сотрудник заботится."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi yuqori do'stonalikni sinalgan va odatiy narsalarga afzallik bilan uyg'unlashtiradi: odamlarga chin dildan g'amxo'rlik qiladi, ammo buni tajribalar orqali emas, o'rnashgan, ishonchli amaliyotlar orqali qilishni afzal ko'radi. Nomzod — qo'llab-quvvatlash va bashorat qilinish uchun murojaat qilinadigan jamoaning barqaror tayanchi.",
+              "strengths": "Keskin tajribalarsiz jamoaga ishonchli, izchil g'amxo'rlik. Hamkasblar ishonchini uyg'otadigan yondashuv barqarorligi. Bashorat qilinishi qadrlanadigan qo'llab-quvvatlash rollarida samaradorlik.",
+              "risks": "Jamoa yoki mijozlarni qo'llab-quvvatlashning yangi usullarini taklif qilishda cheklangan tashabbus. Odamlar bilan ishlashning o'rnashgan amaliyotlari eskirgan bo'lsa ham, ularni o'zgartirishga qarshilik ko'rsatishi mumkin.",
+              "management_tips": "Barqaror, qo'llab-quvvatlovchi kommunikatsiya yuqori qadrlanadigan rollarda foydalanish (HR, mijozlarni qo'llab-quvvatlash, murabbiylik). Amaliyotlarni yangilash zarur bo'lsa — xodim g'amxo'rlik qilayotgan xuddi shu odamlar uchun qiymatni ko'rsatib, bosqichma-bosqich jalb qilish."
+            }
+          },
+          "low_high": {
+            "type_title_ru": "Независимый новатор",
+            "type_title_uz": "Mustaqil innovator",
+            "ru": {
+              "portrait": "Тестируемый сочетает сниженную просоциальную ориентацию с высокой открытостью новому: генерирует смелые, нестандартные идеи, не заботясь о том, насколько они соответствуют ожиданиям группы. Кандидат готов отстаивать непопулярную, но перспективную идею вопреки сопротивлению коллектива.",
+              "strengths": "Способность продвигать действительно оригинальные идеи без оглядки на групповое мнение. Устойчивость к социальному давлению «делать как все». Продуктивен в ролях, требующих смелых, спорных решений.",
+              "risks": "Риск игнорирования обоснованных возражений команды из-за низкой ориентации на консенсус. Возможное напряжение при внедрении идей, требующих широкой поддержки коллег.",
+              "management_tips": "Использовать в ролях провокатора идей, adversarial-review, R&D. Обеспечивать отдельный канал для команды, чтобы конструктивно оспаривать его предложения. Пояснять ценность несогласия как части процесса, а не личного конфликта."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi pasaygan prosotsiyal yo'nalishni yangilikka yuqori ochiqlik bilan uyg'unlashtiradi: guruh kutishlariga qanchalik mos kelishidan qat'i nazar, jasur, nostandart g'oyalarni generatsiya qiladi. Nomzod jamoa qarshiligiga qaramasdan mashhur bo'lmagan, ammo istiqbolli g'oyani himoya qilishga tayyor.",
+              "strengths": "Guruh fikriga qaramasdan haqiqatan ham original g'oyalarni ilgari surish qobiliyati. 'Hamma qilganidek qilish' ijtimoiy bosimiga chidamlilik. Jasur, bahsli qarorlar talab qiladigan rollarda samarali.",
+              "risks": "Konsensusga past yo'nalganlik tufayli jamoaning asosli e'tirozlarini e'tiborsiz qoldirish xavfi. Hamkasblarning keng qo'llab-quvvatlashini talab qiladigan g'oyalarni joriy etishda keskinlik mumkin.",
+              "management_tips": "G'oyalar provokatori, adversarial-review, R&D rollarida foydalanish. Jamoa uchun uning takliflarini konstruktiv tarzda bahslashish uchun alohida kanal ta'minlash. Kelishmovchilikning shaxsiy ziddiyat emas, jarayon qismi sifatidagi qiymatini tushuntirish."
+            }
+          },
+          "low_low": {
+            "type_title_ru": "Прагматичный консерватор",
+            "type_title_uz": "Pragmatik konservator",
+            "ru": {
+              "portrait": "Тестируемый сочетает сниженную просоциальную ориентацию с предпочтением проверенного и конкретного: действует независимо, ориентируясь на собственные объективные критерии эффективности, а не на мнение группы или эксперименты с новым. Кандидат прямолинеен и практичен, редко подстраивается под чужие ожидания.",
+              "strengths": "Прагматичная, не подверженная моде оценка эффективности решений. Независимость от группового давления при принятии решений. Устойчивость и последовательность в применении проверенных методов.",
+              "risks": "Риск восприятия как негибкого и малоконтактного коллеги. Возможное сопротивление как новым идеям, так и просьбам учитывать интересы других.",
+              "management_tips": "Использовать в ролях, требующих независимой, объективной экспертной оценки (аудит, контроль качества, риск-менеджмент). Явно проговаривать ожидания по взаимодействию с командой, не полагаясь на то, что сотрудник сам про них догадается."
+            },
+            "uz": {
+              "portrait": "Testlanuvchi pasaygan prosotsiyal yo'nalishni sinalgan va aniq narsalarga afzallik bilan uyg'unlashtiradi: guruh fikri yoki yangilik bilan tajribalarga emas, o'zining ob'ektiv samaradorlik mezonlariga tayanib mustaqil harakat qiladi. Nomzod to'g'ridan-to'g'ri va amaliy, kamdan-kam boshqalarning kutishlariga moslashadi.",
+              "strengths": "Modaga berilmaydigan, yechimlar samaradorligini pragmatik baholash. Qaror qabul qilishda guruh bosimidan mustaqillik. Sinalgan usullarni qo'llashda barqarorlik va izchillik.",
+              "risks": "Moslashuvchan bo'lmagan va kam kontaktli hamkasb sifatida qabul qilinish xavfi. Ham yangi g'oyalarga, ham boshqalarning manfaatlarini hisobga olish so'rovlariga qarshilik ko'rsatishi mumkin.",
+              "management_tips": "Mustaqil, ob'ektiv ekspert baholash talab qiladigan rollarda foydalanish (audit, sifat nazorati, risk-menejment). Xodim o'zi taxmin qilishiga tayanmasdan, jamoa bilan o'zaro munosabat kutishlarini aniq aytib qo'yish."
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,348 @@
+{
+  "meta": {
+    "test_name": "RIASEC — тест интересов (Холланд) для yourway.uz",
+    "platform": "yourway.uz",
+    "version": "1.0",
+    "languages": [
+      "ru",
+      "uz"
+    ],
+    "model": "Модель Холланда (RIASEC): 6 типов профессиональных интересов — Realistic, Investigative, Artistic, Social, Enterprising, Conventional. 30 пунктов, по 5 на тип.",
+    "item_count": 30,
+    "purpose_ru": "Определяет профессиональные интересы пользователя (какая сфера деятельности ему близка). Ядро профориентации. Дополняет Big Five (какой ты) ответом на вопрос «что тебе интересно»."
+  },
+  "questions": [
+    {
+      "id": 1,
+      "type": "R",
+      "text_ru": "Ремонтировать технику или механизмы.",
+      "text_uz": "Texnika yoki mexanizmlarni ta'mirlash."
+    },
+    {
+      "id": 2,
+      "type": "I",
+      "text_ru": "Решать сложные задачи и головоломки.",
+      "text_uz": "Murakkab masala va boshqotirmalarni yechish."
+    },
+    {
+      "id": 3,
+      "type": "A",
+      "text_ru": "Придумывать что-то новое и оригинальное.",
+      "text_uz": "Yangi va o'ziga xos narsalar o'ylab topish."
+    },
+    {
+      "id": 4,
+      "type": "S",
+      "text_ru": "Помогать людям решать их проблемы.",
+      "text_uz": "Odamlarga muammolarini hal qilishda yordam berish."
+    },
+    {
+      "id": 5,
+      "type": "E",
+      "text_ru": "Убеждать людей и вести их за собой.",
+      "text_uz": "Odamlarni ishontirish va ularni ortidan ergashtirish."
+    },
+    {
+      "id": 6,
+      "type": "C",
+      "text_ru": "Работать с документами, цифрами, таблицами.",
+      "text_uz": "Hujjatlar, raqamlar, jadvallar bilan ishlash."
+    },
+    {
+      "id": 7,
+      "type": "R",
+      "text_ru": "Работать инструментами, собирать или чинить своими руками.",
+      "text_uz": "Asboblar bilan ishlash, o'z qo'lingiz bilan yig'ish yoki tuzatish."
+    },
+    {
+      "id": 8,
+      "type": "I",
+      "text_ru": "Исследовать, как и почему что-то работает.",
+      "text_uz": "Biror narsa qanday va nima uchun ishlashini tadqiq qilish."
+    },
+    {
+      "id": 9,
+      "type": "A",
+      "text_ru": "Рисовать, заниматься дизайном, создавать визуальные образы.",
+      "text_uz": "Rasm chizish, dizayn qilish, vizual obrazlar yaratish."
+    },
+    {
+      "id": 10,
+      "type": "S",
+      "text_ru": "Обучать или объяснять что-то другим.",
+      "text_uz": "Boshqalarga biror narsani o'rgatish yoki tushuntirish."
+    },
+    {
+      "id": 11,
+      "type": "E",
+      "text_ru": "Начинать своё дело, запускать проекты.",
+      "text_uz": "O'z ishini boshlash, loyihalarni ishga tushirish."
+    },
+    {
+      "id": 12,
+      "type": "C",
+      "text_ru": "Наводить порядок и систематизировать информацию.",
+      "text_uz": "Tartib o'rnatish va ma'lumotni tizimlashtirish."
+    },
+    {
+      "id": 13,
+      "type": "R",
+      "text_ru": "Работать на улице, с техникой или оборудованием.",
+      "text_uz": "Ochiq havoda, texnika yoki uskunalar bilan ishlash."
+    },
+    {
+      "id": 14,
+      "type": "I",
+      "text_ru": "Анализировать данные, факты, статистику.",
+      "text_uz": "Ma'lumot, faktlar va statistikani tahlil qilish."
+    },
+    {
+      "id": 15,
+      "type": "A",
+      "text_ru": "Писать тексты, музыку или сценарии.",
+      "text_uz": "Matn, musiqa yoki ssenariy yozish."
+    },
+    {
+      "id": 16,
+      "type": "S",
+      "text_ru": "Работать в команде и много общаться.",
+      "text_uz": "Jamoada ishlash va ko'p muloqot qilish."
+    },
+    {
+      "id": 17,
+      "type": "E",
+      "text_ru": "Продавать, договариваться, вести переговоры.",
+      "text_uz": "Sotish, kelishish, muzokara olib borish."
+    },
+    {
+      "id": 18,
+      "type": "C",
+      "text_ru": "Следовать чётким инструкциям и правилам.",
+      "text_uz": "Aniq ko'rsatma va qoidalarga amal qilish."
+    },
+    {
+      "id": 19,
+      "type": "R",
+      "text_ru": "Разбираться, как устроены машины и приборы.",
+      "text_uz": "Mashina va asboblar qanday ishlashini tushunish."
+    },
+    {
+      "id": 20,
+      "type": "I",
+      "text_ru": "Изучать науку, проводить эксперименты.",
+      "text_uz": "Fanni o'rganish, tajribalar o'tkazish."
+    },
+    {
+      "id": 21,
+      "type": "A",
+      "text_ru": "Выражать себя через творчество.",
+      "text_uz": "O'zini ijod orqali ifodalash."
+    },
+    {
+      "id": 22,
+      "type": "S",
+      "text_ru": "Поддерживать и заботиться о людях.",
+      "text_uz": "Odamlarni qo'llab-quvvatlash va g'amxo'rlik qilish."
+    },
+    {
+      "id": 23,
+      "type": "E",
+      "text_ru": "Брать на себя ответственность и руководить.",
+      "text_uz": "Mas'uliyatni o'z zimmasiga olish va rahbarlik qilish."
+    },
+    {
+      "id": 24,
+      "type": "C",
+      "text_ru": "Планировать, вести учёт и контролировать детали.",
+      "text_uz": "Rejalashtirish, hisob yuritish va tafsilotlarni nazorat qilish."
+    },
+    {
+      "id": 25,
+      "type": "R",
+      "text_ru": "Заниматься физическим трудом, строительством, монтажом.",
+      "text_uz": "Jismoniy mehnat, qurilish, montaj bilan shug'ullanish."
+    },
+    {
+      "id": 26,
+      "type": "I",
+      "text_ru": "Докапываться до сути проблемы логическим путём.",
+      "text_uz": "Muammoning mohiyatiga mantiqiy yo'l bilan yetib borish."
+    },
+    {
+      "id": 27,
+      "type": "A",
+      "text_ru": "Работать там, где нет жёстких правил и есть свобода самовыражения.",
+      "text_uz": "Qat'iy qoidalar yo'q, o'zini erkin ifodalash imkoni bor joyda ishlash."
+    },
+    {
+      "id": 28,
+      "type": "S",
+      "text_ru": "Разрешать конфликты и налаживать отношения.",
+      "text_uz": "Nizolarni hal qilish va munosabatlarni yo'lga qo'yish."
+    },
+    {
+      "id": 29,
+      "type": "E",
+      "text_ru": "Рисковать ради большой выгоды.",
+      "text_uz": "Katta foyda uchun tavakkal qilish."
+    },
+    {
+      "id": 30,
+      "type": "C",
+      "text_ru": "Выполнять аккуратную, точную работу по алгоритму.",
+      "text_uz": "Algoritm bo'yicha aniq, ehtiyotkor ish bajarish."
+    }
+  ],
+  "scoring": {
+    "method_ru": "Каждый пункт оценивается по 5-балльной шкале интереса (1–5). Обратных пунктов нет. Баллы суммируются по каждому из 6 типов. Итоговый код Холланда — 3 типа с наибольшей суммой (напр. IAS).",
+    "response_scale": [
+      {
+        "value": 1,
+        "label_ru": "Совсем не интересно",
+        "label_uz": "Umuman qiziq emas"
+      },
+      {
+        "value": 2,
+        "label_ru": "Скорее не интересно",
+        "label_uz": "Ko'proq qiziq emas"
+      },
+      {
+        "value": 3,
+        "label_ru": "Нейтрально",
+        "label_uz": "Neytral"
+      },
+      {
+        "value": 4,
+        "label_ru": "Скорее интересно",
+        "label_uz": "Ko'proq qiziqarli"
+      },
+      {
+        "value": 5,
+        "label_ru": "Очень интересно",
+        "label_uz": "Juda qiziqarli"
+      }
+    ],
+    "result_rule_ru": "holland_code = топ-3 типа по убыванию суммы баллов.",
+    "scales": {
+      "R": {
+        "type_ru": "Реалистичный",
+        "type_uz": "Realistik",
+        "item_count": 5,
+        "raw_min": 5,
+        "raw_max": 25,
+        "item_ids": [
+          1,
+          7,
+          13,
+          19,
+          25
+        ]
+      },
+      "I": {
+        "type_ru": "Исследовательский",
+        "type_uz": "Tadqiqotchi",
+        "item_count": 5,
+        "raw_min": 5,
+        "raw_max": 25,
+        "item_ids": [
+          2,
+          8,
+          14,
+          20,
+          26
+        ]
+      },
+      "A": {
+        "type_ru": "Артистичный",
+        "type_uz": "Ijodkor",
+        "item_count": 5,
+        "raw_min": 5,
+        "raw_max": 25,
+        "item_ids": [
+          3,
+          9,
+          15,
+          21,
+          27
+        ]
+      },
+      "S": {
+        "type_ru": "Социальный",
+        "type_uz": "Ijtimoiy",
+        "item_count": 5,
+        "raw_min": 5,
+        "raw_max": 25,
+        "item_ids": [
+          4,
+          10,
+          16,
+          22,
+          28
+        ]
+      },
+      "E": {
+        "type_ru": "Предприимчивый",
+        "type_uz": "Tadbirkor",
+        "item_count": 5,
+        "raw_min": 5,
+        "raw_max": 25,
+        "item_ids": [
+          5,
+          11,
+          17,
+          23,
+          29
+        ]
+      },
+      "C": {
+        "type_ru": "Конвенциональный",
+        "type_uz": "An'anaviy",
+        "item_count": 5,
+        "raw_min": 5,
+        "raw_max": 25,
+        "item_ids": [
+          6,
+          12,
+          18,
+          24,
+          30
+        ]
+      }
+    }
+  },
+  "interpretation": {
+    "note_ru": "Код из топ-3 типов передаётся в профиль (поле riasec.code) и используется ИИ при подборе сфер.",
+    "types": {
+      "R": {
+        "name_ru": "Реалистичный",
+        "name_uz": "Realistik",
+        "desc_ru": "практика, техника, работа руками, механизмы"
+      },
+      "I": {
+        "name_ru": "Исследовательский",
+        "name_uz": "Tadqiqotchi",
+        "desc_ru": "анализ, наука, исследование, данные"
+      },
+      "A": {
+        "name_ru": "Артистичный",
+        "name_uz": "Ijodkor",
+        "desc_ru": "творчество, дизайн, самовыражение"
+      },
+      "S": {
+        "name_ru": "Социальный",
+        "name_uz": "Ijtimoiy",
+        "desc_ru": "люди, помощь, обучение, коммуникация"
+      },
+      "E": {
+        "name_ru": "Предприимчивый",
+        "name_uz": "Tadbirkor",
+        "desc_ru": "лидерство, бизнес, продажи, влияние"
+      },
+      "C": {
+        "name_ru": "Конвенциональный",
+        "name_uz": "An'anaviy",
+        "desc_ru": "порядок, структура, данные, администрирование"
+      }
+    }
+  }
+}

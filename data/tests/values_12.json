@@ -1,0 +1,190 @@
+{
+  "meta": {
+    "test_name": "Модуль ценностей / мотивации для yourway.uz",
+    "platform": "yourway.uz",
+    "version": "1.0",
+    "languages": [
+      "ru",
+      "uz"
+    ],
+    "model": "6 базовых карьерных ценностей: деньги, свобода, стабильность, признание, помощь людям, творчество. 12 пунктов, по 2 на ценность.",
+    "item_count": 12,
+    "purpose_ru": "Определяет, что для человека значит успех. Превращает размытые «хотелки» в вектор. Маршрут в отчёте должен вести к тому, что человек ценит выше всего."
+  },
+  "questions": [
+    {
+      "id": 1,
+      "value": "money",
+      "text_ru": "Зарабатывать много и иметь высокий доход.",
+      "text_uz": "Ko'p daromad topish va yuqori daromadga ega bo'lish."
+    },
+    {
+      "id": 2,
+      "value": "freedom",
+      "text_ru": "Быть независимым, самому распоряжаться своим временем.",
+      "text_uz": "Mustaqil bo'lish, o'z vaqtini o'zi tasarruf etish."
+    },
+    {
+      "id": 3,
+      "value": "stability",
+      "text_ru": "Стабильность и уверенность в завтрашнем дне.",
+      "text_uz": "Barqarorlik va ertangi kunga ishonch."
+    },
+    {
+      "id": 4,
+      "value": "recognition",
+      "text_ru": "Признание, уважение и высокий статус в обществе.",
+      "text_uz": "Jamiyatda e'tirof, hurmat va yuqori maqom."
+    },
+    {
+      "id": 5,
+      "value": "helping",
+      "text_ru": "Приносить пользу людям и обществу.",
+      "text_uz": "Odamlarga va jamiyatga foyda keltirish."
+    },
+    {
+      "id": 6,
+      "value": "creativity",
+      "text_ru": "Создавать новое и выражать себя.",
+      "text_uz": "Yangilik yaratish va o'zini ifodalash."
+    },
+    {
+      "id": 7,
+      "value": "money",
+      "text_ru": "Финансовое благополучие и возможность позволить себе желаемое.",
+      "text_uz": "Moliyaviy farovonlik va xohlagan narsani sotib olish imkoni."
+    },
+    {
+      "id": 8,
+      "value": "freedom",
+      "text_ru": "Свобода выбора и отсутствие жёсткого контроля.",
+      "text_uz": "Tanlov erkinligi va qat'iy nazoratning yo'qligi."
+    },
+    {
+      "id": 9,
+      "value": "stability",
+      "text_ru": "Надёжная, предсказуемая работа без резких перемен.",
+      "text_uz": "Keskin o'zgarishlarsiz ishonchli, oldindan aytsa bo'ladigan ish."
+    },
+    {
+      "id": 10,
+      "value": "recognition",
+      "text_ru": "Чтобы твои достижения замечали и ценили.",
+      "text_uz": "Yutuqlaring e'tiborga olinishi va qadrlanishi."
+    },
+    {
+      "id": 11,
+      "value": "helping",
+      "text_ru": "Помогать другим и делать мир лучше.",
+      "text_uz": "Boshqalarga yordam berish va dunyoni yaxshiroq qilish."
+    },
+    {
+      "id": 12,
+      "value": "creativity",
+      "text_ru": "Творческая свобода и оригинальность в работе.",
+      "text_uz": "Ishda ijodiy erkinlik va o'ziga xoslik."
+    }
+  ],
+  "scoring": {
+    "method_ru": "Каждый пункт оценивается по 5-балльной шкале важности (1–5). Баллы суммируются по каждой ценности (2 пункта, raw 2–10). Итог — ранжированный список ценностей по убыванию суммы (values_ranked).",
+    "response_scale": [
+      {
+        "value": 1,
+        "label_ru": "Совсем не важно",
+        "label_uz": "Umuman muhim emas"
+      },
+      {
+        "value": 2,
+        "label_ru": "Скорее не важно",
+        "label_uz": "Ko'proq muhim emas"
+      },
+      {
+        "value": 3,
+        "label_ru": "Средне",
+        "label_uz": "O'rtacha"
+      },
+      {
+        "value": 4,
+        "label_ru": "Важно",
+        "label_uz": "Muhim"
+      },
+      {
+        "value": 5,
+        "label_ru": "Очень важно",
+        "label_uz": "Juda muhim"
+      }
+    ],
+    "result_rule_ru": "values_ranked = ценности, отсортированные по убыванию суммы баллов.",
+    "scales": {
+      "money": {
+        "value_ru": "Деньги / доход",
+        "value_uz": "Pul / daromad",
+        "item_count": 2,
+        "raw_min": 2,
+        "raw_max": 10,
+        "item_ids": [
+          1,
+          7
+        ]
+      },
+      "freedom": {
+        "value_ru": "Свобода / независимость",
+        "value_uz": "Erkinlik / mustaqillik",
+        "item_count": 2,
+        "raw_min": 2,
+        "raw_max": 10,
+        "item_ids": [
+          2,
+          8
+        ]
+      },
+      "stability": {
+        "value_ru": "Стабильность / безопасность",
+        "value_uz": "Barqarorlik / xavfsizlik",
+        "item_count": 2,
+        "raw_min": 2,
+        "raw_max": 10,
+        "item_ids": [
+          3,
+          9
+        ]
+      },
+      "recognition": {
+        "value_ru": "Признание / статус",
+        "value_uz": "E'tirof / maqom",
+        "item_count": 2,
+        "raw_min": 2,
+        "raw_max": 10,
+        "item_ids": [
+          4,
+          10
+        ]
+      },
+      "helping": {
+        "value_ru": "Помощь людям / польза",
+        "value_uz": "Odamlarga yordam / foyda",
+        "item_count": 2,
+        "raw_min": 2,
+        "raw_max": 10,
+        "item_ids": [
+          5,
+          11
+        ]
+      },
+      "creativity": {
+        "value_ru": "Творчество / самовыражение",
+        "value_uz": "Ijod / o'zini ifodalash",
+        "item_count": 2,
+        "raw_min": 2,
+        "raw_max": 10,
+        "item_ids": [
+          6,
+          12
+        ]
+      }
+    }
+  },
+  "interpretation": {
+    "note_ru": "Ранжированный список передаётся в профиль (поле values_ranked) и используется ИИ, чтобы маршрут вёл к приоритетной ценности пользователя."
+  }
+}

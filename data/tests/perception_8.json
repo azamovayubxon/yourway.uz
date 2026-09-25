@@ -1,0 +1,167 @@
+{
+  "meta": {
+    "test_name": "Модуль восприятия (стиль обучения) для yourway.uz",
+    "platform": "yourway.uz",
+    "version": "1.0",
+    "languages": [
+      "ru",
+      "uz"
+    ],
+    "model": "4 стиля обучения: чтение/текст, слушание/лекции, практика/делание, повторение/шаблоны. 8 пунктов, по 2 на стиль.",
+    "item_count": 8,
+    "purpose_ru": "Определяет предпочтительный способ обучения пользователя. Используется в отчёте для практических советов «как тебе учиться эффективнее», а не как диагностика.",
+    "scientific_note_ru": "Концепция «стилей обучения» научно дискуссионна. Модуль применяется как практический совет по формату обучения, а не как строгий психодиагностический инструмент."
+  },
+  "questions": [
+    {
+      "id": 1,
+      "style": "reading",
+      "text_ru": "Мне легче всего усвоить новое, когда я читаю текст или книгу.",
+      "text_uz": "Yangi narsani matn yoki kitob o'qiganimda eng oson o'zlashtiraman."
+    },
+    {
+      "id": 2,
+      "style": "auditory",
+      "text_ru": "Мне проще учиться, слушая лекции, аудио или устные объяснения.",
+      "text_uz": "Ma'ruza, audio yoki og'zaki tushuntirishlarni tinglab o'rganish men uchun osonroq."
+    },
+    {
+      "id": 3,
+      "style": "practice",
+      "text_ru": "Я лучше всего учусь, когда сразу пробую делать сам.",
+      "text_uz": "O'zim darhol amalda qilib ko'rganimda eng yaxshi o'rganaman."
+    },
+    {
+      "id": 4,
+      "style": "repetition",
+      "text_ru": "Мне помогает многократное повторение и работа по чётким шаблонам.",
+      "text_uz": "Ko'p marta takrorlash va aniq shablonlar bo'yicha ishlash menga yordam beradi."
+    },
+    {
+      "id": 5,
+      "style": "reading",
+      "text_ru": "Я лучше понимаю материал, когда вижу его написанным, а не слышу.",
+      "text_uz": "Materialni eshitgandan ko'ra yozilgan holda ko'rganimda yaxshiroq tushunaman."
+    },
+    {
+      "id": 6,
+      "style": "auditory",
+      "text_ru": "Я хорошо запоминаю информацию на слух, когда её проговаривают.",
+      "text_uz": "Ma'lumot ovoz chiqarib aytilganda uni quloqdan yaxshi eslab qolaman."
+    },
+    {
+      "id": 7,
+      "style": "practice",
+      "text_ru": "Мне нужно применить новое на практике, чтобы по-настоящему понять.",
+      "text_uz": "Yangi narsani chinakam tushunish uchun uni amaliyotda qo'llashim kerak."
+    },
+    {
+      "id": 8,
+      "style": "repetition",
+      "text_ru": "Я лучше усваиваю материал, когда иду по пошаговой схеме и повторяю.",
+      "text_uz": "Bosqichma-bosqich sxema bo'yicha borib takrorlaganimda materialni yaxshiroq o'zlashtiraman."
+    }
+  ],
+  "scoring": {
+    "method_ru": "Каждый пункт оценивается по 5-балльной шкале (1–5). Обратных пунктов нет. Баллы суммируются по каждому стилю (2 пункта, raw 2–10). Итог — доминирующий стиль (learning_style) = стиль с максимальной суммой; при близких значениях допускается топ-2.",
+    "response_scale": [
+      {
+        "value": 1,
+        "label_ru": "Совсем не про меня",
+        "label_uz": "Umuman men haqimda emas"
+      },
+      {
+        "value": 2,
+        "label_ru": "Скорее не про меня",
+        "label_uz": "Ko'proq men haqimda emas"
+      },
+      {
+        "value": 3,
+        "label_ru": "Нейтрально",
+        "label_uz": "Neytral"
+      },
+      {
+        "value": 4,
+        "label_ru": "Скорее про меня",
+        "label_uz": "Ko'proq men haqimda"
+      },
+      {
+        "value": 5,
+        "label_ru": "Полностью про меня",
+        "label_uz": "To'liq men haqimda"
+      }
+    ],
+    "result_rule_ru": "learning_style = стиль с наибольшей суммой баллов (при близких — топ-2).",
+    "scales": {
+      "reading": {
+        "style_ru": "Чтение / текст",
+        "style_uz": "O'qish / matn",
+        "item_count": 2,
+        "raw_min": 2,
+        "raw_max": 10,
+        "item_ids": [
+          1,
+          5
+        ]
+      },
+      "auditory": {
+        "style_ru": "Слушание / лекции",
+        "style_uz": "Tinglash / ma'ruza",
+        "item_count": 2,
+        "raw_min": 2,
+        "raw_max": 10,
+        "item_ids": [
+          2,
+          6
+        ]
+      },
+      "practice": {
+        "style_ru": "Практика / делание",
+        "style_uz": "Amaliyot / bajarish",
+        "item_count": 2,
+        "raw_min": 2,
+        "raw_max": 10,
+        "item_ids": [
+          3,
+          7
+        ]
+      },
+      "repetition": {
+        "style_ru": "Повторение / шаблоны",
+        "style_uz": "Takrorlash / shablon",
+        "item_count": 2,
+        "raw_min": 2,
+        "raw_max": 10,
+        "item_ids": [
+          4,
+          8
+        ]
+      }
+    }
+  },
+  "interpretation": {
+    "note_ru": "Доминирующий стиль передаётся в профиль (поле learning_style) и используется ИИ для советов по обучению.",
+    "styles": {
+      "reading": {
+        "name_ru": "Чтение / текст",
+        "name_uz": "O'qish / matn",
+        "desc_ru": "Учится через чтение, книги, статьи, конспекты."
+      },
+      "auditory": {
+        "name_ru": "Слушание / лекции",
+        "name_uz": "Tinglash / ma'ruza",
+        "desc_ru": "Учится на слух: лекции, аудио, объяснения."
+      },
+      "practice": {
+        "name_ru": "Практика / делание",
+        "name_uz": "Amaliyot / bajarish",
+        "desc_ru": "Учится через практику, эксперименты, делая сам."
+      },
+      "repetition": {
+        "name_ru": "Повторение / шаблоны",
+        "name_uz": "Takrorlash / shablon",
+        "desc_ru": "Учится через повторение и пошаговые схемы."
+      }
+    }
+  }
+}
