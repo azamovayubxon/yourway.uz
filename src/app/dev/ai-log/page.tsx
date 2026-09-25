@@ -63,9 +63,6 @@ export default async function AiLogPage() {
       <PlaceholderNote>{d.note}</PlaceholderNote>
       <p className="flex flex-wrap gap-x-4 text-sm">
         <span className="text-muted">{d.toolsTitle}:</span>
-        <Link href="/dev/promo" className="font-semibold text-brand-600">
-          {d.promoLink}
-        </Link>
         <Link href="/dev/ai-fail" className="font-semibold text-brand-600">
           {d.aiFailLink}
         </Link>

@@ -3,6 +3,7 @@ import { FaqList, PricingPlans, Steps } from "@/components/blocks";
 import { CtaButton, Section } from "@/components/ui";
 import { getPricesSafe } from "@/lib/payments/prices";
 import { getI18n } from "@/i18n/server";
+import { VisitPing } from "./VisitPing";
 
 // Лендинг (ТЗ 3.1.1). Все тексты — в src/i18n/dictionaries/uz.ts и ru.ts, раздел `landing`.
 export default async function HomePage() {
@@ -11,6 +12,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <VisitPing />
       {/* Главный посыл */}
       <section className="bg-gradient-to-b from-brand-50 to-white">
         <div className="mx-auto max-w-5xl px-4 pb-12 pt-12 sm:pt-20">

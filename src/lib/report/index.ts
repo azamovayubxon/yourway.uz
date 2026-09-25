@@ -1,7 +1,7 @@
 import "server-only";
 import { Prisma } from "@/generated/prisma/client";
 import { getDb } from "@/lib/db";
-import { reportModel } from "@/lib/ai/config";
+import { resolveReportModel } from "@/lib/admin/models";
 import { REPORT_PARTS, REPORT_PROMPT_VERSION, type ReportLevel, type ReportPathType } from "@/lib/ai/prompts";
 import { createFailingProvider, getAiMode, getAiProvider, modelFor } from "@/lib/ai/providers";
 import { runReportPartAttempt } from "@/lib/ai/report";
@@ -58,7 +58,7 @@ export async function createReportInTx(
       profile: { ...profile, level: payment.level } as unknown as Prisma.InputJsonValue,
       teaser: teaser.content as Prisma.InputJsonValue,
       aiMode,
-      model: modelFor(aiMode, reportModel(payment.level as ReportLevel)),
+      model: modelFor(aiMode, await resolveReportModel(payment.level as ReportLevel)),
       promptVersion: REPORT_PROMPT_VERSION,
     },
     select: { id: true },
@@ -131,7 +131,7 @@ export async function advanceReport(options: {
 
   const aiMode = getAiMode();
   const level = report.level as ReportLevel;
-  const model = modelFor(aiMode, reportModel(level));
+  const model = modelFor(aiMode, await resolveReportModel(level));
   // «Захватываем» часть атомарно: две вкладки не запустят одну и ту же попытку дважды.
   // Номер попытки увеличиваем сразу — так зависшая попытка тоже считается (см. decideNext).
   const claimed = await db.report.updateMany({

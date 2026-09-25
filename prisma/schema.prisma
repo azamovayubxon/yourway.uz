@@ -154,7 +154,8 @@ model User {
   recoveryCodeHash String
   // Язык интерфейса при регистрации (uz | ru).
   locale           String
-  // user (позже, на этапе 8: admin, superadmin).
+  // user | admin | superadmin (этап 8, см. src/lib/admin). Суперадмином можно быть и без этой
+  // записи — по логину из переменной окружения SUPERADMIN_LOGINS (см. .env.example).
   role             String        @default("user")
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
@@ -193,7 +194,7 @@ model AuthAttempt {
 }
 
 // Цена уровня полного отчёта (этап 6). Цены хранятся в базе, а не в коде: поменять цену можно
-// без программиста (пока — SQL-запросом в Neon, см. README; на этапе 8 — в админке).
+// без программиста — в админке (/admin/prices, этап 8).
 model Price {
   // route («Маршрут») | navigator («Навигатор»)
   level     String   @id
@@ -202,8 +203,7 @@ model Price {
   updatedAt DateTime @updatedAt
 }
 
-// Промокод на скидку (этап 6). Управление — на этапе 8 в админке; пока — SQL-запросом или
-// служебной страницей /dev/promo (только тестовые коды).
+// Промокод на скидку (этап 6). Управление — в админке (/admin/promo, этап 8).
 model PromoCode {
   id         String    @id @default(uuid())
   // Код в верхнем регистре (регистр при вводе не важен).
@@ -215,8 +215,7 @@ model PromoCode {
   maxUses    Int?
   usedCount  Int       @default(0)
   expiresAt  DateTime?
-  // Тестовый код (создан на /dev/promo): работает только там, где включена тестовая оплата,
-  // и никогда на боевом сайте.
+  // Тестовый код: работает только там, где включена тестовая оплата, и никогда на боевом сайте.
   testOnly   Boolean   @default(false)
   createdAt  DateTime  @default(now())
   payments   Payment[]
@@ -252,6 +251,30 @@ model Payment {
   report        Report?
 
   @@index([userId, createdAt])
+}
+
+// Ручной выбор модели ИИ для тизера/отчёта из админки (этап 8). Ключ — "teaser_ru", "teaser_uz",
+// "report_route" или "report_navigator". Строки без записи здесь используют значение по умолчанию
+// из переменных окружения (src/lib/ai/config.ts) — админка только переопределяет его сверху.
+model ModelOverride {
+  key       String   @id
+  model     String
+  updatedBy String?
+  updatedAt DateTime @updatedAt
+}
+
+// Событие воронки для аналитики (этап 8), для шагов, которых нет готовой строкой в других таблицах:
+// заход на сайт и скачивание PDF. Остальные шаги воронки (старт теста, конец теста, тизер,
+// регистрация, оплата) считаются напрямую по TestSession/Teaser/User/Payment — так короче и без дублей.
+model FunnelEvent {
+  id        String   @id @default(uuid())
+  // visit | pdf
+  event     String
+  locale    String
+  sessionId String?
+  createdAt DateTime @default(now())
+
+  @@index([event, createdAt])
 }
 
 // Полный платный отчёт (Приложение Б §5, §7). Генерируется в фоне по частям (см. src/lib/report):
