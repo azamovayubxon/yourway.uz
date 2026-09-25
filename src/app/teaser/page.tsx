@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getAiMode } from "@/lib/ai/providers";
+import { uzSixteenTypeName } from "@/lib/ai/uz-resources";
 import type { TeaserContent } from "@/lib/ai/teaser-schema";
 import type { Profile } from "@/lib/assessment/profile";
 import { SIXTEEN_TYPES } from "@/lib/assessment/tests";
@@ -46,6 +47,9 @@ export default async function TeaserPage({ searchParams }: { searchParams: Promi
   const teaserLocale = shown.locale as Locale;
   const content = shown.content as unknown as TeaserContent;
   const code = profile.sixteen_type.code;
+  // Узбекское название 16-типа — из глоссария docs/uz-glossary.md, русское — из mapping-файла.
+  const typeName =
+    (locale === "uz" ? uzSixteenTypeName(code) : undefined) ?? SIXTEEN_TYPES[code]?.[locale] ?? profile.sixteen_type.nickname;
   const general = [...t.teaser.generalToc];
   general.splice(4, 0, t.teaser.pathToc[profile.path_type]);
 
@@ -75,7 +79,7 @@ export default async function TeaserPage({ searchParams }: { searchParams: Promi
       content={content}
       teaserLocale={teaserLocale}
       mock={shown.aiMode === "mock"}
-      sixteenType={`${code} · ${SIXTEEN_TYPES[code]?.[locale] ?? profile.sixteen_type.nickname}`}
+      sixteenType={`${code} · ${typeName}`}
       toc={buildLockedToc(content.locked_toc, general)}
       recommendedLevel={profile.level}
       lowQuality={profile.answer_quality?.level === "low"}

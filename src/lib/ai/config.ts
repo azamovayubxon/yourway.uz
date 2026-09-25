@@ -2,7 +2,10 @@
 // значения ниже — только запасные, если переменная не задана. Всё, что зависит от поставщика ИИ
 // (SDK, цены, режим), — в src/lib/ai/providers.
 
-export function teaserModel(): string {
+// Модель тизера зависит от языка: для узбекского — отдельная, более сильная модель (этап 4б),
+// потому что дешёвая модель пишет по-узбекски как дословный перевод с русского.
+export function teaserModel(locale: "ru" | "uz" = "ru"): string {
+  if (locale === "uz") return process.env.MODEL_TEASER_UZ?.trim() || "claude-sonnet-5";
   return process.env.MODEL_TEASER?.trim() || "claude-haiku-4-5";
 }
 

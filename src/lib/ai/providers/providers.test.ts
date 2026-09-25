@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { estimateAnthropicCostUsd, supportsTemperature } from "./anthropic";
 import { getAiMode, getAiProvider, modelFor } from "./index";
+import { teaserModel } from "../config";
 
 describe("выбор режима ИИ", () => {
   afterEach(() => vi.unstubAllEnvs());
@@ -44,5 +45,20 @@ describe("Anthropic: параметры и цена", () => {
     const cached = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 1_000_000, cacheWriteTokens: 1_000_000 };
     expect(estimateAnthropicCostUsd("claude-haiku-4-5", cached)).toBeCloseTo(0.1 + 1.25, 6);
     expect(estimateAnthropicCostUsd("unknown-model", usage)).toBeNull();
+  });
+});
+
+describe("модель тизера по языку", () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("для узбекского — MODEL_TEASER_UZ (по умолчанию claude-sonnet-5), для русского — MODEL_TEASER", () => {
+    vi.stubEnv("MODEL_TEASER", "");
+    vi.stubEnv("MODEL_TEASER_UZ", "");
+    expect(teaserModel("ru")).toBe("claude-haiku-4-5");
+    expect(teaserModel("uz")).toBe("claude-sonnet-5");
+    vi.stubEnv("MODEL_TEASER", "model-ru");
+    vi.stubEnv("MODEL_TEASER_UZ", "model-uz");
+    expect(teaserModel("ru")).toBe("model-ru");
+    expect(teaserModel("uz")).toBe("model-uz");
   });
 });

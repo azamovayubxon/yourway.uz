@@ -31,3 +31,9 @@ export function rowsToAnswers(rows: { test: string; questionId: number; value: n
   }
   return answers;
 }
+
+// Если в одной пачке один вопрос встречается дважды, оставляем последний ответ
+// (иначе Postgres откажется обновлять одну строку дважды в одном запросе).
+export function dedupeLast<T>(items: T[], key: (item: T) => string): T[] {
+  return [...new Map(items.map((item) => [key(item), item])).values()];
+}

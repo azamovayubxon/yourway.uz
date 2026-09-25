@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { getDefaultLocale, isLocale } from "./config";
 import { ru } from "./dictionaries/ru";
 import { uz } from "./dictionaries/uz";
+import { collectUzTexts } from "./uz-texts";
 
 // Собирает все строки словаря вместе с путём к ним: "landing.hero.title" → "...".
 function flatten(value: unknown, path = ""): Record<string, string> {
@@ -36,6 +37,20 @@ describe("словари UZ/RU", () => {
   it("знак ʻ (U+02BB) стоит только после o/g: oʻ, gʻ", () => {
     for (const [key, text] of Object.entries(uzFlat)) {
       expect(text, key).not.toMatch(/(^|[^oOgG])ʻ/);
+    }
+  });
+});
+
+// Обращение к пользователю — только на «вы» (CLAUDE.md §10 (О)). Проверяем интерфейс, опрос,
+// тесты и заготовку тизера (все русские тексты из таблицы uz-texts.csv).
+describe("обращение на «вы»", () => {
+  const TY = /(?<![а-яё])(ты|тебе|тебя|тобой|твой|твоя|твои|твоё|твое|твоих|твоим|твоей|твою|твоего|твоему)(?![а-яё])/i;
+  const IMPERATIVE_TY = /(?<![а-яё])(узнай|пройди|получи|выбери|открой|попробуй|проверь|скажи|опиши|помни|закрывай)(?![а-яё])/i;
+
+  it("в русских текстах сайта нет «ты» и повелительных форм на «ты»", () => {
+    for (const row of collectUzTexts()) {
+      expect(row.ru, row.key).not.toMatch(TY);
+      expect(row.ru, row.key).not.toMatch(IMPERATIVE_TY);
     }
   });
 });
