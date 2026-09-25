@@ -253,6 +253,33 @@ model Payment {
   @@index([userId, createdAt])
 }
 
+// Версия промпта (этап 8б). Ключ — та же разбивка, что у ModelOverride, плюс уровень для отчёта:
+// "teaser_ru", "teaser_uz", "report_route_ru", "report_route_uz", "report_navigator_ru", "report_navigator_uz".
+// Версии не удаляются: история видна в /admin/prompts, откат — назначением activeAt заново.
+// Версия 1 на каждый ключ создаётся автоматически из текста в коде (src/lib/ai/prompts.ts) при первом
+// обращении — см. ensurePromptSeed в src/lib/ai/prompt-store.ts.
+model PromptVersion {
+  id             String    @id @default(uuid())
+  key            String
+  version        Int
+  systemTemplate String
+  userTemplate   String
+  // Короткий комментарий «что поменял» (пусто у версии 1 — она пришла из кода).
+  comment        String?
+  // Активна ли эта версия сейчас (используется при генерации). Ровно одна активная версия на ключ —
+  // это гарантирует код (src/lib/ai/prompt-store.ts), а не ограничение базы.
+  active         Boolean   @default(false)
+  createdBy      String?
+  createdAt      DateTime  @default(now())
+  // Кто и когда последний раз сделал эту версию активной (при сохранении новой версии «сразу
+  // активной» совпадает с createdBy/createdAt; при откате на старую версию — отдельная запись).
+  activatedBy    String?
+  activatedAt    DateTime?
+
+  @@unique([key, version])
+  @@index([key, active])
+}
+
 // Ручной выбор модели ИИ для тизера/отчёта из админки (этап 8). Ключ — "teaser_ru", "teaser_uz",
 // "report_route" или "report_navigator". Строки без записи здесь используют значение по умолчанию
 // из переменных окружения (src/lib/ai/config.ts) — админка только переопределяет его сверху.

@@ -141,19 +141,24 @@ export function buildUzRules({ glossary, examples }: UzPromptResources): string 
 // Собирает промпт тизера. Системная часть зависит только от языка (два варианта на весь сайт),
 // поэтому её можно кэшировать; всё личное (профиль) — в пользовательском сообщении.
 // Для узбекского в конец системной части добавляется блок правил на узбекском (§3а).
+// templates — необязательное переопределение системного/пользовательского шаблонов (этап 8б,
+// версия промпта из БД вместо TEASER_SYSTEM_TEMPLATE/TEASER_USER_TEMPLATE из кода).
 export function buildTeaserPrompt(
   profile: unknown,
   language: "ru" | "uz",
   uz?: UzPromptResources,
+  templates?: { system: string; user: string },
 ): BuiltPrompt {
+  const systemTemplate = templates?.system ?? TEASER_SYSTEM_TEMPLATE;
+  const userTemplate = templates?.user ?? TEASER_USER_TEMPLATE;
   let system = fillTemplate(
-    TEASER_SYSTEM_TEMPLATE.replace(PHILOSOPHY_PLACEHOLDER, PHILOSOPHY_BLOCK) + "\n\n" + LANGUAGE_LINE,
+    systemTemplate.replace(PHILOSOPHY_PLACEHOLDER, PHILOSOPHY_BLOCK) + "\n\n" + LANGUAGE_LINE,
     { language },
   );
   if (language === "uz") {
     system += "\n\n" + buildUzRules(uz ?? { glossary: getUzGlossary(), examples: getUzExamples() });
   }
-  const user = fillTemplate(TEASER_USER_TEMPLATE, { profile_json: JSON.stringify(profile, null, 2) });
+  const user = fillTemplate(userTemplate, { profile_json: JSON.stringify(profile, null, 2) });
   return { system, user };
 }
 
@@ -393,9 +398,10 @@ export function pathRule(pathType: ReportPathType, level: ReportLevel): string {
 
 // Системная часть Вызова 2 (§5а): зависит только от языка — одна на весь сайт для каждого языка,
 // поэтому кэшируется и для всех частей, и для всех пользователей. Уровень и тип пути — в сообщении.
-export function buildReportSystem(language: "ru" | "uz", uz?: UzPromptResources): string {
+// systemTemplate — необязательное переопределение REPORT_SYSTEM_TEMPLATE (этап 8б, версия из БД).
+export function buildReportSystem(language: "ru" | "uz", uz?: UzPromptResources, systemTemplate?: string): string {
   const layout = REPORT_SYSTEM_LAYOUT.replace("[СИСТЕМНЫЙ ПРОМПТ ИЗ РАЗДЕЛА 5]", () =>
-    REPORT_SYSTEM_TEMPLATE.replace(PHILOSOPHY_PLACEHOLDER, () => PHILOSOPHY_BLOCK),
+    (systemTemplate ?? REPORT_SYSTEM_TEMPLATE).replace(PHILOSOPHY_PLACEHOLDER, () => PHILOSOPHY_BLOCK),
   )
     .replace("[СПРАВОЧНИК ИЗ РАЗДЕЛА 6]", () => PROFILE_GUIDE)
     .replace("[СХЕМА ИЗ РАЗДЕЛА 7]", () => REPORT_SCHEMA);
@@ -427,10 +433,12 @@ export function buildReportPartPrompt(options: {
   // Уже готовые части (для частей 2 и 3).
   previousParts: Record<string, unknown>;
   uz?: UzPromptResources;
+  // Переопределение шаблонов (этап 8б, версия из БД вместо REPORT_SYSTEM_TEMPLATE/REPORT_USER_TEMPLATE).
+  templates?: { system: string; user: string };
 }): BuiltPrompt {
   const { part, level, pathType, language } = options;
   const index = REPORT_PARTS.indexOf(part);
-  const base = fillTemplate(REPORT_USER_TEMPLATE, {
+  const base = fillTemplate(options.templates?.user ?? REPORT_USER_TEMPLATE, {
     profile_json: JSON.stringify(options.profile, null, 2),
     teaser_json: JSON.stringify(options.teaser, null, 2),
     level,
@@ -448,7 +456,7 @@ export function buildReportPartPrompt(options: {
     part_task: task,
     previous_parts_json: previous,
   });
-  return { system: buildReportSystem(language, options.uz), user: `${base}\n\n${partText}` };
+  return { system: buildReportSystem(language, options.uz, options.templates?.system), user: `${base}\n\n${partText}` };
 }
 
 export function buildReportRetryFeedback(problems: string[]): string {

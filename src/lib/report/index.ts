@@ -2,7 +2,9 @@ import "server-only";
 import { Prisma } from "@/generated/prisma/client";
 import { getDb } from "@/lib/db";
 import { resolveReportModel } from "@/lib/admin/models";
-import { REPORT_PARTS, REPORT_PROMPT_VERSION, type ReportLevel, type ReportPathType } from "@/lib/ai/prompts";
+import { REPORT_PARTS, type ReportLevel, type ReportPathType } from "@/lib/ai/prompts";
+import { promptKeyForReport } from "@/lib/ai/prompt-registry";
+import { getActivePromptVersion, getPromptVersionByNumber, parsePromptVersionLabel, promptVersionLabel } from "@/lib/ai/prompt-store";
 import { createFailingProvider, getAiMode, getAiProvider, modelFor } from "@/lib/ai/providers";
 import { runReportPartAttempt } from "@/lib/ai/report";
 import { mergeReportParts, type ReportContent } from "@/lib/ai/report-schema";
@@ -46,6 +48,8 @@ export async function createReportInTx(
   if (!teaser?.content) throw new Error("report: нет готового тизера");
 
   const aiMode = getAiMode();
+  const promptKey = promptKeyForReport(payment.level as ReportLevel, payment.locale as Locale);
+  const promptVersion = await getActivePromptVersion(promptKey);
   const report = await tx.report.create({
     data: {
       userId: payment.userId,
@@ -59,7 +63,9 @@ export async function createReportInTx(
       teaser: teaser.content as Prisma.InputJsonValue,
       aiMode,
       model: modelFor(aiMode, await resolveReportModel(payment.level as ReportLevel)),
-      promptVersion: REPORT_PROMPT_VERSION,
+      // Версия промпта фиксируется на момент оплаты: все части генерируются одной и той же версией,
+      // даже если владелец сохранит новую, пока отчёт ещё генерируется (см. advanceReport).
+      promptVersion: promptVersionLabel(promptVersion),
     },
     select: { id: true },
   });
@@ -143,10 +149,16 @@ export async function advanceReport(options: {
   const attempt = report.partAttempt + 1;
   const retry = report.retry as { previousResponse: string; problems: string[] } | null;
   const provider = options.simulateFailure ? createFailingProvider() : getAiProvider(aiMode);
-  const { id: reportId, sessionId, locale } = report;
+  const { id: reportId, sessionId, locale, promptVersion: promptVersionTag } = report;
   const profile = report.profile as unknown as Profile;
   const teaser = report.teaser;
   const pathType = report.pathType as ReportPathType;
+  // Та же версия промпта, что была зафиксирована при оплате (createReportInTx), — не текущая активная.
+  const promptKey = promptKeyForReport(level, locale as Locale);
+  const parsedVersion = parsePromptVersionLabel(promptVersionTag);
+  const promptVersion = parsedVersion
+    ? ((await getPromptVersionByNumber(promptKey, parsedVersion.version)) ?? (await getActivePromptVersion(promptKey)))
+    : await getActivePromptVersion(promptKey);
 
   const job = async () => {
     try {
@@ -158,6 +170,7 @@ export async function advanceReport(options: {
         level,
         pathType,
         previousParts: parts,
+        templates: { system: promptVersion.systemTemplate, user: promptVersion.userTemplate },
         model,
         provider,
         retry: attempt > 1 && retry ? retry : undefined,
@@ -178,7 +191,7 @@ export async function advanceReport(options: {
           reportId,
           aiMode,
           model,
-          promptVersion: REPORT_PROMPT_VERSION,
+          promptVersion: promptVersionTag,
           attempt,
           ok: result.ok,
           error: result.error,

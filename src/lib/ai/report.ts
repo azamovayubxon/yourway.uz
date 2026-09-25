@@ -49,6 +49,8 @@ export async function runReportPartAttempt(options: {
   retry?: { previousResponse: string; problems: string[] };
   uz?: UzPromptResources;
   now?: () => number;
+  // Версия промпта из БД (этап 8б); по умолчанию — текст из кода (REPORT_SYSTEM/USER_TEMPLATE).
+  templates?: { system: string; user: string };
 }): Promise<PartAttemptResult> {
   const { part, locale, level, pathType, provider, model } = options;
   const now = options.now ?? Date.now;
@@ -63,6 +65,7 @@ export async function runReportPartAttempt(options: {
     part,
     previousParts: options.previousParts,
     uz,
+    templates: options.templates,
   });
 
   const started = now();
