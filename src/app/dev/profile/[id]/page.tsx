@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { PageShell, PlaceholderNote } from "@/components/ui";
+import type { Profile } from "@/lib/assessment/profile";
 import { BIG_FIVE_SCALES, computeScores, countAnswered, type Scores } from "@/lib/assessment/scoring";
-import { SCALE_NAMES, SCALE_ORDER, TOTAL_QUESTIONS } from "@/lib/assessment/tests";
+import { surveyQuestionsFor } from "@/lib/assessment/survey";
+import { SCALE_NAMES, SCALE_ORDER, TOTAL_QUESTIONS, type PathType } from "@/lib/assessment/tests";
 import { devToolsEnabled } from "@/lib/dev";
 import { loadSession } from "@/lib/session";
 import { getI18n } from "@/i18n/server";
@@ -22,6 +24,11 @@ export default async function DevProfilePage({ params }: { params: Promise<{ id:
   const answered = countAnswered(session.answerMap);
   const scores: Scores | null =
     (session.scores as Scores | null) ?? (answered === TOTAL_QUESTIONS ? computeScores(session.answerMap) : null);
+
+  const pathType = session.pathType as PathType;
+  const surveyTotal = surveyQuestionsFor(pathType).length;
+  const surveyAnswered = Object.keys(session.surveyAnswerMap).length;
+  const profile = session.profile as Profile | null;
 
   const styleName = (s: string) => SCALE_NAMES.perception[s]?.[locale] ?? s;
 
@@ -115,9 +122,66 @@ export default async function DevProfilePage({ params }: { params: Promise<{ id:
             <summary className="cursor-pointer font-semibold">{d.json}</summary>
             <pre className="mt-3 overflow-x-auto text-xs">{JSON.stringify(scores, null, 2)}</pre>
           </details>
+
+          <Card title={d.surveyTitle}>
+            <p>
+              {d.answered}: {surveyAnswered} / {surveyTotal}
+            </p>
+          </Card>
+
+          {!profile ? (
+            <p className="text-muted">{d.profileNotDone}</p>
+          ) : (
+            <>
+              <Card title={d.profileTitle}>
+                <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
+                  <dt className="text-muted">{d.languageLabel}</dt>
+                  <dd className="font-mono">{profile.language}</dd>
+                  <dt className="text-muted">{d.level}</dt>
+                  <dd className="font-mono">{profile.level}</dd>
+                  <dt className="text-muted">{d.answerQuality}</dt>
+                  <dd>{profile.answer_quality ? fmtAnswerQuality(d.answerQualityLow, profile.answer_quality.tests) : d.answerQualityOk}</dd>
+                </dl>
+
+                <h3 className="mt-4 font-semibold">{d.demographics}</h3>
+                <KeyValueList data={profile.demographics} />
+
+                <h3 className="mt-4 font-semibold">{d.resources}</h3>
+                <KeyValueList data={profile.resources} />
+
+                {profile.goal && (
+                  <>
+                    <h3 className="mt-4 font-semibold">{d.goal}</h3>
+                    <KeyValueList data={profile.goal} />
+                  </>
+                )}
+              </Card>
+
+              <details className="rounded-2xl border border-slate-200 p-4">
+                <summary className="cursor-pointer font-semibold">{d.profileJson}</summary>
+                <pre className="mt-3 overflow-x-auto text-xs">{JSON.stringify(profile, null, 2)}</pre>
+              </details>
+            </>
+          )}
         </>
       )}
     </PageShell>
+  );
+}
+
+function fmtAnswerQuality(template: string, tests: string[]): string {
+  return template.replace("{tests}", tests.join(", "));
+}
+
+function KeyValueList({ data }: { data: Record<string, unknown> }) {
+  return (
+    <ul className="mt-1 grid gap-1 text-sm sm:grid-cols-2">
+      {Object.entries(data).map(([key, value]) => (
+        <li key={key}>
+          <span className="font-mono text-muted">{key}</span>: {Array.isArray(value) ? value.join(", ") : String(value)}
+        </li>
+      ))}
+    </ul>
   );
 }
 

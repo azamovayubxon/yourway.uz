@@ -31,7 +31,7 @@ export default async function TestPage() {
       sessionId={session.id}
       tests={tests}
       initialAnswers={initialAnswers}
-      t={{ ...t.test, doneTitle: t.start.doneTitle, doneText: t.start.doneText }}
+      t={{ ...t.test, doneTitle: t.start.doneTitle, doneText: t.start.doneText, continueToSurvey: t.start.continueToSurvey }}
       devProfileHref={devToolsEnabled() ? `/dev/profile/${session.id}` : null}
     />
   );

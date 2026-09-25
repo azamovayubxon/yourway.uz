@@ -11,19 +11,24 @@ datasource db {
 
 // Анонимная сессия прохождения тестов. Её id хранится в cookie браузера.
 model TestSession {
-  id          String       @id @default(uuid())
+  id             String         @id @default(uuid())
   // Выбор на экране-развилке: knows_goal (знаю цель) или no_goal (не знаю, хочу разобраться).
-  pathType    String
+  pathType       String
   // Язык интерфейса в момент начала (для аналитики; тексты вопросов показываются на текущем языке).
-  locale      String
-  // in_progress — идут тесты; tests_done — все 4 теста пройдены и баллы посчитаны.
-  status      String       @default("in_progress")
+  locale         String
+  // in_progress — идут тесты; tests_done — все 4 теста пройдены и баллы посчитаны;
+  // survey_done — опрос пройден и профиль (Приложение А §9) собран.
+  status         String         @default("in_progress")
   // Посчитанные баллы (см. src/lib/assessment/scoring.ts, тип Scores). Пусто, пока тесты не пройдены.
-  scores      Json?
-  answers     TestAnswer[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  testsDoneAt DateTime?
+  scores         Json?
+  // Итоговый профиль для промптов ИИ (см. src/lib/assessment/profile.ts, тип Profile). Пусто, пока опрос не пройден.
+  profile        Json?
+  answers        TestAnswer[]
+  surveyAnswers  SurveyAnswer[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  testsDoneAt    DateTime?
+  profileDoneAt  DateTime?
 }
 
 // Один ответ на один вопрос теста. Пишется в базу сразу после нажатия кнопки.
@@ -39,4 +44,18 @@ model TestAnswer {
   updatedAt  DateTime    @updatedAt
 
   @@id([sessionId, test, questionId])
+}
+
+// Один ответ на один вопрос контекстного опроса (data/tests/context_survey.json).
+model SurveyAnswer {
+  sessionId  String
+  session    TestSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  // Id вопроса из context_survey.json (например "age", "goal_text")
+  questionId String
+  // Значение: число, строка или список строк — в зависимости от типа вопроса.
+  // Пустая строка "" у необязательного вопроса означает «пропущено».
+  value      Json
+  updatedAt  DateTime    @updatedAt
+
+  @@id([sessionId, questionId])
 }
