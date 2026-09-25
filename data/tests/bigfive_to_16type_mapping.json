@@ -64,7 +64,7 @@
   ],
   "output_example": {
     "input": {"openness": 88, "conscientiousness": 55, "extraversion": 40, "agreeableness": 62, "neuroticism": 50},
-    "derived_code": "INFP",
-    "card_title_ru": "INFP — Идеалист"
+    "derived_code": "INFJ",
+    "card_title_ru": "INFJ — Вдохновитель"
   }
 }

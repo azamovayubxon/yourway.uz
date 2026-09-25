@@ -17,10 +17,25 @@ export default async function StartPage({ searchParams }: { searchParams: Promis
   const wantsNew = (await searchParams).new === "1";
   const session = wantsNew ? null : await getCurrentSession();
 
+  if (session?.status === "survey_done") {
+    return (
+      <PageShell title={t.start.surveyDoneTitle}>
+        <p className="text-lg text-muted">{t.start.surveyDoneText}</p>
+        {devToolsEnabled() && (
+          <Link href={`/dev/profile/${session.id}`} className="block py-2 font-semibold text-brand-600">
+            {t.test.devLink} →
+          </Link>
+        )}
+        <RestartLink label={t.start.restart} />
+      </PageShell>
+    );
+  }
+
   if (session?.status === "tests_done") {
     return (
       <PageShell title={t.start.doneTitle}>
         <p className="text-lg text-muted">{t.start.doneText}</p>
+        <CtaButton href="/survey">{t.start.continueToSurvey}</CtaButton>
         {devToolsEnabled() && (
           <Link href={`/dev/profile/${session.id}`} className="block py-2 font-semibold text-brand-600">
             {t.test.devLink} →

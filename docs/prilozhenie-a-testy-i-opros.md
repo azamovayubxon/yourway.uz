@@ -155,7 +155,7 @@ Claude API → тизер / полный отчёт (Приложение Б)
     "agreeableness": 62,
     "conscientiousness": 55
   },
-  "sixteen_type": { "code": "INFP", "nickname": "Идеалист" },
+  "sixteen_type": { "code": "INFJ", "nickname": "Вдохновитель" },
 
   "riasec": {
     "code": "IAE",
