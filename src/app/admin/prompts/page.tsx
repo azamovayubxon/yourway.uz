@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { requireAdmin } from "@/lib/admin/guard";
 import { listModelOverrides, type ModelOverrideRow } from "@/lib/admin/models";
-import { PROMPT_KEYS, PROMPT_LABELS, pickActiveVersion } from "@/lib/ai/prompt-registry";
+import { PROMPT_DEFAULTS, PROMPT_KEYS, PROMPT_LABELS, pickActiveVersion } from "@/lib/ai/prompt-registry";
 import { listPromptVersions } from "@/lib/ai/prompt-store";
 import { AdminShell, Card, Notice } from "../ui";
-import { saveModelOverrideAction } from "../actions";
+import { saveModelOverrideAction, syncPromptFromCodeAction } from "../actions";
 import { PromptEditor, PromptHistory, type PromptVersionSummary } from "./PromptEditor";
 
 export const metadata: Metadata = { robots: { index: false } };
@@ -97,12 +97,39 @@ export default async function AdminPromptsPage({
           {PROMPT_KEYS.map((key, i) => {
             const versions = promptVersions[i].map(toSummary);
             const active = pickActiveVersion(versions) ?? versions[0];
+            const version1 = versions.find((v) => v.version === 1);
+            const def = PROMPT_DEFAULTS[key];
+            // Версия 1 когда-то записана от текста в коде; если с тех пор код поправили, а версию
+            // не пересоздали — правки молча не действуют на боевом сайте (владелец, требование этапа 8б).
+            // Предупреждаем, только пока активна именно версия 1: как только кто-то сохранил свою
+            // версию через админку, расхождение с кодом уже осознанное, а не незамеченный сюрприз —
+            // и кнопка «из текста в коде» дальше не рискует молча затереть чужую правку.
+            const driftedFromCode =
+              active.version === 1 &&
+              !!version1 &&
+              (version1.systemTemplate !== def.system.template || version1.userTemplate !== def.user.template);
             return (
               <details key={key} className="rounded-2xl border border-slate-200 p-4">
                 <summary className="cursor-pointer font-bold">
                   {PROMPT_LABELS[key]} — активна версия {active.version}
                 </summary>
                 <div className="mt-3 space-y-4">
+                  {driftedFromCode && (
+                    <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                      <span>
+                        Текст в <code className="font-mono">src/lib/ai/prompts.ts</code> с тех пор поменяли, а версию 1 —
+                        нет. Правки в коде сейчас ни на что не влияют: сайт использует активную версию из базы.
+                      </span>
+                      {isSuperAdmin && (
+                        <form action={syncPromptFromCodeAction}>
+                          <input type="hidden" name="key" value={key} />
+                          <button type="submit" className="min-h-9 shrink-0 rounded-lg border-2 border-amber-300 bg-white px-3 text-xs font-bold text-amber-900">
+                            Создать версию из текста в коде
+                          </button>
+                        </form>
+                      )}
+                    </div>
+                  )}
                   <PromptEditor promptKey={key} active={active} canEdit={isSuperAdmin} />
                   <details>
                     <summary className="cursor-pointer text-sm font-semibold text-brand-600">

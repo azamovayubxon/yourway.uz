@@ -8,7 +8,7 @@ import { isLevel } from "@/lib/payments/prices";
 import { normalizePromoCode } from "@/lib/payments/promo";
 import { normalizeLogin } from "@/lib/auth/credentials";
 import { activatePromptVersion, createPromptVersion } from "@/lib/ai/prompt-store";
-import { PROMPT_KEYS, type PromptKey } from "@/lib/ai/prompt-registry";
+import { PROMPT_DEFAULTS, PROMPT_KEYS, type PromptKey } from "@/lib/ai/prompt-registry";
 import { runPromptCheck, type PromptCheckResult } from "@/lib/ai/prompt-check";
 
 // Действия админки (этап 8). Каждое проверяет роль заново на сервере — ссылка на кнопку
@@ -104,6 +104,26 @@ export async function activatePromptVersionAction(formData: FormData) {
   redirect(ok ? "/admin/prompts?ok=1" : "/admin/prompts?error=1");
 }
 
+// Текст в src/lib/ai/prompts.ts мог уйти вперёд версии 1 (её когда-то записали от кода и с тех
+// пор не трогали) — правки в коде тогда молча не действуют на боевом сайте, пока их не перенесут
+// в новую активную версию. Кнопка «Создать версию из текста в коде» делает это одним нажатием.
+// Только superadmin.
+export async function syncPromptFromCodeAction(formData: FormData) {
+  const admin = await requireSuperAdmin();
+  const key = String(formData.get("key") ?? "");
+  if (!isPromptKey(key)) redirect("/admin/prompts?error=1");
+  const def = PROMPT_DEFAULTS[key];
+  const result = await createPromptVersion({
+    key,
+    systemTemplate: def.system.template,
+    userTemplate: def.user.template,
+    comment: "перенесено из текста в коде (src/lib/ai/prompts.ts)",
+    createdBy: admin.login,
+    activate: true,
+  });
+  redirect(result.ok ? "/admin/prompts?ok=1" : "/admin/prompts?error=1");
+}
+
 export type CheckPromptState =
   | { status: "idle" }
   | { status: "error"; errors: string[] }
@@ -117,8 +137,9 @@ export async function checkPromptAction(_prev: CheckPromptState, formData: FormD
   if (!isPromptKey(key)) return { status: "error", errors: ["Неизвестный ключ промпта."] };
   const systemTemplate = String(formData.get("systemTemplate") ?? "");
   const userTemplate = String(formData.get("userTemplate") ?? "");
+  const withGoal = String(formData.get("goal") ?? "with") !== "without";
   try {
-    const result = await runPromptCheck(key, systemTemplate, userTemplate);
+    const result = await runPromptCheck(key, systemTemplate, userTemplate, withGoal);
     return { status: "done", result };
   } catch (e) {
     console.error("[admin] prompt check", e);

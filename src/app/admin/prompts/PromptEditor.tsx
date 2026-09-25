@@ -46,6 +46,9 @@ export function PromptEditor({
   const [system, setSystem] = useState(active.systemTemplate);
   const [user, setUser] = useState(active.userTemplate);
   const [comment, setComment] = useState("");
+  // Переключатель рядом с «Проверить»: какой golden-профиль подставить (Приложение Б §9;
+  // «без цели» — тот же человек, но path_type = no_goal и без блока goal).
+  const [withGoal, setWithGoal] = useState(true);
   const [saveState, saveAction, saving] = useActionState(savePromptVersionAction, savedIdle);
   const [checkState, checkAction, checking] = useActionState(checkPromptAction, checkIdle);
 
@@ -76,12 +79,31 @@ export function PromptEditor({
         </label>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="flex overflow-hidden rounded-xl border-2 border-slate-200 text-sm font-semibold">
+          <button
+            type="button"
+            onClick={() => setWithGoal(true)}
+            aria-pressed={withGoal}
+            className={"min-h-11 px-3" + (withGoal ? " bg-slate-900 text-white" : " text-muted")}
+          >
+            С целью
+          </button>
+          <button
+            type="button"
+            onClick={() => setWithGoal(false)}
+            aria-pressed={!withGoal}
+            className={"min-h-11 px-3" + (!withGoal ? " bg-slate-900 text-white" : " text-muted")}
+          >
+            Без цели
+          </button>
+        </div>
         <form
           action={(formData) => {
             formData.set("key", promptKey);
             formData.set("systemTemplate", system);
             formData.set("userTemplate", user);
+            formData.set("goal", withGoal ? "with" : "without");
             checkAction(formData);
           }}
         >

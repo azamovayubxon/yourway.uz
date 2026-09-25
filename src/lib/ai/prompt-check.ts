@@ -14,6 +14,12 @@ import type { ReportLevel, ReportPathType } from "./prompts";
 // сохраняется как отчёт пользователя — только результат для показа в админке. В мок-режиме
 // (нет ANTHROPIC_API_KEY) отдаёт заглушку, как и обычная генерация.
 //
+// withGoal — переключатель «с целью / без цели» рядом с кнопкой (доработка этапа 8б): выбирает
+// между GOLDEN_PROFILE (knows_goal, с заполненным goal) и GOLDEN_PROFILE_NO_GOAL (no_goal, без
+// goal). Для отчёта это независимо от уровня (level всё равно берётся из ключа промпта, а не из
+// профиля) — так можно проверить и настоящую комбинацию «нет цели, но выбран Маршрут» (решение (В)
+// в CLAUDE.md, main_path строится к первому направлению из тизера).
+//
 // Для отчёта проверяется только первая часть (portrait_goal): она использует ровно тот же
 // системный промпт, что и остальные части (он общий на весь отчёт, части различаются только
 // пользовательским сообщением, PART_TASK_* — не редактируется здесь), и быстрее всего показывает,
@@ -38,6 +44,7 @@ export async function runPromptCheck(
   key: PromptKey,
   systemTemplate: string,
   userTemplate: string,
+  withGoal: boolean,
 ): Promise<PromptCheckResult> {
   const validationErrors = validatePromptTemplates(key, systemTemplate, userTemplate);
   const aiMode = getAiMode();
@@ -48,10 +55,10 @@ export async function runPromptCheck(
   const locale = localeOf(key);
   const provider = getAiProvider(aiMode);
   const templates = { system: systemTemplate, user: userTemplate };
+  const profile = withGoal ? GOLDEN_PROFILE : GOLDEN_PROFILE_NO_GOAL;
 
   if (isReportKey(key)) {
     const level: ReportLevel = key.includes("navigator") ? "navigator" : "route";
-    const profile = level === "navigator" ? GOLDEN_PROFILE_NO_GOAL : GOLDEN_PROFILE;
     const pathType = profile.path_type as ReportPathType;
     const model = modelFor(aiMode, await resolveReportModel(level));
     const result = await runReportPartAttempt({
@@ -80,7 +87,7 @@ export async function runPromptCheck(
   const model = modelFor(aiMode, await resolveTeaserModel(locale));
   const attempts: AttemptLog[] = [];
   const result = await generateTeaser({
-    profile: GOLDEN_PROFILE,
+    profile,
     locale,
     model,
     provider,
