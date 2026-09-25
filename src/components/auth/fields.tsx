@@ -58,11 +58,13 @@ export function TextField({
 }
 
 export function PasswordField({
+  name = "password",
   label,
   hint,
   autoComplete,
   t,
 }: {
+  name?: string;
   label: string;
   hint?: string;
   autoComplete: "current-password" | "new-password";
@@ -78,7 +80,7 @@ export function PasswordField({
       <div className="relative">
         <input
           id={id}
-          name="password"
+          name={name}
           type={visible ? "text" : "password"}
           required
           autoComplete={autoComplete}
@@ -125,6 +127,17 @@ export function FormError({ state, t }: { state: AuthFormState; t: AuthDict }) {
   return (
     <p role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-900">
       {fmt(t.errors[state.error], { min: state.minutes ?? 15 })}
+    </p>
+  );
+}
+
+// Та же плашка ошибки, но для форм со своим (более простым) состоянием — без «логина» и минут
+// блокировки (смена пароля, удаление аккаунта).
+export function ErrorNote({ error, t }: { error: keyof AuthDict["errors"] | null; t: AuthDict }) {
+  if (!error) return null;
+  return (
+    <p role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-900">
+      {t.errors[error]}
     </p>
   );
 }

@@ -5,8 +5,14 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   // Узбекский глоссарий и эталонные тексты читаются сервером из docs/ при генерации тизера
   // (src/lib/ai/uz-resources.ts). Явно включаем их в сборку, чтобы они были на сервере.
+  // Шрифт для PDF-отчёта (src/lib/pdf/fonts.ts) — по той же причине.
   outputFileTracingIncludes: {
-    "/**": ["./docs/uz-glossary.md", "./docs/uz-teaser-examples.md"],
+    "/**": [
+      "./docs/uz-glossary.md",
+      "./docs/uz-teaser-examples.md",
+      "./src/lib/pdf/fonts/NotoSans-Regular.ttf",
+      "./src/lib/pdf/fonts/NotoSans-Bold.ttf",
+    ],
   },
 };
 
