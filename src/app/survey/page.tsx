@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { surveySectionsFor } from "@/lib/assessment/survey";
 import type { PathType } from "@/lib/assessment/tests";
-import { devToolsEnabled } from "@/lib/dev";
 import { getCurrentSession } from "@/lib/session";
 import { getI18n } from "@/i18n/server";
 import { SurveyRunner, type RunnerSurveySection } from "./SurveyRunner";
@@ -38,7 +37,6 @@ export default async function SurveyPage() {
       sections={sections}
       initialAnswers={session.surveyAnswerMap}
       t={t.survey}
-      devProfileHref={devToolsEnabled() ? `/dev/profile/${session.id}` : null}
     />
   );
 }

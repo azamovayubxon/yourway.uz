@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import type { ReportContent } from "@/lib/ai/report-schema";
 import { getCurrentUser } from "@/lib/auth";
-import { devToolsEnabled } from "@/lib/dev";
 import { REPORT_PARTS } from "@/lib/ai/prompts";
 import { getUserReport } from "@/lib/report";
 import { presentReport } from "@/lib/report/present";
@@ -77,11 +76,6 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
           <Link href="/start?new=1" className="inline-flex min-h-11 items-center text-sm font-semibold text-muted underline">
             {t.report.retake}
           </Link>
-          {devToolsEnabled() && (
-            <Link href="/dev/ai-log" className="inline-flex min-h-11 items-center text-sm font-semibold text-brand-600">
-              {t.teaser.devAiLogLink} →
-            </Link>
-          )}
         </div>
       }
     />

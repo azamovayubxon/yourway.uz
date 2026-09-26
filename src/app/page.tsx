@@ -74,18 +74,16 @@ export default async function HomePage() {
         </div>
       </Section>
 
-      {/* Отзывы */}
-      <Section id="reviews" title={l.reviews.title}>
-        <p className="-mt-3 mb-5 text-sm text-muted">{l.reviews.note}</p>
-        <div className="grid gap-4 md:grid-cols-3">
-          {l.reviews.items.map((r, i) => (
-            <figure key={i} className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
-              <blockquote className="leading-relaxed">«{r.text}»</blockquote>
-              <figcaption className="mt-3 text-sm text-muted">— {r.author}</figcaption>
-            </figure>
-          ))}
+      {/* Какие данные используем (UX-03: честно, без обещания «не собираем личные данные») */}
+      <section className="mx-auto max-w-5xl px-4 pt-14">
+        <div className="rounded-2xl border border-slate-100 bg-white p-6">
+          <h2 className="text-lg font-bold">{l.dataUse.title}</h2>
+          <p className="mt-2 leading-relaxed text-muted">{l.dataUse.text}</p>
+          <Link href="/privacy" className="mt-3 inline-block font-semibold text-brand-600">
+            {l.dataUse.link} →
+          </Link>
         </div>
-      </Section>
+      </section>
 
       {/* Цены */}
       <Section id="pricing" title={l.pricing.title}>

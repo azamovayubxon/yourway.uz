@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { cancelPayment, confirmTestPayment, isLevel, previewPromo, startPayment, type PromoPreview } from "@/lib/payments";
 import { getCurrentSession } from "@/lib/session";
+import { isLocale } from "@/i18n/config";
 import { getLocale } from "@/i18n/server";
 import { logError } from "@/lib/monitoring";
 
@@ -33,6 +34,10 @@ export async function startPaymentAction(_prev: CheckoutState, formData: FormDat
   if (!session || session.status !== "survey_done") redirect("/teaser");
   const level = field(formData, "level");
   if (!isLevel(level)) return { status: "error", error: "no_price" };
+  // Язык отчёта — явный выбор на checkout (UX-06), а не язык интерфейса на момент оплаты:
+  // это отдельное поле формы; на случай его отсутствия (например, JS отключён) — язык сайта.
+  const reportLocaleField = field(formData, "reportLocale");
+  const reportLocale = isLocale(reportLocaleField) ? reportLocaleField : await getLocale();
 
   let target: string;
   try {
@@ -40,7 +45,7 @@ export async function startPaymentAction(_prev: CheckoutState, formData: FormDat
       userId: user.id,
       sessionId: session.id,
       level,
-      locale: await getLocale(),
+      locale: reportLocale,
       promoCode: field(formData, "promo"),
     });
     if (!result.ok) return { status: "error", error: result.error };

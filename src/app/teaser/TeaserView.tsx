@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import type { TeaserContent } from "@/lib/ai/teaser-schema";
 import type { TocItem } from "@/lib/teaser/toc";
 import type { Dictionary } from "@/i18n/dictionaries";
-import { fmt } from "@/i18n/format";
 import { titleFontSize } from "@/components/typeTitle";
 import { MockBadge } from "./MockBadge";
 
@@ -152,10 +151,7 @@ export function TeaserView({
 
       {/* Заблокированное оглавление полного отчёта: 20+ пунктов с замками (решение (Г)). */}
       <section className="mt-8 rounded-[2rem] border border-slate-200 p-5 sm:p-6">
-        <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-          <h2 className="text-xl font-extrabold">{t.tocTitle}</h2>
-          <p className="text-sm font-semibold text-brand-600">{fmt(t.tocCount, { n: toc.length })}</p>
-        </div>
+        <h2 className="text-xl font-extrabold">{t.tocTitle}</h2>
         <ol className="mt-4 divide-y divide-slate-100">
           {toc.map((item, i) => (
             <li

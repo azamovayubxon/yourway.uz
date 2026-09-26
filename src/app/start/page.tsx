@@ -2,7 +2,6 @@ import Link from "next/link";
 import { CtaButton, PageShell } from "@/components/ui";
 import { countAnswered } from "@/lib/assessment/scoring";
 import { PATH_TYPE_QUESTION, TOTAL_QUESTIONS } from "@/lib/assessment/tests";
-import { devToolsEnabled } from "@/lib/dev";
 import { getCurrentSession } from "@/lib/session";
 import { fmt } from "@/i18n/format";
 import { getI18n } from "@/i18n/server";
@@ -22,11 +21,6 @@ export default async function StartPage({ searchParams }: { searchParams: Promis
       <PageShell title={t.start.surveyDoneTitle}>
         <p className="text-lg text-muted">{t.start.surveyDoneText}</p>
         <CtaButton href="/teaser">{t.start.toTeaser}</CtaButton>
-        {devToolsEnabled() && (
-          <Link href={`/dev/profile/${session.id}`} className="block py-2 font-semibold text-brand-600">
-            {t.test.devLink} →
-          </Link>
-        )}
         <RestartLink label={t.start.restart} />
       </PageShell>
     );
@@ -37,11 +31,6 @@ export default async function StartPage({ searchParams }: { searchParams: Promis
       <PageShell title={t.start.doneTitle}>
         <p className="text-lg text-muted">{t.start.doneText}</p>
         <CtaButton href="/survey">{t.start.continueToSurvey}</CtaButton>
-        {devToolsEnabled() && (
-          <Link href={`/dev/profile/${session.id}`} className="block py-2 font-semibold text-brand-600">
-            {t.test.devLink} →
-          </Link>
-        )}
         <RestartLink label={t.start.restart} />
       </PageShell>
     );

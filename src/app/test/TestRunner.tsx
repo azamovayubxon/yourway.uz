@@ -23,7 +23,6 @@ interface Props {
   tests: RunnerTest[];
   initialAnswers: Record<string, number>; // ключ "big_five:12" → ответ
   t: Dictionary["test"] & { doneTitle: string; doneText: string; continueToSurvey: string };
-  devProfileHref: string | null;
 }
 
 type SyncState = "idle" | "offline" | "lost";
@@ -50,7 +49,7 @@ function writePending(sessionId: string, pending: Record<string, number>) {
   }
 }
 
-export function TestRunner({ sessionId, tests, initialAnswers, t, devProfileHref }: Props) {
+export function TestRunner({ sessionId, tests, initialAnswers, t }: Props) {
   // Все вопросы подряд в порядке воронки.
   const items = useMemo(
     () =>
@@ -203,11 +202,6 @@ export function TestRunner({ sessionId, tests, initialAnswers, t, devProfileHref
               className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-brand-500 px-6 text-base font-bold text-white shadow-lg shadow-brand-500/25 transition-colors hover:bg-brand-600 active:bg-brand-700"
             >
               {t.continueToSurvey}
-            </Link>
-          )}
-          {saved && devProfileHref && (
-            <Link href={devProfileHref} className="block py-2 font-semibold text-brand-600">
-              {t.devLink} →
             </Link>
           )}
           <BackButton label={t.back} onClick={back} disabled={locked} />

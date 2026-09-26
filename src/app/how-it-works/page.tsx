@@ -1,5 +1,5 @@
 import { Steps } from "@/components/blocks";
-import { CtaButton, PageShell, PlaceholderNote } from "@/components/ui";
+import { CtaButton, PageShell } from "@/components/ui";
 import { getI18n } from "@/i18n/server";
 
 export async function generateMetadata() {
@@ -12,7 +12,6 @@ export default async function HowItWorksPage() {
   const p = t.pages.howItWorks;
   return (
     <PageShell title={p.title}>
-      <PlaceholderNote>{t.common.placeholderNote}</PlaceholderNote>
       <p className="text-lg text-muted">{p.intro}</p>
       <Steps t={t} />
       <h2 className="pt-4 text-xl font-bold">{p.honestyTitle}</h2>
