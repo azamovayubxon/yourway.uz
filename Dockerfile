@@ -16,6 +16,9 @@ COPY prisma ./prisma
 RUN npm ci
 
 COPY . .
+# В проекте нет папки public (нет статических файлов вроде favicon) — next build её не создаёт,
+# а следующий шаг (COPY --from=build .../public) требует, чтобы источник существовал.
+RUN mkdir -p public
 # DATABASE_URL на этом шаге не нужен: prisma generate не подключается к базе, а миграции
 # применяются отдельно, при запуске контейнера (см. docker-entrypoint.sh).
 RUN npx prisma generate
