@@ -40,7 +40,7 @@ COPY --from=build /app/prisma ./prisma
 # с server.js, эта — только для команды prisma при запуске.
 COPY --from=build /app/node_modules ./node_modules
 COPY docker-entrypoint.sh ./docker-entrypoint.sh
-RUN chown -R nextjs:nextjs /app
+RUN chmod +x ./docker-entrypoint.sh && chown -R nextjs:nextjs /app
 
 USER nextjs
 EXPOSE 3000
