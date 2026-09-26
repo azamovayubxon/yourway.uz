@@ -37,8 +37,17 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang={locale}>
       <body className="flex min-h-dvh flex-col">
+        {/* Для людей, кто работает с клавиатуры: перепрыгнуть шапку и сразу попасть в содержимое (этап 10Г). */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-xl focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-white"
+        >
+          {t.common.skipToContent}
+        </a>
         <Header locale={locale} t={t} user={user} />
-        <main className="flex-1">{children}</main>
+        <main id="main" className="flex-1">
+          {children}
+        </main>
         <Footer t={t} />
       </body>
     </html>

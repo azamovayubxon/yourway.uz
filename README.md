@@ -4,6 +4,7 @@
 
 - Инструкция для Claude Code: [`CLAUDE.md`](CLAUDE.md)
 - План этапов и чек-листы: [`docs/PLAN.md`](docs/PLAN.md)
+- Чек-лист перед запуском для настоящих пользователей: [`docs/launch-checklist.md`](docs/launch-checklist.md)
 - Документы продукта: [`docs/`](docs/)
 - Тесты и опрос (JSON): [`data/tests/`](data/tests/)
 

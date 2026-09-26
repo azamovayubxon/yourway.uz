@@ -182,7 +182,7 @@ export function CheckoutForm({
                   autoCapitalize="characters"
                   autoComplete="off"
                   maxLength={64}
-                  className="min-h-12 min-w-0 flex-1 rounded-2xl border-2 border-slate-200 bg-white px-4 font-mono uppercase outline-none focus:border-brand-500"
+                  className="min-h-12 min-w-0 flex-1 rounded-2xl border-2 border-slate-200 bg-white px-4 font-mono uppercase outline-none focus:border-brand-500 focus-visible:ring-4 focus-visible:ring-brand-500/30"
                 />
                 <button
                   type="button"
