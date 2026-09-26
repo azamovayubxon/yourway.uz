@@ -21,9 +21,9 @@ export interface ReportPdfProps {
   date: string;
   // Плашка «тестовый режим ИИ» (мок-режим) — как на онлайн-странице.
   mockNote: string | null;
-  // Отчёт написан на другом языке, чем сейчас читает человек (решение (Л)) — как на онлайн-странице:
-  // текст отчёта остаётся на языке генерации, а колонтитулы и подписи — на текущем языке интерфейса.
-  otherLanguage: string | null;
+  // Явная строка «на каком языке отчёт» (аудит UX-06) — как на онлайн-странице, показывается
+  // всегда: текст отчёта на report.locale, а колонтитулы и подписи — на языке интерфейса.
+  languageNote: string;
 }
 
 const BRAND = "#2f6fed";
@@ -266,7 +266,7 @@ export function ReportDocument({
   learningStyles,
   date,
   mockNote,
-  otherLanguage,
+  languageNote,
 }: ReportPdfProps) {
   const { portrait, goal, reality_check: reality, main_path: path, alternatives, act_now: actNow } = content;
   let n = 0;
@@ -276,7 +276,7 @@ export function ReportDocument({
     <Document title={`${portrait.type_label} — yourway.uz`}>
       <Page size="A4" style={styles.page} wrap>
         {mockNote && <Text style={styles.mockNote}>{mockNote}</Text>}
-        {otherLanguage && <Text style={styles.otherLangNote}>{otherLanguage}</Text>}
+        <Text style={styles.otherLangNote}>{languageNote}</Text>
 
         <View style={styles.cover}>
           <Text style={styles.coverKicker}>{fmt(t.kicker, { level: levelName }).toUpperCase()}</Text>

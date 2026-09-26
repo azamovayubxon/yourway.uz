@@ -24,7 +24,7 @@ interface Props {
   learningStyles: string[];
   date: string;
   mockBadge: { label: string; note: string } | null;
-  otherLanguage: string | null;
+  languageNote: string;
   footer: ReactNode;
 }
 
@@ -58,7 +58,7 @@ export function ReportView({
   learningStyles,
   date,
   mockBadge,
-  otherLanguage,
+  languageNote,
   footer,
 }: Props) {
   const { portrait, goal, reality_check: reality, main_path: path, alternatives, act_now: actNow } = content;
@@ -71,7 +71,7 @@ export function ReportView({
   return (
     <article className="mx-auto max-w-2xl px-4 pb-14 pt-5">
       {mockBadge && <MockBadge label={mockBadge.label} note={mockBadge.note} />}
-      {otherLanguage && <p className="mb-4 rounded-2xl bg-slate-50 px-4 py-3 text-sm text-muted">{otherLanguage}</p>}
+      <p className="mb-4 rounded-2xl bg-slate-50 px-4 py-3 text-sm text-muted">{languageNote}</p>
 
       {/* Обложка: тип крупно, уровень и дата. */}
       <header className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-600 via-indigo-600 to-fuchsia-600 p-6 text-white shadow-2xl shadow-indigo-500/30 sm:p-8">

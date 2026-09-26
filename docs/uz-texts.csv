@@ -312,7 +312,7 @@ ui.report.networkError,Страница полного отчёта (/report),Н
 ui.report.retry,Страница полного отчёта (/report),Попробовать ещё раз,Yana urinib koʻrish,
 ui.report.kicker,Страница полного отчёта (/report),Полный отчёт · {level},Toʻliq hisobot · {level},
 ui.report.createdAt,Страница полного отчёта (/report),Составлен {date},Tuzilgan sana: {date},
-ui.report.otherLanguage,Страница полного отчёта (/report),Отчёт написан на {lang} языке — на языке сайта в момент оплаты.,Hisobot {lang} tilida yozilgan — toʻlov paytida sayt shu tilda edi.,
+ui.report.languageNote,Страница полного отчёта (/report),"Язык отчёта: {lang}. Переключатель языка сайта меняет только оформление вокруг текста, а не сам отчёт.","Hisobot tili: {lang}. Sayt tilini almashtirish faqat matn atrofidagi koʻrinishni oʻzgartiradi, hisobotning oʻzini emas.",
 ui.report.languageNames.uz,Страница полного отчёта (/report),узбекском,oʻzbek,
 ui.report.languageNames.ru,Страница полного отчёта (/report),русском,rus,
 ui.report.toc,Страница полного отчёта (/report),Содержание,Mundarija,

@@ -429,7 +429,7 @@ export const uz: Dictionary = {
     retry: "Yana urinib koʻrish",
     kicker: "Toʻliq hisobot · {level}",
     createdAt: "Tuzilgan sana: {date}",
-    otherLanguage: "Hisobot {lang} tilida yozilgan — toʻlov paytida sayt shu tilda edi.",
+    languageNote: "Hisobot tili: {lang}. Sayt tilini almashtirish faqat matn atrofidagi koʻrinishni oʻzgartiradi, hisobotning oʻzini emas.",
     languageNames: { uz: "oʻzbek", ru: "rus" },
     toc: "Mundarija",
     sections: {
