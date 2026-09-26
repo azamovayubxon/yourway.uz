@@ -6,6 +6,26 @@ import type { Dictionary } from "./ru";
 // Буквы oʻ и gʻ пишутся знаком ʻ (U+02BB), остальные апострофы внутри слова — ʼ (U+02BC),
 // например: taʼlim, maʼlumot. Обычный апостроф ' не используем.
 
+// Bitta paketlar tarkibi (UX-05, audit TZ §8): har bir paket uchun bitta roʻyxat — undan bosh
+// sahifa (PricingPlans orqali), /pricing va checkout matnlarini oladi. Narxlar bazadan keladi.
+const PACKAGE_FEATURES: Record<"free" | "route" | "navigator", string[]> = {
+  free: ["Barcha testlar, tipingiz va kuchli tomonlaringiz", "Sizga mos 2–3 ta yoʻnalish", "Bepul qilsa boʻladigan bitta birinchi qadam"],
+  route: [
+    "Toʻliq portret va kuchli tomonlaringiz",
+    "Maqsad qanchalik real ekanini baholash",
+    "Maqsadgacha reja: bosqichlar, kerakli koʻnikmalar va cheklovlar",
+    "Muddat va xarajat — taxminiy oraliqlarda",
+    "Yuklab olish va ulashish uchun PDF",
+  ],
+  navigator: [
+    "«Marshrut»dagi hamma narsa",
+    "Sizga mos 2–3 ta yoʻnalishni solishtirish va asoslash",
+    "Eng mos yoʻnalishga batafsil yoʻl",
+    "Yoʻllarni solishtirish: oson va qiyin yoʻl",
+    "Yuklab olish va ulashish uchun PDF",
+  ],
+};
+
 export const uz: Dictionary = {
   meta: {
     title: "yourway.uz — qaysi yoʻldan borishingizni bilib oling",
@@ -15,9 +35,8 @@ export const uz: Dictionary = {
   common: {
     brand: "yourway.uz",
     skipToContent: "Asosiy matnga oʻtish",
-    startFree: "Bepul boshlash",
+    startFree: "Bepul testni boshlash",
     backHome: "Bosh sahifaga",
-    placeholderNote: "Vaqtinchalik matn: ishga tushirishdan oldin almashtiriladi.",
     language: "Til",
     menu: "Menyu",
     login: "Kirish",
@@ -32,7 +51,12 @@ export const uz: Dictionary = {
     privacy: "Maxfiylik siyosati",
     refund: "Pulni qaytarish shartlari",
     contactsTitle: "Aloqa",
-    contactsValue: "Aloqa maʼlumotlari ishga tushirishdan oldin qoʻshiladi.",
+    telegramLabel: "Telegram-kanal",
+    phoneLabel: "Telefon",
+    emailLabel: "Pochta",
+    telegram: "@yourway_uz",
+    phone: "+998 94 361 39 93",
+    email: "aristotle.uzb@gmail.com",
     tagline: "Oʻzbekiston uchun imkoniyatlar navigatori.",
     rights: "Barcha huquqlar himoyalangan.",
   },
@@ -41,7 +65,7 @@ export const uz: Dictionary = {
       title: "Kim boʻlishingizni va bunga qanday erishishni bilib oling",
       subtitle:
         "Shaxsiyat va qiziqishlarni oʻlchaydigan ilmiy testlar, natijani esa sunʼiy intellekt tahlil qiladi. Portretingiz va sizga mos yoʻnalishlar — bepul. Hozirgi holatingizdan maqsadingizgacha boʻlgan shaxsiy yoʻl esa toʻliq hisobotda.",
-      note: "Roʻyxatdan oʻtish shart emas · taxminan 20 daqiqa · shaxsiy maʼlumotlaringizni yigʻmaymiz",
+      note: "Roʻyxatdan oʻtish shart emas · taxminan 20 daqiqa",
     },
     how: {
       title: "Bu qanday ishlaydi",
@@ -55,11 +79,11 @@ export const uz: Dictionary = {
           text: "Shaxsiyatingiz, qiziqishlaringiz, qadriyatlaringiz va qanday oʻrganishingiz. Har ekranda bitta savol.",
         },
         {
-          title: "Portretingizni oling",
+          title: "Natijangizni koʻring",
           text: "Bepul: tipingiz, kuchli tomonlaringiz va sizga mos 2–3 ta yoʻnalish.",
         },
         {
-          title: "Yoʻlingizni oching",
+          title: "Keyingi qadamingizni rejalashtiring",
           text: "Toʻliq hisobot: maqsad, qadamlar, muddat va xarajatlar (taxminiy), zaxira yoʻllar.",
         },
       ],
@@ -85,54 +109,19 @@ export const uz: Dictionary = {
         "Shu haftaning oʻzida nimadan boshlash kerak",
       ],
     },
-    reviews: {
-      title: "Fikrlar",
-      note: "Fikrlar namunasi. Haqiqiylari ishga tushgandan keyin paydo boʻladi.",
-      items: [
-        {
-          text: "Iqtisodga boraman deb oʻylagandim. Maʼlum boʻlishicha, menga dizayn yaqinroq ekan. Yoʻl ham juda tushunarli yozilgan.",
-          author: "Abituriyent, 17 yoshda",
-        },
-        {
-          text: "Hammasi rostgoʻylik bilan yozilgani yoqdi: summalar taxminiy oraliqda berilgan, biror narsa chiqmasa, zaxira reja ham bor.",
-          author: "Talaba qiz, 20 yoshda",
-        },
-        {
-          text: "Kasbimni oʻzgartirmoqchi edim. Hisobot katta pul sarflamasdan nimadan boshlashni koʻrsatib berdi.",
-          author: "Ishlaydi, 28 yoshda",
-        },
-      ],
+    dataUse: {
+      title: "Qanday maʼlumotlardan foydalanamiz",
+      text: "Natija uchun javoblaringizdan, istasangiz esa — yoshingiz, jinsingiz, byudjetingiz va tajribangizdan foydalanamiz: bu yoʻnalishlarni aniqroq tanlashga yordam beradi. Ism, telefon va pochta soʻralmaydi.",
+      link: "Batafsili — maxfiylik siyosatida",
     },
     pricing: {
       title: "Narxlar",
       subtitle: "Testlar va portret bepul. Faqat yoʻl xaritasi yozilgan toʻliq hisobot uchun toʻlaysiz.",
-      oneTime: "bir martalik",
+      oneTime: "Bir martalik toʻlov",
       plans: [
-        {
-          name: "Bepul",
-          price: "0 soʻm",
-          features: ["Barcha testlar", "Tipingiz va kuchli tomonlaringiz", "Sizga mos 2–3 ta yoʻnalish"],
-        },
-        {
-          name: "«Marshrut»",
-          price: "29 000 soʻm",
-          features: [
-            "Maqsadini biladiganlar uchun",
-            "Maqsad qanchalik real ekanini baholash",
-            "Maqsadingizgacha boʻlgan yoʻl: qadamlar, muddat, xarajat",
-            "Oʻzingiz va ota-onangiz uchun PDF",
-          ],
-        },
-        {
-          name: "«Navigator»",
-          price: "79 000 soʻm",
-          features: [
-            "Oʻzini izlayotganlar uchun",
-            "Sizga mos 2–3 ta maqsad va nega aynan ular",
-            "Eng mos maqsadga yoʻl va boshqa yoʻllar bilan solishtirish",
-            "Oʻzingiz va ota-onangiz uchun PDF",
-          ],
-        },
+        { name: "Bepul", price: "0 soʻm", features: PACKAGE_FEATURES.free },
+        { name: "«Marshrut»", price: "29 000 soʻm", features: PACKAGE_FEATURES.route },
+        { name: "«Navigator»", price: "79 000 soʻm", features: PACKAGE_FEATURES.navigator },
       ],
     },
     faq: {
@@ -144,7 +133,7 @@ export const uz: Dictionary = {
         },
         {
           q: "Qanday maʼlumotlarimni yigʻasizlar?",
-          a: "Biz F.I.Sh., telefon raqami va elektron pochtani soʻramaymiz. Akkaunt uchun faqat login va parol kerak, u ham faqat toʻlovdan oldin.",
+          a: "Test va soʻrovnoma javoblarini, tavsiyalarni moslashtirish uchun esa istasangiz — yoshingiz, jinsingiz, byudjetingiz va tajribangizni. F.I.Sh., telefon raqami va elektron pochtani soʻramaymiz: akkaunt uchun faqat login va parol kerak, u ham faqat toʻlovdan oldin.",
         },
         {
           q: "Natijalar nimaga asoslangan?",
@@ -156,7 +145,11 @@ export const uz: Dictionary = {
         },
         {
           q: "Rus tilida topshirsa boʻladimi?",
-          a: "Ha. Sayt ham, hisobot ham oʻzbek va rus tillarida bor, tilni istalgan payt almashtirishingiz mumkin.",
+          a: "Ha. Sayt oʻzbek va rus tillarida bor, tilni istalgan payt almashtirishingiz mumkin.",
+        },
+        {
+          q: "Hisobot tilini tanlasam boʻladimi?",
+          a: "Ha. Toʻlovdan oldin toʻliq hisobot tilini tanlaysiz — oʻzbekcha yoki ruscha, saytning hozirgi tilidan qatʼi nazar.",
         },
       ],
       more: "Barcha savollar",
@@ -232,7 +225,7 @@ export const uz: Dictionary = {
     },
   },
   start: {
-    subtitle: "Testlar hamma uchun bir xil. Javobingizga qarab faqat oxirida qaysi hisobotni tavsiya qilishimiz oʻzgaradi.",
+    subtitle: "Javobingiz tavsiyalarni maqsadingizga moslashtirishga yordam beradi.",
     hints: {
       knows_goal: "Maqsadingiz qanchalik real ekanini baholaymiz va unga olib boradigan yoʻlni tuzamiz.",
       no_goal: "Sizga mos maqsadlarni va eng mosiga olib boradigan yoʻlni topamiz.",
@@ -269,7 +262,6 @@ export const uz: Dictionary = {
     sessionLost: "Bu sessiya endi faol emas: ehtimol, testlar boshqa oynada qaytadan boshlangan.",
     reload: "Sahifani yangilash",
     saving: "Oxirgi javoblar saqlanmoqda…",
-    devLink: "Hisoblangan ballarni koʻrish (ishlab chiqish uchun sahifa)",
   },
   survey: {
     next: "Keyingisi",
@@ -282,7 +274,6 @@ export const uz: Dictionary = {
     sessionLost: "Bu sessiya endi faol emas: ehtimol, soʻrovnoma boshqa oynada qaytadan boshlangan.",
     reload: "Sahifani yangilash",
     saving: "Oxirgi javoblar saqlanmoqda…",
-    devLink: "Tuzilgan profilni koʻrish (ishlab chiqish uchun sahifa)",
     doneTitle: "Soʻrovnoma yakunlandi!",
     doneText: "Profil tayyor. Hozir bepul portretingiz ochiladi.",
   },
@@ -314,8 +305,7 @@ export const uz: Dictionary = {
     directionsTitle: "Sizga mos yoʻnalishlar",
     surpriseTitle: "Sizni hayron qoldirishi mumkin boʻlgan yoʻnalish",
     surpriseLocked: "Uning nomi va unga olib boradigan yoʻl — toʻliq hisobotda",
-    tocTitle: "Toʻliq hisobotda nimalar bor",
-    tocCount: "Qulf ostidagi boʻlimlar: {n}",
+    tocTitle: "Batafsil rejada nimalar bor",
     generalToc: [
       "Toʻliq psixologik portret: qanday fikrlaysiz va qanday qaror qabul qilasiz",
       "Kuchli tomonlaringiz va ularga qanday tayanish mumkin",
@@ -338,7 +328,7 @@ export const uz: Dictionary = {
       knows_goal: "Maqsadingiz qanchalik real ekanini baholash",
       no_goal: "Sizga mos 2–3 ta maqsad va nega aynan ular",
     },
-    unlockTitle: "Oʻz yoʻlingizni oching",
+    unlockTitle: "Keyingi qadamingizni rejalashtiring",
     unlockText:
       "Toʻliq hisobot: maqsad, qadamlar, muddat va pul (taxminiy), zaxira yoʻllar va sizni hayron qoldirishi mumkin boʻlgan yoʻnalish.",
     recommended: "Sizga tavsiya qilamiz",
@@ -354,13 +344,14 @@ export const uz: Dictionary = {
     otherLanguage: "Bu portret {lang} tilida tuzilgan.",
     makeInLanguage: "Portretni {lang} tilida tuzish",
     langRegenUsed: "Bu sessiyada portretni boshqa tilda endi tuzib boʻlmaydi.",
-    devLink: "Profil va ballarni koʻrish (ishlab chiqish uchun sahifa)",
-    devAiLogLink: "Sunʼiy intellekt murojaatlari jurnali (ishlab chiqish uchun sahifa)",
   },
   checkout: {
     title: "Toʻliq hisobotni tanlang",
     subtitle:
       "Portretingiz tayyor. Toʻliq hisobot — bu harakat rejasi: maqsad, qadamlar, muddat va xarajat (taxminiy), zaxira yoʻllar va sizni hayron qoldirishi mumkin boʻlgan yoʻnalish.",
+    reportLanguageLabel: "Hisobot tili",
+    reportLanguageNote: "Hisobot tanlangan tilda yoziladi — sayt tilidan qatʼi nazar.",
+    reportLanguageNames: { uz: "Oʻzbekcha", ru: "Ruscha" },
     recommended: "Sizga tavsiya qilamiz",
     recommendedWhy: {
       knows_goal: "Siz maqsadingizni bilasiz: «Marshrut» u qanchalik real ekanini baholaydi va unga olib boradigan yoʻlni chizib beradi.",
@@ -369,28 +360,16 @@ export const uz: Dictionary = {
     levels: {
       route: {
         name: "«Marshrut»",
-        tagline: "Maqsadini biladiganlar uchun",
-        features: [
-          "Toʻliq portret va kuchli tomonlaringiz",
-          "Maqsad qanchalik real ekanini baholash",
-          "Maqsadgacha qadamma-qadam yoʻl: shu yerda arzon, xorijda, onlayn",
-          "Muddat va xarajat — taxminiy oraliqlarda",
-          "Sizni hayron qoldirishi mumkin boʻlgan 1–2 yoʻnalish va birinchi qadamlar",
-        ],
+        tagline: "Maqsad sari reja",
+        features: PACKAGE_FEATURES.route,
       },
       navigator: {
         name: "«Navigator»",
-        tagline: "Oʻzini izlayotganlar uchun",
-        features: [
-          "«Marshrut»dagi hamma narsa",
-          "Sizga mos 2–3 ta maqsad va nega aynan ular",
-          "Eng mos maqsadga yoʻl — chuqurroq va batafsilroq",
-          "Yoʻllarni solishtirish: oson va qiyin yoʻl",
-          "Chuqurroq tahlil: eng kuchli sunʼiy intellekt yozadi",
-        ],
+        tagline: "Kasb tanlash va reja",
+        features: PACKAGE_FEATURES.navigator,
       },
     },
-    oneTime: "bir martalik",
+    oneTime: "Bir martalik toʻlov",
     choose: "Tanlash",
     chosen: "Tanlandi",
     promoToggle: "Promokodingiz bormi?",
@@ -450,18 +429,18 @@ export const uz: Dictionary = {
     retry: "Yana urinib koʻrish",
     kicker: "Toʻliq hisobot · {level}",
     createdAt: "Tuzilgan sana: {date}",
-    otherLanguage: "Hisobot {lang} tilida yozilgan — toʻlov paytida sayt shu tilda edi.",
+    languageNote: "Hisobot tili: {lang}. Sayt tilini almashtirish faqat matn atrofidagi koʻrinishni oʻzgartiradi, hisobotning oʻzini emas.",
     languageNames: { uz: "oʻzbek", ru: "rus" },
     toc: "Mundarija",
     sections: {
-      portrait: "Siz kimsiz",
+      portrait: "Natijalaringiz nimani koʻrsatadi?",
       goal: "Maqsadingiz",
-      reality: "Maqsad qanchalik real",
+      reality: "Maqsadga erishish uchun nimalar kerak?",
       path: "Asosiy yoʻl",
-      learning: "Qanday oʻqish sizga oson",
+      learning: "Oʻqishni qanday tashkil qilish mumkin?",
       future: "Kelajak va sunʼiy intellekt",
-      alternatives: "Sizni hayron qoldirishi mumkin boʻlgan yoʻnalishlar",
-      actNow: "Shu hafta nima qilish kerak",
+      alternatives: "Koʻrib chiqishga arziydigan boshqa yoʻnalishlar",
+      actNow: "Shu hafta boshlang",
     },
     strengths: "Kuchli tomonlar",
     watchouts: "Nimalarga eʼtibor berish kerak",
@@ -475,9 +454,9 @@ export const uz: Dictionary = {
     },
     adjustment: "Nimani oʻzgartirish mumkin",
     choiceIsYours: "Tanlov doim sizniki.",
-    routesTitle: "Yoʻl tanlovlari",
+    routesTitle: "Reja variantlari",
     routesNote: "Muddat va summalar — taxminiy oraliqlar.",
-    routeTypes: { local_cheap: "Shu yerda va arzon", abroad: "Xorijda", online: "Band odamlar uchun onlayn" },
+    routeTypes: { local_cheap: "Mahalliy va kam xarajatli variant", abroad: "Xorijda", online: "Moslashuvchan onlayn taʼlim" },
     effort: { easy: "Oson yoʻl", hard: "Qiyin yoʻl" },
     time: "Muddat",
     cost: "Xarajat",
@@ -589,7 +568,7 @@ export const uz: Dictionary = {
     turnOff: "Sinovni oʻchirish",
   },
   auth: {
-    loginLabel: "Login",
+    loginLabel: "Foydalanuvchi nomi",
     loginHint: "3 tadan 32 tagacha belgi: lotin harflari, raqamlar, nuqta, «_» va «-».",
     passwordLabel: "Parol",
     passwordHint: "Kamida 8 ta belgi.",
@@ -638,8 +617,8 @@ export const uz: Dictionary = {
       backToLogin: "Kirish sahifasiga qaytish",
     },
     account: {
-      title: "Akkauntingiz",
-      loggedInAs: "Siz kirgan login:",
+      title: "Mening natijalarim",
+      loggedInAs: "Foydalanuvchi nomi:",
       toPortrait: "Mening portretim",
       toTests: "Testlardan oʻtish",
       logout: "Chiqish",

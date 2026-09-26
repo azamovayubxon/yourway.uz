@@ -8,6 +8,7 @@ import { SIXTEEN_TYPES } from "@/lib/assessment/tests";
 import { isLevel } from "@/lib/payments";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
+import { fmt } from "@/i18n/format";
 
 export interface ReportPresentation {
   levelName: string;
@@ -42,4 +43,12 @@ export function presentReport(
     learningStyles,
     date,
   };
+}
+
+// Явная строка «на каком языке отчёт» (аудит UX-06) — показывается всегда, на web-странице
+// отчёта и в PDF, независимо от того, совпадает ли язык отчёта с текущим языком интерфейса.
+// Переключатель языка сайта меняет только оболочку (эти подписи вокруг текста и т. п.);
+// содержимое отчёта (report.content) остаётся на report.locale, зафиксированном при оплате.
+export function reportLanguageNote(reportLocale: Locale, t: Dictionary): string {
+  return fmt(t.report.languageNote, { lang: t.report.languageNames[reportLocale] });
 }

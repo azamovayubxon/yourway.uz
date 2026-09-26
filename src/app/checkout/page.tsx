@@ -36,7 +36,7 @@ export default async function CheckoutPage({
   // Полный отчёт опирается на тизер (Приложение Б §5): без него сначала получаем портрет.
   if (!teaser) redirect("/teaser");
 
-  const { t } = await getI18n();
+  const { locale, t } = await getI18n();
   const params = await searchParams;
   const pathType = session.pathType as PathType;
   const recommended: Level = pathType === "knows_goal" ? "route" : "navigator";
@@ -59,6 +59,7 @@ export default async function CheckoutPage({
       )}
       <CheckoutForm
         t={t.checkout}
+        locale={locale}
         levelOrder={recommended === "route" ? ["route", "navigator"] : ["navigator", "route"]}
         recommended={recommended}
         recommendedWhy={t.checkout.recommendedWhy[pathType]}

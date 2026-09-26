@@ -8,7 +8,6 @@ import { uzSixteenTypeName } from "@/lib/ai/uz-resources";
 import type { TeaserContent } from "@/lib/ai/teaser-schema";
 import type { Profile } from "@/lib/assessment/profile";
 import { SIXTEEN_TYPES } from "@/lib/assessment/tests";
-import { devToolsEnabled } from "@/lib/dev";
 import { getCurrentSession } from "@/lib/session";
 import { canGenerateInLocale, getSessionTeasers } from "@/lib/teaser";
 import { buildLockedToc } from "@/lib/teaser/toc";
@@ -107,16 +106,6 @@ export default async function TeaserPage({ searchParams }: { searchParams: Promi
           >
             {t.start.restart}
           </Link>
-          {devToolsEnabled() && (
-            <>
-              <Link href={`/dev/profile/${session.id}`} className="block py-2 text-sm font-semibold text-brand-600">
-                {t.teaser.devLink} →
-              </Link>
-              <Link href="/dev/ai-log" className="block py-2 text-sm font-semibold text-brand-600">
-                {t.teaser.devAiLogLink} →
-              </Link>
-            </>
-          )}
         </div>
       }
     />

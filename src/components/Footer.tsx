@@ -28,7 +28,23 @@ export function Footer({ t }: { t: Dictionary }) {
         </nav>
         <div className="text-sm">
           <p className="font-semibold">{t.footer.contactsTitle}</p>
-          <p className="mt-2 text-muted">{t.footer.contactsValue}</p>
+          <ul className="mt-2 space-y-1.5 text-muted">
+            <li>
+              <a href={`https://t.me/${t.footer.telegram.replace(/^@/, "")}`} className="hover:text-brand-600">
+                {t.footer.telegramLabel}: {t.footer.telegram}
+              </a>
+            </li>
+            <li>
+              <a href={`tel:${t.footer.phone.replace(/[^+\d]/g, "")}`} className="hover:text-brand-600">
+                {t.footer.phoneLabel}: {t.footer.phone}
+              </a>
+            </li>
+            <li>
+              <a href={`mailto:${t.footer.email}`} className="hover:text-brand-600">
+                {t.footer.emailLabel}: {t.footer.email}
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
       <p className="pb-8 text-center text-xs text-muted">

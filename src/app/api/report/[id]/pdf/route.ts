@@ -1,10 +1,9 @@
 import type { ReportContent } from "@/lib/ai/report-schema";
 import { getCurrentUser } from "@/lib/auth";
 import { getUserReport } from "@/lib/report";
-import { presentReport } from "@/lib/report/present";
+import { presentReport, reportLanguageNote } from "@/lib/report/present";
 import { renderReportPdf } from "@/lib/pdf/render";
 import type { Locale } from "@/i18n/config";
-import { fmt } from "@/i18n/format";
 import { getI18n } from "@/i18n/server";
 import { logPdfDownload } from "@/lib/admin/funnel";
 import { getSessionIdFromCookie } from "@/lib/session";
@@ -26,8 +25,6 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   const presentation = presentReport(report, locale, t);
   const mockNote = report.aiMode === "mock" ? `${t.teaser.mockBadge}. ${t.teaser.mockNote}` : null;
   const reportLocale = report.locale as Locale;
-  const otherLanguage =
-    reportLocale !== locale ? fmt(t.report.otherLanguage, { lang: t.report.languageNames[reportLocale] }) : null;
 
   const pdf = await renderReportPdf({
     content: report.content as unknown as ReportContent,
@@ -37,7 +34,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     learningStyles: presentation.learningStyles,
     date: presentation.date,
     mockNote,
-    otherLanguage,
+    languageNote: reportLanguageNote(reportLocale, t),
   });
 
   await logPdfDownload(report.locale as Locale, await getSessionIdFromCookie());

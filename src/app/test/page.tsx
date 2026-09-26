@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { TESTS } from "@/lib/assessment/tests";
-import { devToolsEnabled } from "@/lib/dev";
 import { getCurrentSession } from "@/lib/session";
 import { getI18n } from "@/i18n/server";
 import { TestRunner, type RunnerTest } from "./TestRunner";
@@ -32,7 +31,6 @@ export default async function TestPage() {
       tests={tests}
       initialAnswers={initialAnswers}
       t={{ ...t.test, doneTitle: t.start.doneTitle, doneText: t.start.doneText, continueToSurvey: t.start.continueToSurvey }}
-      devProfileHref={devToolsEnabled() ? `/dev/profile/${session.id}` : null}
     />
   );
 }

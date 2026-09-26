@@ -261,7 +261,7 @@ model Payment {
   session       TestSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   // Уровень отчёта: route | navigator.
   level         String
-  // Язык интерфейса в момент оплаты: на нём пишется полный отчёт (решение (Л)).
+  // Язык отчёта: явный выбор на checkout (аудит UX-06), не язык интерфейса на момент оплаты.
   locale        String
   // Цена уровня без скидки и сумма к оплате (после промокода), в сумах.
   baseAmount    Int

@@ -3,13 +3,11 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import type { ReportContent } from "@/lib/ai/report-schema";
 import { getCurrentUser } from "@/lib/auth";
-import { devToolsEnabled } from "@/lib/dev";
 import { REPORT_PARTS } from "@/lib/ai/prompts";
 import { getUserReport } from "@/lib/report";
-import { presentReport } from "@/lib/report/present";
+import { presentReport, reportLanguageNote } from "@/lib/report/present";
 import { partsDone } from "@/lib/report/progress";
 import type { Locale } from "@/i18n/config";
-import { fmt } from "@/i18n/format";
 import { getI18n } from "@/i18n/server";
 import { ReportGenerator } from "./ReportGenerator";
 import { ReportView } from "./ReportView";
@@ -60,9 +58,7 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
       learningStyles={presentation.learningStyles}
       date={presentation.date}
       mockBadge={mockBadge}
-      otherLanguage={
-        reportLocale !== locale ? fmt(t.report.otherLanguage, { lang: t.report.languageNames[reportLocale] }) : null
-      }
+      languageNote={reportLanguageNote(reportLocale, t)}
       footer={
         <div className="mt-10 flex flex-col items-center gap-1 text-center print:hidden">
           <a
@@ -77,11 +73,6 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
           <Link href="/start?new=1" className="inline-flex min-h-11 items-center text-sm font-semibold text-muted underline">
             {t.report.retake}
           </Link>
-          {devToolsEnabled() && (
-            <Link href="/dev/ai-log" className="inline-flex min-h-11 items-center text-sm font-semibold text-brand-600">
-              {t.teaser.devAiLogLink} →
-            </Link>
-          )}
         </div>
       }
     />

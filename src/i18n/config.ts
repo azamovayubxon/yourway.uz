@@ -14,3 +14,10 @@ export function getDefaultLocale(): Locale {
   const fromEnv = process.env.DEFAULT_LOCALE;
   return isLocale(fromEnv) ? fromEnv : "uz";
 }
+
+// Язык полного отчёта (аудит UX-06): явный выбор на checkout, а не язык интерфейса на момент
+// оплаты. Значение из формы может отсутствовать (например, JS отключён и скрытое поле не пришло)
+// или быть повреждено — тогда откатываемся на язык интерфейса, как было раньше этого решения.
+export function resolveReportLocale(formValue: unknown, interfaceLocale: Locale): Locale {
+  return isLocale(formValue) ? formValue : interfaceLocale;
+}

@@ -2,6 +2,7 @@ import { renderToBuffer } from "@react-pdf/renderer";
 import { describe, expect, it } from "vitest";
 import { MOCK_REPORTS } from "@/lib/ai/mock-reports";
 import { mergeReportParts } from "@/lib/ai/report-schema";
+import { fmt } from "@/i18n/format";
 import { ru } from "@/i18n/dictionaries/ru";
 import { uz } from "@/i18n/dictionaries/uz";
 import { registerPdfFonts } from "./fonts";
@@ -34,7 +35,7 @@ describe("renderReportPdf smoke test", () => {
       learningStyles: ["практика", "чтение"],
       date: "25.09.2026",
       mockNote: `${ru.teaser.mockBadge}. ${ru.teaser.mockNote}`,
-      otherLanguage: null,
+      languageNote: fmt(ru.report.languageNote, { lang: ru.report.languageNames.ru }),
     });
     expect(pdf.byteLength).toBeGreaterThan(1000);
   });
@@ -54,7 +55,7 @@ describe("renderReportPdf smoke test", () => {
       learningStyles: ["qilib koʻrib oʻrganish"],
       date: "25.09.2026",
       mockNote: null,
-      otherLanguage: uz.report.otherLanguage.replace("{lang}", uz.report.languageNames.ru),
+      languageNote: fmt(uz.report.languageNote, { lang: uz.report.languageNames.ru }),
     });
     expect(pdf.byteLength).toBeGreaterThan(1000);
   });

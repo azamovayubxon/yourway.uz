@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useActionState, useState, useTransition } from "react";
 import type { Dictionary } from "@/i18n/dictionaries";
+import type { Locale } from "@/i18n/config";
+import { LOCALES } from "@/i18n/config";
 import { fmt, formatSum } from "@/i18n/format";
 import { previewPromoAction, startPaymentAction, type CheckoutState } from "./actions";
 
@@ -15,6 +17,7 @@ const idle: CheckoutState = { status: "idle" };
 // проверяется на сервере и ещё раз — при оплате.
 export function CheckoutForm({
   t,
+  locale,
   levelOrder,
   recommended,
   recommendedWhy,
@@ -26,6 +29,7 @@ export function CheckoutForm({
   sumTemplate,
 }: {
   t: CheckoutDict;
+  locale: Locale;
   levelOrder: Level[];
   recommended: Level;
   recommendedWhy: string;
@@ -38,6 +42,9 @@ export function CheckoutForm({
 }) {
   const available = levelOrder.filter((l) => prices[l] !== undefined && !existing[l]);
   const [level, setLevel] = useState<Level | null>(available.includes(recommended) ? recommended : (available[0] ?? null));
+  // Язык отчёта — явный выбор до оплаты (UX-06): по умолчанию язык сайта, но можно сменить,
+  // независимо от языка интерфейса. Сохраняется в заказе и не меняется при переключении сайта.
+  const [reportLocale, setReportLocale] = useState<Locale>(locale);
   const [state, action, submitting] = useActionState(startPaymentAction, idle);
 
   const [promoOpen, setPromoOpen] = useState(false);
@@ -211,11 +218,38 @@ export function CheckoutForm({
         </div>
       )}
 
+      {/* Язык отчёта (UX-06): явный выбор до оплаты, независимо от языка сайта. */}
+      {level && amount !== undefined && (
+        <div className="rounded-2xl bg-slate-50 p-4">
+          <p className="text-sm font-semibold">{t.reportLanguageLabel}</p>
+          <div className="mt-2 flex gap-2">
+            {LOCALES.map((code) => (
+              <button
+                key={code}
+                type="button"
+                onClick={() => setReportLocale(code)}
+                aria-pressed={reportLocale === code}
+                className={
+                  "min-h-11 flex-1 rounded-xl border-2 px-3 text-sm font-semibold transition-colors " +
+                  (reportLocale === code
+                    ? "border-brand-500 bg-white text-brand-600"
+                    : "border-transparent bg-white/60 text-muted hover:text-ink")
+                }
+              >
+                {t.reportLanguageNames[code]}
+              </button>
+            ))}
+          </div>
+          <p className="mt-2 text-xs text-muted">{t.reportLanguageNote}</p>
+        </div>
+      )}
+
       {/* Оплата */}
       {level && amount !== undefined && (
         <form action={action} className="space-y-3">
           <input type="hidden" name="level" value={level} />
           <input type="hidden" name="promo" value={promo?.code ?? ""} />
+          <input type="hidden" name="reportLocale" value={reportLocale} />
           <div className="flex items-baseline justify-between gap-3 border-t border-slate-100 pt-4">
             <span className="text-muted">
               {t.total} · {t.levels[level].name}

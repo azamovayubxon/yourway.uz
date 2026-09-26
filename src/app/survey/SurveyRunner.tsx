@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { fmt } from "@/i18n/format";
@@ -37,7 +36,6 @@ interface SurveyDict {
   sessionLost: string;
   reload: string;
   saving: string;
-  devLink: string;
   doneTitle: string;
   doneText: string;
 }
@@ -47,7 +45,6 @@ interface Props {
   sections: RunnerSurveySection[];
   initialAnswers: Record<string, SurveyValue>;
   t: SurveyDict;
-  devProfileHref: string | null;
 }
 
 type SyncState = "idle" | "offline" | "lost";
@@ -73,7 +70,7 @@ function writePending(sessionId: string, pending: Record<string, SurveyValue>) {
   }
 }
 
-export function SurveyRunner({ sessionId, sections, initialAnswers, t, devProfileHref }: Props) {
+export function SurveyRunner({ sessionId, sections, initialAnswers, t }: Props) {
   const items = useMemo(
     () =>
       sections.flatMap((section, sectionIndex) =>
@@ -207,11 +204,6 @@ export function SurveyRunner({ sessionId, sections, initialAnswers, t, devProfil
         <div className="mt-6 space-y-4">
           {!saved && syncState !== "lost" && <p className="text-sm text-muted">{t.saving}</p>}
           {status}
-          {saved && devProfileHref && (
-            <Link href={devProfileHref} className="block py-2 font-semibold text-brand-600">
-              {t.devLink} →
-            </Link>
-          )}
           <BackButton label={t.back} onClick={back} disabled={false} />
         </div>
       </div>
