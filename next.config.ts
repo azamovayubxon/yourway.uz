@@ -25,6 +25,10 @@ const SECURITY_HEADERS = [
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=()" },
   // HSTS. На обычном сервере HTTPS обычно завершается на nginx (см. docs/deploy-server.md),
   // заголовок всё равно можно отдавать — браузер применяет его только к https-ответам.
+  // Без "preload": владелец планирует переезд между хостингами (см. этап 10Б), а preload
+  // регистрируется в браузерах на месяцы вперёд и его почти невозможно отменить быстро —
+  // если на новом хостинге на какое-то время не будет HTTPS, домен станет недоступен всем,
+  // у кого браузер уже запомнил preload. Без него можно просто убрать заголовок.
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
 ];
 

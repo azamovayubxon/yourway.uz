@@ -1,0 +1,53 @@
+name: Docker smoke test
+
+# Проверка переносимости (этап 10Б): на каждый PR собираем Docker-образ, поднимаем сайт и
+# PostgreSQL через docker-compose.yml (как на обычном сервере, см. docs/deploy-server.md),
+# ждём, что миграции применятся сами, и проверяем, что главная страница отвечает 200.
+# Никакого ключа Claude API не нужно: без него сайт работает в тестовом режиме ИИ (AI_MODE=mock).
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  docker-compose-up:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Настроить .env для docker-compose (без реальных секретов, AI_MODE=mock)
+        run: cp .env.example .env
+
+      - name: Собрать образ сайта
+        run: docker compose build
+
+      - name: Поднять сайт и базу
+        run: docker compose up -d
+
+      - name: Подождать, пока сайт станет доступен (применяет миграции при старте)
+        run: |
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:3000/api/health; then
+              echo "сайт ответил"
+              exit 0
+            fi
+            echo "попытка $i: сайт ещё не готов, ждём…"
+            sleep 3
+          done
+          echo "сайт не поднялся за отведённое время" >&2
+          exit 1
+
+      - name: Проверить, что главная страница отвечает 200
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/)
+          echo "код ответа: $code"
+          test "$code" = "200"
+
+      - name: Логи при сбое
+        if: failure()
+        run: docker compose logs
+
+      - name: Остановить и убрать контейнеры
+        if: always()
+        run: docker compose down -v
