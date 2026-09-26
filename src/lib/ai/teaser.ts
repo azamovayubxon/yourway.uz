@@ -84,12 +84,14 @@ export async function generateTeaser(options: {
   // Время на всю генерацию и на одну попытку, мс (для тестов можно подменить).
   timeBudgetMs?: number;
   now?: () => number;
+  // Версия промпта из БД (этап 8б); по умолчанию — текст из кода (TEASER_SYSTEM/USER_TEMPLATE).
+  templates?: { system: string; user: string };
 }): Promise<TeaserResult> {
   const { locale, model, provider, onAttempt } = options;
   const now = options.now ?? Date.now;
   const deadline = now() + (options.timeBudgetMs ?? TEASER_TIME_BUDGET_MS);
   const uz = locale === "uz" ? (options.uz ?? { glossary: getUzGlossary(), examples: getUzExamples() }) : undefined;
-  const prompt = buildTeaserPrompt(profileForLanguage(options.profile, locale), locale, uz);
+  const prompt = buildTeaserPrompt(profileForLanguage(options.profile, locale), locale, uz, options.templates);
   const maxAttempts = 1 + TEASER_MAX_RETRIES;
   let lastError = "unknown";
   // Прошлый ответ и что в нём исправить — для повторной попытки (решение этапа 4б).

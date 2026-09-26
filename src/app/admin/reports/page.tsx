@@ -24,6 +24,7 @@ export default async function AdminReportsPage() {
       locale: true,
       status: true,
       model: true,
+      promptVersion: true,
       createdAt: true,
       readyAt: true,
       user: { select: { login: true } },
@@ -37,7 +38,7 @@ export default async function AdminReportsPage() {
           <p className="text-muted">Отчётов пока нет.</p>
         ) : (
           <DataTable
-            head={["Аккаунт", "Уровень", "Язык", "Статус", "Модель", "Создан", ""]}
+            head={["Аккаунт", "Уровень", "Язык", "Статус", "Модель", "Версия промпта", "Создан", ""]}
             rows={reports.map((r) => [
               r.user.login,
               LEVEL_NAMES[r.level] ?? r.level,
@@ -45,6 +46,9 @@ export default async function AdminReportsPage() {
               STATUS_NAMES[reportStatusOf(r.status)],
               <span key="m" className="font-mono text-xs">
                 {r.model}
+              </span>,
+              <span key="pv" className="font-mono text-xs">
+                {r.promptVersion}
               </span>,
               r.createdAt.toISOString().slice(0, 16).replace("T", " "),
               <Link key="l" href={`/admin/reports/${r.id}`} className="font-semibold text-brand-600">

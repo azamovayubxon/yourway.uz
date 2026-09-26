@@ -4,7 +4,8 @@ import { getDb } from "@/lib/db";
 import { teaserLimits } from "@/lib/ai/config";
 import { resolveTeaserModel } from "@/lib/admin/models";
 import { getAiMode, getAiProvider, modelFor } from "@/lib/ai/providers";
-import { TEASER_PROMPT_VERSION } from "@/lib/ai/prompts";
+import { promptKeyForTeaser } from "@/lib/ai/prompt-registry";
+import { getActivePromptVersion, promptVersionLabel } from "@/lib/ai/prompt-store";
 import { generateTeaser } from "@/lib/ai/teaser";
 import type { Profile } from "@/lib/assessment/profile";
 import type { Locale } from "@/i18n/config";
@@ -97,10 +98,13 @@ export async function requestTeaser(options: {
   const aiMode = getAiMode();
   const provider = getAiProvider(aiMode);
   const model = modelFor(aiMode, await resolveTeaserModel(locale));
+  const promptKey = promptKeyForTeaser(locale);
+  const promptVersion = await getActivePromptVersion(promptKey);
+  const promptVersionTag = promptVersionLabel(promptVersion);
   const fields = {
     aiMode,
     model,
-    promptVersion: TEASER_PROMPT_VERSION,
+    promptVersion: promptVersionTag,
     level: profile.level,
     attempts: 0,
     error: null,
@@ -134,6 +138,7 @@ export async function requestTeaser(options: {
         locale,
         model,
         provider,
+        templates: { system: promptVersion.systemTemplate, user: promptVersion.userTemplate },
         onAttempt: async (log) => {
           const costUsd = provider.estimateCostUsd(model, log.usage);
           // Короткая строка в логи сервера (видно в Vercel → Logs) + запись в журнал AiCall.
@@ -151,7 +156,7 @@ export async function requestTeaser(options: {
               ipHash,
               aiMode,
               model,
-              promptVersion: TEASER_PROMPT_VERSION,
+              promptVersion: promptVersionTag,
               attempt: log.attempt,
               ok: log.ok,
               error: log.error,

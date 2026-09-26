@@ -7,6 +7,9 @@ import { MODEL_OVERRIDE_KEYS, setModelOverride, type ModelOverrideKey } from "@/
 import { isLevel } from "@/lib/payments/prices";
 import { normalizePromoCode } from "@/lib/payments/promo";
 import { normalizeLogin } from "@/lib/auth/credentials";
+import { activatePromptVersion, createPromptVersion } from "@/lib/ai/prompt-store";
+import { PROMPT_DEFAULTS, PROMPT_KEYS, type PromptKey } from "@/lib/ai/prompt-registry";
+import { runPromptCheck, type PromptCheckResult } from "@/lib/ai/prompt-check";
 
 // Действия админки (этап 8). Каждое проверяет роль заново на сервере — ссылка на кнопку
 // в браузере ничего не значит, если у человека нет прав.
@@ -67,6 +70,81 @@ export async function saveModelOverrideAction(formData: FormData) {
   const model = String(formData.get("model") ?? "");
   await setModelOverride(key as ModelOverrideKey, model, admin.login);
   redirect("/admin/prompts?ok=1");
+}
+
+function isPromptKey(key: string): key is PromptKey {
+  return (PROMPT_KEYS as string[]).includes(key);
+}
+
+export type SavePromptState =
+  | { status: "idle" }
+  | { status: "error"; errors: string[] }
+  | { status: "ok"; version: number };
+
+// Сохранение промпта — новая версия сразу активная (требование 2 этапа 8б). Редактировать и
+// откатывать может только superadmin (требование 7); admin, попавший сюда напрямую, получит 404.
+export async function savePromptVersionAction(_prev: SavePromptState, formData: FormData): Promise<SavePromptState> {
+  const admin = await requireSuperAdmin();
+  const key = String(formData.get("key") ?? "");
+  if (!isPromptKey(key)) return { status: "error", errors: ["Неизвестный ключ промпта."] };
+  const systemTemplate = String(formData.get("systemTemplate") ?? "");
+  const userTemplate = String(formData.get("userTemplate") ?? "");
+  const comment = String(formData.get("comment") ?? "");
+  const result = await createPromptVersion({ key, systemTemplate, userTemplate, comment, createdBy: admin.login, activate: true });
+  return result.ok ? { status: "ok", version: result.version } : { status: "error", errors: result.errors };
+}
+
+// Откат на более раннюю версию (требование 2, кнопка «сделать активной»). Только superadmin.
+export async function activatePromptVersionAction(formData: FormData) {
+  const admin = await requireSuperAdmin();
+  const key = String(formData.get("key") ?? "");
+  const versionId = String(formData.get("versionId") ?? "");
+  if (!isPromptKey(key)) redirect("/admin/prompts?error=1");
+  const ok = await activatePromptVersion(key, versionId, admin.login);
+  redirect(ok ? "/admin/prompts?ok=1" : "/admin/prompts?error=1");
+}
+
+// Текст в src/lib/ai/prompts.ts мог уйти вперёд версии 1 (её когда-то записали от кода и с тех
+// пор не трогали) — правки в коде тогда молча не действуют на боевом сайте, пока их не перенесут
+// в новую активную версию. Кнопка «Создать версию из текста в коде» делает это одним нажатием.
+// Только superadmin.
+export async function syncPromptFromCodeAction(formData: FormData) {
+  const admin = await requireSuperAdmin();
+  const key = String(formData.get("key") ?? "");
+  if (!isPromptKey(key)) redirect("/admin/prompts?error=1");
+  const def = PROMPT_DEFAULTS[key];
+  const result = await createPromptVersion({
+    key,
+    systemTemplate: def.system.template,
+    userTemplate: def.user.template,
+    comment: "перенесено из текста в коде (src/lib/ai/prompts.ts)",
+    createdBy: admin.login,
+    activate: true,
+  });
+  redirect(result.ok ? "/admin/prompts?ok=1" : "/admin/prompts?error=1");
+}
+
+export type CheckPromptState =
+  | { status: "idle" }
+  | { status: "error"; errors: string[] }
+  | { status: "done"; result: PromptCheckResult };
+
+// Кнопка «Проверить» (требование 5): прогоняет черновик (несохранённый текст из формы) на
+// golden-профиле. Смотреть может и admin, и superadmin — сохранить результат нельзя, это не отчёт.
+export async function checkPromptAction(_prev: CheckPromptState, formData: FormData): Promise<CheckPromptState> {
+  await requireAdmin();
+  const key = String(formData.get("key") ?? "");
+  if (!isPromptKey(key)) return { status: "error", errors: ["Неизвестный ключ промпта."] };
+  const systemTemplate = String(formData.get("systemTemplate") ?? "");
+  const userTemplate = String(formData.get("userTemplate") ?? "");
+  const withGoal = String(formData.get("goal") ?? "with") !== "without";
+  try {
+    const result = await runPromptCheck(key, systemTemplate, userTemplate, withGoal);
+    return { status: "done", result };
+  } catch (e) {
+    console.error("[admin] prompt check", e);
+    return { status: "error", errors: ["Не получилось проверить — попробуйте ещё раз."] };
+  }
 }
 
 // Только суперадмин может назначать/снимать роль admin у других аккаунтов (role.ts:

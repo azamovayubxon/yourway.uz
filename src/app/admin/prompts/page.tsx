@@ -1,19 +1,11 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
 import { requireAdmin } from "@/lib/admin/guard";
 import { listModelOverrides, type ModelOverrideRow } from "@/lib/admin/models";
-import {
-  PHILOSOPHY_BLOCK,
-  REPORT_PROMPT_VERSION,
-  REPORT_SYSTEM_TEMPLATE,
-  REPORT_USER_TEMPLATE,
-  TEASER_PROMPT_VERSION,
-  TEASER_SYSTEM_TEMPLATE,
-  TEASER_USER_TEMPLATE,
-  UZ_RULES_TEMPLATE,
-} from "@/lib/ai/prompts";
+import { PROMPT_DEFAULTS, PROMPT_KEYS, PROMPT_LABELS, pickActiveVersion } from "@/lib/ai/prompt-registry";
+import { listPromptVersions } from "@/lib/ai/prompt-store";
 import { AdminShell, Card, Notice } from "../ui";
-import { saveModelOverrideAction } from "../actions";
+import { saveModelOverrideAction, syncPromptFromCodeAction } from "../actions";
+import { PromptEditor, PromptHistory, type PromptVersionSummary } from "./PromptEditor";
 
 export const metadata: Metadata = { robots: { index: false } };
 
@@ -24,22 +16,37 @@ const LABELS: Record<ModelOverrideRow["key"], string> = {
   report_navigator: "Полный отчёт · «Навигатор»",
 };
 
-// Промпты и модели ИИ (этап 8). Сами тексты промптов редактируются в коде (src/lib/ai/prompts.ts) —
-// автотест prompts.test.ts сверяет их с docs/prilozhenie-b-prompty.md, поэтому редактирование прямо
-// из админки здесь сознательно не сделано (легко разойтись с документом и правилом про «вы»/siz).
-// Модель для каждого уровня и языка — можно переопределить прямо здесь, без деплоя.
+function toSummary(row: Awaited<ReturnType<typeof listPromptVersions>>[number]): PromptVersionSummary {
+  return {
+    id: row.id,
+    version: row.version,
+    systemTemplate: row.systemTemplate,
+    userTemplate: row.userTemplate,
+    comment: row.comment,
+    active: row.active,
+    createdBy: row.createdBy,
+    createdAt: row.createdAt.toISOString(),
+    activatedBy: row.activatedBy,
+    activatedAt: row.activatedAt ? row.activatedAt.toISOString() : null,
+  };
+}
+
+// Промпты и модели (этап 8, дополнено этапом 8б): версии промптов в БД, история и откат — только
+// у superadmin (требование 7), admin видит тексты и результат «Проверить», но не может сохранять.
 export default async function AdminPromptsPage({
   searchParams,
 }: {
   searchParams: Promise<{ ok?: string; error?: string }>;
 }) {
   const admin = await requireAdmin();
+  const isSuperAdmin = admin.role === "superadmin";
   const params = await searchParams;
   const overrides = await listModelOverrides();
+  const promptVersions = await Promise.all(PROMPT_KEYS.map((key) => listPromptVersions(key)));
 
   return (
-    <AdminShell title="Промпты и модели" isSuperAdmin={admin.role === "superadmin"}>
-      {params.ok && <Notice>Модель сохранена.</Notice>}
+    <AdminShell title="Промпты и модели" isSuperAdmin={isSuperAdmin}>
+      {params.ok && <Notice>Сохранено.</Notice>}
       {params.error && <Notice kind="error">Не получилось сохранить — попробуйте ещё раз.</Notice>}
 
       <Card title="Модель ИИ по уровню и языку">
@@ -77,45 +84,67 @@ export default async function AdminPromptsPage({
         </div>
       </Card>
 
-      <Card title="Тексты промптов (только просмотр)">
+      <Card title="Тексты промптов и их версии">
         <p className="text-sm text-muted">
-          Промпты редактируются в коде (<code className="font-mono">src/lib/ai/prompts.ts</code>),
-          вместе с документом <code className="font-mono">docs/prilozhenie-b-prompty.md</code> —
-          автотест не даст им разойтись. Здесь можно посмотреть, что сейчас реально отправляется ИИ.
+          Редактирование сохраняет новую версию (кто, когда, комментарий «что поменял») и сразу
+          делает её активной; история версий видна ниже, откат — кнопкой «сделать активной».
+          {!isSuperAdmin && " Ваша роль (admin) позволяет только смотреть и проверять — сохранять и откатывать может superadmin."}
+          {" "}Философия продукта, правила узбекского языка, справочник баллов и JSON-схема отчёта — общая
+          инфраструктура вызовов ИИ, они не редактируются здесь и проверяются отдельным автотестом
+          на соответствие документу и правилу «вы/siz».
         </p>
         <div className="mt-4 space-y-4">
-          <PromptBlock title={`Тизер — версия ${TEASER_PROMPT_VERSION}`}>
-            <PromptText label="Философия (общий блок)" text={PHILOSOPHY_BLOCK} />
-            <PromptText label="Системный промпт" text={TEASER_SYSTEM_TEMPLATE} />
-            <PromptText label="Пользовательское сообщение" text={TEASER_USER_TEMPLATE} />
-            <PromptText label="Правила узбекского языка (добавляются при language = uz)" text={UZ_RULES_TEMPLATE} />
-          </PromptBlock>
-          <PromptBlock title={`Полный отчёт — версия ${REPORT_PROMPT_VERSION}`}>
-            <PromptText label="Системный промпт" text={REPORT_SYSTEM_TEMPLATE} />
-            <PromptText label="Пользовательское сообщение" text={REPORT_USER_TEMPLATE} />
-          </PromptBlock>
+          {PROMPT_KEYS.map((key, i) => {
+            const versions = promptVersions[i].map(toSummary);
+            const active = pickActiveVersion(versions) ?? versions[0];
+            const version1 = versions.find((v) => v.version === 1);
+            const def = PROMPT_DEFAULTS[key];
+            // Версия 1 когда-то записана от текста в коде; если с тех пор код поправили, а версию
+            // не пересоздали — правки молча не действуют на боевом сайте (владелец, требование этапа 8б).
+            // Предупреждаем, только пока активна именно версия 1: как только кто-то сохранил свою
+            // версию через админку, расхождение с кодом уже осознанное, а не незамеченный сюрприз —
+            // и кнопка «из текста в коде» дальше не рискует молча затереть чужую правку.
+            const driftedFromCode =
+              active.version === 1 &&
+              !!version1 &&
+              (version1.systemTemplate !== def.system.template || version1.userTemplate !== def.user.template);
+            return (
+              <details key={key} className="rounded-2xl border border-slate-200 p-4">
+                <summary className="cursor-pointer font-bold">
+                  {PROMPT_LABELS[key]} — активна версия {active.version}
+                </summary>
+                <div className="mt-3 space-y-4">
+                  {driftedFromCode && (
+                    <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                      <span>
+                        Текст в <code className="font-mono">src/lib/ai/prompts.ts</code> с тех пор поменяли, а версию 1 —
+                        нет. Правки в коде сейчас ни на что не влияют: сайт использует активную версию из базы.
+                      </span>
+                      {isSuperAdmin && (
+                        <form action={syncPromptFromCodeAction}>
+                          <input type="hidden" name="key" value={key} />
+                          <button type="submit" className="min-h-9 shrink-0 rounded-lg border-2 border-amber-300 bg-white px-3 text-xs font-bold text-amber-900">
+                            Создать версию из текста в коде
+                          </button>
+                        </form>
+                      )}
+                    </div>
+                  )}
+                  <PromptEditor promptKey={key} active={active} canEdit={isSuperAdmin} />
+                  <details>
+                    <summary className="cursor-pointer text-sm font-semibold text-brand-600">
+                      История версий ({versions.length})
+                    </summary>
+                    <div className="mt-2">
+                      <PromptHistory promptKey={key} versions={versions} canRollback={isSuperAdmin} />
+                    </div>
+                  </details>
+                </div>
+              </details>
+            );
+          })}
         </div>
       </Card>
     </AdminShell>
-  );
-}
-
-function PromptBlock({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <details className="rounded-2xl border border-slate-200 p-4">
-      <summary className="cursor-pointer font-bold">{title}</summary>
-      <div className="mt-3 space-y-3">{children}</div>
-    </details>
-  );
-}
-
-function PromptText({ label, text }: { label: string; text: string }) {
-  return (
-    <details>
-      <summary className="cursor-pointer py-1 text-sm font-semibold text-brand-600">{label}</summary>
-      <pre className="mt-2 max-h-96 overflow-auto whitespace-pre-wrap break-words rounded-xl bg-slate-50 p-3 font-mono text-xs">
-        {text}
-      </pre>
-    </details>
   );
 }
