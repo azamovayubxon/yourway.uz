@@ -1,0 +1,36 @@
+# Поднимает сайт и базу для обычного Linux-сервера (docs/deploy-server.md).
+# Запуск: скопировать .env.example в .env, заполнить, потом `docker compose up -d --build`.
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: yourway
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-yourway}
+      POSTGRES_DB: yourway
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U yourway"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      # Внутри docker compose сайт обращается к базе по имени сервиса "db", не по localhost.
+      DATABASE_URL: postgresql://yourway:${POSTGRES_PASSWORD:-yourway}@db:5432/yourway
+      DATABASE_URL_UNPOOLED: postgresql://yourway:${POSTGRES_PASSWORD:-yourway}@db:5432/yourway
+      APP_URL: ${APP_URL:-http://localhost:3000}
+    ports:
+      - "3000:3000"
+
+volumes:
+  db_data:

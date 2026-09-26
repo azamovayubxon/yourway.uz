@@ -14,8 +14,8 @@ if (process.env.UPDATE_UZ_TEXTS === "1") {
 
 describe("таблица узбекских текстов docs/uz-texts.csv", () => {
   it("совпадает с текстами в коде (иначе: npm run uz:export)", () => {
-    const current = collectUzTexts().map(({ key, ru, uz }) => ({ key, ru, uz }));
-    const saved = parseCsv(readFileSync(file, "utf8")).map(({ key, ru, uz }) => ({ key, ru, uz }));
+    const current = collectUzTexts().map(({ key, where, ru, uz }) => ({ key, where, ru, uz }));
+    const saved = parseCsv(readFileSync(file, "utf8")).map(({ key, where, ru, uz }) => ({ key, where, ru, uz }));
     expect(saved).toEqual(current);
   });
 
@@ -27,21 +27,21 @@ describe("таблица узбекских текстов docs/uz-texts.csv", (
 
   it("CSV читается обратно: кавычки, переносы строк, разделитель «;» от Excel", () => {
     const rows = [
-      { key: "a", ru: 'Текст с "кавычками", запятой', uz: "Matn\nikki qator", fix: "" },
-      { key: "b", ru: "x;y", uz: "oʻ gʻ", fix: "Tuzatish" },
+      { key: "a", where: "Главная страница (/)", ru: 'Текст с "кавычками", запятой', uz: "Matn\nikki qator", fix: "" },
+      { key: "b", where: "Страница /pricing", ru: "x;y", uz: "oʻ gʻ", fix: "Tuzatish" },
     ];
     expect(parseCsv(toCsv(rows))).toEqual(rows);
-    const excel = "ключ;русский;узбекский;исправление\r\na;Да;Ha;Ha, albatta\r\n";
-    expect(parseCsv(excel)).toEqual([{ key: "a", ru: "Да", uz: "Ha", fix: "Ha, albatta" }]);
+    const excel = "ключ;где на сайте;русский;узбекский;исправление\r\na;Главная;Да;Ha;Ha, albatta\r\n";
+    expect(parseCsv(excel)).toEqual([{ key: "a", where: "Главная", ru: "Да", uz: "Ha", fix: "Ha, albatta" }]);
   });
 
   it("при пересоздании сохраняет исправления владельца", () => {
     const merged = mergeFixes(
       [
-        { key: "a", ru: "", uz: "yangi", fix: "" },
-        { key: "b", ru: "", uz: "b", fix: "" },
+        { key: "a", where: "", ru: "", uz: "yangi", fix: "" },
+        { key: "b", where: "", ru: "", uz: "b", fix: "" },
       ],
-      [{ key: "a", ru: "", uz: "eski", fix: "tuzatilgan" }],
+      [{ key: "a", where: "", ru: "", uz: "eski", fix: "tuzatilgan" }],
     );
     expect(merged.map((r) => r.fix)).toEqual(["tuzatilgan", ""]);
   });

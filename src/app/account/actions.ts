@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { changePassword, deleteAccount, getCurrentUser, login, logout, recover, register, type AuthError } from "@/lib/auth";
 import { safeNextPath } from "@/lib/auth/credentials";
 import { getLocale } from "@/i18n/server";
+import { logError } from "@/lib/monitoring";
 
 // Формы аккаунта (регистрация, вход, восстановление, выход). Server actions Next.js сами проверяют,
 // что форма отправлена с нашего сайта (защита от CSRF).
@@ -21,7 +22,9 @@ function field(formData: FormData, name: string): string {
 }
 
 function serverError(e: unknown, loginValue: string): AuthFormState {
-  console.error("[auth]", e);
+  // Логин — не секрет (это просто имя аккаунта, не пароль и не код восстановления), его можно
+  // класть в журнал ошибок. Пароль и код восстановления сюда никогда не попадают.
+  void logError("auth", e, { login: loginValue });
   return { status: "error", error: "server", login: loginValue };
 }
 

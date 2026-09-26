@@ -409,6 +409,7 @@ export function ReportDocument({
         <View style={styles.disclaimer} wrap={false}>
           <Text style={[styles.label]}>{t.disclaimerTitle.toUpperCase()}</Text>
           <Text style={[styles.bodyMuted, { marginTop: 4 }]}>{content.disclaimer}</Text>
+          <Text style={[styles.bodyMuted, { marginTop: 4 }]}>{t.disclaimer}</Text>
         </View>
 
         <View style={styles.header} fixed>

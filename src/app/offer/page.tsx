@@ -1,4 +1,4 @@
-import { PageShell, PlaceholderNote } from "@/components/ui";
+import { Disclaimer, PageShell } from "@/components/ui";
 import { getI18n } from "@/i18n/server";
 
 export async function generateMetadata() {
@@ -11,7 +11,7 @@ export default async function OfferPage() {
   const p = t.pages.offer;
   return (
     <PageShell title={p.title}>
-      <PlaceholderNote>{t.common.placeholderNote}</PlaceholderNote>
+      <Disclaimer>{p.disclaimer}</Disclaimer>
       {p.body.map((paragraph, i) => (
         <p key={i}>{paragraph}</p>
       ))}

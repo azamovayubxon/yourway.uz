@@ -37,3 +37,10 @@ export function PlaceholderNote({ children }: { children: ReactNode }) {
     </p>
   );
 }
+
+// Дисклеймер «это не диагноз и не медицинская услуга» (этап 10Е) — на оферте, тизере и странице отчёта.
+export function Disclaimer({ children }: { children: ReactNode }) {
+  return (
+    <p className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">{children}</p>
+  );
+}

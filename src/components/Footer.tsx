@@ -8,6 +8,7 @@ export function Footer({ t }: { t: Dictionary }) {
     { href: "/faq", label: t.footer.faq },
     { href: "/offer", label: t.footer.offer },
     { href: "/privacy", label: t.footer.privacy },
+    { href: "/refund", label: t.footer.refund },
   ];
   return (
     <footer className="mt-16 border-t border-slate-100 bg-slate-50">

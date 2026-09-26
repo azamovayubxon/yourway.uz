@@ -414,7 +414,7 @@ function NumberInput({
         min={min}
         max={max}
         onChange={(e) => setText(e.target.value)}
-        className="w-full rounded-2xl border-2 border-slate-200 px-4 py-3 text-lg font-semibold focus:border-brand-500 focus:outline-none"
+        className="w-full rounded-2xl border-2 border-slate-200 px-4 py-3 text-lg font-semibold focus:border-brand-500 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-500/30"
         autoFocus
       />
       <p className="mt-2 text-sm text-muted">{rangeLabel}</p>
@@ -460,7 +460,7 @@ function TextInput({
         maxLength={maxLen}
         onChange={(e) => setText(e.target.value)}
         rows={3}
-        className="w-full rounded-2xl border-2 border-slate-200 px-4 py-3 text-base focus:border-brand-500 focus:outline-none"
+        className="w-full rounded-2xl border-2 border-slate-200 px-4 py-3 text-base focus:border-brand-500 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-500/30"
         autoFocus
       />
       <div className="mt-4 flex gap-3">

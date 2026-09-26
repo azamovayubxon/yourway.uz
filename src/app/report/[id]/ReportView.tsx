@@ -246,6 +246,7 @@ export function ReportView({
         <p className="mt-1" lang={lang}>
           {content.disclaimer}
         </p>
+        <p className="mt-1">{t.disclaimer}</p>
       </aside>
 
       {footer}

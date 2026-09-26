@@ -11,7 +11,7 @@ import type { AuthFormState } from "@/app/account/actions";
 type AuthDict = Dictionary["auth"];
 
 const inputClass =
-  "block min-h-12 w-full rounded-2xl border-2 border-slate-200 bg-white px-4 text-base outline-none transition-colors focus:border-brand-500";
+  "block min-h-12 w-full rounded-2xl border-2 border-slate-200 bg-white px-4 text-base outline-none transition-colors focus:border-brand-500 focus-visible:ring-4 focus-visible:ring-brand-500/30";
 
 export function TextField({
   name,

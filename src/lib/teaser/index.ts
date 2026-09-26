@@ -1,6 +1,7 @@
 import "server-only";
 import { Prisma } from "@/generated/prisma/client";
 import { getDb } from "@/lib/db";
+import { logError } from "@/lib/monitoring";
 import { teaserLimits } from "@/lib/ai/config";
 import { resolveTeaserModel } from "@/lib/admin/models";
 import { getAiMode, getAiProvider, modelFor } from "@/lib/ai/providers";
@@ -172,7 +173,7 @@ export async function requestTeaser(options: {
       });
     } catch (error) {
       // Неожиданный сбой (например, база недоступна): не оставляем тизер «генерирующимся».
-      console.error("[ai] teaser generation crashed", error);
+      await logError("ai-teaser", error, { teaserId });
       result = { ok: false, error: "crash", attempts: 0 };
     }
 

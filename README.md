@@ -4,12 +4,16 @@
 
 - Инструкция для Claude Code: [`CLAUDE.md`](CLAUDE.md)
 - План этапов и чек-листы: [`docs/PLAN.md`](docs/PLAN.md)
+- Чек-лист перед запуском для настоящих пользователей: [`docs/launch-checklist.md`](docs/launch-checklist.md)
 - Документы продукта: [`docs/`](docs/)
 - Тесты и опрос (JSON): [`data/tests/`](data/tests/)
 
 ## Стек
 
-Next.js (App Router) + TypeScript, Tailwind CSS, PostgreSQL + Prisma, Vitest. Хостинг: Vercel + Neon.
+Next.js (App Router) + TypeScript, Tailwind CSS, PostgreSQL + Prisma, Vitest. Хостинг: Vercel + Neon
+(проект переносимый: без функций, которые работают только на Vercel — см.
+[`docs/deploy-server.md`](docs/deploy-server.md), как развернуть на обычном Linux-сервере через
+Docker или напрямую).
 
 ## Как запустить у себя
 

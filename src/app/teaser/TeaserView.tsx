@@ -202,6 +202,8 @@ export function TeaserView({
         </Link>
       </section>
 
+      <p className="mt-5 text-center text-xs text-muted">{t.disclaimer}</p>
+
       {footer}
     </div>
   );

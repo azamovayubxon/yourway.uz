@@ -14,6 +14,7 @@ export const uz: Dictionary = {
   },
   common: {
     brand: "yourway.uz",
+    skipToContent: "Asosiy matnga oʻtish",
     startFree: "Bepul boshlash",
     backHome: "Bosh sahifaga",
     placeholderNote: "Vaqtinchalik matn: ishga tushirishdan oldin almashtiriladi.",
@@ -29,6 +30,7 @@ export const uz: Dictionary = {
     faq: "Savol-javob",
     offer: "Ommaviy oferta",
     privacy: "Maxfiylik siyosati",
+    refund: "Pulni qaytarish shartlari",
     contactsTitle: "Aloqa",
     contactsValue: "Aloqa maʼlumotlari ishga tushirishdan oldin qoʻshiladi.",
     tagline: "Oʻzbekiston uchun imkoniyatlar navigatori.",
@@ -183,16 +185,49 @@ export const uz: Dictionary = {
     },
     offer: {
       title: "Ommaviy oferta",
+      disclaimer:
+        "Muhim: yourway.uz hisobotlari — oʻzini anglash va kasb tanlash boʻyicha tavsiyalar, xolos. Bu psixologik tashxis emas, tibbiy xizmat emas va shifokor, psixolog yoki karyera boʻyicha maslahatchi konsultatsiyasining oʻrnini bosmaydi.",
       body: [
-        "Bu yerda ommaviy oferta matni boʻladi. Uni ishga tushirishdan oldin yurist tayyorlaydi.",
-        "Oferta xizmat koʻrsatish shartlari, toʻlov va pulni qaytarish tartibini tavsiflaydi.",
+        "Yurist uchun qoralama. Bu matn — moʻljal: sayt ishga tushishidan oldin uni yurist koʻrib chiqishi va tasdiqlashi kerak [YURIST TOʻLDIRADI]. Shu bosqichda u faqat oferta qanday boʻlimlardan iborat boʻlishi kerakligini koʻrsatadi.",
+        "1. Umumiy qoidalar. Ushbu hujjat — [YURIST TOʻLDIRADI: toʻliq nomi, STIR, yuridik manzili, bank rekvizitlari] MChJ/YaTT (bundan buyon — «Ijrochi») tomonidan har qanday shaxsga (bundan buyon — «Foydalanuvchi») qaratilgan ommaviy oferta boʻlib, Oʻzbekiston Respublikasi Fuqarolik kodeksining tegishli moddalariga muvofiq [YURIST TOʻLDIRADI: ommaviy oferta haqidagi aniq moddalar] quyida keltirilgan shartlarda xizmat koʻrsatish shartnomasini tuzish taklifini bildiradi.",
+        "2. Shartnoma predmeti. Ijrochi Foydalanuvchiga yourway.uz platformasidan foydalanish imkonini beradi: psixologik testlar va soʻrovnomadan oʻtish, bepul qisqa portret («tizer») va toʻlovdan keyin ikki darajadan birining («Marshrut» yoki «Navigator») toʻliq hisobotini — Foydalanuvchi javoblari asosida sunʼiy intellekt yordamida tuzilgan taʼlim, ish va rivojlanish boʻyicha shaxsiy tavsiyalarni.",
+        "3. Aksept tartibi. Foydalanuvchi xizmat uchun toʻlov qilishi (shu jumladan promokod bilan) ushbu oferta shartlarini toʻliq va soʻzsiz qabul qilish (aksept) hisoblanadi.",
+        "4. Narx va toʻlov tartibi. «Marshrut» va «Navigator» darajalarining amaldagi narxlari /pricing sahifasida va toʻlovdan oldin shaxsiy kabinetda koʻrsatiladi. Toʻlov [YURIST TOʻLDIRADI: ishga tushirish vaqtida qaysi toʻlov tizimlari — Payme, Click, Uzum — ulanganini koʻrsatish] toʻlov tizimlari orqali qabul qilinadi. Foydalanuvchi bank kartasi maʼlumotlari Ijrochiga berilmaydi va saqlanmaydi — ularni toʻlov tizimi qayta ishlaydi.",
+        "5. Xizmat koʻrsatish tartibi. Toʻlov muvaffaqiyatli oʻtgandan keyin toʻliq hisobot avtomatik ravishda, odatda bir necha daqiqada tuziladi. Texnik nosozlik tufayli hisobot tuzilmasa, Foydalanuvchiga qoʻshimcha toʻlovsiz qayta urinish beriladi. Testlardan istalgan vaqtda qayta bepul oʻtish mumkin; qayta oʻtgandan keyin yangi toʻliq hisobot olish uchun yangi toʻlov kerak boʻladi.",
+        "6. Pulni qaytarish. Pulni qaytarish shartlari va muddatlari ushbu ofertaning ajralmas qismi boʻlgan alohida /refund sahifasida koʻrsatilgan.",
+        "7. Ogohlantirish va javobgarlikni cheklash. Platforma hisobotlari — psixologik testlar va Foydalanuvchi koʻrsatgan maʼlumotlar asosidagi, oʻzini anglash va kasb tanlash boʻyicha tavsiyalar. Bu psixologik tashxis emas, tibbiy xizmat emas, natija (oʻqishga kirish, daromad, karyera oʻsishi) kafolati emas va malakali mutaxassis (shifokor, psixolog, karyera boʻyicha maslahatchi) konsultatsiyasining oʻrnini bosmaydi. Foydalanuvchi qarorlarni mustaqil qabul qiladi va ular uchun javobgar boʻladi. [YURIST TOʻLDIRADI: Oʻzbekiston qonunchiligiga muvofiq javobgarlikni cheklashning aniq shakllantirilishi.]",
+        "8. Maʼlumotlarni qayta ishlash. Maʼlumotlarni yigʻish va ishlatish qoidalari ushbu ofertaning ajralmas qismi boʻlgan Maxfiylik siyosatida (/privacy) koʻrsatilgan.",
+        "9. Amal qilish muddati va oʻzgarishlar. Oferta Ijrochi uni bekor qilguncha amal qiladi. Ijrochi oferta shartlari va narxlarni bir tomonlama oʻzgartirishi mumkin; amaldagi tahrir doim /offer sahifasida boʻladi. Oʻzgarishlar allaqachon toʻlangan xizmatlarga taalluqli emas.",
+        "10. Nizolarni hal qilish. [YURIST TOʻLDIRADI: sudgacha tartib, shikoyatga javob berish muddati, qoʻllaniladigan huquq va sudlanish joyi.]",
+        "11. Ijrochining rekvizitlari va aloqa maʼlumotlari. [YURIST TOʻLDIRADI: toʻliq nomi, STIR/JSHSHIR, manzili, bank rekvizitlari, ushbu oferta boʻyicha murojaatlar uchun elektron pochta va telefon.]",
       ],
     },
     privacy: {
       title: "Maxfiylik siyosati",
       body: [
-        "Bu yerda maxfiylik siyosati matni boʻladi. Uni ishga tushirishdan oldin yurist tayyorlaydi.",
-        "Qisqasi: biz F.I.Sh., telefon va elektron pochtani yigʻmaymiz. Testlarga bergan javoblaringiz faqat hisobotingizni tuzish uchun ishlatiladi. Akkauntni barcha maʼlumotlar bilan birga oʻchirish mumkin.",
+        "Yurist uchun qoralama. Bu matn — maxfiylik siyosatini tuzish uchun moʻljal; sayt ishga tushishidan oldin uni yurist koʻrib chiqishi va tasdiqlashi kerak [YURIST TOʻLDIRADI], shu jumladan Oʻzbekiston Respublikasining «Shaxsga doir maʼlumotlar toʻgʻrisida»gi qonuniga va ularni joylashtirish talablariga muvofiqligini tekshirish.",
+        "1. Qanday maʼlumotlarni yigʻamiz. Toʻliq ism, telefon raqami va elektron pochtani yigʻmaymiz va soʻramaymiz. Akkaunt Foydalanuvchi oʻzi oʻylab topgan login va paroldan iborat; parol faqat xesh koʻrinishida (orqaga qaytarib boʻlmaydigan tarzda oʻzgartirilgan qiymat) saqlanadi. Roʻyxatdan oʻtishda bir marta tiklash kodi koʻrsatiladi — bazada faqat uning xeshi saqlanadi.",
+        "2. Testlar va soʻrovnoma javoblari. Psixologik testlar va kontekst soʻrovnomasiga javoblar, ular boʻyicha hisoblangan ballar va tuzilgan profil bazada saqlanadi va faqat Foydalanuvchiga natijasini (tizer va toʻliq hisobot) koʻrsatish uchun ishlatiladi. Ular 3-bandda koʻrsatilgan holatdan tashqari uchinchi shaxslarga berilmaydi.",
+        "3. Hisobot tuzish uchun maʼlumot uzatish. Tizer va toʻliq hisobotni tuzish uchun shaxssizlashtirilgan (login, parol va IP-manzilsiz) test natijalari va soʻrovnoma javoblari sunʼiy intellekt taʼminotchisiga (Anthropic, Claude modellari) matn tuzish soʻrovi koʻrinishida uzatiladi. Bu taʼminotchi uzatilgan maʼlumotlardan oʻz modellarini oʻqitish uchun foydalanmaydi [YURIST TOʻLDIRADI: ishga tushirish vaqtida taʼminotchi bilan amaldagi shartnoma shartlari bilan tasdiqlash].",
+        "4. IP-manzil. IP-manzil faqat parolni tanlab topishdan himoyalanish va bepul tizer tuzishdan suisteʼmol qilishning oldini olish uchun ishlatiladi. Manzilning oʻzi emas, uning orqaga qaytarib boʻlmaydigan xeshi saqlanadi.",
+        "5. Maʼlumotlar qayerda saqlanadi. Maʼlumotlar [YURIST TOʻLDIRADI: ishga tushirish vaqtida server va baza joylashgan davlatni koʻrsatish — qonunga koʻra Oʻzbekiston fuqarolarining shaxsga doir maʼlumotlari Oʻzbekiston hududida joylashgan bazalar orqali qayta ishlanishi kerak] joylashgan serverda saqlanadi.",
+        "6. Toʻlovlar. Bank kartasi maʼlumotlari Ijrochiga berilmaydi va saqlanmaydi: ularni toʻlov tizimi (Payme/Click/Uzum) qayta ishlaydi. Biz faqat toʻlov identifikatorini, summasini va holatini saqlaymiz.",
+        "7. Cookie fayllari. Sayt texnik cookie fayllardan foydalanadi: interfeys tilini, testlardan oʻtishning anonim sessiyasini va akkauntga kirishni eslab qolish uchun. Sayt reklama va kuzatuv uchun cookie ishlatmaydi.",
+        "8. Foydalanuvchi huquqlari. Foydalanuvchi istalgan vaqtda «Shaxsiy kabinet» boʻlimida akkauntini barcha maʼlumotlari bilan birga oʻchirishi mumkin. Oʻchirilgandan keyin maʼlumotlarni qayta tiklash mumkin emas.",
+        "9. Xatolar va texnik diagnostika. Server texnik xatolari jurnalida testlarga javoblar, profil, hisobot matnlari va parollar boʻlmaydi — u yerga faqat nosozlikni bartaraf etish uchun kerak boʻlgan xizmat maʼlumotlari yoziladi.",
+        "10. Siyosatga oʻzgarishlar. Amaldagi tahrir doim /privacy sahifasida boʻladi. Muhim oʻzgarishlar haqida saytda xabar beriladi.",
+        "11. Maʼlumotlarni qayta ishlash boʻyicha aloqa. [YURIST TOʻLDIRADI: shaxsga doir maʼlumotlar boʻyicha murojaatlar uchun elektron pochta va/yoki manzil, shuningdek Oʻzbekiston qonunchiligiga koʻra maʼlumotlarni qayta ishlash uchun masʼul shaxs tayinlash kerakligini aniqlash.]",
+      ],
+    },
+    refund: {
+      title: "Pulni qaytarish shartlari",
+      body: [
+        "Yurist uchun qoralama. Bu matn — moʻljal; sayt ishga tushishidan oldin uni yurist koʻrib chiqishi va tasdiqlashi kerak [YURIST TOʻLDIRADI]. Ushbu shartlar ommaviy ofertaning (/offer) ajralmas qismi hisoblanadi.",
+        "1. Toʻlov oʻtgan, lekin hisobot tuzilmagan boʻlsa. Bu pulni qaytarish uchun sabab emas: bu holatda hisobotni tuzish avtomatik ravishda yoki «Qayta tuzish» tugmasi orqali, urinishlar sonini cheklamasdan, hisobot tayyor boʻlguncha bepul qaytariladi.",
+        "2. Hisobot olindi, lekin yoqmadi. Hisobot aynan shu Foydalanuvchi javoblari asosida shaxsiy tarzda tuziladi, shuning uchun u koʻrish yoki yuklab olish uchun ochilgandan keyin xizmat koʻrsatilgan hisoblanadi. [YURIST TOʻLDIRADI: Oʻzbekiston qonunchiligiga koʻra shunday xizmatdan voz kechish uchun muddat («sovish davri»ga oʻxshash) belgilanganmi va u qancha, aniqlash kerak.]",
+        "3. Xato yoki takror toʻlov. Toʻlov texnik xato tufayli yechilgan boʻlsa (masalan, bitta hisobot uchun ikki marta), pul toʻlov qanday amalga oshirilgan boʻlsa, xuddi shu usulda, murojaatdan keyin [YURIST TOʻLDIRADI: ish kunlarida muddatni koʻrsatish] muddatda toʻliq qaytariladi.",
+        "4. Murojaatni qanday rasmiylashtirish. [YURIST TOʻLDIRADI: toʻlov boʻyicha murojaatlar uchun elektron pochta/telefon]ga akkaunt loginini, toʻlov sanasini va muammoning mohiyatini koʻrsatib yozing.",
+        "5. Promokodlar va chegirmalar. Promokod bilan toʻlangan buyurtmalar boʻyicha qaytarish haqiqatda toʻlangan summadan hisoblanadi.",
       ],
     },
   },
@@ -254,6 +289,8 @@ export const uz: Dictionary = {
   teaser: {
     mockBadge: "Sunʼiy intellekt: test rejimi",
     mockNote: "Hozir javoblaringizning haqiqiy tahlili emas, balki tayyor namuna koʻrsatilmoqda.",
+    disclaimer:
+      "Bu oʻzini anglash va kasb tanlash boʻyicha tavsiyalar, psixologik tashxis yoki tibbiy xizmat emas.",
     generating: {
       title: "Profilingizni tahlil qilyapmiz…",
       steps: [
@@ -396,6 +433,8 @@ export const uz: Dictionary = {
     done: "Bu toʻlov allaqachon koʻrib chiqilgan.",
   },
   report: {
+    disclaimer:
+      "Bu oʻzini anglash va kasb tanlash boʻyicha tavsiyalar, psixologik tashxis yoki tibbiy xizmat emas.",
     generating: {
       title: "Toʻliq hisobotingizni yozyapmiz…",
       paid: "Toʻlov oʻtdi — hisobot endi doim sizniki.",

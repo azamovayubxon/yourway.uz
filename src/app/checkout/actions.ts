@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { cancelPayment, confirmTestPayment, isLevel, previewPromo, startPayment, type PromoPreview } from "@/lib/payments";
 import { getCurrentSession } from "@/lib/session";
 import { getLocale } from "@/i18n/server";
+import { logError } from "@/lib/monitoring";
 
 // Оплата (этап 6). Server actions Next.js сами проверяют, что форма отправлена с нашего сайта (защита от CSRF).
 
@@ -20,7 +21,7 @@ export async function previewPromoAction(code: string): Promise<PromoPreview | {
   try {
     return await previewPromo(code.slice(0, 64));
   } catch (e) {
-    console.error("[payments] promo preview", e);
+    await logError("payments-promo-preview", e);
     return { ok: false, error: "server" };
   }
 }
@@ -45,7 +46,7 @@ export async function startPaymentAction(_prev: CheckoutState, formData: FormDat
     if (!result.ok) return { status: "error", error: result.error };
     target = result.redirectUrl;
   } catch (e) {
-    console.error("[payments] start", e);
+    await logError("payments-start", e, { level });
     return { status: "error", error: "server" };
   }
   redirect(target);

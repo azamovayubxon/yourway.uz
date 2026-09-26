@@ -1,5 +1,6 @@
 import "server-only";
 import { getDb } from "@/lib/db";
+import { logError } from "@/lib/monitoring";
 import type { Locale } from "@/i18n/config";
 
 // Аналитика воронки (этап 8): заход → старт теста → конец теста → тизер → регистрация → оплата → PDF,
@@ -61,7 +62,7 @@ export async function logVisit(locale: Locale, sessionId: string | null): Promis
     await getDb().funnelEvent.create({ data: { event: "visit", locale, sessionId } });
   } catch (e) {
     // Аналитика не должна ронять страницу, если база временно недоступна.
-    console.error("[funnel] visit", e);
+    void logError("funnel-visit", e);
   }
 }
 
@@ -69,6 +70,6 @@ export async function logPdfDownload(locale: Locale, sessionId: string | null): 
   try {
     await getDb().funnelEvent.create({ data: { event: "pdf", locale, sessionId } });
   } catch (e) {
-    console.error("[funnel] pdf", e);
+    void logError("funnel-pdf", e);
   }
 }
