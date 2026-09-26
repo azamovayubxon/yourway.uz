@@ -5,7 +5,14 @@
 FROM node:22-slim AS build
 WORKDIR /app
 
+# openssl — без него Prisma не находит libssl на этом образе (predупреждение "failed to detect
+# the libssl/openssl version") и генерация клиента может неожиданно сломаться.
+RUN apt-get update && apt-get install -y --no-install-recommends openssl && rm -rf /var/lib/apt/lists/*
+
+# prisma/schema.prisma нужен уже здесь: `npm ci` сам запускает `prisma generate` (postinstall),
+# а он ищет схему по стандартному пути — значит, до `npm ci` схема должна быть скопирована.
 COPY package.json package-lock.json ./
+COPY prisma ./prisma
 RUN npm ci
 
 COPY . .
@@ -19,6 +26,7 @@ FROM node:22-slim AS run
 WORKDIR /app
 ENV NODE_ENV=production
 
+RUN apt-get update && apt-get install -y --no-install-recommends openssl && rm -rf /var/lib/apt/lists/*
 RUN useradd --system --uid 1001 nextjs
 COPY --from=build /app/public ./public
 COPY --from=build /app/.next/standalone ./
