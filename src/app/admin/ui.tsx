@@ -12,6 +12,7 @@ export const ADMIN_NAV = [
   { href: "/admin/reports", label: "Отчёты" },
   { href: "/admin/analytics", label: "Аналитика" },
   { href: "/admin/ai-log", label: "Себестоимость ИИ" },
+  { href: "/admin/errors", label: "Ошибки" },
 ] as const;
 
 export function AdminShell({

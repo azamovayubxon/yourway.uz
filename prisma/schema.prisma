@@ -193,6 +193,36 @@ model AuthAttempt {
   @@index([ipHash, createdAt])
 }
 
+// Журнал ошибок сервера (этап 10В), виден владельцу на /admin/errors. Заполняется кодом
+// src/lib/monitoring.ts — перед записью убираются ответы тестов, профиль, тексты отчётов
+// и пароли (see monitoring.ts: список полей, которые разрешено класть в meta).
+model ErrorLog {
+  id        String   @id @default(uuid())
+  // Место, где случилась ошибка, например "request", "auth", "payments", "ai-teaser".
+  scope     String
+  message   String
+  stack     String?
+  // Только безопасные поля (см. monitoring.ts) — никогда ответы тестов, профиль, текст отчёта, пароли.
+  meta      Json?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([scope, createdAt])
+}
+
+// Общий счётчик для лимитов, у которых нет своей таблицы (этап 10А), например кнопка «Проверить»
+// в /admin/prompts — она запускает настоящий вызов ИИ и стоит денег. Работает и при нескольких
+// серверах (счёт по базе, не по памяти процесса). Строка живёт недолго: старые можно чистить
+// по createdAt, но это не обязательно — таблица маленькая.
+model RateLimitHit {
+  id        String   @id @default(uuid())
+  // Например "promptcheck:<id админа>".
+  key       String
+  createdAt DateTime @default(now())
+
+  @@index([key, createdAt])
+}
+
 // Цена уровня полного отчёта (этап 6). Цены хранятся в базе, а не в коде: поменять цену можно
 // без программиста — в админке (/admin/prices, этап 8).
 model Price {

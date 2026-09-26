@@ -9,7 +9,10 @@
 
 ## Стек
 
-Next.js (App Router) + TypeScript, Tailwind CSS, PostgreSQL + Prisma, Vitest. Хостинг: Vercel + Neon.
+Next.js (App Router) + TypeScript, Tailwind CSS, PostgreSQL + Prisma, Vitest. Хостинг: Vercel + Neon
+(проект переносимый: без функций, которые работают только на Vercel — см.
+[`docs/deploy-server.md`](docs/deploy-server.md), как развернуть на обычном Linux-сервере через
+Docker или напрямую).
 
 ## Как запустить у себя
 

@@ -10,9 +10,20 @@ import { normalizeLogin } from "@/lib/auth/credentials";
 import { activatePromptVersion, createPromptVersion } from "@/lib/ai/prompt-store";
 import { PROMPT_DEFAULTS, PROMPT_KEYS, type PromptKey } from "@/lib/ai/prompt-registry";
 import { runPromptCheck, type PromptCheckResult } from "@/lib/ai/prompt-check";
+import { checkAndHitRateLimit } from "@/lib/rate-limit";
+import { logError } from "@/lib/monitoring";
 
 // Действия админки (этап 8). Каждое проверяет роль заново на сервере — ссылка на кнопку
 // в браузере ничего не значит, если у человека нет прав.
+
+function intFromEnv(name: string, fallback: number): number {
+  const raw = process.env[name];
+  if (raw === undefined || raw.trim() === "") return fallback;
+  const n = Number(raw);
+  return Number.isInteger(n) && n > 0 ? n : fallback;
+}
+
+const PROMPT_CHECK_LIMIT_PER_HOUR = intFromEnv("PROMPT_CHECK_LIMIT_PER_HOUR", 30);
 
 export async function updatePriceAction(formData: FormData) {
   await requireAdmin();
@@ -132,9 +143,15 @@ export type CheckPromptState =
 // Кнопка «Проверить» (требование 5): прогоняет черновик (несохранённый текст из формы) на
 // golden-профиле. Смотреть может и admin, и superadmin — сохранить результат нельзя, это не отчёт.
 export async function checkPromptAction(_prev: CheckPromptState, formData: FormData): Promise<CheckPromptState> {
-  await requireAdmin();
+  const admin = await requireAdmin();
   const key = String(formData.get("key") ?? "");
   if (!isPromptKey(key)) return { status: "error", errors: ["Неизвестный ключ промпта."] };
+  // Каждая проверка — настоящий вызов ИИ (стоит денег), поэтому лимит и на скомпрометированный
+  // админский аккаунт: не больше PROMPT_CHECK_LIMIT_PER_HOUR проверок в час на одного админа.
+  const allowed = await checkAndHitRateLimit(`promptcheck:${admin.id}`, PROMPT_CHECK_LIMIT_PER_HOUR, 60 * 60_000);
+  if (!allowed) {
+    return { status: "error", errors: [`Слишком много проверок подряд — не больше ${PROMPT_CHECK_LIMIT_PER_HOUR} в час. Подождите и попробуйте снова.`] };
+  }
   const systemTemplate = String(formData.get("systemTemplate") ?? "");
   const userTemplate = String(formData.get("userTemplate") ?? "");
   const withGoal = String(formData.get("goal") ?? "with") !== "without";
@@ -142,7 +159,8 @@ export async function checkPromptAction(_prev: CheckPromptState, formData: FormD
     const result = await runPromptCheck(key, systemTemplate, userTemplate, withGoal);
     return { status: "done", result };
   } catch (e) {
-    console.error("[admin] prompt check", e);
+    // Ни системный, ни пользовательский текст промпта в meta не кладём — это черновик, не для журнала.
+    await logError("admin-prompt-check", e, { key });
     return { status: "error", errors: ["Не получилось проверить — попробуйте ещё раз."] };
   }
 }

@@ -1,5 +1,6 @@
 import "server-only";
 import { getDb } from "@/lib/db";
+import { logError } from "@/lib/monitoring";
 
 // Цены уровней полного отчёта. Отдельный файл, чтобы лендинг и страница цен не тянули за собой
 // модули оплаты и ИИ.
@@ -25,7 +26,7 @@ export async function getPricesSafe(): Promise<Partial<Record<Level, number>>> {
   try {
     return await getPrices();
   } catch (error) {
-    console.error("[payments] prices unavailable", error);
+    await logError("payments-prices", error);
     return {};
   }
 }

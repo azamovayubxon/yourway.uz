@@ -1,6 +1,7 @@
 import "server-only";
 import { Prisma } from "@/generated/prisma/client";
 import { getDb } from "@/lib/db";
+import { logError } from "@/lib/monitoring";
 import { resolveReportModel } from "@/lib/admin/models";
 import { REPORT_PARTS, type ReportLevel, type ReportPathType } from "@/lib/ai/prompts";
 import { promptKeyForReport } from "@/lib/ai/prompt-registry";
@@ -244,7 +245,7 @@ export async function advanceReport(options: {
       });
     } catch (error) {
       // Неожиданный сбой (например, база недоступна): не оставляем отчёт «генерирующимся».
-      console.error("[ai] report generation crashed", error);
+      await logError("ai-report", error, { reportId });
       await db.report
         .update({ where: { id: reportId }, data: { status: "failed", error: "crash", lockedAt: null, partAttempt: 0 } })
         .catch(() => {});
