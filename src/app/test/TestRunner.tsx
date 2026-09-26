@@ -5,8 +5,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { TestId } from "@/lib/assessment/tests";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
+import { OptionButton, ScaleBadge } from "@/components/ui";
+import { PausePanel, SaveStatus, StageBreadcrumb, type SaveState } from "@/components/flow";
 
-// Прохождение 4 тестов: один вопрос на экран, кнопки 1–5, автопереход, «Назад», прогресс.
+// Прохождение 4 тестов: экран подготовки → один вопрос на экран (кнопки 1–5, автопереход,
+// «Назад», прогресс) → промежуточный экран между блоками → готово.
 //
 // Автосохранение: каждый ответ сразу кладётся в «очередь на отправку» в памяти браузера
 // (localStorage) и отправляется на сервер. Если связи нет, очередь остаётся на устройстве
@@ -18,14 +21,15 @@ export interface RunnerTest {
   scaleLabels: { value: number; label: string }[];
 }
 
+type TestDict = Dictionary["test"] & { doneTitle: string; doneText: string; continueToSurvey: string };
+
 interface Props {
   sessionId: string;
   tests: RunnerTest[];
   initialAnswers: Record<string, number>; // ключ "big_five:12" → ответ
-  t: Dictionary["test"] & { doneTitle: string; doneText: string; continueToSurvey: string };
+  t: TestDict;
+  stages: Dictionary["flow"]["stages"];
 }
-
-type SyncState = "idle" | "offline" | "lost";
 
 const ADVANCE_DELAY_MS = 180; // короткая пауза, чтобы было видно, какая кнопка нажата
 const RETRY_MS = 4000;
@@ -49,7 +53,7 @@ function writePending(sessionId: string, pending: Record<string, number>) {
   }
 }
 
-export function TestRunner({ sessionId, tests, initialAnswers, t }: Props) {
+export function TestRunner({ sessionId, tests, initialAnswers, t, stages }: Props) {
   // Все вопросы подряд в порядке воронки.
   const items = useMemo(
     () =>
@@ -58,7 +62,7 @@ export function TestRunner({ sessionId, tests, initialAnswers, t }: Props) {
           key: `${test.id}:${q.id}`,
           test,
           testIndex,
-          number: i + 1,
+          number: i + 1, // номер вопроса внутри своего блока (для компактного «12/60»)
           text: q.text,
         })),
       ),
@@ -74,16 +78,20 @@ export function TestRunner({ sessionId, tests, initialAnswers, t }: Props) {
   const [answers, setAnswers] = useState(initialAnswers);
   const [index, setIndex] = useState(() => firstUnanswered(initialAnswers));
   const [pendingCount, setPendingCount] = useState(0);
-  const [syncState, setSyncState] = useState<SyncState>("idle");
+  const [syncState, setSyncState] = useState<"idle" | "offline" | "lost">("idle");
   const [locked, setLocked] = useState(false);
+  const [prepDismissed, setPrepDismissed] = useState(() => Object.keys(initialAnswers).length > 0);
+  const [ackBoundary, setAckBoundary] = useState<number | null>(null);
+  const [paused, setPaused] = useState(false);
 
   const pending = useRef<Record<string, number>>({});
   const inFlight = useRef(false);
   const retryTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
   // Текущее состояние синхронизации нужно внутри flush без пересоздания функции.
-  const syncStateRef = useRef<SyncState>("idle");
-  const setSync = (s: SyncState) => {
+  const syncStateRef = useRef<"idle" | "offline" | "lost">("idle");
+  const setSync = (s: "idle" | "offline" | "lost") => {
     syncStateRef.current = s;
     setSyncState(s);
   };
@@ -147,7 +155,19 @@ export function TestRunner({ sessionId, tests, initialAnswers, t }: Props) {
       if (retryTimer.current) clearTimeout(retryTimer.current);
     };
     // Только при открытии страницы: остальные значения здесь нужны в их начальном виде.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId, flush]);
+
+  const currentItem = index < total ? items[index] : null;
+  const prevItem = index > 0 ? items[index - 1] : null;
+  const atBoundary =
+    prepDismissed && !!prevItem && !!currentItem && prevItem.testIndex !== currentItem.testIndex && ackBoundary !== index;
+
+  // Фокус переходит на заголовок нового вопроса, а не остаётся на кнопке прежнего ответа
+  // (ТЗ аудита §6): иначе следующий вопрос читается с той точки, где стоял старый фокус.
+  useEffect(() => {
+    if (prepDismissed && !atBoundary && currentItem) headingRef.current?.focus();
+  }, [index, atBoundary, prepDismissed, currentItem]);
 
   function answer(value: number) {
     if (locked || index >= total) return;
@@ -173,17 +193,49 @@ export function TestRunner({ sessionId, tests, initialAnswers, t }: Props) {
   const answeredCount = items.filter((item) => answers[item.key] !== undefined).length;
   const progress = Math.round((Math.min(index, total) / total) * 100);
 
-  const status =
-    syncState === "lost" ? (
-      <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-800">
-        {t.sessionLost}{" "}
-        <button type="button" onClick={() => window.location.reload()} className="font-semibold underline">
-          {t.reload}
+  const saveState: SaveState = syncState === "lost" ? "lost" : syncState === "offline" ? "offline" : pendingCount > 0 ? "saving" : "saved";
+  const saveStatus = (
+    <SaveStatus
+      state={saveState}
+      texts={{ saving: t.saving, saved: t.saved, offline: t.offline, lost: t.sessionLost, reload: t.reload, retry: t.retry }}
+      onRetry={() => void flush()}
+    />
+  );
+
+  // Экран подготовки (UX-09): что за тестом и как он устроен, до первого вопроса.
+  if (!prepDismissed) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 pt-10">
+        <StageBreadcrumb current="test" labels={stages} />
+        <h1 className="mt-4 text-2xl font-extrabold sm:text-3xl">{t.prep.title}</h1>
+        <p className="mt-5 font-bold">{t.prep.blocksTitle}</p>
+        <ol className="mt-2 grid gap-2 sm:grid-cols-2">
+          {t.prep.blocks.map((b, i) => (
+            <li key={i} className="flex items-center gap-2.5 rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm">
+              <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-bold text-brand-600">
+                {i + 1}
+              </span>
+              {b}
+            </li>
+          ))}
+        </ol>
+        <p className="mt-4 text-sm leading-relaxed text-muted">{t.prep.afterBlocks}</p>
+        <p className="mt-4 leading-relaxed">{t.prep.noRightAnswer}</p>
+        <p className="mt-2 text-sm leading-relaxed text-muted">{t.prep.autoAdvance}</p>
+        <p className="mt-2 text-sm leading-relaxed text-muted">{t.prep.saveNote}</p>
+        <button
+          type="button"
+          onClick={() => setPrepDismissed(true)}
+          className="focus-ring mt-6 min-h-12 w-full rounded-2xl bg-brand-500 px-6 font-bold text-white transition-colors hover:bg-brand-600 active:bg-brand-700 sm:w-auto"
+        >
+          {t.prep.start}
         </button>
-      </p>
-    ) : syncState === "offline" && pendingCount > 0 ? (
-      <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900">{t.offline}</p>
-    ) : null;
+        <Link href="/start?new=1" className="focus-ring mt-4 block rounded py-2 text-sm font-semibold text-muted underline">
+          {t.prep.back}
+        </Link>
+      </div>
+    );
+  }
 
   // Все вопросы отвечены.
   if (index >= total) {
@@ -194,12 +246,12 @@ export function TestRunner({ sessionId, tests, initialAnswers, t }: Props) {
         <h1 className="mt-8 text-2xl font-extrabold sm:text-3xl">{t.doneTitle}</h1>
         <p className="mt-4 text-lg leading-relaxed text-muted">{t.doneText}</p>
         <div className="mt-6 space-y-4">
-          {!saved && syncState !== "lost" && <p className="text-sm text-muted">{t.saving}</p>}
-          {status}
+          {!saved && syncState !== "lost" && saveStatus}
+          {(syncState === "lost" || syncState === "offline") && saveStatus}
           {saved && (
             <Link
               href="/survey"
-              className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-brand-500 px-6 text-base font-bold text-white shadow-lg shadow-brand-500/25 transition-colors hover:bg-brand-600 active:bg-brand-700"
+              className="focus-ring inline-flex min-h-12 items-center justify-center rounded-2xl bg-brand-500 px-6 text-base font-bold text-white shadow-lg shadow-brand-500/25 transition-colors hover:bg-brand-600 active:bg-brand-700"
             >
               {t.continueToSurvey}
             </Link>
@@ -210,22 +262,54 @@ export function TestRunner({ sessionId, tests, initialAnswers, t }: Props) {
     );
   }
 
+  // Промежуточный экран между блоками (UX-11): что закончилось, что дальше, одна кнопка.
+  if (atBoundary && currentItem) {
+    const texts: Partial<Record<TestId, string>> = {
+      riasec: t.interstitial.afterBigFive,
+      values: t.interstitial.afterRiasec,
+      perception: t.interstitial.afterValues,
+    };
+    return (
+      <div className="mx-auto max-w-2xl px-4 pt-10">
+        <StageBreadcrumb current="test" labels={stages} />
+        <ProgressBar value={progress} />
+        <p className="mt-8 text-lg leading-relaxed" aria-live="polite">
+          {texts[currentItem.test.id]}
+        </p>
+        <button
+          type="button"
+          onClick={() => setAckBoundary(index)}
+          className="focus-ring mt-6 min-h-12 w-full rounded-2xl bg-brand-500 px-6 font-bold text-white transition-colors hover:bg-brand-600 active:bg-brand-700 sm:w-auto"
+        >
+          {t.interstitial.continue}
+        </button>
+      </div>
+    );
+  }
+
   const item = items[index];
   const selected = answers[item.key];
 
   return (
     <div className="mx-auto max-w-2xl px-4 pt-6">
-      <div className="flex items-baseline justify-between gap-3 text-sm">
+      <StageBreadcrumb current="test" labels={stages} />
+      <div className="mt-2 flex items-baseline justify-between gap-3 text-sm">
         <p className="font-semibold text-brand-600">
           {fmt(t.partOf, { n: item.testIndex + 1, total: tests.length })} · {t.parts[item.test.id]}
         </p>
-        <p className="shrink-0 text-muted">{fmt(t.questionOf, { n: index + 1, total })}</p>
+        <p className="shrink-0 text-muted">{fmt(t.blockProgress, { n: item.number, total: item.test.questions.length })}</p>
       </div>
       <ProgressBar value={progress} />
 
       <p className="mt-8 text-sm text-muted">{t.prompts[item.test.id]}</p>
-      {/* Высота с запасом, чтобы кнопки не прыгали между короткими и длинными вопросами. */}
-      <h1 className="mt-2 min-h-[5.5rem] text-xl font-bold leading-snug sm:text-2xl" aria-live="polite">
+      {/* Высота с запасом, чтобы кнопки не прыгали между короткими и длинными вопросами.
+          tabIndex=-1 + ref: после ответа фокус явно переставляется сюда (см. useEffect выше). */}
+      <h1
+        ref={headingRef}
+        tabIndex={-1}
+        className="mt-2 min-h-[5.5rem] text-xl font-bold leading-snug sm:text-2xl"
+        aria-live="polite"
+      >
         {item.text}
       </h1>
 
@@ -233,35 +317,32 @@ export function TestRunner({ sessionId, tests, initialAnswers, t }: Props) {
         {item.test.scaleLabels.map((s) => {
           const active = selected === s.value;
           return (
-            <button
+            <OptionButton
               key={s.value}
-              type="button"
+              active={active}
+              disabled={locked}
+              leading={<ScaleBadge value={s.value} active={active} />}
               onClick={() => answer(s.value)}
-              aria-pressed={active}
-              className={
-                "flex min-h-14 w-full items-center gap-3 rounded-2xl border-2 px-4 py-2.5 text-left transition-colors " +
-                (active
-                  ? "border-brand-500 bg-brand-500 text-white"
-                  : "border-slate-200 bg-white hover:border-brand-500 active:bg-brand-50")
-              }
             >
-              <span
-                className={
-                  "flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-bold " +
-                  (active ? "bg-white text-brand-600" : "bg-slate-100 text-ink")
-                }
-              >
-                {s.value}
-              </span>
-              <span className="font-medium leading-tight">{s.label}</span>
-            </button>
+              {s.label}
+            </OptionButton>
           );
         })}
       </div>
 
       <div className="mt-6 space-y-4">
-        <BackButton label={t.back} onClick={back} disabled={index === 0 || locked} />
-        {status}
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+          <BackButton label={t.back} onClick={back} disabled={index === 0 || locked} />
+          <button type="button" onClick={() => setPaused((p) => !p)} className="focus-ring min-h-11 rounded py-2 font-semibold text-muted">
+            {t.pause}
+          </button>
+        </div>
+        <PausePanel
+          open={paused}
+          onResume={() => setPaused(false)}
+          texts={{ button: t.pause, title: t.pauseTitle, text: t.pauseText, resume: t.pauseResume, backHome: t.pauseBackHome }}
+        />
+        {saveStatus}
       </div>
     </div>
   );
@@ -281,7 +362,7 @@ function BackButton({ label, onClick, disabled }: { label: string; onClick: () =
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="min-h-11 py-2 font-semibold text-brand-600 disabled:text-slate-300"
+      className="focus-ring min-h-11 rounded py-2 font-semibold text-brand-600 disabled:text-slate-300"
     >
       ← {label}
     </button>

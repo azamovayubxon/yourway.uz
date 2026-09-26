@@ -31,6 +31,7 @@ export default async function TestPage() {
       tests={tests}
       initialAnswers={initialAnswers}
       t={{ ...t.test, doneTitle: t.start.doneTitle, doneText: t.start.doneText, continueToSurvey: t.start.continueToSurvey }}
+      stages={t.flow.stages}
     />
   );
 }

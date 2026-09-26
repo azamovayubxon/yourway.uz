@@ -5,9 +5,9 @@ import type { Dictionary } from "@/i18n/dictionaries";
 
 export function Steps({ t }: { t: Dictionary }) {
   return (
-    <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <ol className="grid gap-4 sm:grid-cols-3">
       {t.landing.how.steps.map((step, i) => (
-        <li key={i} className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+        <li key={i} className="rounded-2xl border border-line bg-white p-5 shadow-sm">
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-50 font-bold text-brand-600">
             {i + 1}
           </span>
@@ -16,6 +16,20 @@ export function Steps({ t }: { t: Dictionary }) {
         </li>
       ))}
     </ol>
+  );
+}
+
+// «Кому подходит» (ТЗ аудита §5, блок 4): три сценария использования, без процентов и отзывов.
+export function AudienceCards({ t }: { t: Dictionary }) {
+  return (
+    <ul className="grid gap-4 sm:grid-cols-3">
+      {t.landing.audience.items.map((item, i) => (
+        <li key={i} className="rounded-2xl border border-line bg-white p-5">
+          <h3 className="font-bold">{item.title}</h3>
+          <p className="mt-1.5 text-sm leading-relaxed text-muted">{item.text}</p>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -31,7 +45,7 @@ export function PricingPlans({ t, prices }: { t: Dictionary; prices: Partial<Rec
           key={i}
           className={
             "flex flex-col rounded-2xl border p-5 " +
-            (i === 0 ? "border-slate-200 bg-white" : "border-brand-100 bg-brand-50")
+            (i === 0 ? "border-line bg-white" : "border-brand-100 bg-brand-50")
           }
         >
           <h3 className="text-lg font-bold">{plan.name}</h3>

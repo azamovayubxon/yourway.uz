@@ -58,7 +58,7 @@ export default async function StartPage({ searchParams }: { searchParams: Promis
             type="submit"
             name="pathType"
             value={o.value}
-            className="rounded-2xl border-2 border-slate-200 bg-white p-5 text-left transition-colors hover:border-brand-500 active:bg-brand-50"
+            className="focus-ring min-h-24 rounded-2xl border-2 border-line bg-white p-5 text-left transition-colors hover:border-brand-500 active:bg-brand-50"
           >
             <span className="block text-lg font-bold">{o.label[locale]}</span>
             <span className="mt-1 block text-sm text-muted">{t.start.hints[o.value]}</span>
@@ -72,7 +72,7 @@ export default async function StartPage({ searchParams }: { searchParams: Promis
 
 function RestartLink({ label }: { label: string }) {
   return (
-    <Link href="/start?new=1" className="block py-2 text-sm font-semibold text-muted underline">
+    <Link href="/start?new=1" className="focus-ring block rounded py-2 text-sm font-semibold text-muted underline">
       {label}
     </Link>
   );
