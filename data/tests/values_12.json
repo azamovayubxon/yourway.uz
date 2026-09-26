@@ -2,7 +2,7 @@
   "meta": {
     "test_name": "Модуль ценностей / мотивации для yourway.uz",
     "platform": "yourway.uz",
-    "version": "1.0",
+    "version": "1.1",
     "languages": [
       "ru",
       "uz"
@@ -16,7 +16,7 @@
       "id": 1,
       "value": "money",
       "text_ru": "Зарабатывать много и иметь высокий доход.",
-      "text_uz": "Ko'p daromad topish va yuqori daromadga ega bo'lish."
+      "text_uz": "Yuqori daromadga ega bo'lish."
     },
     {
       "id": 2,
@@ -64,7 +64,7 @@
       "id": 9,
       "value": "stability",
       "text_ru": "Надёжная, предсказуемая работа без резких перемен.",
-      "text_uz": "Keskin o'zgarishlarsiz ishonchli, oldindan aytsa bo'ladigan ish."
+      "text_uz": "Keskin o'zgarishlar bo'lmaydigan, shartlari oldindan ma'lum barqaror ish."
     },
     {
       "id": 10,
@@ -96,12 +96,12 @@
       {
         "value": 2,
         "label_ru": "Скорее не важно",
-        "label_uz": "Ko'proq muhim emas"
+        "label_uz": "Unchalik muhim emas"
       },
       {
         "value": 3,
         "label_ru": "Средне",
-        "label_uz": "O'rtacha"
+        "label_uz": "O'rtacha muhim"
       },
       {
         "value": 4,

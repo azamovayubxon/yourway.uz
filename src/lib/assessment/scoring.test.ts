@@ -62,7 +62,7 @@ describe("данные тестов", () => {
       for (const q of test.questions) expect(q.text.uz, `${test.id} #${q.id}`).not.toContain("'");
       for (const s of test.scaleLabels) expect(s.label.uz).not.toContain("'");
     }
-    expect(TESTS[0].questions[1].text.uz).toBe("Koʻp vaziyatlarda oʻzimni xotirjam va boʻshashgan his qilaman.");
+    expect(TESTS[0].questions[1].text.uz).toBe("Koʻp vaziyatlarda oʻzimni xotirjam va erkin his qilaman.");
   });
 
   it("порядок шкал для ничьих взят из файлов", () => {
