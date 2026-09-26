@@ -2,7 +2,7 @@
   "meta": {
     "test_name": "IPIP-NEO-60 — Big Five (короткая версия для yourway.uz)",
     "platform": "yourway.uz",
-    "version": "1.0-short",
+    "version": "1.1-short",
     "derived_from": "ipip_neo_120_full_v2 (v2.0)",
     "languages": [
       "ru",
@@ -32,7 +32,7 @@
       "factor": "Neuroticism",
       "facet": "Anxiety",
       "text_ru": "В большинстве ситуаций чувствую себя спокойно и расслабленно.",
-      "text_uz": "Ko'p vaziyatlarda o'zimni xotirjam va bo'shashgan his qilaman.",
+      "text_uz": "Ko'p vaziyatlarda o'zimni xotirjam va erkin his qilaman.",
       "is_reverse": true
     },
     {
@@ -86,7 +86,7 @@
       "factor": "Neuroticism",
       "facet": "Self-Consciousness",
       "text_ru": "Меня не беспокоит, что обо мне думают окружающие.",
-      "text_uz": "Atrofdagilar men haqimda nima deb o'ylashini bilish meni bezovta qilmaydi.",
+      "text_uz": "Atrofdagilarning men haqimda nima deb o'ylashi meni unchalik tashvishlantirmaydi.",
       "is_reverse": true
     },
     {
@@ -95,7 +95,7 @@
       "factor": "Neuroticism",
       "facet": "Immoderation",
       "text_ru": "Мне сложно устоять перед соблазнами, даже когда я знаю, что это во вред.",
-      "text_uz": "Zararli ekanligini bilsam ham vasvasalarga qarshilik qilish menga qiyin.",
+      "text_uz": "Zararli ekanini bilsam ham, vasvasalarga qarshi turishim qiyin.",
       "is_reverse": false
     },
     {
@@ -104,7 +104,7 @@
       "factor": "Neuroticism",
       "facet": "Immoderation",
       "text_ru": "Я хорошо контролирую свои импульсивные желания.",
-      "text_uz": "Men o'zining impulsiv istaklarini yaxshi nazorat qilaman.",
+      "text_uz": "Men to'satdan paydo bo'ladigan istaklarimni yaxshi nazorat qilaman.",
       "is_reverse": true
     },
     {
@@ -122,7 +122,7 @@
       "factor": "Neuroticism",
       "facet": "Vulnerability",
       "text_ru": "Я сохраняю ясность мышления даже под значительным давлением.",
-      "text_uz": "Sezilarli bosim ostida ham fikrning ravshanligini saqlab qolaman.",
+      "text_uz": "Kuchli bosim ostida ham aniq fikrlay olaman.",
       "is_reverse": true
     },
     {
@@ -140,7 +140,7 @@
       "factor": "Extraversion",
       "facet": "Friendliness",
       "text_ru": "Мне требуется немало времени, чтобы почувствовать себя комфортно с незнакомцами.",
-      "text_uz": "Notanish odamlar bilan qulay his qilish uchun menga ko'p vaqt kerak.",
+      "text_uz": "Notanish odamlar orasida o'zimni erkin his qilishim uchun ko'proq vaqt kerak.",
       "is_reverse": true
     },
     {
@@ -158,7 +158,7 @@
       "factor": "Extraversion",
       "facet": "Gregariousness",
       "text_ru": "Я предпочитаю небольшие компании большим собраниям.",
-      "text_uz": "Katta yig'ilishlarga qaraganda kichik kompaniyalarni afzal ko'raman.",
+      "text_uz": "Ko'pchilik yig'ilgan davralardan ko'ra, kichik davralarni afzal ko'raman.",
       "is_reverse": true
     },
     {
@@ -212,7 +212,7 @@
       "factor": "Extraversion",
       "facet": "Excitement-Seeking",
       "text_ru": "Я предпочитаю предсказуемость и стабильность острым ощущениям.",
-      "text_uz": "Men o'tkir hissiyotlardan ko'ra bashorat qilinish va barqarorlikni afzal ko'raman.",
+      "text_uz": "Kuchli hayajonlardan ko'ra, barqarorlik va oldindan bilib bo'ladigan vaziyatlarni afzal ko'raman.",
       "is_reverse": true
     },
     {
@@ -221,7 +221,7 @@
       "factor": "Extraversion",
       "facet": "Positive Emotions",
       "text_ru": "Большую часть времени я настроен оптимистично и радостно.",
-      "text_uz": "Ko'p vaqt davomida optimistik va quvnoq kayfiyatdaman.",
+      "text_uz": "Ko'pincha optimistik va quvnoq kayfiyatda bo'laman.",
       "is_reverse": false
     },
     {
@@ -230,7 +230,7 @@
       "factor": "Extraversion",
       "facet": "Positive Emotions",
       "text_ru": "Я редко испытываю искренний энтузиазм или воодушевление.",
-      "text_uz": "Men kamdan-kam chin entuziastlik yoki ilhom his qilaman.",
+      "text_uz": "Men kamdan-kam chinakam ishtiyoq yoki ilhom his qilaman.",
       "is_reverse": true
     },
     {
@@ -248,7 +248,7 @@
       "factor": "Agreeableness",
       "facet": "Trust",
       "text_ru": "Мне кажется, что большинство людей преследуют скрытые интересы.",
-      "text_uz": "Ko'pchilik odamlar yashirin manfaatlarni ko'zlaydigan ko'rinadi.",
+      "text_uz": "Menimcha, ko'pchilik odamlar yashirin manfaatlarini ko'zlaydi.",
       "is_reverse": true
     },
     {
@@ -266,7 +266,7 @@
       "factor": "Agreeableness",
       "facet": "Morality",
       "text_ru": "Иногда небольшая ложь во благо вполне оправдана.",
-      "text_uz": "Ba'zan ezgulik uchun kichik yolg'on to'liq oqlangan.",
+      "text_uz": "Ba'zan yaxshilik uchun ozgina yolg'on gapirishni oqlash mumkin, deb hisoblayman.",
       "is_reverse": true
     },
     {
@@ -320,7 +320,7 @@
       "factor": "Agreeableness",
       "facet": "Modesty",
       "text_ru": "Я заслуживаю большего признания, чем обычно получаю.",
-      "text_uz": "Men odatda olayotganimdan ko'ra ko'proq tan olinishga loyiqman.",
+      "text_uz": "Men hozirgidan ko'ra ko'proq e'tirofga loyiqman, deb hisoblayman.",
       "is_reverse": true
     },
     {
@@ -329,7 +329,7 @@
       "factor": "Agreeableness",
       "facet": "Sympathy",
       "text_ru": "Чужая боль отзывается во мне так, словно это моя собственная.",
-      "text_uz": "Begonaning og'rig'i go'yo o'zimnikinday ichimda aks-sado beradi.",
+      "text_uz": "Boshqa odamning dardini o'zimnikidek his qilaman.",
       "is_reverse": false
     },
     {
@@ -338,7 +338,7 @@
       "factor": "Agreeableness",
       "facet": "Sympathy",
       "text_ru": "Меня мало трогают чужие жалобы — каждый сам строит свою судьбу.",
-      "text_uz": "Boshqalarning shikoyatlari meni unchalik qiynaltiravermaydi — har kim o'z taqdirini o'zi qurar.",
+      "text_uz": "Boshqalarning shikoyatlari meni unchalik tashvishlantirmaydi — har kim o'z taqdirini o'zi qurar.",
       "is_reverse": true
     },
     {
@@ -401,7 +401,7 @@
       "factor": "Conscientiousness",
       "facet": "Achievement Striving",
       "text_ru": "Я ставлю перед собой амбициозные цели и прилагаю усилия для их достижения.",
-      "text_uz": "Men o'z oldimga ambitsiyali maqsadlar qo'yaman va ularga erishish uchun harakat qilaman.",
+      "text_uz": "Men o'z oldimga katta maqsadlar qo'yaman va ularga erishish uchun harakat qilaman.",
       "is_reverse": false
     },
     {
@@ -410,7 +410,7 @@
       "factor": "Conscientiousness",
       "facet": "Achievement Striving",
       "text_ru": "Мне достаточно выполнять работу на приемлемом уровне — перфекционизм меня не привлекает.",
-      "text_uz": "Menga ishni qabul qilinadigan darajada bajarish yetarli — perfektsionizm meni o'ziga tortmaydi.",
+      "text_uz": "Men uchun ishni yetarlicha yaxshi bajarish kifoya — uni mukammal qilishga intilmayman.",
       "is_reverse": true
     },
     {
@@ -446,7 +446,7 @@
       "factor": "Conscientiousness",
       "facet": "Cautiousness",
       "text_ru": "Я нередко принимаю решения импульсивно, не задумываясь о последствиях.",
-      "text_uz": "Ko'pincha oqibatlarni o'ylamasdan impulsiv qarorlar qabul qilaman.",
+      "text_uz": "Ko'pincha oqibatlarini o'ylamasdan, impulsiv qarorlar qabul qilaman.",
       "is_reverse": true
     },
     {
@@ -564,12 +564,12 @@
       {
         "value": 1,
         "label_ru": "Совершенно не про меня / полностью не согласен",
-        "label_uz": "Umuman men haqimda emas"
+        "label_uz": "Umuman mos emas"
       },
       {
         "value": 2,
         "label_ru": "Скорее не про меня",
-        "label_uz": "Ko'proq men haqimda emas"
+        "label_uz": "Unchalik mos emas"
       },
       {
         "value": 3,
@@ -579,12 +579,12 @@
       {
         "value": 4,
         "label_ru": "Скорее про меня",
-        "label_uz": "Ko'proq men haqimda"
+        "label_uz": "Ancha mos"
       },
       {
         "value": 5,
         "label_ru": "Полностью про меня / полностью согласен",
-        "label_uz": "To'liq men haqimda"
+        "label_uz": "To'liq mos"
       }
     ],
     "reverse_rule": "score = 6 - answer (применяется только к пунктам с is_reverse=true)",

@@ -2,7 +2,7 @@
   "meta": {
     "test_name": "Модуль восприятия (стиль обучения) для yourway.uz",
     "platform": "yourway.uz",
-    "version": "1.0",
+    "version": "1.1",
     "languages": [
       "ru",
       "uz"
@@ -47,7 +47,7 @@
       "id": 6,
       "style": "auditory",
       "text_ru": "Я хорошо запоминаю информацию на слух, когда её проговаривают.",
-      "text_uz": "Ma'lumot ovoz chiqarib aytilganda uni quloqdan yaxshi eslab qolaman."
+      "text_uz": "Ma'lumotni eshitganimda yaxshiroq eslab qolaman."
     },
     {
       "id": 7,

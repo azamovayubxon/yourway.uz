@@ -2,7 +2,7 @@
   "meta": {
     "test_name": "RIASEC — тест интересов (Холланд) для yourway.uz",
     "platform": "yourway.uz",
-    "version": "1.0",
+    "version": "1.1",
     "languages": [
       "ru",
       "uz"
@@ -40,7 +40,7 @@
       "id": 5,
       "type": "E",
       "text_ru": "Убеждать людей и вести их за собой.",
-      "text_uz": "Odamlarni ishontirish va ularni ortidan ergashtirish."
+      "text_uz": "Odamlarni ishontirish va o'z ortimdan ergashtirish."
     },
     {
       "id": 6,
@@ -52,7 +52,7 @@
       "id": 7,
       "type": "R",
       "text_ru": "Работать инструментами, собирать или чинить своими руками.",
-      "text_uz": "Asboblar bilan ishlash, o'z qo'lingiz bilan yig'ish yoki tuzatish."
+      "text_uz": "Asboblar bilan ishlash, buyumlarni qo'lda yig'ish yoki ta'mirlash."
     },
     {
       "id": 8,
@@ -64,7 +64,7 @@
       "id": 9,
       "type": "A",
       "text_ru": "Рисовать, заниматься дизайном, создавать визуальные образы.",
-      "text_uz": "Rasm chizish, dizayn qilish, vizual obrazlar yaratish."
+      "text_uz": "Rasm chizish, dizayn qilish va tasvirlar yaratish."
     },
     {
       "id": 10,
@@ -142,7 +142,7 @@
       "id": 22,
       "type": "S",
       "text_ru": "Поддерживать и заботиться о людях.",
-      "text_uz": "Odamlarni qo'llab-quvvatlash va g'amxo'rlik qilish."
+      "text_uz": "Odamlarni qo'llab-quvvatlash va ularga g'amxo'rlik qilish."
     },
     {
       "id": 23,
@@ -190,7 +190,7 @@
       "id": 30,
       "type": "C",
       "text_ru": "Выполнять аккуратную, точную работу по алгоритму.",
-      "text_uz": "Algoritm bo'yicha aniq, ehtiyotkor ish bajarish."
+      "text_uz": "Algoritm bo'yicha aniq va puxta ish bajarish."
     }
   ],
   "scoring": {
@@ -204,22 +204,22 @@
       {
         "value": 2,
         "label_ru": "Скорее не интересно",
-        "label_uz": "Ko'proq qiziq emas"
+        "label_uz": "Unchalik qiziq emas"
       },
       {
         "value": 3,
         "label_ru": "Нейтрально",
-        "label_uz": "Neytral"
+        "label_uz": "O'rtacha qiziq"
       },
       {
         "value": 4,
         "label_ru": "Скорее интересно",
-        "label_uz": "Ko'proq qiziqarli"
+        "label_uz": "Qiziq"
       },
       {
         "value": 5,
         "label_ru": "Очень интересно",
-        "label_uz": "Juda qiziqarli"
+        "label_uz": "Juda qiziq"
       }
     ],
     "result_rule_ru": "holland_code = топ-3 типа по убыванию суммы баллов.",
