@@ -56,6 +56,10 @@ test.describe("CSP с нонсом не блокирует гидратацию"
     await page.locator('form button[name="pathType"]').first().click();
     await page.waitForURL("**/test");
 
+    // Экран подготовки перед первым вопросом (ТЗ аудита §6, UX-09) — кнопка «Начать тест»
+    // требует клиентского состояния (React), поэтому клик здесь тоже проверяет гидратацию.
+    await page.getByRole("button", { name: /Testni boshlash|Начать тест/ }).click();
+
     // Один вопрос на экран, крупные кнопки 1–5, автопереход к следующему (CLAUDE.md §5).
     for (let i = 0; i < 3; i++) {
       const heading = page.locator("h1[aria-live='polite']");
