@@ -31,7 +31,10 @@ describe("проверка ответа ИИ для тизера", () => {
     expect(validateTeaser(bad, "ru")).toMatchObject({ ok: false, error: "rule:money_in_teaser" });
     const bad2 = {
       ...golden,
-      fitting_directions: [{ title: "Дизайн", one_liner: "доход от 10 млн сум" }, golden.fitting_directions[1]],
+      fitting_directions: [
+        { title: "Дизайн", one_liner: "доход от 10 млн сум", trial_task: golden.fitting_directions[0].trial_task },
+        golden.fitting_directions[1],
+      ],
     };
     expect(validateTeaser(bad2, "ru")).toMatchObject({ ok: false, error: "rule:money_in_teaser" });
   });

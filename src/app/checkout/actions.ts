@@ -3,7 +3,8 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { cancelPayment, confirmTestPayment, isLevel, previewPromo, startPayment, type PromoPreview } from "@/lib/payments";
-import { getCurrentSession } from "@/lib/session";
+import type { Profile } from "@/lib/assessment/profile";
+import { getCurrentSession, setCheckoutGoal } from "@/lib/session";
 import { resolveReportLocale } from "@/i18n/config";
 import { getLocale } from "@/i18n/server";
 import { logError } from "@/lib/monitoring";
@@ -38,6 +39,20 @@ export async function startPaymentAction(_prev: CheckoutState, formData: FormDat
   // это отдельное поле формы; на случай его отсутствия (например, JS отключён) — язык сайта,
   // как было раньше этого решения (resolveReportLocale, src/i18n/config.ts).
   const reportLocale = resolveReportLocale(formData.get("reportLocale"), await getLocale());
+
+  // UX-18: без своей цели «Маршрут» не оплачивается без выбранной цели (направление бесплатного
+  // результата или своя формулировка) — форма присылает её полем "goal", если она нужна.
+  const profile = session.profile as unknown as Profile | null;
+  if (level === "route" && session.pathType === "no_goal" && !profile?.goal?.statement) {
+    const goal = field(formData, "goal").trim().slice(0, 300);
+    if (!goal) return { status: "error", error: "goal_required" };
+    try {
+      await setCheckoutGoal(session.id, goal);
+    } catch (e) {
+      await logError("payments-checkout-goal", e);
+      return { status: "error", error: "server" };
+    }
+  }
 
   let target: string;
   try {

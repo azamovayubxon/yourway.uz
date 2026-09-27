@@ -9,6 +9,7 @@ import type { TeaserContent } from "@/lib/ai/teaser-schema";
 import type { Profile } from "@/lib/assessment/profile";
 import { SIXTEEN_TYPES } from "@/lib/assessment/tests";
 import { getCurrentSession } from "@/lib/session";
+import { getPricesSafe } from "@/lib/payments";
 import { canGenerateInLocale, getSessionTeasers } from "@/lib/teaser";
 import { buildLockedToc } from "@/lib/teaser/toc";
 import type { Locale } from "@/i18n/config";
@@ -56,13 +57,16 @@ export default async function TeaserPage({ searchParams }: { searchParams: Promi
 
   const user = await getCurrentUser();
   // Уже оплаченный отчёт по этой сессии (любого уровня) — показываем ссылку на него.
-  const report = user
-    ? await getDb().report.findFirst({
-        where: { sessionId: session.id, userId: user.id },
-        orderBy: { createdAt: "desc" },
-        select: { id: true },
-      })
-    : null;
+  const [report, prices] = await Promise.all([
+    user
+      ? getDb().report.findFirst({
+          where: { sessionId: session.id, userId: user.id },
+          orderBy: { createdAt: "desc" },
+          select: { id: true },
+        })
+      : null,
+    getPricesSafe(),
+  ]);
 
   let otherLanguage = null;
   if (teaserLocale !== locale) {
@@ -93,6 +97,8 @@ export default async function TeaserPage({ searchParams }: { searchParams: Promi
       sixteenType={`${code} · ${typeName}`}
       toc={buildLockedToc(content.locked_toc, general)}
       recommendedLevel={profile.level}
+      recommendedPrice={prices[profile.level] ?? null}
+      sumTemplate={t.common.sum}
       lowQuality={profile.answer_quality?.level === "low"}
       otherLanguage={otherLanguage}
       // Регистрация появляется только перед оплатой; после неё человек сразу попадает на выбор уровня.

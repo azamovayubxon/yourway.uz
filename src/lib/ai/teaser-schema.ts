@@ -12,7 +12,9 @@ export const TeaserOutputSchema = z.object({
   personality_type_label: z.string(),
   portrait: z.string(),
   top_strengths: z.array(z.string()),
-  fitting_directions: z.array(z.object({ title: z.string(), one_liner: z.string() })),
+  fitting_directions: z.array(z.object({ title: z.string(), one_liner: z.string(), trial_task: z.string() })),
+  // Один полезный бесплатный шаг (аудит UX-13, этап B2а) — доступен уже без оплаты.
+  free_step: z.string(),
   surprise_hook: z.string(),
   surprise_direction_internal: z.string(),
   locked_toc: z.array(z.string()),
@@ -28,9 +30,11 @@ export const TeaserSchema = z.object({
   top_strengths: z.array(text.max(200)).min(2).max(4),
   // Промпт: 2–3 сферы. Небольшой запас (4), на экране — первые 3.
   fitting_directions: z
-    .array(z.object({ title: text.max(150), one_liner: text.max(400) }))
+    .array(z.object({ title: text.max(150), one_liner: text.max(400), trial_task: text.max(300) }))
     .min(2)
     .max(4),
+  // Один полезный бесплатный шаг (аудит UX-13, этап B2а).
+  free_step: text.max(500),
   surprise_hook: text.max(700),
   surprise_direction_internal: text.max(200),
   // Промпт просит 8–12 пунктов. Проверка мягкая (решение (Г)): 7 пунктов из golden example тоже принимаются.
@@ -54,7 +58,8 @@ function visibleTexts(t: TeaserContent): string[] {
     t.personality_type_label,
     t.portrait,
     ...t.top_strengths,
-    ...t.fitting_directions.flatMap((d) => [d.title, d.one_liner]),
+    ...t.fitting_directions.flatMap((d) => [d.title, d.one_liner, d.trial_task]),
+    t.free_step,
     t.surprise_hook,
     ...t.locked_toc,
   ];
@@ -67,7 +72,8 @@ function insightTexts(t: TeaserContent): string[] {
     t.personality_type_label,
     t.portrait,
     ...t.top_strengths,
-    ...t.fitting_directions.flatMap((d) => [d.title, d.one_liner]),
+    ...t.fitting_directions.flatMap((d) => [d.title, d.one_liner, d.trial_task]),
+    t.free_step,
     t.surprise_hook,
   ];
 }

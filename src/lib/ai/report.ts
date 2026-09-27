@@ -54,6 +54,10 @@ export async function runReportPartAttempt(options: {
 }): Promise<PartAttemptResult> {
   const { part, locale, level, pathType, provider, model } = options;
   const now = options.now ?? Date.now;
+  // UX-18: без своей цели человек выбрал «Маршрут» и указал цель на checkout — goal.statement уже
+  // в профиле. pathRule (prompts.ts) просит ИИ оформить её как "stated"; проверка ниже должна
+  // ожидать то же самое, а не требовать constructed_options, как для обычного no_goal.
+  const statedGoal = pathType === "no_goal" && level === "route" && Boolean(options.profile.goal?.statement);
   const settings = reportSettings(level);
   const uz = locale === "uz" ? (options.uz ?? { glossary: getUzGlossary(), examples: getUzExamples() }) : undefined;
   const prompt = buildReportPartPrompt({
@@ -82,7 +86,9 @@ export async function runReportPartAttempt(options: {
       timeoutMs: settings.attemptTimeoutMs,
       cacheTtl: settings.cacheTtl,
       outputSchema: REPORT_PART_OUTPUT_SCHEMAS[part],
-      tag: `report:${part}:${pathType}`,
+      // Мок-режим должен пройти и этот путь (CLAUDE.md §3: воронка проходится без ключа) — при
+      // statedGoal просим образец «stated», как и для обычного knows_goal (см. providers/mock.ts).
+      tag: `report:${part}:${statedGoal ? "knows_goal" : pathType}`,
       retry: options.retry
         ? {
             previousResponse: options.retry.previousResponse,
@@ -112,7 +118,7 @@ export async function runReportPartAttempt(options: {
     }
     const checked = validateReportPart(part, locale === "uz" ? normalizeUzTeaser(json) : json, {
       language: locale,
-      pathType,
+      pathType: statedGoal ? "knows_goal" : pathType,
       level,
       uzRules: uz?.glossary,
     });

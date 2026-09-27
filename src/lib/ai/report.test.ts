@@ -131,6 +131,23 @@ describe("промпты полного отчёта (Приложение Б §
     expect(rule("no_goal", "navigator")).toContain(PATH_RULE_NO_GOAL_NAVIGATOR);
   });
 
+  // UX-18 (этап B2а): без своей цели человек выбрал «Маршрут» и указал цель на checkout —
+  // profile.goal.statement уже заполнено. С ней работаем как с обычной stated-целью.
+  it("no_goal + route + цель, выбранная на checkout (UX-18): правило как для stated", () => {
+    const withGoal = { ...profile, goal: { statement: "Стать веб-дизайнером" } };
+    const prompt = buildReportPartPrompt({
+      profile: withGoal,
+      teaser: {},
+      language: "ru",
+      level: "route",
+      pathType: "no_goal",
+      part: "portrait_goal",
+      previousParts: {},
+    });
+    expect(prompt.user).toContain(PATH_RULE_KNOWS_GOAL);
+    expect(prompt.user).not.toContain(PATH_RULE_NO_GOAL_ROUTE);
+  });
+
   it("подсказка для повтора перечисляет проблемы", () => {
     expect(buildReportRetryFeedback(["a", "b"])).toContain("- a\n- b");
   });
@@ -177,6 +194,29 @@ describe("тестовый режим: образец отчёта проход�
       });
     }
   }
+});
+
+// UX-18: то же самое, но end-to-end через runReportPartAttempt (мок-режим должен пройти этот путь
+// целиком — CLAUDE.md §3, воронка без ключа) для человека без своей цели, который выбрал «Маршрут»
+// и указал цель на checkout.
+describe("no_goal + route + цель с checkout (UX-18): мок-режим проходит проверку", () => {
+  it("goal.source получается stated, а не constructed", async () => {
+    const withGoal = { ...profile, path_type: "no_goal" as const, goal: { statement: "Стать веб-дизайнером" } };
+    const result = await runReportPartAttempt({
+      part: "portrait_goal",
+      profile: withGoal,
+      teaser: MOCK_TEASERS.ru,
+      locale: "ru",
+      level: "route",
+      pathType: "no_goal",
+      previousParts: {},
+      model: "mock",
+      provider: createMockProvider(0),
+    });
+    expect(result.problems).toEqual([]);
+    expect(result.ok).toBe(true);
+    expect((result.content as PortraitGoalPart).goal.source).toBe("stated");
+  });
 });
 
 const ctx = { language: "ru" as const, pathType: "knows_goal" as const, level: "route" as const };

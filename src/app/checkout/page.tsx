@@ -29,7 +29,7 @@ export default async function CheckoutPage({
   if (session.status !== "survey_done") redirect("/teaser");
   const db = getDb();
   const [teaser, reports, prices] = await Promise.all([
-    db.teaser.findFirst({ where: { sessionId: session.id, status: "ready" }, select: { id: true } }),
+    db.teaser.findFirst({ where: { sessionId: session.id, status: "ready" }, select: { id: true, content: true } }),
     db.report.findMany({ where: { sessionId: session.id, userId: user.id }, select: { id: true, level: true } }),
     getPrices(),
   ]);
@@ -45,6 +45,15 @@ export default async function CheckoutPage({
   const notice = params.cancelled ? t.checkout.cancelled : params.declined ? t.checkout.declined : null;
   const error = params.error && params.error in t.checkout.errors ? params.error : null;
 
+  // UX-18: без своей цели «Маршрут» нельзя оплатить, не выбрав цель — из направлений бесплатного
+  // результата или свою. Если цель в профиле уже есть (её вписали в анкете или на прошлом заходе
+  // на checkout), повторно не спрашиваем.
+  const profile = session.profile as { goal?: { statement?: string } } | null;
+  const needsGoal = pathType === "no_goal" && !profile?.goal?.statement;
+  const directionOptions = (teaser.content as { fitting_directions?: { title: string }[] } | null)?.fitting_directions?.map(
+    (d) => d.title,
+  ) ?? [];
+
   return (
     <div className="mx-auto max-w-xl px-4 pb-12 pt-6">
       <Link href="/teaser" className="inline-flex min-h-11 items-center text-sm font-semibold text-muted">
@@ -52,6 +61,9 @@ export default async function CheckoutPage({
       </Link>
       <h1 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">{t.checkout.title}</h1>
       <p className="mt-2 leading-relaxed text-muted">{t.checkout.subtitle}</p>
+      <Link href="/#sample" className="mt-1 inline-flex min-h-11 items-center text-sm font-semibold text-brand-600 underline">
+        {t.checkout.exampleLinkLabel} →
+      </Link>
       {notice && (
         <p className="mt-5 rounded-2xl bg-amber-50 px-4 py-3 text-sm font-medium text-amber-900" role="status">
           {notice}
@@ -69,6 +81,13 @@ export default async function CheckoutPage({
         paymentsAvailable={activePaymentProvider() !== null}
         initialError={error}
         sumTemplate={t.common.sum}
+        needsGoal={needsGoal}
+        directionOptions={directionOptions}
+        legalLinks={[
+          { href: "/offer", label: t.footer.offer },
+          { href: "/refund", label: t.footer.refund },
+          { href: "/privacy", label: t.footer.privacy },
+        ]}
       />
     </div>
   );
