@@ -107,22 +107,50 @@ export default async function AdminAiLogPage() {
           </Card>
 
           <Card title="Последние вызовы ИИ">
+            <p className="text-sm text-muted">
+              «Принят с предупреждением» (этап C1) — ответ нарушил только правила тона/содержания
+              (лесть без оснований, голый код типа, повтор пункта и т. п.), это была последняя
+              попытка, и мы всё равно использовали его: оплаченный отчёт не должен провалиться
+              из‑за одного неудачного слова. Столбец «Что не так» показывает, что именно нашли.
+            </p>
             <DataTable
-              head={["Когда", "Вид", "Язык", "Попытка", "Результат", "Модель", "Длительность", "Стоимость"]}
-              rows={calls.map((call) => [
-                call.createdAt.toISOString().slice(0, 19).replace("T", " "),
-                call.kind === "teaser" ? "тизер" : `отчёт${call.part ? ` (${call.part})` : ""}`,
-                langName(call.locale),
-                String(call.attempt),
-                <span key="ok" className={call.ok ? "font-semibold text-emerald-700" : "font-semibold text-amber-700"}>
-                  {call.ok ? "принят" : "брак"}
-                </span>,
-                <span key="m" className="font-mono text-xs">
-                  {call.model}
-                </span>,
-                `${seconds(call.durationMs)} с`,
-                call.costUsd === null ? "—" : `$${call.costUsd.toFixed(4)}`,
-              ])}
+              head={["Когда", "Вид", "Язык", "Попытка", "Результат", "Модель", "Длительность", "Стоимость", "Что не так"]}
+              rows={calls.map((call) => {
+                const acceptedWithWarnings = Boolean(call.error?.endsWith(":accepted_despite_warnings"));
+                const problems = Array.isArray(call.problems) ? (call.problems as unknown[]).map(String) : [];
+                return [
+                  call.createdAt.toISOString().slice(0, 19).replace("T", " "),
+                  call.kind === "teaser" ? "тизер" : `отчёт${call.part ? ` (${call.part})` : ""}`,
+                  langName(call.locale),
+                  String(call.attempt),
+                  <span
+                    key="ok"
+                    className={
+                      call.ok
+                        ? "font-semibold text-emerald-700"
+                        : acceptedWithWarnings
+                          ? "font-semibold text-amber-700"
+                          : "font-semibold text-rose-700"
+                    }
+                  >
+                    {call.ok ? "принят" : acceptedWithWarnings ? "принят с предупреждением" : "брак"}
+                  </span>,
+                  <span key="m" className="font-mono text-xs">
+                    {call.model}
+                  </span>,
+                  `${seconds(call.durationMs)} с`,
+                  call.costUsd === null ? "—" : `$${call.costUsd.toFixed(4)}`,
+                  problems.length === 0 ? (
+                    "—"
+                  ) : (
+                    <ul key="p" className="list-inside list-disc space-y-0.5 text-xs text-muted">
+                      {problems.map((p, i) => (
+                        <li key={i}>{p}</li>
+                      ))}
+                    </ul>
+                  ),
+                ];
+              })}
             />
           </Card>
         </>

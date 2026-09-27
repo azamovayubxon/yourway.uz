@@ -304,6 +304,52 @@ describe("проверка частей отчёта (Приложение Б §
     }
   });
 
+  it("старая версия промпта (без takeaway/limitations/what_to_check/plan_30_days) — не брак (этап C1)", () => {
+    // Симулируем ответ ИИ по старой активной версии промпта (report-1.0): полей report-2.0 в нём
+    // просто нет. Решение владельца: генерация не должна ломаться, пока владелец не пересоздаст
+    // версии промптов отчёта в /admin/prompts.
+    const oldMainPath = structuredClone(MOCK_REPORTS.ru.main_path);
+    delete (oldMainPath.main_path as { limitations?: unknown }).limitations;
+    for (const route of oldMainPath.main_path.routes) delete (route as { what_to_check?: unknown }).what_to_check;
+    const mainPathResult = validateReportPart("main_path", oldMainPath, ctx);
+    expect(mainPathResult.ok).toBe(true);
+
+    const oldFinish = structuredClone(MOCK_REPORTS.ru.finish);
+    delete (oldFinish as { takeaway?: unknown }).takeaway;
+    delete (oldFinish as { plan_30_days?: unknown }).plan_30_days;
+    const finishResult = validateReportPart("finish", oldFinish, ctx);
+    expect(finishResult.ok).toBe(true);
+  });
+
+  it("нарушение только тона (например, «уникальный») — softOnly, содержимое сохраняется", () => {
+    const part = structuredClone(MOCK_REPORTS.ru.finish);
+    part.act_now[0] = "Это уникальное сочетание качеств поможет вам начать";
+    const result = validateReportPart("finish", part, ctx);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.softOnly).toBe(true);
+      expect(result.content).toBeDefined();
+      expect(result.error).toBe("rule:content_forbidden_phrase");
+    }
+  });
+
+  it("нарушение схемы (не хватает обязательного поля) — НЕ softOnly, даже если рядом есть тон-нарушение", () => {
+    const part = structuredClone(MOCK_REPORTS.ru.finish);
+    part.act_now[0] = "Это уникальное сочетание качеств поможет вам начать";
+    delete (part as { disclaimer?: unknown }).disclaimer; // обязательное поле схемы
+    const result = validateReportPart("finish", part, ctx);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.startsWith("schema:")).toBe(true);
+  });
+
+  it("нарушение обращения на «ты» рядом с тон-нарушением — НЕ softOnly (языковая корректность важнее)", () => {
+    const part = structuredClone(MOCK_REPORTS.ru.finish);
+    part.act_now[0] = "Это уникальное сочетание качеств — твой путь начинается";
+    const result = validateReportPart("finish", part, ctx);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.softOnly).toBe(false);
+  });
+
   it("служебные коды (online, easy, stated) не считаются английскими словами", () => {
     const result = validateReportPart("main_path", MOCK_REPORTS.uz.main_path, {
       ...ctx,
@@ -368,5 +414,15 @@ describe("одна попытка части", () => {
     expect(requests[0].effort).toBe("medium");
     expect(requests[0].timeoutMs).toBeLessThan(300_000);
     expect(requests[0].user).toContain("Уровень: navigator");
+  });
+
+  it("нарушение только тона — content и softOnly доходят до вызывающего кода (этап C1)", async () => {
+    const bad = structuredClone(MOCK_REPORTS.ru.finish);
+    bad.act_now[0] = "Это уникальное сочетание качеств поможет вам начать";
+    const { provider } = scriptedProvider([{ text: JSON.stringify(bad) }]);
+    const result = await runReportPartAttempt({ ...base, provider });
+    expect(result.ok).toBe(false);
+    expect(result.softOnly).toBe(true);
+    expect(result.content).toBeDefined();
   });
 });

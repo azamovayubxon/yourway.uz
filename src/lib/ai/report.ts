@@ -22,7 +22,9 @@ import { getUzExamples, getUzGlossary } from "./uz-resources";
 
 export interface PartAttemptResult {
   ok: boolean;
-  // Проверенное содержимое части (если ok).
+  // Проверенное содержимое части. Есть и при ok:false, если схема разобралась, но не прошли
+  // проверки тона/содержания (softOnly) — вызывающий код (report/index.ts) может принять этот
+  // контент на последней попытке вместо провала генерации (решение владельца, этап C1).
   content?: unknown;
   // Короткий код первой проблемы и все проблемы текстом (для журнала и для подсказки при повторе).
   error: string | null;
@@ -33,6 +35,9 @@ export interface PartAttemptResult {
   durationMs: number;
   // Ошибка, после которой повторять бессмысленно (неверный ключ, неизвестная модель).
   fatal: boolean;
+  // Все найденные нарушения (если есть) — «мягкие»: тон и содержание, не разрыв схемы или языка
+  // (см. isSoftIssueCode в report-schema.ts). false, если ok:true или ответа не было вовсе.
+  softOnly: boolean;
 }
 
 export async function runReportPartAttempt(options: {
@@ -105,16 +110,17 @@ export async function runReportPartAttempt(options: {
         ok: false,
         error: "finish:truncated",
         problems: ["ответ оборвался: не хватило длины — пишите плотнее, без повторов и общих фраз"],
+        softOnly: false,
       };
     }
     if (response.finish === "refused") {
-      return { ...base, ok: false, error: "finish:refused", problems: ["модель отказалась отвечать"] };
+      return { ...base, ok: false, error: "finish:refused", problems: ["модель отказалась отвечать"], softOnly: false };
     }
     let json: unknown;
     try {
       json = extractJson(response.text);
     } catch {
-      return { ...base, ok: false, error: "json:invalid", problems: ["ответ не является валидным JSON"] };
+      return { ...base, ok: false, error: "json:invalid", problems: ["ответ не является валидным JSON"], softOnly: false };
     }
     const checked = validateReportPart(part, locale === "uz" ? normalizeUzTeaser(json) : json, {
       language: locale,
@@ -123,8 +129,8 @@ export async function runReportPartAttempt(options: {
       uzRules: uz?.glossary,
     });
     return checked.ok
-      ? { ...base, ok: true, content: checked.content, error: null, problems: [] }
-      : { ...base, ok: false, error: checked.error, problems: checked.problems };
+      ? { ...base, ok: true, content: checked.content, error: null, problems: [], softOnly: false }
+      : { ...base, ok: false, error: checked.error, problems: checked.problems, content: checked.content, softOnly: checked.softOnly };
   } catch (error) {
     const message = error instanceof Error ? error.message.slice(0, 200) : "error";
     return {
@@ -133,6 +139,7 @@ export async function runReportPartAttempt(options: {
       problems: [`ошибка обращения к ИИ: ${message}`],
       responseText,
       usage,
+      softOnly: false,
       durationMs: now() - started,
       fatal: error instanceof AiFatalError,
     };
