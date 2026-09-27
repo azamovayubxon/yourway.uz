@@ -3,9 +3,11 @@ import type { ReactNode } from "react";
 import { MockBadge } from "@/app/teaser/MockBadge";
 import { titleFontSize } from "@/components/typeTitle";
 import type { ReportContent, ReportRoute } from "@/lib/ai/report-schema";
+import { buildFirstScreen } from "@/lib/report/present";
+import { splitIntoParagraphs } from "@/lib/report/paragraphs";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
-import { ActNowChecklist, SectionNav } from "./ReportClient";
+import { ActNowChecklist, MobileSectionsMenu, SectionNav, SectionSidebar } from "./ReportClient";
 
 // Полный отчёт онлайн (ТЗ 3.10.1, Приложение Б §7) — то, за что человек заплатил. Сделан для чтения
 // с телефона: крупный текст, короткие блоки, липкое оглавление, маршруты раскрываются по нажатию,
@@ -67,9 +69,13 @@ export function ReportView({
   const nav = order.map((s) => ({ id: s, title: t.sections[s] }));
   const number = (s: SectionId) => String(order.indexOf(s) + 1).padStart(2, "0");
   const verdict = VERDICT_STYLES[reality.verdict];
+  const firstScreen = buildFirstScreen(content);
+  const pdfHref = `/api/report/${id}/pdf`;
 
   return (
-    <article className="mx-auto max-w-2xl px-4 pb-14 pt-5">
+    <div className="mx-auto max-w-5xl px-4 pb-14 pt-5 lg:grid lg:grid-cols-[220px_minmax(0,42rem)] lg:justify-center lg:gap-12">
+      <SectionSidebar items={nav} label={t.toc} />
+      <article className="min-w-0">
       {mockBadge && <MockBadge label={mockBadge.label} note={mockBadge.note} />}
       <p className="mb-4 rounded-2xl bg-slate-50 px-4 py-3 text-sm text-muted">{languageNote}</p>
 
@@ -96,7 +102,51 @@ export function ReportView({
         </div>
       </header>
 
+      {/* Первый экран (ТЗ аудита §9): короткий вывод, направление, первый шаг, ограничения —
+          собраны из уже готового отчёта, отдельно от ИИ не запрашиваются. */}
+      <section className="mt-6 rounded-3xl border border-slate-200 p-5 sm:p-6">
+        <h2 className="text-lg font-extrabold">{t.firstScreen.title}</h2>
+        <p lang={lang} className="mt-2 leading-relaxed text-ink/90">
+          {firstScreen.takeaway}
+        </p>
+        <dl className="mt-4 grid gap-3 sm:grid-cols-2">
+          <div className="rounded-2xl bg-brand-50 p-3.5">
+            <dt className="text-xs font-bold uppercase tracking-wider text-brand-700">{t.firstScreen.directionLabel}</dt>
+            <dd lang={lang} className="mt-1 font-semibold leading-snug">
+              {firstScreen.direction}
+            </dd>
+          </div>
+          <div className="rounded-2xl bg-emerald-50 p-3.5">
+            <dt className="text-xs font-bold uppercase tracking-wider text-emerald-700">{t.firstScreen.firstStepLabel}</dt>
+            <dd lang={lang} className="mt-1 font-semibold leading-snug">
+              {firstScreen.firstStep}
+            </dd>
+          </div>
+        </dl>
+        {firstScreen.constraints && (
+          <p className="mt-3 text-sm text-muted">
+            <span className="font-semibold text-ink">{t.firstScreen.constraintsLabel}: </span>
+            <span lang={lang}>{firstScreen.constraints}</span>
+          </p>
+        )}
+        <div className="mt-4 flex flex-wrap gap-2 print:hidden">
+          <a
+            href={pdfHref}
+            className="inline-flex min-h-11 items-center rounded-xl bg-ink px-4 text-sm font-bold text-white"
+          >
+            {t.downloadPdf} ↓
+          </a>
+          <a href="#path" className="inline-flex min-h-11 items-center rounded-xl border-2 border-slate-200 px-4 text-sm font-bold">
+            {t.firstScreen.compareCta}
+          </a>
+          <a href="#actNow" className="inline-flex min-h-11 items-center rounded-xl border-2 border-slate-200 px-4 text-sm font-bold">
+            {t.firstScreen.weekPlanCta}
+          </a>
+        </div>
+      </section>
+
       <SectionNav items={nav} label={t.toc} />
+      <MobileSectionsMenu items={nav} label={t.sectionsButton} />
 
       <Section id="portrait" n={number("portrait")} title={t.sections.portrait}>
         <Prose lang={lang} lead>
@@ -250,7 +300,8 @@ export function ReportView({
       </aside>
 
       {footer}
-    </article>
+      </article>
+    </div>
   );
 }
 
@@ -271,7 +322,9 @@ function Section({ id, n, title, children }: { id: SectionId; n: string; title: 
   );
 }
 
-// Текст от ИИ: абзацы (переносы строк сохраняются), удобный размер и межстрочный интервал.
+// Текст от ИИ: абзацы удобного размера. Длинные блоки делятся при отображении по границам
+// предложений (ТЗ аудита §9, «абзац — одна мысль, ориентир 40–80 слов») — сам текст не меняется,
+// только показывается частями.
 function Prose({
   children,
   lang,
@@ -283,15 +336,15 @@ function Prose({
   lead?: boolean;
   className?: string;
 }) {
+  const paragraphs = splitIntoParagraphs(children);
   return (
-    <p
-      lang={lang}
-      className={
-        "whitespace-pre-line leading-relaxed " + (lead ? "text-[1.08rem] text-ink" : "text-[1.02rem] text-ink/90") + " " + className
-      }
-    >
-      {children}
-    </p>
+    <div lang={lang} className={"space-y-3 " + className}>
+      {paragraphs.map((p, i) => (
+        <p key={i} className={"leading-relaxed " + (lead ? "text-[1.08rem] text-ink" : "text-[1.02rem] text-ink/90")}>
+          {p}
+        </p>
+      ))}
+    </div>
   );
 }
 

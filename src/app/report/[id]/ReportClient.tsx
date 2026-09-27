@@ -4,8 +4,11 @@ import { useEffect, useState } from "react";
 
 // Небольшие интерактивные части страницы отчёта.
 
-// Липкое оглавление: подсвечивает раздел, который сейчас на экране.
-export function SectionNav({ items, label }: { items: { id: string; title: string }[]; label: string }) {
+type NavItem = { id: string; title: string };
+
+// Какой раздел сейчас на экране — общая логика для горизонтальной ленты, бокового оглавления
+// на компьютере и кнопки «Разделы»/«Boʻlimlar» на телефоне (ТЗ аудита §9).
+function useActiveSection(items: NavItem[]): string | undefined {
   const [active, setActive] = useState(items[0]?.id);
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -21,6 +24,13 @@ export function SectionNav({ items, label }: { items: { id: string; title: strin
     }
     return () => observer.disconnect();
   }, [items]);
+  return active;
+}
+
+// Липкое горизонтальное оглавление: дополнительная навигация (ТЗ аудита §9), видна на всех
+// шинах экрана поверх бокового меню на компьютере и кнопки «Разделы» на телефоне.
+export function SectionNav({ items, label }: { items: NavItem[]; label: string }) {
+  const active = useActiveSection(items);
 
   // Активный пункт прокручиваем в видимую часть ленты оглавления.
   useEffect(() => {
@@ -30,7 +40,7 @@ export function SectionNav({ items, label }: { items: { id: string; title: strin
   return (
     <nav
       aria-label={label}
-      className="sticky top-14 z-[5] -mx-4 mt-6 border-b border-slate-100 bg-white/90 px-4 backdrop-blur print:hidden"
+      className="sticky top-14 z-[5] -mx-4 mt-6 border-b border-slate-100 bg-white/90 px-4 backdrop-blur print:hidden lg:hidden"
     >
       <ol className="flex gap-2 overflow-x-auto py-2.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {items.map((item, i) => (
@@ -50,6 +60,61 @@ export function SectionNav({ items, label }: { items: { id: string; title: strin
         ))}
       </ol>
     </nav>
+  );
+}
+
+// Боковое оглавление на компьютере (ТЗ аудита §9: «desktop: содержание сбоку»). Рядом с текстом,
+// а не поверх него — липкое внутри своей колонки.
+export function SectionSidebar({ items, label }: { items: NavItem[]; label: string }) {
+  const active = useActiveSection(items);
+  return (
+    <nav aria-label={label} className="sticky top-20 hidden print:hidden lg:block">
+      <ol className="space-y-1 border-l border-slate-100 pl-4">
+        {items.map((item, i) => (
+          <li key={item.id}>
+            <a
+              href={`#${item.id}`}
+              className={
+                "flex items-baseline gap-2 rounded py-1.5 text-sm leading-snug transition-colors " +
+                (active === item.id ? "font-bold text-brand-600" : "text-muted hover:text-ink")
+              }
+            >
+              <span className="tabular-nums opacity-60">{i + 1}</span>
+              {item.title}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+}
+
+// Кнопка «Разделы»/«Boʻlimlar» на телефоне (ТЗ аудита §9): открывает список разделов вместо
+// бокового оглавления, которого на маленьком экране нет места.
+export function MobileSectionsMenu({ items, label }: { items: NavItem[]; label: string }) {
+  const active = useActiveSection(items);
+  return (
+    <details className="mt-4 rounded-2xl border border-slate-200 print:hidden lg:hidden">
+      <summary className="flex min-h-11 cursor-pointer items-center justify-between gap-2 px-4 py-2.5 text-sm font-bold [&::-webkit-details-marker]:hidden">
+        <span>
+          ☰ {label}
+        </span>
+        <span className="text-muted">▾</span>
+      </summary>
+      <ol className="divide-y divide-slate-100 border-t border-slate-100">
+        {items.map((item, i) => (
+          <li key={item.id}>
+            <a
+              href={`#${item.id}`}
+              className={"flex min-h-11 items-center gap-2.5 px-4 text-sm " + (active === item.id ? "font-bold text-brand-600" : "")}
+            >
+              <span className="tabular-nums text-muted">{i + 1}</span>
+              {item.title}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </details>
   );
 }
 
