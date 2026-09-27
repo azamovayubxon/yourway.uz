@@ -37,3 +37,15 @@ Sizga mos yo‘nalishlar
 Sizni hayron qoldirishi mumkin bo‘lgan yo‘nalish
 Test natijalarida yana bir qiziq yo‘nalish ko‘rindi. Bir qarashda u sizga mos emasdek tuyulishi mumkin. Lekin javoblaringizda odamlar bilan ishlash, ularni tushunish va murakkab vaziyatlarda yo‘l ko‘rsata olish qobiliyati seziladi.
 Bu qaysi yo‘nalish ekani va nega aynan sizga mos kelishi — to‘liq hisobotda.
+
+## Namuna 3
+
+Автор: docs/yourway-audit/UZ_COPY.md §7 (владелец утвердил как источник тона для отчёта, этап C1). Слабое место — поддерживающая формулировка с проверяемым действием, а не вердикт.
+
+Oʻqish uchun aniq jadval va kichik muddatlar belgilab koʻring. Haftalik vazifa va ustozning fikr-mulohazasi rejani davom ettirishga yordam berishi mumkin. Ikki haftadan keyin bu tartib sizga qanchalik qulayligini baholang.
+
+## Namuna 4
+
+Автор: docs/yourway-audit/UZ_COPY.md §7 (владелец утвердил как источник тона для отчёта, этап C1). Предпочтение в обучении — заявленный интерес, а не измеренная способность.
+
+Javoblaringizda tinglash va oʻqishga koʻproq qiziqish bildirgansiz. Yangi mavzuni qisqa tushuntirishdan boshlang, keyin uni amalda sinab koʻring. Qaysi usulda yaxshiroq eslab qolishingizni kichik vazifa orqali tekshiring.

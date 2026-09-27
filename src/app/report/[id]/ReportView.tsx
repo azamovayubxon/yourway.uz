@@ -35,6 +35,7 @@ const SECTION_ICONS = {
   goal: "🎯",
   reality: "⚖️",
   path: "🗺️",
+  plan30: "📅",
   learning: "📚",
   future: "🤖",
   alternatives: "✨",
@@ -65,7 +66,20 @@ export function ReportView({
 }: Props) {
   const { portrait, goal, reality_check: reality, main_path: path, alternatives, act_now: actNow } = content;
   const lang = reportLocale;
-  const order: SectionId[] = ["portrait", "goal", "reality", "path", "learning", "future", "alternatives", "actNow"];
+  // plan_30_days — новое поле схемы (report-2.0, этап C1). У старых отчётов (report-1.0) его нет —
+  // раздел просто не показываем, а не рендерим пустой блок.
+  const plan30Days = content.plan_30_days;
+  const order: SectionId[] = [
+    "portrait",
+    "goal",
+    "reality",
+    "path",
+    ...(plan30Days && plan30Days.length > 0 ? (["plan30"] as const) : []),
+    "learning",
+    "future",
+    "alternatives",
+    "actNow",
+  ];
   const nav = order.map((s) => ({ id: s, title: t.sections[s] }));
   const number = (s: SectionId) => String(order.indexOf(s) + 1).padStart(2, "0");
   const verdict = VERDICT_STYLES[reality.verdict];
@@ -242,6 +256,27 @@ export function ReportView({
           ))}
         </div>
       </Section>
+
+      {plan30Days && plan30Days.length > 0 && (
+        <Section id="plan30" n={number("plan30")} title={t.sections.plan30}>
+          <ol className="space-y-3" lang={lang}>
+            {plan30Days.map((item, i) => (
+              <li key={i} className="rounded-2xl border border-slate-200 p-4">
+                <div className="flex gap-3">
+                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-ink text-xs font-bold text-white">
+                    {i + 1}
+                  </span>
+                  <p className="font-semibold leading-snug">{item.task}</p>
+                </div>
+                <p className="mt-2 pl-10 text-sm leading-relaxed text-muted">
+                  <span className="font-semibold text-ink">{t.plan30Result}: </span>
+                  {item.expected_result}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </Section>
+      )}
 
       <Section id="learning" n={number("learning")} title={t.sections.learning}>
         {learningStyles.length > 0 && (
@@ -425,6 +460,14 @@ function RouteCard({ route, t, lang, open }: { route: ReportRoute; t: ReportDict
           <span className="font-semibold not-italic text-ink/70">{t.tradeoff}: </span>
           {route.tradeoff_note}
         </p>
+        {/* what_to_check — новое поле схемы (report-2.0, этап C1): у старых отчётов (report-1.0)
+            его нет, поэтому рендерим только когда есть (ТЗ аудита §9 «Реальные возможности и источники»). */}
+        {route.what_to_check && (
+          <p className="mt-3 rounded-xl bg-slate-50 p-3 text-[0.9rem] leading-relaxed text-muted">
+            <span className="font-semibold text-ink">{t.whatToCheck}: </span>
+            {route.what_to_check}
+          </p>
+        )}
       </div>
     </details>
   );

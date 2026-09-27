@@ -3,6 +3,7 @@
 // и при провале повторяется только она.
 
 import { z } from "zod";
+import { CONTENT_ISSUE_TEXT, findContentIssues, findListIssues } from "./content-checks";
 import type { ReportLevel, ReportPartId, ReportPathType } from "./prompts";
 import { matchesLanguage, PLACEHOLDER, UZ_RULE_TEXT, type TeaserLanguage } from "./teaser-schema";
 import { findUzIssues, type UzRules } from "./uz-style";
@@ -11,6 +12,13 @@ const text = z.string().trim().min(1);
 
 // ── Схемы для API (structured outputs): только форма ответа, без ограничений длины ──
 
+// what_to_check — необязательно и здесь, и в Route ниже: пока на боевом сайте не активирована
+// новая версия промпта отчёта (/admin/prompts → «Создать версию из текста в коде» для всех 4
+// ключей отчёта), действует СТАРЫЙ активный текст роли в системном промпте, который явно не
+// объясняет модели этого поля так подробно, как новый (хотя часть-задача и сама схема, section 6/7,
+// уже фиксированы в коде и не зависят от версии в БД — см. комментарий у REPORT_SCHEMA). Без этой
+// мягкости старая версия могла бы изредка присылать ответ без поля и ломать генерацию (решение
+// владельца, этап C1 — тот же принцип, что у trial_task/free_step в тизере, этап 4б).
 const RouteOutput = z.object({
   type: z.enum(["local_cheap", "abroad", "online"]),
   title: z.string(),
@@ -21,6 +29,7 @@ const RouteOutput = z.object({
   outcome: z.string(),
   effort_level: z.enum(["easy", "hard"]),
   tradeoff_note: z.string(),
+  what_to_check: z.string().optional(),
 });
 
 export const REPORT_PART_OUTPUT_SCHEMAS = {
@@ -43,14 +52,18 @@ export const REPORT_PART_OUTPUT_SCHEMAS = {
     }),
   }),
   main_path: z.object({
-    main_path: z.object({ summary: z.string(), routes: z.array(RouteOutput) }),
+    // limitations — необязательно (см. комментарий у RouteOutput.what_to_check выше).
+    main_path: z.object({ summary: z.string(), limitations: z.array(z.string()).optional(), routes: z.array(RouteOutput) }),
   }),
   finish: z.object({
     main_path: z.object({ learning_advice: z.string(), future_outlook: z.string() }),
     alternatives: z.array(
       z.object({ direction: z.string(), why_you: z.string(), potential: z.string(), first_steps: z.array(z.string()) }),
     ),
+    // plan_30_days и takeaway — необязательны (см. комментарий у RouteOutput.what_to_check выше).
+    plan_30_days: z.array(z.object({ task: z.string(), expected_result: z.string() })).optional(),
     act_now: z.array(z.string()),
+    takeaway: z.string().optional(),
     disclaimer: z.string(),
   }),
 } satisfies Record<ReportPartId, z.ZodType>;
@@ -69,6 +82,11 @@ const Route = z.object({
   outcome: text.max(1200),
   effort_level: z.enum(["easy", "hard"]),
   tradeoff_note: text.max(1000),
+  // Реальные возможности и источники (ТЗ аудита §9): вместо выдуманных вузов/курсов/цен —
+  // что человеку проверить самому и где искать актуальные данные. Необязательно — см. комментарий
+  // у RouteOutput выше: со старой активной версией промпта отчёта поля может не быть в ответе,
+  // и это не должно ломать генерацию (решение владельца, этап C1).
+  what_to_check: text.max(500).optional(),
 });
 
 const PortraitGoalSchema = z.object({
@@ -92,7 +110,15 @@ const PortraitGoalSchema = z.object({
 });
 
 const MainPathSchema = z.object({
-  main_path: z.object({ summary: text.max(1500), routes: z.array(Route).min(1).max(8) }),
+  main_path: z.object({
+    summary: text.max(1500),
+    // Ограничения (ТЗ аудита §9): 2–4 честных пункта — время/бюджет/навыки — для основного
+    // маршрута, отдельным полем, а не вырезкой из текста на слое отображения. Необязательно
+    // (см. комментарий у RouteOutput.what_to_check выше): без него present.ts подставляет прежнее
+    // поведение (ограничения из первого маршрута), как для старых отчётов (report-1.0).
+    limitations: z.array(text.max(300)).min(2).max(4).optional(),
+    routes: z.array(Route).min(1).max(8),
+  }),
 });
 
 const FinishSchema = z.object({
@@ -109,7 +135,20 @@ const FinishSchema = z.object({
     )
     .min(1)
     .max(2),
+  // План на 30 дней (ТЗ аудита §9): 3–5 задач с понятным результатом каждой. Необязательно
+  // (см. комментарий у RouteOutput.what_to_check выше): без него раздел «План на 30 дней» просто
+  // не показывается, как для старых отчётов (report-1.0).
+  plan_30_days: z
+    .array(z.object({ task: text.max(400), expected_result: text.max(400) }))
+    .min(3)
+    .max(5)
+    .optional(),
   act_now: z.array(text.max(600)).min(2).max(7),
+  // Краткий вывод всего отчёта (ТЗ аудита §9): отдельное поле, пишется последней частью, когда
+  // уже известны и маршрут, и альтернативы — а не вырезка из portrait.summary на слое отображения.
+  // Необязательно (см. комментарий у RouteOutput.what_to_check выше): present.ts подставляет
+  // прежнюю вырезку из portrait.summary, если поля нет.
+  takeaway: text.max(1200).optional(),
   disclaimer: text.max(800),
 });
 
@@ -124,11 +163,18 @@ export type MainPathPart = z.infer<typeof MainPathSchema>;
 export type FinishPart = z.infer<typeof FinishSchema>;
 export type ReportRoute = z.infer<typeof Route>;
 
-// Собранный отчёт — ровно схема Приложения Б §7.
+// Собранный отчёт — схема Приложения Б §7 (report-2.0, этап C1). takeaway, main_path.limitations,
+// main_path.routes[].what_to_check и plan_30_days — необязательны уже в самой zod-схеме выше:
+// со старой активной версией промпта (пока владелец не нажал «Создать версию из текста в коде»
+// для всех 4 ключей отчёта) модель может их не вернуть, и это не должно ронять генерацию. По той
+// же причине в БД остаются и старые отчёты (report-1.0), где этих полей нет вообще (ТЗ аудита §15:
+// «старые отчёты отображаются как раньше», миграция схемы не требуется).
 export type ReportContent = PortraitGoalPart & {
   main_path: MainPathPart["main_path"] & FinishPart["main_path"];
   alternatives: FinishPart["alternatives"];
   act_now: FinishPart["act_now"];
+  plan_30_days?: FinishPart["plan_30_days"];
+  takeaway?: string;
   disclaimer: string;
 };
 
@@ -145,13 +191,35 @@ export function mergeReportParts(parts: {
     main_path: { ...parts.main_path.main_path, ...parts.finish.main_path },
     alternatives: parts.finish.alternatives,
     act_now: parts.finish.act_now,
+    plan_30_days: parts.finish.plan_30_days,
+    takeaway: parts.finish.takeaway,
     disclaimer: parts.finish.disclaimer,
   };
 }
 
+// content и softOnly присутствуют и при ok:false — это позволяет вызывающему коду (report/index.ts)
+// принять последнюю попытку как есть, если все найденные нарушения «мягкие» (тон/содержание —
+// решение владельца, этап C1: оплативший пользователь не должен получить ошибку из-за слова
+// «уникальный»). content — undefined только когда сама схема не разобралась (parsed.success = false):
+// в этом случае принимать ответ не из чего.
 export type PartValidation =
-  | { ok: true; content: unknown }
-  | { ok: false; error: string; problems: string[] };
+  | { ok: true; content: unknown; error: null; problems: []; softOnly: false }
+  | { ok: false; error: string; problems: string[]; content?: unknown; softOnly: boolean };
+
+// «Мягкие» нарушения (этап C1, уточнение по ревью) — тон и содержание: лесть без опоры на данные,
+// гарантии, сравнение «выше/ниже среднего», ссылка в тексте, голый код типа, пустой/повторяющийся
+// пункт списка, а также английское слово-жаргонизм в узбекском тексте (rule:uz_english — «deadline»,
+// «feedback» вместо «muddat», «fikr-mulohaza»; см. docs/uz-glossary.md, раздел «Запрещённые
+// английские слова»). Названия инструментов, технологий и платформ (Figma, Python, Excel, Canva,
+// Telegram, Behance, UX/UI и т. п.) в этот список не входят и вообще не считаются нарушением —
+// см. тот же раздел глоссария. Мягкие нарушения можно принять на последней попытке вместо провала
+// генерации оплаченного отчёта. Жёсткие — разрыв схемы (`schema:...`), обязательные поля по типу
+// пути, отсутствие пометки «ориентировочно», заглушки, язык не тот, обращение на «ты», а также
+// остальные узбекские нарушения из uz-style.ts (кириллица, «sen», «Tu», запрещённые конструкции —
+// это не отдельное слово, а неверная грамматика или калька) — по-прежнему всегда бракуют ответ.
+function isSoftIssueCode(code: string): boolean {
+  return code.startsWith("rule:content_") || code.startsWith("rule:uz_english");
+}
 
 // Служебные коды схемы (online, easy, stated, fits…) — не текст для человека: их не проверяем
 // на язык и стоп-слова (иначе код «online» считался бы английским словом в узбекском тексте).
@@ -187,6 +255,7 @@ export function validateReportPart(
       ok: false,
       error: `schema:${issue.path.join(".")}:${issue.code}`,
       problems: parsed.error.issues.slice(0, 10).map((i) => `поле ${i.path.join(".") || "(ответ)"}: ${i.message}`),
+      softOnly: false,
     };
   }
   const content = parsed.data;
@@ -247,8 +316,39 @@ export function validateReportPart(
     }
   }
 
-  if (found.length > 0) {
-    return { ok: false, error: found[0].code, problems: [...new Set(found.map((f) => f.text))] };
+  // Проверки содержания и тона (этап C1, ТЗ аудита §9–§10): лесть без опоры на данные, гарантии,
+  // «выше/ниже среднего», ссылки на несуществующие источники, голые коды типов, пустые и
+  // повторяющиеся пункты списков.
+  for (const issue of findContentIssues(joined, ctx.language)) {
+    found.push({ code: `rule:content_${issue.rule}`, text: CONTENT_ISSUE_TEXT[issue.rule](issue.detail) });
   }
-  return { ok: true, content };
+  const listChecks: [string, readonly string[]][] =
+    part === "portrait_goal"
+      ? [
+          ["portrait.strengths", (content as PortraitGoalPart).portrait.strengths],
+          ["portrait.watchouts", (content as PortraitGoalPart).portrait.watchouts],
+        ]
+      : part === "finish"
+        ? [
+            ["act_now", (content as FinishPart).act_now],
+            ["plan_30_days", ((content as FinishPart).plan_30_days ?? []).map((p) => p.task)],
+            ["alternatives", (content as FinishPart).alternatives.map((a) => a.direction)],
+          ]
+        : [];
+  for (const [label, items] of listChecks) {
+    for (const issue of findListIssues(label, items)) {
+      found.push({ code: `rule:content_${issue.rule}`, text: CONTENT_ISSUE_TEXT[issue.rule](issue.detail) });
+    }
+  }
+
+  if (found.length > 0) {
+    return {
+      ok: false,
+      error: found[0].code,
+      problems: [...new Set(found.map((f) => f.text))],
+      content,
+      softOnly: found.every((f) => isSoftIssueCode(f.code)),
+    };
+  }
+  return { ok: true, content, error: null, problems: [], softOnly: false };
 }

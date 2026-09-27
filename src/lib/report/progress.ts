@@ -25,6 +25,22 @@ export function partsDone(parts: Record<string, unknown>): number {
   return REPORT_PARTS.filter((p) => p in parts).length;
 }
 
+// Принять последнюю попытку части как есть вместо провала генерации (решение владельца, этап C1):
+// оплативший пользователь не должен получить ошибку из-за слова «уникальный» или повторившегося
+// пункта списка. Работает только когда (а) попыток больше не осталось, (б) сбой не фатальный
+// (не «неверный ключ» и т. п.), (в) схема всё же разобралась (есть content — иначе принимать
+// нечего) и (г) все найденные нарушения — «мягкие» (softOnly, см. isSoftIssueCode в
+// report-schema.ts): тон и содержание, а не разрыв схемы, обязательных полей по типу пути,
+// узбекского стиля или обращения на «ты».
+export function shouldAcceptDespiteWarnings(
+  attempt: number,
+  result: { ok: boolean; fatal: boolean; softOnly: boolean; content?: unknown },
+): boolean {
+  if (result.ok || result.fatal || !result.softOnly) return false;
+  if (result.content === undefined) return false;
+  return attempt >= MAX_PART_ATTEMPTS;
+}
+
 // Что делать, когда страница отчёта спрашивает статус (раз в 3 секунды):
 //   wait    — часть сейчас генерируется, ждём;
 //   start   — никто не генерирует: взять следующую часть (или повтор текущей);

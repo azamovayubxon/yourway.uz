@@ -66,16 +66,20 @@ export interface ReportFirstScreen {
 }
 
 // Компактный первый экран отчёта (ТЗ аудита §9): вывод, основное направление, первый шаг,
-// ограничения — собраны из уже существующих полей ReportContent, ничего нового не генерируется.
+// ограничения. С этапа C1 (report-2.0) вывод и ограничения — отдельные поля из схемы (`takeaway`,
+// `main_path.limitations`), которые пишет ИИ, зная уже весь отчёт целиком, а не вырезка из текста
+// на этом слое отображения. Старые отчёты (report-1.0) этих полей не содержат — для них сохраняется
+// прежнее поведение: вывод берётся как первые предложения портрета, ограничения — из первого маршрута.
 export function buildFirstScreen(content: ReportContent): ReportFirstScreen {
   const route = content.main_path.routes[0];
-  const constraints = route
+  const oldConstraints = route
     ? [route.time_estimate, route.cost_range, route.requirements[0]].filter(Boolean).join(" · ")
     : "";
+  const limitations = content.main_path.limitations;
   return {
-    takeaway: firstSentences(content.portrait.summary, 2),
+    takeaway: content.takeaway ?? firstSentences(content.portrait.summary, 2),
     direction: content.goal.statement,
     firstStep: content.act_now[0] ?? "",
-    constraints,
+    constraints: limitations && limitations.length > 0 ? limitations.join(" · ") : oldConstraints,
   };
 }

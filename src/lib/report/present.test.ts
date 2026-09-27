@@ -95,3 +95,31 @@ describe("buildFirstScreen — компактный первый экран (Т�
     expect(buildFirstScreen(content).constraints).toBe("6–9 месяцев · 0–2 млн сум · английский B1");
   });
 });
+
+describe("buildFirstScreen — report-2.0: takeaway и limitations как отдельные поля (этап C1)", () => {
+  const oldContent = {
+    portrait: { summary: "Первое предложение. Второе предложение. Третье не нужно." },
+    goal: { statement: "Стать аналитиком данных" },
+    main_path: {
+      routes: [{ time_estimate: "6–9 месяцев", cost_range: "0–2 млн сум", requirements: ["английский B1"] }],
+    },
+    act_now: ["Пройти бесплатный курс по SQL"],
+  } as unknown as Parameters<typeof buildFirstScreen>[0];
+
+  it("старый отчёт (report-1.0, нет takeaway/limitations) отображается как раньше", () => {
+    const s = buildFirstScreen(oldContent);
+    expect(s.takeaway).toBe("Первое предложение. Второе предложение.");
+    expect(s.constraints).toBe("6–9 месяцев · 0–2 млн сум · английский B1");
+  });
+
+  it("новый отчёт (report-2.0): takeaway и main_path.limitations — отдельные поля, не вырезка из текста", () => {
+    const newContent = {
+      ...oldContent,
+      takeaway: "Готовый краткий вывод от ИИ, а не вырезка из портрета.",
+      main_path: { ...oldContent.main_path, limitations: ["Бюджет ограничен", "Нужен английский B1"] },
+    } as unknown as Parameters<typeof buildFirstScreen>[0];
+    const s = buildFirstScreen(newContent);
+    expect(s.takeaway).toBe("Готовый краткий вывод от ИИ, а не вырезка из портрета.");
+    expect(s.constraints).toBe("Бюджет ограничен · Нужен английский B1");
+  });
+});

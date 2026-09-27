@@ -543,6 +543,7 @@ export const uz: Dictionary = {
       goal: "Maqsadingiz",
       reality: "Maqsadga erishish uchun nimalar kerak?",
       path: "Asosiy yoʻl",
+      plan30: "30 kunlik reja",
       learning: "Oʻqishni qanday tashkil qilish mumkin?",
       future: "Kelajak va sunʼiy intellekt",
       alternatives: "Koʻrib chiqishga arziydigan boshqa yoʻnalishlar",
@@ -570,6 +571,8 @@ export const uz: Dictionary = {
     requirements: "Nimalar kerak boʻladi",
     outcome: "Natijada nimaga ega boʻlasiz",
     tradeoff: "Oson yoki qiyin",
+    whatToCheck: "Nimani oʻzingiz tekshirishingiz kerak",
+    plan30Result: "Kutilayotgan natija",
     learningStyles: {
       reading: "oʻqib oʻrganish",
       auditory: "tinglab oʻrganish",

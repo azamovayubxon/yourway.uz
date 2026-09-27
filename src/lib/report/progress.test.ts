@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { REPORT_STALE_LOCK_MS } from "@/lib/ai/config";
 import { summarizeReportCalls } from "./ai-log";
-import { decideNext, MAX_PART_ATTEMPTS, nextPart, partsDone } from "./progress";
+import { decideNext, MAX_PART_ATTEMPTS, nextPart, partsDone, shouldAcceptDespiteWarnings } from "./progress";
 
 const now = new Date("2026-09-25T12:00:00Z");
 const row = (over: Partial<Parameters<typeof decideNext>[0]> = {}) => ({
@@ -39,6 +39,34 @@ describe("очередь частей полного отчёта", () => {
 
   it("одна часть — не больше одного повтора (как у тизера)", () => {
     expect(MAX_PART_ATTEMPTS).toBe(2);
+  });
+});
+
+describe("shouldAcceptDespiteWarnings — не проваливать оплаченный отчёт из-за нарушения тона (этап C1)", () => {
+  const soft = { ok: false, fatal: false, softOnly: true, content: { some: "content" } };
+
+  it("принимает на последней попытке, если нарушение только тона и content есть", () => {
+    expect(shouldAcceptDespiteWarnings(MAX_PART_ATTEMPTS, soft)).toBe(true);
+  });
+
+  it("не принимает, пока остались попытки — сначала пробуем повтор", () => {
+    expect(shouldAcceptDespiteWarnings(MAX_PART_ATTEMPTS - 1, soft)).toBe(false);
+  });
+
+  it("не принимает нарушение схемы/языка (softOnly=false), даже на последней попытке", () => {
+    expect(shouldAcceptDespiteWarnings(MAX_PART_ATTEMPTS, { ...soft, softOnly: false })).toBe(false);
+  });
+
+  it("не принимает фатальный сбой (неверный ключ и т. п.)", () => {
+    expect(shouldAcceptDespiteWarnings(MAX_PART_ATTEMPTS, { ...soft, fatal: true })).toBe(false);
+  });
+
+  it("не принимает, если ответа/содержимого вообще не было (content undefined)", () => {
+    expect(shouldAcceptDespiteWarnings(MAX_PART_ATTEMPTS, { ...soft, content: undefined })).toBe(false);
+  });
+
+  it("не трогает уже успешный результат", () => {
+    expect(shouldAcceptDespiteWarnings(MAX_PART_ATTEMPTS, { ...soft, ok: true })).toBe(false);
   });
 });
 

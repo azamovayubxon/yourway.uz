@@ -42,6 +42,20 @@ describe("узбекский глоссарий (docs/uz-glossary.md)", () => {
     );
   });
 
+  // Уточнение по ревью (этап C1): названия инструментов/технологий/платформ — не нарушение вообще
+  // (у них нет узбекской замены, отчёт про IT/дизайн не должен из-за них проваливаться), а
+  // жаргонизмы вроде «deadline»/«feedback», у которых есть обычное узбекское слово, — нарушение.
+  it("названия инструментов, технологий и платформ не считаются английскими словами", () => {
+    const text =
+      "Figma va Canva'da maket tayyorlang, Python asoslarini o'rganing, Excel'da hisob-kitob qiling, Telegram va Behance'da portfolio to'plang. UX/UI dizaynini his qiling.";
+    expect(findUzIssues(text, glossary)).toEqual([]);
+  });
+
+  it("жаргонизмы вроде «deadline» и «feedback» — по-прежнему нарушение (есть узбекская замена)", () => {
+    expect(findUzIssues("Deadline yaqinlashmoqda", glossary).map((i) => i.rule)).toEqual(["english"]);
+    expect(findUzIssues("Ustozdan feedback oling", glossary).map((i) => i.rule)).toEqual(["english"]);
+  });
+
   it("разбор таблиц: апостроф в ячейке исправляется, строки без кода пропускаются", () => {
     const md = [
       "<!-- section: riasec -->",

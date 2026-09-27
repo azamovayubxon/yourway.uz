@@ -26,7 +26,7 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
     portrait: {
       type_label: "Исследователь-Творец",
       summary:
-        "Судя по вашей очень высокой открытости (88 %) и коду интересов IAE, вы из тех, кто сначала разбирается, как всё устроено, а потом делает по-своему. Исследовательская жилка (I) даёт вам аналитику, творческая (A) — вкус и желание создавать, а предприимчивая (E) — готовность продавать результат. Свобода и деньги для вас на первых местах, стабильность — ближе к концу: вам подходит путь, где доход растёт вместе с навыком, а не с выслугой лет. Средняя добросовестность (55 %) означает, что вы способны на сильные рывки, но длинный маршрут лучше дробить на короткие этапы с видимым результатом.",
+        "Судя по вашей очень высокой открытости (88% от максимума шкалы) и сочетанию интересов «исследование + творчество + предприимчивость», вы из тех, кто сначала разбирается, как всё устроено, а потом делает по-своему. Исследовательская жилка даёт вам аналитику, творческая — вкус и желание создавать, а предприимчивая — готовность продавать результат. Свобода и деньги для вас на первых местах, стабильность — ближе к концу: вам подходит путь, где доход растёт вместе с навыком, а не с выслугой лет. Добросовестность у вас на среднем уровне: вы способны на сильные рывки, а длинный маршрут лучше дробить на короткие этапы с видимым результатом — попробуйте двухнедельные циклы и оцените, насколько так легче не бросать начатое.",
       strengths: [
         "Быстро осваиваете новые инструменты и идеи",
         "Соединяете анализ и творчество: видите и логику, и красоту решения",
@@ -35,7 +35,7 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
       ],
       watchouts: [
         "Интерес к новому может уводить от начатого: без коротких дедлайнов проекты рискуют остаться незаконченными",
-        "Экстраверсия ниже средней: разговоры с клиентами и продажи потребуют осознанной тренировки",
+        "Общение с клиентами и переговоры пока не даются легко — потренируйте несколько типовых разговоров заранее и оцените, насколько увереннее вы будете себя чувствовать",
         "Тяга к свободе иногда мешает выстроить режим — а во фрилансе режим и есть ваш начальник",
       ],
     },
@@ -54,7 +54,7 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
           {
             goal: "Дизайн цифровых продуктов (UX/UI) — рекомендуем",
             why_fits:
-              "Очень высокая открытость (88 %) и код IAE просят работы, где анализ соединяется с творчеством, а удалённый формат поддерживает вашу главную ценность — свободу.",
+              "Очень высокая открытость и сочетание интересов «исследование + творчество + предприимчивость» просят работы, где анализ соединяется с творчеством, а удалённый формат поддерживает вашу главную ценность — свободу.",
           },
           {
             goal: "No-code разработка сайтов и приложений",
@@ -64,7 +64,7 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
           {
             goal: "Digital-маркетинг и контент",
             why_fits:
-              "Есть творческий интерес и тяга к влиянию, но экстраверсия ниже средней сделает этот путь чуть тяжелее остальных.",
+              "Есть творческий интерес и тяга к влиянию, но общение с людьми пока не самая сильная сторона, и этот путь может потребовать больше тренировки, чем остальные.",
           },
         ],
       },
@@ -73,7 +73,7 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
       stated: {
         verdict: "ambitious",
         explanation:
-          "Цель хорошо совпадает с вашим профилем: открытость, исследовательско-творческие интересы и ценность свободы — ровно то, что нужно в дизайне и во фрилансе. Амбициозна она по срокам и стартовым условиям: бюджет низкий, английский базовый, опыта заказов пока нет. За 2 года при 20 часах в неделю выйти на доход ориентировочно $1500–2000 в месяц реально, но для этого нужны портфолио из 5–7 сильных работ, английский на уровне B1–B2 и выход на зарубежные площадки. Если держать темп, шансы выше средних.",
+          "Цель хорошо совпадает с вашим профилем: открытость, исследовательско-творческие интересы и ценность свободы — ровно то, что нужно в дизайне и во фрилансе. Амбициозна она по срокам и стартовым условиям: бюджет низкий, английский базовый, опыта заказов пока нет. За 2 года при 20 часах в неделю выйти на доход ориентировочно $1500–2000 в месяц реально, но для этого нужны портфолио из 5–7 сильных работ, английский на уровне B1–B2 и выход на зарубежные площадки. Если держать темп, шансы хорошие.",
         adjustment:
           "Разбейте цель на ступени: через 6 месяцев — первые платные заказы (ориентировочно $100–300 в месяц), через 12 — ориентировочно $500–800, через 24 — $1500–2000. Если к 12-му месяцу рост медленнее, это не провал: сдвиньте финальный срок на 6–12 месяцев или добавьте частичную занятость в местной студии.",
       },
@@ -88,6 +88,11 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
       main_path: {
         summary:
           "Вы идёте из точки «студент с интересом к дизайну и технологиям, без портфолио» в точку «самостоятельный дизайнер цифровых продуктов с зарубежными клиентами». Ядро маршрута — навыки UX/UI-дизайна и основы no-code, портфолио из реальных задач и параллельный подъём английского. Ниже — три варианта под разные вводные; их можно сочетать.",
+        limitations: [
+          "Бюджет на старте низкий — начинать придётся с бесплатных материалов, вкладываясь по мере первых доходов",
+          "Английский пока базовый — его нужно параллельно поднимать до уровня B1–B2",
+          "Портфолио ещё нет — первые 2–3 месяца уйдут на учебные проекты, а не на платные заказы",
+        ],
         routes: [
           {
             type: "local_cheap",
@@ -106,6 +111,8 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
             effort_level: "easy",
             tradeoff_note:
               "Лёгкий путь почти ничего не стоит, но потолок у местного рынка ниже: чтобы выйти на $1500–2000, всё равно понадобится шаг к зарубежным клиентам.",
+            what_to_check:
+              "Прежде чем платить за шаблон или урок, проверьте отзывы и дату последнего обновления материала на сайте продавца — предложения устаревают быстрее, чем этот отчёт.",
           },
           {
             type: "online",
@@ -128,6 +135,8 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
             effort_level: "hard",
             tradeoff_note:
               "Сложный путь тяжелее и дороже, зато выводит на рынок, где ваша цель реальна: ставки там в разы выше местных.",
+            what_to_check:
+              "Название конкретной онлайн-школы и её цену уточняйте на официальном сайте программы: условия и стоимость меняются, проверьте также, есть ли пробный урок перед оплатой.",
           },
           {
             type: "abroad",
@@ -151,6 +160,8 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
             effort_level: "hard",
             tradeoff_note:
               "Самый дорогой и долгий путь, и он не совпадает с вашим «без переезда». Держите его как запасной: он имеет смысл, если выиграете грант.",
+            what_to_check:
+              "Точные требования, стоимость контракта и список грантов уточняйте на официальном сайте приёмной комиссии выбранного вуза и в посольстве страны — эти условия меняются от года к году.",
           },
         ],
       },
@@ -176,6 +187,28 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
           ],
         },
       ],
+      plan_30_days: [
+        {
+          task: "Пройти вводный бесплатный курс по основам интерфейсов",
+          expected_result: "Понимание базовых терминов дизайна и первый набросок экрана в Figma",
+        },
+        {
+          task: "Сделать редизайн главного экрана одного местного сайта или приложения",
+          expected_result: "Первая работа, которую можно показать в портфолио",
+        },
+        {
+          task: "Начать заниматься английским по 30 минут в день",
+          expected_result: "Сформированная привычка и заметный рост словарного запаса",
+        },
+        {
+          task: "Подписаться на 3 канала с заказами для дизайнеров и записывать, что просят и сколько платят",
+          expected_result: "Понимание, какие навыки и цены реальны на рынке",
+        },
+        {
+          task: "Показать первую работу 5 знакомым и попросить честную обратную связь",
+          expected_result: "Список конкретных правок и первый опыт получения отзыва",
+        },
+      ],
       act_now: [
         "Сегодня: установите Figma и пройдите первый бесплатный урок по интерфейсам (1–2 часа)",
         "На этой неделе: выберите одно местное заведение и сделайте редизайн его главного экрана — это первая работа в портфолио",
@@ -183,6 +216,8 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
         "Запишитесь в разговорный клуб английского или найдите партнёра по языку",
         "Подпишитесь на 3 Telegram-канала с заказами для дизайнеров и понаблюдайте, что просят и сколько платят",
       ],
+      takeaway:
+        "Ваш профиль сочетает высокую открытость новому с интересом к исследованию, творчеству и предпринимательству — это хорошая база для дизайна цифровых продуктов на фрилансе. Цель амбициозна по срокам, но достижима шаг за шагом: портфолио, английский и первые заказы дают более быстрый локальный доход, а системное онлайн-обучение — выход на зарубежный рынок и вашу целевую сумму. Начните с одной учебной работы на этой неделе и двигайтесь короткими проверяемыми этапами.",
       disclaimer:
         "Рекомендации носят информационный характер и не являются гарантией трудоустройства или дохода. Суммы и сроки ориентировочные. Финальное решение — за вами.",
     },
@@ -191,7 +226,7 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
     portrait: {
       type_label: "Izlanuvchan ijodkor",
       summary:
-        "Yangilikka ochiqligingiz juda yuqori (88 %), qiziqishlar kodingiz esa IAE — yaʼni siz avval narsaning qanday ishlashini tushunib olasiz, keyin uni oʻzingizcha qilasiz. Tadqiqotchilik (I) sizga tahlil qilish qobiliyatini, ijodkorlik (A) did va yaratish istagini, tadbirkorlik (E) esa natijani sota olishni beradi. Siz uchun erkinlik va pul birinchi oʻrinda, barqarorlik esa keyinroq: daromad yillar oʻtishi bilan emas, mahoratingiz bilan birga oʻsadigan yoʻl sizga mos. Masʼuliyatlilik oʻrtacha (55 %): siz qisqa vaqtda katta kuch bilan ishlay olasiz, lekin uzoq yoʻlni natijasi koʻrinadigan qisqa bosqichlarga boʻlgan maʼqul.",
+        "Yangilikka ochiqligingiz juda yuqori (shkala maksimumidan 88%), qiziqishlaringiz esa tadqiqot, ijod va tadbirkorlik birikmasi — yaʼni siz avval narsaning qanday ishlashini tushunib olasiz, keyin uni oʻzingizcha qilasiz. Tadqiqotchilik sizga tahlil qilish qobiliyatini, ijodkorlik did va yaratish istagini, tadbirkorlik esa natijani sota olishni beradi. Siz uchun erkinlik va pul birinchi oʻrinda, barqarorlik esa keyinroq: daromad yillar oʻtishi bilan emas, mahoratingiz bilan birga oʻsadigan yoʻl sizga mos. Masʼuliyatlilik oʻrtacha darajada: siz qisqa vaqtda katta kuch bilan ishlay olasiz, uzoq yoʻlni esa natijasi koʻrinadigan qisqa bosqichlarga boʻlish maʼqul — ikki haftalik davrlarni sinab koʻring va bu sizga qanchalik yordam berishini baholang.",
       strengths: [
         "Yangi dastur va gʻoyalarni tez oʻzlashtirasiz",
         "Tahlil va ijodni birlashtirasiz: yechimning ham mantiqini, ham chiroyini koʻrasiz",
@@ -200,7 +235,7 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
       ],
       watchouts: [
         "Yangilikka qiziqish boshlangan ishdan chalgʻitishi mumkin: qisqa muddatlar qoʻymasangiz, loyihalar chala qolib ketadi",
-        "Kirishimlilik oʻrtachadan past: mijozlar bilan gaplashish va savdolashishni ataylab mashq qilishga toʻgʻri keladi",
+        "Mijozlar bilan gaplashish va savdolashish darhol yaxshi chiqmasligi mumkin — bir necha andoza suhbatni oldindan mashq qiling va oʻzingizni qanchalik erkin his qilishingizni baholang",
         "Erkinlikka intilish baʼzan kun tartibini tuzishga xalaqit beradi — frilansda esa kun tartibi sizning rahbaringiz",
       ],
     },
@@ -219,7 +254,7 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
           {
             goal: "Raqamli mahsulotlar dizayni (UX/UI) — tavsiya qilamiz",
             why_fits:
-              "Yangilikka juda yuqori ochiqlik (88 %) va IAE kodi tahlil bilan ijod birga keladigan ishni talab qiladi, masofadan ishlash esa eng muhim qadriyatingiz — erkinlikka mos.",
+              "Yangilikka juda yuqori ochiqlik va tadqiqot, ijod hamda tadbirkorlikka qiziqishlaringiz birikmasi tahlil bilan ijod birga keladigan ishni talab qiladi, masofadan ishlash esa eng muhim qadriyatingiz — erkinlikka mos.",
           },
           {
             goal: "Kod yozmasdan sayt va ilova yaratish",
@@ -229,7 +264,7 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
           {
             goal: "Raqamli marketing va kontent",
             why_fits:
-              "Ijodga va odamlarga taʼsir oʻtkazishga qiziqishingiz bor, lekin kirishimlilik oʻrtachadan past boʻlgani uchun bu yoʻl boshqalaridan ogʻirroq boʻlishi mumkin.",
+              "Ijodga va odamlarga taʼsir oʻtkazishga qiziqishingiz bor, lekin odamlar bilan muloqot hali kuchli tomoningiz emas, shuning uchun bu yoʻl boshqalariga qaraganda koʻproq mashq talab qilishi mumkin.",
           },
         ],
       },
@@ -238,7 +273,7 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
       stated: {
         verdict: "ambitious",
         explanation:
-          "Maqsadingiz profilingizga yaxshi mos keladi: yangilikka ochiqlik, tadqiqotchi va ijodkor qiziqishlar, erkinlikni qadrlash — dizayn va frilans uchun aynan kerakli sifatlar. Maqsad muddat va boshlangʻich sharoit jihatidan katta: byudjet kam, ingliz tili boshlangʻich darajada, hali buyurtma bilan ishlamagansiz. Haftasiga 20 soatdan ishlasangiz, 2 yilda oyiga taxminan $1500–2000 ga chiqish real, lekin buning uchun 5–7 ta kuchli ishdan iborat portfolio, B1–B2 darajadagi ingliz tili va xorijiy saytlarga chiqish kerak. Surʼatni saqlasangiz, imkoniyatingiz oʻrtachadan yuqori.",
+          "Maqsadingiz profilingizga yaxshi mos keladi: yangilikka ochiqlik, tadqiqotchi va ijodkor qiziqishlar, erkinlikni qadrlash — dizayn va frilans uchun aynan kerakli sifatlar. Maqsad muddat va boshlangʻich sharoit jihatidan katta: byudjet kam, ingliz tili boshlangʻich darajada, hali buyurtma bilan ishlamagansiz. Haftasiga 20 soatdan ishlasangiz, 2 yilda oyiga taxminan $1500–2000 ga chiqish real, lekin buning uchun 5–7 ta kuchli ishdan iborat portfolio, B1–B2 darajadagi ingliz tili va xorijiy saytlarga chiqish kerak. Surʼatni saqlasangiz, imkoningiz yaxshi.",
         adjustment:
           "Maqsadni bosqichlarga boʻling: 6 oydan keyin — birinchi pullik buyurtmalar (oyiga taxminan $100–300), 12 oydan keyin — taxminan $500–800, 24 oydan keyin — $1500–2000. Agar 12-oyga kelib oʻsish sekinroq boʻlsa, bu muvaffaqiyatsizlik emas: yakuniy muddatni 6–12 oyga suring yoki mahalliy studiyada yarim stavkada ishlashni qoʻshing.",
       },
@@ -253,6 +288,11 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
       main_path: {
         summary:
           "Siz «dizayn va texnologiyaga qiziqadigan, hali portfoliosi yoʻq talaba»dan «xorijiy mijozlari bor mustaqil raqamli mahsulotlar dizayneri»ga qarab yoʻl olasiz. Yoʻlning asosi — interfeys dizayni (UX/UI) va kod yozmasdan ilova yigʻish mahorati, haqiqiy vazifalardan tuzilgan portfolio va shu bilan birga ingliz tilini koʻtarish. Quyida turli sharoitlar uchun uchta yoʻl bor, ularni birga qoʻshsa ham boʻladi.",
+        limitations: [
+          "Boshlangʻich byudjet kam — bepul materiallardan boshlab, birinchi daromad kelgach asta-sekin sarflash kerak boʻladi",
+          "Ingliz tili hozircha boshlangʻich darajada — uni parallel ravishda B1–B2 gacha koʻtarish kerak",
+          "Portfolio hali yoʻq — birinchi 2–3 oy pullik buyurtmalarga emas, oʻquv loyihalariga ketadi",
+        ],
         routes: [
           {
             type: "local_cheap",
@@ -272,6 +312,8 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
             effort_level: "easy",
             tradeoff_note:
               "Oson yoʻl deyarli pul talab qilmaydi, lekin mahalliy bozorda daromad chegarasi pastroq: $1500–2000 ga chiqish uchun baribir xorijiy mijozlar tomon qadam qoʻyishga toʻgʻri keladi.",
+            what_to_check:
+              "Shablon yoki darsga pul toʻlashdan oldin, sotuvchining rasmiy saytida sharhlar va materialning oxirgi yangilangan sanasini tekshiring — takliflar bu hisobotdan tezroq eskiradi.",
           },
           {
             type: "online",
@@ -294,6 +336,8 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
             effort_level: "hard",
             tradeoff_note:
               "Qiyin yoʻl ogʻirroq va qimmatroq, lekin maqsadingiz real boʻlgan bozorga olib chiqadi: u yerda narxlar mahalliy bozordagidan bir necha barobar yuqori.",
+            what_to_check:
+              "Aniq onlayn maktab nomi va narxini dastur rasmiy saytidan aniqlashtiring: oʻqish shartlari va narx oʻzgarib turadi, sinov darsi bor-yoʻqligini ham tekshiring.",
           },
           {
             type: "abroad",
@@ -317,6 +361,8 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
             effort_level: "hard",
             tradeoff_note:
               "Eng qimmat va eng uzoq yoʻl, u «koʻchmasdan» degan shartingizga ham toʻgʻri kelmaydi. Uni zaxira sifatida saqlang: grant yutsangiz, bu yoʻl oʻzini oqlaydi.",
+            what_to_check:
+              "Aniq talablar, kontrakt narxi va grantlar roʻyxatini tanlangan universitetning qabul komissiyasi rasmiy saytidan va davlat elchixonasidan aniqlashtiring — bu maʼlumotlar yildan-yilga oʻzgaradi.",
           },
         ],
       },
@@ -342,6 +388,28 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
           ],
         },
       ],
+      plan_30_days: [
+        {
+          task: "Interfeys asoslari boʻyicha kirish bepul kursini oʻtish",
+          expected_result: "Dizaynning asosiy atamalarini tushunish va Figmaʼda birinchi ekran chizmasi",
+        },
+        {
+          task: "Bitta mahalliy sayt yoki ilovaning bosh sahifasini qayta dizayn qilish",
+          expected_result: "Portfolioga qoʻyish mumkin boʻlgan birinchi ish",
+        },
+        {
+          task: "Har kuni 30 daqiqa ingliz tili bilan shugʻullanishni boshlash",
+          expected_result: "Shakllangan odat va sezilarli oshgan soʻz boyligi",
+        },
+        {
+          task: "Dizaynerlar uchun buyurtmalar chiqadigan 3 ta kanalga obuna boʻlib, nima soʻralayotgani va qancha toʻlanayotganini yozib borish",
+          expected_result: "Bozorda qanday koʻnikma va narxlar real ekanini tushunish",
+        },
+        {
+          task: "Birinchi ishni 5 ta tanishga koʻrsatib, halol fikr soʻrash",
+          expected_result: "Aniq tuzatishlar roʻyxati va birinchi fikr olish tajribasi",
+        },
+      ],
       act_now: [
         "Bugun: Figmaʼni oʻrnating va interfeys boʻyicha birinchi bepul darsni oʻting (1–2 soat)",
         "Shu hafta: bitta mahalliy muassasani tanlang va uning bosh sahifasini qayta chizing — bu portfoliodagi birinchi ish boʻladi",
@@ -349,6 +417,8 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
         "Ingliz tili suhbat klubiga yoziling yoki til boʻyicha sherik toping",
         "Dizaynerlar uchun buyurtmalar chiqadigan 3 ta Telegram kanalga obuna boʻling va nimalar soʻralayotgani, qancha toʻlanayotganini kuzatib boring",
       ],
+      takeaway:
+        "Profilingiz yangilikka yuqori ochiqlikni tadqiqot, ijod va tadbirkorlikka qiziqish bilan birlashtiradi — bu frilansda raqamli mahsulotlar dizayni uchun yaxshi asos. Maqsad muddat jihatidan katta, lekin bosqichma-bosqich erishsa boʻladi: portfolio, ingliz tili va birinchi buyurtmalar tezroq mahalliy daromad beradi, tizimli onlayn oʻqish esa xorijiy bozorga va maqsad summangizga olib chiqadi. Shu hafta bitta oʻquv ishidan boshlang va qisqa, tekshiriladigan bosqichlar bilan harakatlaning.",
       disclaimer:
         "Tavsiyalar maʼlumot uchun berilgan va ishga joylashish yoki daromadni kafolatlamaydi. Summalar va muddatlar taxminiy. Yakuniy qaror sizniki.",
     },

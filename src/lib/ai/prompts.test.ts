@@ -8,6 +8,7 @@ import {
   PHILOSOPHY_BLOCK,
   TEASER_SYSTEM_TEMPLATE,
   TEASER_USER_TEMPLATE,
+  TONE_RULES_BLOCK,
   UZ_RULES_TEMPLATE,
   TEASER_RETRY_TEMPLATE,
   buildRetryFeedback,
@@ -21,6 +22,7 @@ const codeBlocks = [...doc.matchAll(/```\n([\s\S]*?)```/g)].map((m) => m[1].repl
 describe("промпты тизера (Приложение Б)", () => {
   it("перенесены из документа дословно", () => {
     expect(codeBlocks).toContain(PHILOSOPHY_BLOCK);
+    expect(codeBlocks).toContain(TONE_RULES_BLOCK);
     expect(codeBlocks).toContain(TEASER_SYSTEM_TEMPLATE);
     expect(codeBlocks).toContain(TEASER_USER_TEMPLATE);
     expect(codeBlocks).toContain(UZ_RULES_TEMPLATE);
@@ -32,6 +34,7 @@ describe("промпты тизера (Приложение Б)", () => {
     const profile = { language: "uz", big_five: { openness: 88 } };
     const { system, user } = buildTeaserPrompt(profile, "uz");
     expect(system.startsWith(PHILOSOPHY_BLOCK)).toBe(true);
+    expect(system).toContain(TONE_RULES_BLOCK);
     expect(system).not.toContain("[БЛОК ФИЛОСОФИИ");
     expect(system).toContain("1. Пишите на языке: uz.");
     expect(system).toContain("пишите строго на языке: uz (ru = русский");
@@ -60,7 +63,7 @@ const TY_WORDS = /(?<![а-яё])(ты|тебе|тебя|тобой|твой|тв
 
 describe("обращение на «вы» и узбекский блок", () => {
   it("в промптах нет обращения на «ты»", () => {
-    for (const text of [PHILOSOPHY_BLOCK, TEASER_SYSTEM_TEMPLATE, TEASER_USER_TEMPLATE, LANGUAGE_LINE]) {
+    for (const text of [PHILOSOPHY_BLOCK, TONE_RULES_BLOCK, TEASER_SYSTEM_TEMPLATE, TEASER_USER_TEMPLATE, LANGUAGE_LINE]) {
       expect(text).not.toMatch(TY_WORDS);
     }
     expect(PHILOSOPHY_BLOCK).toContain("«вы»");

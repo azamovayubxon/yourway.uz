@@ -11,7 +11,7 @@ import { runReportPartAttempt } from "@/lib/ai/report";
 import { mergeReportParts, type ReportContent } from "@/lib/ai/report-schema";
 import type { Profile } from "@/lib/assessment/profile";
 import type { Locale } from "@/i18n/config";
-import { decideNext, MAX_PART_ATTEMPTS, nextPart, partsDone, type ReportStatus } from "./progress";
+import { decideNext, MAX_PART_ATTEMPTS, nextPart, partsDone, shouldAcceptDespiteWarnings, type ReportStatus } from "./progress";
 
 // Полный отчёт: создание после оплаты и фоновая генерация по частям (Приложение Б §5а).
 //
@@ -179,12 +179,20 @@ export async function advanceReport(options: {
         retry: attempt > 1 && retry ? retry : undefined,
       });
       const costUsd = provider.estimateCostUsd(model, result.usage);
+      // Принять последнюю попытку как есть, если все найденные нарушения — «мягкие» (тон и
+      // содержание: лесть без опоры на данные, голый код типа, повтор пункта — не разрыв схемы,
+      // не узбекский стиль и не обращение на «ты»), решение владельца (этап C1): оплативший
+      // пользователь не должен получить ошибку из-за слова вроде «уникальный». Записываем это в
+      // журнал AiCall отдельной пометкой к error, чтобы было видно в /admin/ai-log и /dev/ai-log,
+      // а не только в текстовых логах сервера.
+      const acceptDespiteWarnings = shouldAcceptDespiteWarnings(attempt, result);
+      const loggedError = acceptDespiteWarnings ? `${result.error ?? "unknown"}:accepted_despite_warnings` : result.error;
       // Короткая строка в логи сервера (видно в Vercel → Logs) + запись в журнал AiCall (/dev/ai-log).
       console.info(
         `[ai] report=${reportId} part=${part} provider=${provider.name} model=${model} locale=${locale}` +
           ` attempt=${attempt} ok=${result.ok} in=${result.usage.inputTokens} out=${result.usage.outputTokens}` +
           ` cache_read=${result.usage.cacheReadTokens} cache_write=${result.usage.cacheWriteTokens}` +
-          ` cost=$${costUsd ?? "?"} ms=${result.durationMs}${result.error ? ` error=${result.error}` : ""}`,
+          ` cost=$${costUsd ?? "?"} ms=${result.durationMs}${loggedError ? ` error=${loggedError}` : ""}`,
       );
       await db.aiCall.create({
         data: {
@@ -197,7 +205,7 @@ export async function advanceReport(options: {
           promptVersion: promptVersionTag,
           attempt,
           ok: result.ok,
-          error: result.error,
+          error: loggedError,
           locale,
           problems: result.problems.length > 0 ? result.problems : Prisma.DbNull,
           responseText: result.responseText ? result.responseText.slice(0, 20_000) : null,
@@ -207,7 +215,7 @@ export async function advanceReport(options: {
         },
       });
 
-      if (result.ok) {
+      if (result.ok || acceptDespiteWarnings) {
         const nextParts = { ...parts, [part]: result.content };
         await db.report.update({
           where: { id: reportId },

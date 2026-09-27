@@ -24,10 +24,12 @@ import {
   REPORT_SYSTEM_LAYOUT,
   REPORT_SYSTEM_TEMPLATE,
   REPORT_USER_TEMPLATE,
+  TONE_RULES_BLOCK,
 } from "./prompts";
 import { createMockProvider, ZERO_USAGE, type AiProvider, type AiRequest } from "./providers";
 import { runReportPartAttempt } from "./report";
 import { mergeReportParts, validateReportPart, type PortraitGoalPart } from "./report-schema";
+import { getUzGlossary } from "./uz-resources";
 
 const doc = readFileSync(path.resolve(import.meta.dirname, "../../../docs/prilozhenie-b-prompty.md"), "utf8");
 const codeBlocks = [...doc.matchAll(/```\n([\s\S]*?)```/g)].map((m) => m[1].replace(/\n$/, ""));
@@ -67,6 +69,7 @@ describe("промпты полного отчёта (Приложение Б §
   it("системная часть собрана из §5, §6, §7 и одинакова для всех частей, уровней и путей (кэшируется)", () => {
     const system = buildReportSystem("ru");
     expect(system.startsWith(PHILOSOPHY_BLOCK)).toBe(true);
+    expect(system).toContain(TONE_RULES_BLOCK);
     expect(system).toContain("Вы пишете ПОЛНЫЙ платный отчёт");
     expect(system).toContain("КАК ЧИТАТЬ ПРОФИЛЬ:");
     expect(system).toContain("СХЕМА ВЫВОДА (Вызов 2):\n{\n  \"portrait\"");
@@ -185,10 +188,20 @@ describe("тестовый режим: образец отчёта проход�
         }
         const report = mergeReportParts(parts as Parameters<typeof mergeReportParts>[0]);
         expect(Object.keys(report).sort()).toEqual(
-          ["act_now", "alternatives", "disclaimer", "goal", "main_path", "portrait", "reality_check"].sort(),
+          [
+            "act_now",
+            "alternatives",
+            "disclaimer",
+            "goal",
+            "main_path",
+            "plan_30_days",
+            "portrait",
+            "reality_check",
+            "takeaway",
+          ].sort(),
         );
         expect(Object.keys(report.main_path).sort()).toEqual(
-          ["future_outlook", "learning_advice", "routes", "summary"].sort(),
+          ["future_outlook", "learning_advice", "limitations", "routes", "summary"].sort(),
         );
         expect(report.goal.source).toBe(pathType === "knows_goal" ? "stated" : "constructed");
       });
@@ -292,6 +305,75 @@ describe("проверка частей отчёта (Приложение Б §
     }
   });
 
+  it("узбекский отчёт с «Figma» и «Python» проходит (названия инструментов — не нарушение)", () => {
+    const uzCtx = { ...ctx, language: "uz" as const, uzRules: getUzGlossary() };
+    // MOCK_REPORTS.uz уже упоминает Figma, Behance, Dribbble в обычном тексте — это и проверяем
+    // напрямую, без искусственного текста, чтобы гарантия не разошлась с реальным содержимым.
+    const finishResult = validateReportPart("finish", MOCK_REPORTS.uz.finish, uzCtx);
+    expect(finishResult.ok).toBe(true);
+    const mainPathWithPython = structuredClone(MOCK_REPORTS.uz.main_path);
+    mainPathWithPython.main_path.routes[0].steps[0] += " Python asoslarini ham oʻrganing.";
+    const mainPathResult = validateReportPart("main_path", mainPathWithPython, uzCtx);
+    expect(mainPathResult.ok).toBe(true);
+  });
+
+  it("узбекское «deadline»/«feedback» — softOnly, не жёсткий брак (уточнение по ревью)", () => {
+    const part = structuredClone(MOCK_REPORTS.uz.finish);
+    part.act_now[0] = "Deadline yaqinlashmoqda, ustozdan feedback oling";
+    const result = validateReportPart("finish", part, { ...ctx, language: "uz", uzRules: getUzGlossary() });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.softOnly).toBe(true);
+      expect(result.content).toBeDefined();
+    }
+  });
+
+  it("старая версия промпта (без takeaway/limitations/what_to_check/plan_30_days) — не брак (этап C1)", () => {
+    // Симулируем ответ ИИ по старой активной версии промпта (report-1.0): полей report-2.0 в нём
+    // просто нет. Решение владельца: генерация не должна ломаться, пока владелец не пересоздаст
+    // версии промптов отчёта в /admin/prompts.
+    const oldMainPath = structuredClone(MOCK_REPORTS.ru.main_path);
+    delete (oldMainPath.main_path as { limitations?: unknown }).limitations;
+    for (const route of oldMainPath.main_path.routes) delete (route as { what_to_check?: unknown }).what_to_check;
+    const mainPathResult = validateReportPart("main_path", oldMainPath, ctx);
+    expect(mainPathResult.ok).toBe(true);
+
+    const oldFinish = structuredClone(MOCK_REPORTS.ru.finish);
+    delete (oldFinish as { takeaway?: unknown }).takeaway;
+    delete (oldFinish as { plan_30_days?: unknown }).plan_30_days;
+    const finishResult = validateReportPart("finish", oldFinish, ctx);
+    expect(finishResult.ok).toBe(true);
+  });
+
+  it("нарушение только тона (например, «уникальный») — softOnly, содержимое сохраняется", () => {
+    const part = structuredClone(MOCK_REPORTS.ru.finish);
+    part.act_now[0] = "Это уникальное сочетание качеств поможет вам начать";
+    const result = validateReportPart("finish", part, ctx);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.softOnly).toBe(true);
+      expect(result.content).toBeDefined();
+      expect(result.error).toBe("rule:content_forbidden_phrase");
+    }
+  });
+
+  it("нарушение схемы (не хватает обязательного поля) — НЕ softOnly, даже если рядом есть тон-нарушение", () => {
+    const part = structuredClone(MOCK_REPORTS.ru.finish);
+    part.act_now[0] = "Это уникальное сочетание качеств поможет вам начать";
+    delete (part as { disclaimer?: unknown }).disclaimer; // обязательное поле схемы
+    const result = validateReportPart("finish", part, ctx);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.startsWith("schema:")).toBe(true);
+  });
+
+  it("нарушение обращения на «ты» рядом с тон-нарушением — НЕ softOnly (языковая корректность важнее)", () => {
+    const part = structuredClone(MOCK_REPORTS.ru.finish);
+    part.act_now[0] = "Это уникальное сочетание качеств — твой путь начинается";
+    const result = validateReportPart("finish", part, ctx);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.softOnly).toBe(false);
+  });
+
   it("служебные коды (online, easy, stated) не считаются английскими словами", () => {
     const result = validateReportPart("main_path", MOCK_REPORTS.uz.main_path, {
       ...ctx,
@@ -356,5 +438,15 @@ describe("одна попытка части", () => {
     expect(requests[0].effort).toBe("medium");
     expect(requests[0].timeoutMs).toBeLessThan(300_000);
     expect(requests[0].user).toContain("Уровень: navigator");
+  });
+
+  it("нарушение только тона — content и softOnly доходят до вызывающего кода (этап C1)", async () => {
+    const bad = structuredClone(MOCK_REPORTS.ru.finish);
+    bad.act_now[0] = "Это уникальное сочетание качеств поможет вам начать";
+    const { provider } = scriptedProvider([{ text: JSON.stringify(bad) }]);
+    const result = await runReportPartAttempt({ ...base, provider });
+    expect(result.ok).toBe(false);
+    expect(result.softOnly).toBe(true);
+    expect(result.content).toBeDefined();
   });
 });

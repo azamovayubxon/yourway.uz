@@ -113,10 +113,25 @@
 | `goal_point` | Точка Б | Qayerga bormoqchisiz | «B nuqta» emas |
 | `route` | Маршрут | Yoʻl | |
 | `personality_type` | Тип личности | Shaxsiyat tipi | |
+| `word_natija` | Результат теста | Natija | faqat test natijasi uchun, hisobot bilan aralashtirmang |
+| `word_hisobot` | Полный отчёт-документ | Hisobot | toʻliq hujjat, izohlar bilan |
+| `word_reja` | План действий внутри отчёта | Reja | hisobot ichidagi harakatlar ketma-ketligi |
+| `word_yonalish` | Профессиональное/образовательное направление | Yoʻnalish | kasb yoki taʼlim yoʻnalishi |
+| `word_kasb` | Конкретная профессия | Kasb | aniq kasb nomi, yoʻnalishdan aniqroq |
+| `word_maqsad` | Сформулированная цель человека | Maqsad | inson qoʻygan aniq maqsad |
 
 ## Запрещённые английские слова
 
-Если ИИ напишет одно из этих слов в узбекском тексте, ответ отбрасывается и генерируется заново. По одному слову на строку, в любом регистре.
+Список — только для **жаргонизмов**, у которых есть обычное узбекское слово: если ИИ напишет
+одно из них в узбекском тексте вместо узбекского слова, это нарушение (с этапа C1 — «мягкое»:
+последняя попытка с таким и только таким нарушением всё равно принимается, чтобы оплаченный отчёт
+не проваливался из-за одного слова). По одному слову на строку, в любом регистре.
+
+**Не добавляйте сюда названия инструментов, технологий и платформ** (Figma, Python, Excel, Canva,
+Telegram, Behance, Dribbble, UX/UI и т. п.) — у них нет узбекской замены, они не нарушение вообще,
+и отчёт про IT/дизайн не должен из-за них проваливаться. Сюда идут только слова вроде «deadline»
+(вместо «muddat»), «feedback» (вместо «fikr-mulohaza», уже есть в глоссарии выше как `terms`),
+«skill» (вместо «koʻnikma») — заменяемый жаргон, а не имя собственное.
 
 <!-- section: stop_words -->
 
@@ -137,6 +152,9 @@
 - career
 - skills
 - skill
+- deadline
+- deadlines
+- feedback
 - mindset
 - insight
 - leader
@@ -160,7 +178,7 @@
 
 ## Запрещённые конструкции
 
-Кальки и неестественные обороты. Если ИИ их напишет, ответ тоже генерируется заново. Конструкция ищется с начала слова: «A nuqta» ловит и «A nuqtadan».
+Кальки и неестественные обороты, а также лесть без опоры на данные, гарантии и сравнение «выше/ниже среднего» без норм (этап C1, правила тона — `docs/prilozhenie-b-prompty.md` §2а). Если ИИ их напишет, ответ тоже генерируется заново. Конструкция ищется с начала слова: «A nuqta» ловит и «A nuqtadan».
 
 <!-- section: forbidden_phrases -->
 
@@ -171,3 +189,11 @@
 - reallikka tekshir
 - sizning uchun
 - qiymatli beruvchi
+- kam uchraydigan kombinatsiya
+- noyob kombinatsiya
+- yagona kombinatsiya
+- tabiiy isteʼdod
+- kafolatlaydi
+- kafolat beradi
+- oʻrtachadan yuqori
+- oʻrtachadan past
