@@ -1,22 +1,18 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { TeaserContent } from "@/lib/ai/teaser-schema";
-import type { TocItem } from "@/lib/teaser/toc";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { fmt, formatSum } from "@/i18n/format";
 import { titleFontSize } from "@/components/typeTitle";
 import { MockBadge } from "./MockBadge";
 
-// Страница бесплатного тизера (ТЗ 3.7.1): тип, портрет, сильные стороны, 2–3 направления,
-// крючок-сюрприз под замком и заблокированное оглавление полного отчёта.
+// Страница бесплатного тизера (ТЗ 3.7.1, аудит §7): тип, портрет, ровно 3 сильные стороны,
+// ровно 3 направления с пробной задачей, один бесплатный шаг, крючок-сюрприз под замком и
+// компактный платный блок с описанием пакета из единого источника тарифов.
 // Тексты от ИИ — на языке тизера (teaserLocale), всё остальное — на языке интерфейса.
 // surprise_direction_internal сюда не передаётся и пользователю не показывается.
 
 type TeaserDict = Dictionary["teaser"];
-
-// Сколько личных пунктов оглавления показывать на странице тизера (аудит §7): не «28», а короткий
-// список, который интригует, но не превращает бесплатный результат в стену текста.
-const TOC_PREVIEW_COUNT = 6;
 
 interface Props {
   t: TeaserDict;
@@ -25,7 +21,9 @@ interface Props {
   mock: boolean;
   // 16-тип под названием (решение (И)): код и название на языке интерфейса.
   sixteenType: string;
-  toc: TocItem[];
+  // Описание пакета рекомендованного уровня — из PACKAGE_FEATURES, единого источника тарифов
+  // (аудит §7: «убрать список закрытых разделов», показать состав пакета как на /pricing).
+  features: string[];
   recommendedLevel: "route" | "navigator";
   // Цена и название рекомендуемого уровня — из единого источника тарифов (аудит §7);
   // null, если цена ещё не задана в базе (тогда компактный платный блок цену не показывает).
@@ -47,7 +45,7 @@ export function TeaserView({
   teaserLocale,
   mock,
   sixteenType,
-  toc,
+  features,
   recommendedLevel,
   recommendedPrice,
   sumTemplate,
@@ -57,10 +55,10 @@ export function TeaserView({
   reportHref,
   footer,
 }: Props) {
+  // top_strengths/fitting_directions — ровно 3 у новых тизеров (решение владельца, сентябрь 2026).
+  // slice(0, 3) — защита для тизеров, сгенерированных до этого решения (у них могло быть 2–4).
   const strengths = content.top_strengths.slice(0, 3);
   const directions = content.fitting_directions.slice(0, 3);
-  const tocPreview = toc.slice(0, TOC_PREVIEW_COUNT);
-  const tocMoreCount = toc.length - tocPreview.length;
 
   return (
     <div className="mx-auto max-w-xl px-4 pb-12 pt-5">
@@ -137,26 +135,33 @@ export function TeaserView({
               <div>
                 <p className="font-bold leading-snug">{d.title}</p>
                 <p className="mt-1 text-sm leading-relaxed text-muted">{d.one_liner}</p>
-                <p className="mt-2 rounded-xl bg-brand-50 px-3 py-2 text-sm leading-relaxed text-ink/90">
-                  <span className="font-semibold text-brand-700">{t.trialTaskLabel}: </span>
-                  {d.trial_task}
-                </p>
+                {/* trial_task необязателен — старый активный промпт (до нажатия «Создать версию
+                    из текста в коде» в /admin/prompts) его у ИИ не просит. */}
+                {d.trial_task && (
+                  <p className="mt-2 rounded-xl bg-brand-50 px-3 py-2 text-sm leading-relaxed text-ink/90">
+                    <span className="font-semibold text-brand-700">{t.trialTaskLabel}: </span>
+                    {d.trial_task}
+                  </p>
+                )}
               </div>
             </li>
           ))}
         </ol>
       </section>
 
-      {/* Один полезный бесплатный шаг (аудит §7, п.4): доступен уже сейчас, без оплаты. */}
-      <section className="mt-8 rounded-[2rem] border border-emerald-200 bg-emerald-50/60 p-5 sm:p-6">
-        <h2 className="flex items-center gap-2 text-lg font-extrabold text-emerald-950">
-          <span aria-hidden>✅</span>
-          {t.freeStepTitle}
-        </h2>
-        <p lang={teaserLocale} className="mt-2 leading-relaxed text-emerald-950/90">
-          {content.free_step}
-        </p>
-      </section>
+      {/* Один полезный бесплатный шаг (аудит §7, п.4): доступен уже сейчас, без оплаты.
+          Необязательное поле — см. комментарий у trial_task выше. */}
+      {content.free_step && (
+        <section className="mt-8 rounded-[2rem] border border-emerald-200 bg-emerald-50/60 p-5 sm:p-6">
+          <h2 className="flex items-center gap-2 text-lg font-extrabold text-emerald-950">
+            <span aria-hidden>✅</span>
+            {t.freeStepTitle}
+          </h2>
+          <p lang={teaserLocale} className="mt-2 leading-relaxed text-emerald-950/90">
+            {content.free_step}
+          </p>
+        </section>
+      )}
 
       {/* Крючок-сюрприз: направление названо только как факт, само оно — под замком. */}
       <section className="relative mt-8 overflow-hidden rounded-[2rem] bg-ink p-6 text-white">
@@ -178,26 +183,20 @@ export function TeaserView({
         </div>
       </section>
 
-      {/* Заблокированное оглавление полного отчёта: короткий, интригующий список, а не стена
-          из 20+ пунктов (аудит §7 — «убрать повторяющиеся списки»). */}
+      {/* Описание пакета вместо списка закрытых разделов (аудит §7): тот же состав, что на
+          /pricing и на checkout, из единого источника тарифов (PACKAGE_FEATURES). */}
       <section className="mt-8 rounded-[2rem] border border-slate-200 p-5 sm:p-6">
         <h2 className="text-xl font-extrabold">{t.tocTitle}</h2>
-        <ol className="mt-4 divide-y divide-slate-100">
-          {tocPreview.map((item, i) => (
-            <li
-              key={item.text}
-              lang={item.kind === "personal" ? teaserLocale : undefined}
-              className="flex items-center gap-3 py-2.5"
-            >
-              <span className="w-6 shrink-0 text-right text-xs font-bold tabular-nums text-slate-400">{i + 1}</span>
-              <span className={"flex-1 leading-snug " + (item.kind === "personal" ? "font-semibold" : "text-ink/80")}>
-                {item.text}
+        <ul className="mt-4 space-y-2.5">
+          {features.map((f) => (
+            <li key={f} className="flex items-start gap-3">
+              <span className="mt-0.5 text-brand-500" aria-hidden>
+                ✓
               </span>
-              <LockIcon className="size-4 shrink-0 text-slate-400" />
+              <span className="leading-snug">{f}</span>
             </li>
           ))}
-        </ol>
-        {tocMoreCount > 0 && <p className="mt-3 text-sm text-muted">{fmt(t.tocMore, { n: tocMoreCount })}</p>}
+        </ul>
       </section>
 
       {reportHref && (

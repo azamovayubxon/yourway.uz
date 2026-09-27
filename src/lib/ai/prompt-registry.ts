@@ -90,7 +90,6 @@ const TEASER_DEFAULT: PromptDefault = {
     "free_step",
     "surprise_hook",
     "surprise_direction_internal",
-    "locked_toc",
   ],
 };
 

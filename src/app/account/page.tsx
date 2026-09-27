@@ -95,7 +95,7 @@ export default async function AccountPage() {
                   <li key={r.id} className="flex items-stretch gap-2">
                     <Link
                       href={`/report/${r.id}`}
-                      className="flex min-h-16 flex-1 items-center gap-3 rounded-2xl border border-slate-200 px-4 py-3 hover:border-brand-500"
+                      className="flex min-h-16 min-w-0 flex-1 items-center gap-3 rounded-2xl border border-slate-200 px-4 py-3 hover:border-brand-500"
                     >
                       <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-lg" aria-hidden>
                         🧭

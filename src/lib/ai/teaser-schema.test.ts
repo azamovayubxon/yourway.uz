@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { MOCK_TEASERS } from "./mock-teasers";
-import { extractJson, matchesLanguage, validateTeaser } from "./teaser-schema";
+import { countSentences, extractJson, matchesLanguage, validateTeaser } from "./teaser-schema";
 
 const golden = MOCK_TEASERS.ru;
 
@@ -10,20 +10,45 @@ describe("проверка ответа ИИ для тизера", () => {
     expect(validateTeaser(MOCK_TEASERS.uz, "uz")).toMatchObject({ ok: true });
   });
 
-  it("мягкая проверка оглавления: 7 пунктов принимаются, 3 — нет", () => {
-    expect(golden.locked_toc).toHaveLength(7);
-    expect(validateTeaser({ ...golden, locked_toc: golden.locked_toc.slice(0, 3) }, "ru")).toMatchObject({ ok: false });
-  });
-
   it("отклоняет ответ без обязательного поля", () => {
     const { surprise_hook: _, ...rest } = golden;
     expect(validateTeaser(rest, "ru")).toMatchObject({ ok: false, error: expect.stringContaining("surprise_hook") });
   });
 
-  it("требует 2–3 направления", () => {
-    expect(validateTeaser({ ...golden, fitting_directions: golden.fitting_directions.slice(0, 1) }, "ru").ok).toBe(
+  // Решение владельца (сентябрь 2026, этап B2а): ровно 3 сильные стороны, ровно 3 направления.
+  it("требует ровно 3 направления — не 2, не 4", () => {
+    expect(validateTeaser({ ...golden, fitting_directions: golden.fitting_directions.slice(0, 2) }, "ru").ok).toBe(
       false,
     );
+    expect(
+      validateTeaser({ ...golden, fitting_directions: [...golden.fitting_directions, golden.fitting_directions[0]] }, "ru")
+        .ok,
+    ).toBe(false);
+  });
+
+  it("требует ровно 3 сильные стороны", () => {
+    expect(validateTeaser({ ...golden, top_strengths: golden.top_strengths.slice(0, 2) }, "ru").ok).toBe(false);
+  });
+
+  it("вывод (portrait) — ровно 2–3 предложения", () => {
+    expect(countSentences(golden.portrait)).toBeGreaterThanOrEqual(2);
+    expect(countSentences(golden.portrait)).toBeLessThanOrEqual(3);
+    const oneSentence = { ...golden, portrait: "Только одно предложение." };
+    expect(validateTeaser(oneSentence, "ru")).toMatchObject({ ok: false, error: "rule:portrait_sentences" });
+    const fourSentences = { ...golden, portrait: "Раз. Два. Три. Четыре." };
+    expect(validateTeaser(fourSentences, "ru")).toMatchObject({ ok: false, error: "rule:portrait_sentences" });
+  });
+
+  // Защита на время между merge и активацией новой версии промпта в /admin/prompts (см. §10
+  // docs/prilozhenie-b-prompty.md): старый активный промпт не просит ИИ про trial_task/free_step,
+  // и без этой мягкости обычная генерация тизера ломалась бы для всех до нажатия кнопки в админке.
+  it("trial_task и free_step необязательны (совместимость со старой версией промпта)", () => {
+    const withoutOptionalFields = {
+      ...golden,
+      free_step: undefined,
+      fitting_directions: golden.fitting_directions.map(({ trial_task: _trial_task, ...rest }) => rest),
+    };
+    expect(validateTeaser(withoutOptionalFields, "ru")).toMatchObject({ ok: true });
   });
 
   it("не пропускает суммы в тексте тизера (правило 5)", () => {
@@ -34,6 +59,7 @@ describe("проверка ответа ИИ для тизера", () => {
       fitting_directions: [
         { title: "Дизайн", one_liner: "доход от 10 млн сум", trial_task: golden.fitting_directions[0].trial_task },
         golden.fitting_directions[1],
+        golden.fitting_directions[2],
       ],
     };
     expect(validateTeaser(bad2, "ru")).toMatchObject({ ok: false, error: "rule:money_in_teaser" });
@@ -56,7 +82,9 @@ describe("проверка ответа ИИ для тизера", () => {
     const bad = {
       ...MOCK_TEASERS.uz,
       personality_type_label: "Pragmatist",
-      portrait: "Sen kuchlisan. " + MOCK_TEASERS.uz.portrait,
+      // Без нового предложения (без точки после «Sen kuchlisan») — иначе число предложений
+      // выйдет за пределы 2–3 и основной проблемой станет не «sen», а число предложений.
+      portrait: "Sen kuchlisan " + MOCK_TEASERS.uz.portrait,
     };
     const result = validateTeaser(bad, "uz", { stopWords: ["pragmatist"], forbiddenPhrases: [] });
     expect(result.ok).toBe(false);

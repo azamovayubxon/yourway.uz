@@ -11,7 +11,6 @@ import { SIXTEEN_TYPES } from "@/lib/assessment/tests";
 import { getCurrentSession } from "@/lib/session";
 import { getPricesSafe } from "@/lib/payments";
 import { canGenerateInLocale, getSessionTeasers } from "@/lib/teaser";
-import { buildLockedToc } from "@/lib/teaser/toc";
 import type { Locale } from "@/i18n/config";
 import { fmt } from "@/i18n/format";
 import { getI18n } from "@/i18n/server";
@@ -52,8 +51,6 @@ export default async function TeaserPage({ searchParams }: { searchParams: Promi
   // Узбекское название 16-типа — из глоссария docs/uz-glossary.md, русское — из mapping-файла.
   const typeName =
     (locale === "uz" ? uzSixteenTypeName(code) : undefined) ?? SIXTEEN_TYPES[code]?.[locale] ?? profile.sixteen_type.nickname;
-  const general = [...t.teaser.generalToc];
-  general.splice(4, 0, t.teaser.pathToc[profile.path_type]);
 
   const user = await getCurrentUser();
   // Уже оплаченный отчёт по этой сессии (любого уровня) — показываем ссылку на него.
@@ -95,7 +92,7 @@ export default async function TeaserPage({ searchParams }: { searchParams: Promi
       teaserLocale={teaserLocale}
       mock={shown.aiMode === "mock"}
       sixteenType={`${code} · ${typeName}`}
-      toc={buildLockedToc(content.locked_toc, general)}
+      features={t.checkout.levels[profile.level].features}
       recommendedLevel={profile.level}
       recommendedPrice={prices[profile.level] ?? null}
       sumTemplate={t.common.sum}

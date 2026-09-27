@@ -109,9 +109,9 @@ describe("проверка обязательных подстановок (тр
 
   it("тизер: пропало поле схемы вывода — ошибка", () => {
     const def = PROMPT_DEFAULTS.teaser_ru;
-    const broken = def.system.template.replace(/locked_toc/g, "");
+    const broken = def.system.template.replace(/free_step/g, "");
     const errors = validatePromptTemplates("teaser_ru", broken, def.user.template);
-    expect(errors.some((e) => e.includes("locked_toc"))).toBe(true);
+    expect(errors.some((e) => e.includes("free_step"))).toBe(true);
   });
 
   it("отчёт: без {{teaser_json}} в пользовательском сообщении — ошибка", () => {

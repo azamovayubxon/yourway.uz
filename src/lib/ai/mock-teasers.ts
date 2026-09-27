@@ -25,21 +25,17 @@ export const MOCK_TEASERS: Record<TeaserLanguage, TeaserContent> = {
         one_liner: "любознательность + практика = быстрый рост",
         trial_task: "Соберите простую посадочную страницу в конструкторе без кода за один вечер",
       },
+      {
+        title: "Контент и сторителлинг",
+        one_liner: "умение объяснять сложное просто пригодится в текстах и роликах",
+        trial_task: "Запишите короткое видео на 1 минуту, где простыми словами объясняете сложную тему",
+      },
     ],
     free_step:
       "Составьте список 5 приложений или сайтов, которыми вы пользуетесь каждый день, и запишите для каждого одну вещь, которую вы бы изменили — это уже начало продуктового мышления",
     surprise_hook:
       "По вашему профилю есть одно направление, о котором вы, скорее всего, не думали — а именно там ваша тяга к свободе может превратиться в самый большой доход. 🔒",
     surprise_direction_internal: "продуктовое предпринимательство / микро-SaaS",
-    locked_toc: [
-      "Ваш полный психологический портрет",
-      "3 маршрута к цели $2000+",
-      "Сколько это стоит и сколько займёт",
-      "Что учить в первые 90 дней",
-      "Как получить первый заказ без опыта",
-      "Неожиданное направление и почему оно ваше",
-      "Что делать уже на этой неделе",
-    ],
   },
   // ТЕКСТ ДЛЯ ВЫЧИТКИ НОСИТЕЛЕМ.
   uz: {
@@ -62,20 +58,16 @@ export const MOCK_TEASERS: Record<TeaserLanguage, TeaserContent> = {
         one_liner: "qiziquvchanlik va amaliyot tez oʻsishga olib keladi",
         trial_task: "Kod yozmasdan sayt tuzadigan xizmatda bir kechada oddiy sahifa yasab koʻring",
       },
+      {
+        title: "Kontent va hikoya qilish",
+        one_liner: "murakkab narsani sodda tilda tushuntira olishingiz matn va videolarda kerak boʻladi",
+        trial_task: "Murakkab bir mavzuni sodda soʻzlar bilan tushuntiruvchi 1 daqiqalik video yozib koʻring",
+      },
     ],
     free_step:
       "Har kuni ishlatadigan 5 ta ilova yoki saytni roʻyxat qiling va har biri uchun bir narsani — nimani oʻzgartirgan boʻlardingiz — yozing. Bu mahsulot fikrlashning boshlanishi.",
     surprise_hook:
       "Natijalaringizda yana bir yoʻnalish koʻrindi — ehtimol, uni hali oʻylab koʻrmagansiz. Aynan oʻsha yerda erkinlikka intilishingiz eng katta daromadga aylanishi mumkin. 🔒",
     surprise_direction_internal: "oʻz raqamli mahsulotini yaratish va sotish",
-    locked_toc: [
-      "Toʻliq psixologik portretingiz",
-      "Oyiga $2000 dan ortiq daromadga olib boradigan 3 ta yoʻl",
-      "Bu qancha turadi va qancha vaqt oladi",
-      "Dastlabki 90 kunda nimani oʻrganish kerak",
-      "Tajribasiz birinchi buyurtmani qanday olish mumkin",
-      "Sizni hayron qoldiradigan yoʻnalish va nega aynan u sizga mos",
-      "Shu haftaning oʻzida nimadan boshlash kerak",
-    ],
   },
 };
