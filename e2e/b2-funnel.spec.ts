@@ -65,6 +65,18 @@ for (const locale of LOCALES) {
       await expect(page.getByText(/Qulf ostidagi boʻlimlar|закрытых раздел/i)).toHaveCount(0);
       await expect(page.getByText(/Bir martalik toʻlov|Разовая оплата/)).toBeVisible();
 
+      // Реальный случай на превью: активная версия промпта teaser_uz в базе отстала от кода —
+      // у ИИ не просили trial_task/free_step, и на узбекском тизере эти блоки не показывались
+      // (хотя на русском всё было в порядке). Здесь всегда используется код — версии из БД
+      // (/admin/prompts) при мок-генерации не участвуют, — но проверяем видимость явно и отдельно
+      // для КАЖДОГО локейла, чтобы такое расхождение стало видно в первую очередь тут, а не только
+      // на превью у владельца.
+      const localeDict = locale === "ru" ? ru : uz;
+      await expect(directionsSection.getByText(localeDict.teaser.trialTaskLabel, { exact: false })).toHaveCount(3);
+      const freeStepSection = page.locator("h2", { hasText: localeDict.teaser.freeStepTitle }).locator("xpath=..");
+      await expect(freeStepSection).toBeVisible();
+      await expect(freeStepSection.locator("p").last()).not.toBeEmpty();
+
       // 2) Регистрация (появляется только перед оплатой) → checkout.
       await unlock.click();
       await page.waitForURL("**/register**");

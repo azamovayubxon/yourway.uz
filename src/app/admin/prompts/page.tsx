@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { requireAdmin } from "@/lib/admin/guard";
 import { listModelOverrides, type ModelOverrideRow } from "@/lib/admin/models";
-import { PROMPT_DEFAULTS, PROMPT_KEYS, PROMPT_LABELS, pickActiveVersion } from "@/lib/ai/prompt-registry";
+import { activePromptErrors, isDriftedFromCode, PROMPT_KEYS, PROMPT_LABELS, pickActiveVersion } from "@/lib/ai/prompt-registry";
 import { listPromptVersions } from "@/lib/ai/prompt-store";
 import { AdminShell, Card, Notice } from "../ui";
 import { saveModelOverrideAction, syncPromptFromCodeAction } from "../actions";
@@ -97,28 +97,52 @@ export default async function AdminPromptsPage({
           {PROMPT_KEYS.map((key, i) => {
             const versions = promptVersions[i].map(toSummary);
             const active = pickActiveVersion(versions) ?? versions[0];
-            const version1 = versions.find((v) => v.version === 1);
-            const def = PROMPT_DEFAULTS[key];
-            // Версия 1 когда-то записана от текста в коде; если с тех пор код поправили, а версию
-            // не пересоздали — правки молча не действуют на боевом сайте (владелец, требование этапа 8б).
-            // Предупреждаем, только пока активна именно версия 1: как только кто-то сохранил свою
-            // версию через админку, расхождение с кодом уже осознанное, а не незамеченный сюрприз —
-            // и кнопка «из текста в коде» дальше не рискует молча затереть чужую правку.
-            const driftedFromCode =
-              active.version === 1 &&
-              !!version1 &&
-              (version1.systemTemplate !== def.system.template || version1.userTemplate !== def.user.template);
+            // Расхождение с кодом — сравниваем ТЕКУЩУЮ активную версию с текстом в коде, а не только
+            // версию 1. Раньше баннер показывался только пока активна версия 1: как только кто-то
+            // хоть раз сохранял свою версию (даже давно, на этапе 4б для узбекского стиля), баннер
+            // переставал появляться навсегда — и правки кода после этого молча переставали доходить
+            // до боевого сайта без единого предупреждения (реальный случай: teaser_uz отстал от
+            // teaser_ru на два этапа, потому что когда-то была сохранена версия 2). Теперь сравниваем
+            // с активной версией всегда, независимо от её номера (isDriftedFromCode, prompt-registry.ts).
+            const driftedFromCode = isDriftedFromCode(key, active);
+            // Активная версия не проходит те же проверки, что при сохранении (например, в схеме нет
+            // обязательного поля trial_task/free_step) — генерация с ней будет падать прямо сейчас.
+            // Это отдельный, более срочный сигнал: расхождение с кодом само по себе не обязательно
+            // ошибка (текст могли осознанно подправить), а вот проваленная проверка — всегда ошибка.
+            const activeErrors = activePromptErrors(key, active);
             return (
               <details key={key} className="rounded-2xl border border-slate-200 p-4">
                 <summary className="cursor-pointer font-bold">
                   {PROMPT_LABELS[key]} — активна версия {active.version}
                 </summary>
                 <div className="mt-3 space-y-4">
-                  {driftedFromCode && (
+                  {activeErrors.length > 0 && (
+                    <div className="space-y-2 rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-900">
+                      <p className="font-bold">
+                        Активная версия не проходит проверку — генерация с ней сейчас не сработает:
+                      </p>
+                      <ul className="list-inside list-disc">
+                        {activeErrors.map((e) => (
+                          <li key={e}>{e}</li>
+                        ))}
+                      </ul>
+                      {isSuperAdmin && (
+                        <form action={syncPromptFromCodeAction}>
+                          <input type="hidden" name="key" value={key} />
+                          <button type="submit" className="min-h-9 shrink-0 rounded-lg border-2 border-rose-300 bg-white px-3 text-xs font-bold text-rose-900">
+                            Создать версию из текста в коде
+                          </button>
+                        </form>
+                      )}
+                    </div>
+                  )}
+                  {driftedFromCode && activeErrors.length === 0 && (
                     <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900">
                       <span>
-                        Текст в <code className="font-mono">src/lib/ai/prompts.ts</code> с тех пор поменяли, а версию 1 —
-                        нет. Правки в коде сейчас ни на что не влияют: сайт использует активную версию из базы.
+                        Текст в <code className="font-mono">src/lib/ai/prompts.ts</code> отличается от активной версии
+                        (номер {active.version}) — правки в коде сейчас ни на что не влияют, сайт использует
+                        активную версию из базы. Если активная версия — чья-то осознанная правка текста, сохранять
+                        версию из кода не обязательно.
                       </span>
                       {isSuperAdmin && (
                         <form action={syncPromptFromCodeAction}>
