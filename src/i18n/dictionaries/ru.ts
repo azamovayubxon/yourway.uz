@@ -556,6 +556,7 @@ export const ru = {
       goal: "Ваша цель",
       reality: "Что нужно для достижения цели?",
       path: "Главный маршрут",
+      plan30: "План на 30 дней",
       learning: "Как организовать обучение?",
       future: "Будущее и ИИ",
       alternatives: "Другие направления, которые стоит рассмотреть",
@@ -583,6 +584,8 @@ export const ru = {
     requirements: "Что понадобится",
     outcome: "Что получите",
     tradeoff: "Лёгкий или сложный",
+    whatToCheck: "Что проверить самому",
+    plan30Result: "Ожидаемый результат",
     learningStyles: {
       reading: "чтение",
       auditory: "слушание",

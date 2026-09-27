@@ -3,6 +3,7 @@
 // и при провале повторяется только она.
 
 import { z } from "zod";
+import { CONTENT_ISSUE_TEXT, findContentIssues, findListIssues } from "./content-checks";
 import type { ReportLevel, ReportPartId, ReportPathType } from "./prompts";
 import { matchesLanguage, PLACEHOLDER, UZ_RULE_TEXT, type TeaserLanguage } from "./teaser-schema";
 import { findUzIssues, type UzRules } from "./uz-style";
@@ -21,6 +22,7 @@ const RouteOutput = z.object({
   outcome: z.string(),
   effort_level: z.enum(["easy", "hard"]),
   tradeoff_note: z.string(),
+  what_to_check: z.string(),
 });
 
 export const REPORT_PART_OUTPUT_SCHEMAS = {
@@ -43,14 +45,16 @@ export const REPORT_PART_OUTPUT_SCHEMAS = {
     }),
   }),
   main_path: z.object({
-    main_path: z.object({ summary: z.string(), routes: z.array(RouteOutput) }),
+    main_path: z.object({ summary: z.string(), limitations: z.array(z.string()), routes: z.array(RouteOutput) }),
   }),
   finish: z.object({
     main_path: z.object({ learning_advice: z.string(), future_outlook: z.string() }),
     alternatives: z.array(
       z.object({ direction: z.string(), why_you: z.string(), potential: z.string(), first_steps: z.array(z.string()) }),
     ),
+    plan_30_days: z.array(z.object({ task: z.string(), expected_result: z.string() })),
     act_now: z.array(z.string()),
+    takeaway: z.string(),
     disclaimer: z.string(),
   }),
 } satisfies Record<ReportPartId, z.ZodType>;
@@ -69,6 +73,9 @@ const Route = z.object({
   outcome: text.max(1200),
   effort_level: z.enum(["easy", "hard"]),
   tradeoff_note: text.max(1000),
+  // Реальные возможности и источники (ТЗ аудита §9): вместо выдуманных вузов/курсов/цен —
+  // что человеку проверить самому и где искать актуальные данные.
+  what_to_check: text.max(500),
 });
 
 const PortraitGoalSchema = z.object({
@@ -92,7 +99,13 @@ const PortraitGoalSchema = z.object({
 });
 
 const MainPathSchema = z.object({
-  main_path: z.object({ summary: text.max(1500), routes: z.array(Route).min(1).max(8) }),
+  main_path: z.object({
+    summary: text.max(1500),
+    // Ограничения (ТЗ аудита §9): 2–4 честных пункта — время/бюджет/навыки — для основного
+    // маршрута, отдельным полем, а не вырезкой из текста на слое отображения.
+    limitations: z.array(text.max(300)).min(2).max(4),
+    routes: z.array(Route).min(1).max(8),
+  }),
 });
 
 const FinishSchema = z.object({
@@ -109,7 +122,15 @@ const FinishSchema = z.object({
     )
     .min(1)
     .max(2),
+  // План на 30 дней (ТЗ аудита §9): 3–5 задач с понятным результатом каждой.
+  plan_30_days: z
+    .array(z.object({ task: text.max(400), expected_result: text.max(400) }))
+    .min(3)
+    .max(5),
   act_now: z.array(text.max(600)).min(2).max(7),
+  // Краткий вывод всего отчёта (ТЗ аудита §9): отдельное поле, пишется последней частью, когда
+  // уже известны и маршрут, и альтернативы — а не вырезка из portrait.summary на слое отображения.
+  takeaway: text.max(1200),
   disclaimer: text.max(800),
 });
 
@@ -124,11 +145,18 @@ export type MainPathPart = z.infer<typeof MainPathSchema>;
 export type FinishPart = z.infer<typeof FinishSchema>;
 export type ReportRoute = z.infer<typeof Route>;
 
-// Собранный отчёт — ровно схема Приложения Б §7.
+// Собранный отчёт — схема Приложения Б §7 (report-2.0, этап C1). takeaway, main_path.limitations
+// и plan_30_days — необязательны в типе, а не только в рантайме: их не было в схеме report-1.0,
+// и в БД остаются старые отчёты без этих полей (ТЗ аудита §15: «старые отчёты отображаются как
+// раньше», миграция схемы не требуется). Свежая генерация всегда заполняет их — это обеспечивает
+// zod-схема FinishSchema/MainPathSchema выше, а не этот тип.
 export type ReportContent = PortraitGoalPart & {
-  main_path: MainPathPart["main_path"] & FinishPart["main_path"];
+  main_path: Omit<MainPathPart["main_path"], "limitations"> &
+    FinishPart["main_path"] & { limitations?: MainPathPart["main_path"]["limitations"] };
   alternatives: FinishPart["alternatives"];
   act_now: FinishPart["act_now"];
+  plan_30_days?: FinishPart["plan_30_days"];
+  takeaway?: string;
   disclaimer: string;
 };
 
@@ -145,6 +173,8 @@ export function mergeReportParts(parts: {
     main_path: { ...parts.main_path.main_path, ...parts.finish.main_path },
     alternatives: parts.finish.alternatives,
     act_now: parts.finish.act_now,
+    plan_30_days: parts.finish.plan_30_days,
+    takeaway: parts.finish.takeaway,
     disclaimer: parts.finish.disclaimer,
   };
 }
@@ -244,6 +274,31 @@ export function validateReportPart(
   if (ctx.language === "uz") {
     for (const issue of findUzIssues(joined, ctx.uzRules)) {
       found.push({ code: `rule:uz_${issue.rule}:${issue.word}`, text: `${UZ_RULE_TEXT[issue.rule]}: «${issue.word}»` });
+    }
+  }
+
+  // Проверки содержания и тона (этап C1, ТЗ аудита §9–§10): лесть без опоры на данные, гарантии,
+  // «выше/ниже среднего», ссылки на несуществующие источники, голые коды типов, пустые и
+  // повторяющиеся пункты списков.
+  for (const issue of findContentIssues(joined, ctx.language)) {
+    found.push({ code: `rule:content_${issue.rule}`, text: CONTENT_ISSUE_TEXT[issue.rule](issue.detail) });
+  }
+  const listChecks: [string, readonly string[]][] =
+    part === "portrait_goal"
+      ? [
+          ["portrait.strengths", (content as PortraitGoalPart).portrait.strengths],
+          ["portrait.watchouts", (content as PortraitGoalPart).portrait.watchouts],
+        ]
+      : part === "finish"
+        ? [
+            ["act_now", (content as FinishPart).act_now],
+            ["plan_30_days", (content as FinishPart).plan_30_days.map((p) => p.task)],
+            ["alternatives", (content as FinishPart).alternatives.map((a) => a.direction)],
+          ]
+        : [];
+  for (const [label, items] of listChecks) {
+    for (const issue of findListIssues(label, items)) {
+      found.push({ code: `rule:content_${issue.rule}`, text: CONTENT_ISSUE_TEXT[issue.rule](issue.detail) });
     }
   }
 

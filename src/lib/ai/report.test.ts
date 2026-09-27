@@ -24,6 +24,7 @@ import {
   REPORT_SYSTEM_LAYOUT,
   REPORT_SYSTEM_TEMPLATE,
   REPORT_USER_TEMPLATE,
+  TONE_RULES_BLOCK,
 } from "./prompts";
 import { createMockProvider, ZERO_USAGE, type AiProvider, type AiRequest } from "./providers";
 import { runReportPartAttempt } from "./report";
@@ -67,6 +68,7 @@ describe("промпты полного отчёта (Приложение Б §
   it("системная часть собрана из §5, §6, §7 и одинакова для всех частей, уровней и путей (кэшируется)", () => {
     const system = buildReportSystem("ru");
     expect(system.startsWith(PHILOSOPHY_BLOCK)).toBe(true);
+    expect(system).toContain(TONE_RULES_BLOCK);
     expect(system).toContain("Вы пишете ПОЛНЫЙ платный отчёт");
     expect(system).toContain("КАК ЧИТАТЬ ПРОФИЛЬ:");
     expect(system).toContain("СХЕМА ВЫВОДА (Вызов 2):\n{\n  \"portrait\"");
@@ -185,10 +187,20 @@ describe("тестовый режим: образец отчёта проход�
         }
         const report = mergeReportParts(parts as Parameters<typeof mergeReportParts>[0]);
         expect(Object.keys(report).sort()).toEqual(
-          ["act_now", "alternatives", "disclaimer", "goal", "main_path", "portrait", "reality_check"].sort(),
+          [
+            "act_now",
+            "alternatives",
+            "disclaimer",
+            "goal",
+            "main_path",
+            "plan_30_days",
+            "portrait",
+            "reality_check",
+            "takeaway",
+          ].sort(),
         );
         expect(Object.keys(report.main_path).sort()).toEqual(
-          ["future_outlook", "learning_advice", "routes", "summary"].sort(),
+          ["future_outlook", "learning_advice", "limitations", "routes", "summary"].sort(),
         );
         expect(report.goal.source).toBe(pathType === "knows_goal" ? "stated" : "constructed");
       });

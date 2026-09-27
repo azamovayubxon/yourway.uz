@@ -2,6 +2,7 @@
 // Ответ, не прошедший проверку, считается неудачным: генерация повторяется (до 2 раз).
 
 import { z } from "zod";
+import { CONTENT_ISSUE_TEXT, findContentIssues, findListIssues } from "./content-checks";
 import { findUzIssues, type UzIssueRule, type UzRules } from "./uz-style";
 
 const text = z.string().trim().min(1);
@@ -136,6 +137,18 @@ export function validateTeaser(raw: unknown, language: TeaserLanguage, uzRules?:
   }
   if (!matchesLanguage(visible.join(" "), language)) {
     found.push({ code: `rule:language_not_${language}`, text: `текст не на нужном языке (${language})` });
+  }
+
+  // Проверки содержания и тона (этап C1, ТЗ аудита §9–§10): лесть без опоры на данные,
+  // гарантии, сравнение «выше/ниже среднего», ссылки, голые коды типов, повторы в списках.
+  for (const issue of findContentIssues(visible.join("\n"), language)) {
+    found.push({ code: `rule:content_${issue.rule}`, text: CONTENT_ISSUE_TEXT[issue.rule](issue.detail) });
+  }
+  for (const issue of [
+    ...findListIssues("top_strengths", content.top_strengths),
+    ...findListIssues("fitting_directions", content.fitting_directions.map((d) => d.title)),
+  ]) {
+    found.push({ code: `rule:content_${issue.rule}`, text: CONTENT_ISSUE_TEXT[issue.rule](issue.detail) });
   }
 
   // Узбекский: нет кириллицы, «Tu», форм на «sen», английских слов и запрещённых конструкций.

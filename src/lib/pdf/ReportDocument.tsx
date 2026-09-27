@@ -194,6 +194,31 @@ const styles = StyleSheet.create({
   summaryTitle: { fontSize: 11.5, fontWeight: "bold", color: INK },
   summaryStatsRow: { flexDirection: "row", gap: 8, marginTop: 8 },
   summaryStat: { flex: 1, borderRadius: 8, padding: 8 },
+
+  // План на 30 дней (report-2.0, этап C1).
+  planItem: { borderWidth: 1, borderColor: BORDER, borderRadius: 10, padding: 10, marginTop: 8 },
+  planTaskRow: { flexDirection: "row", gap: 8, alignItems: "flex-start" },
+  planNum: {
+    fontSize: 9,
+    fontWeight: "bold",
+    color: "#ffffff",
+    backgroundColor: INK,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    textAlign: "center",
+    paddingTop: 3,
+  },
+  // what_to_check у маршрута (report-2.0, этап C1).
+  whatToCheck: {
+    fontSize: 9.5,
+    color: MUTED,
+    backgroundColor: PANEL,
+    borderRadius: 8,
+    padding: 8,
+    marginTop: 8,
+    lineHeight: 1.4,
+  },
 });
 
 const ROUTE_TYPE_LABEL: Record<ReportRoute["type"], (t: ReportDict) => string> = {
@@ -276,6 +301,12 @@ function RouteCard({ route, t }: { route: ReportRoute; t: ReportDict }) {
         <Text style={{ fontWeight: "bold", color: INK }}>{t.tradeoff}: </Text>
         {route.tradeoff_note}
       </Text>
+      {route.what_to_check && (
+        <Text style={styles.whatToCheck}>
+          <Text style={{ fontWeight: "bold", color: INK }}>{t.whatToCheck}: </Text>
+          {route.what_to_check}
+        </Text>
+      )}
     </View>
   );
 }
@@ -292,6 +323,8 @@ export function ReportDocument({
   summary,
 }: ReportPdfProps) {
   const { portrait, goal, reality_check: reality, main_path: path, alternatives, act_now: actNow } = content;
+  // plan_30_days — новое поле схемы (report-2.0, этап C1); у старых отчётов (report-1.0) его нет.
+  const plan30Days = content.plan_30_days;
   let n = 0;
   const next = () => ++n;
 
@@ -404,6 +437,24 @@ export function ReportDocument({
             <RouteCard key={i} route={route} t={t} />
           ))}
         </View>
+
+        {plan30Days && plan30Days.length > 0 && (
+          <View style={styles.section}>
+            <SectionTitle n={next()} title={t.sections.plan30} />
+            {plan30Days.map((item, i) => (
+              <View key={i} style={styles.planItem}>
+                <View style={styles.planTaskRow}>
+                  <Text style={styles.planNum}>{i + 1}</Text>
+                  <Text style={[styles.body, { fontWeight: "bold", flex: 1 }]}>{item.task}</Text>
+                </View>
+                <Text style={[styles.bodyMuted, { marginTop: 4 }]}>
+                  <Text style={{ fontWeight: "bold", color: INK }}>{t.plan30Result}: </Text>
+                  {item.expected_result}
+                </Text>
+              </View>
+            ))}
+          </View>
+        )}
 
         <View style={styles.section}>
           <SectionTitle n={next()} title={t.sections.learning} />

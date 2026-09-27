@@ -113,6 +113,12 @@
 | `goal_point` | Точка Б | Qayerga bormoqchisiz | «B nuqta» emas |
 | `route` | Маршрут | Yoʻl | |
 | `personality_type` | Тип личности | Shaxsiyat tipi | |
+| `word_natija` | Результат теста | Natija | faqat test natijasi uchun, hisobot bilan aralashtirmang |
+| `word_hisobot` | Полный отчёт-документ | Hisobot | toʻliq hujjat, izohlar bilan |
+| `word_reja` | План действий внутри отчёта | Reja | hisobot ichidagi harakatlar ketma-ketligi |
+| `word_yonalish` | Профессиональное/образовательное направление | Yoʻnalish | kasb yoki taʼlim yoʻnalishi |
+| `word_kasb` | Конкретная профессия | Kasb | aniq kasb nomi, yoʻnalishdan aniqroq |
+| `word_maqsad` | Сформулированная цель человека | Maqsad | inson qoʻygan aniq maqsad |
 
 ## Запрещённые английские слова
 
@@ -160,7 +166,7 @@
 
 ## Запрещённые конструкции
 
-Кальки и неестественные обороты. Если ИИ их напишет, ответ тоже генерируется заново. Конструкция ищется с начала слова: «A nuqta» ловит и «A nuqtadan».
+Кальки и неестественные обороты, а также лесть без опоры на данные, гарантии и сравнение «выше/ниже среднего» без норм (этап C1, правила тона — `docs/prilozhenie-b-prompty.md` §2а). Если ИИ их напишет, ответ тоже генерируется заново. Конструкция ищется с начала слова: «A nuqta» ловит и «A nuqtadan».
 
 <!-- section: forbidden_phrases -->
 
@@ -171,3 +177,11 @@
 - reallikka tekshir
 - sizning uchun
 - qiymatli beruvchi
+- kam uchraydigan kombinatsiya
+- noyob kombinatsiya
+- yagona kombinatsiya
+- tabiiy isteʼdod
+- kafolatlaydi
+- kafolat beradi
+- oʻrtachadan yuqori
+- oʻrtachadan past
