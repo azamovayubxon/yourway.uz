@@ -39,9 +39,12 @@ jobs:
       AI_MODE: mock
       # Тестовая оплата и служебные /dev/* страницы (используются в e2e/csp-hydration.spec.ts)
       # включаются вне боевого сайта. VERCEL_ENV=preview — тот же переключатель, что и на
-      # превью-ссылках Vercel (см. src/lib/dev.ts, src/lib/payments/config.ts): NODE_ENV=production
-      # оставляем таким же, как в реальной сборке (Dockerfile), чтобы проверять настоящий боевой код.
-      NODE_ENV: production
+      # превью-ссылках Vercel (см. src/lib/dev.ts, src/lib/payments/config.ts). NODE_ENV=production
+      # здесь, на уровне джобы, НЕ задаём: `npm ci` в этом случае ставит только "dependencies" и
+      # пропускает devDependencies (dotenv, prisma, playwright и т. д.) — именно так уронилась первая
+      # попытка этой джобы (`prisma generate` падал с «Cannot find module 'dotenv/config'»). Как в
+      # Dockerfile, NODE_ENV=production выставляется только на запуск уже собранного сервера — см. шаг
+      # «Запустить собранный сайт в фоне» ниже.
       VERCEL_ENV: preview
       PAYMENTS_TEST_MODE: "true"
       SUPERADMIN_LOGINS: e2eadmin
@@ -74,6 +77,8 @@ jobs:
 
       - name: Запустить собранный сайт в фоне
         working-directory: .next/standalone
+        env:
+          NODE_ENV: production
         run: nohup node server.js > /tmp/next-server.log 2>&1 &
 
       - name: Подождать, пока сайт станет доступен
