@@ -197,3 +197,9 @@ Telegram, Behance, Dribbble, UX/UI и т. п.) — у них нет узбекс
 - kafolat beradi
 - oʻrtachadan yuqori
 - oʻrtachadan past
+- oʻrganish qobiliyat
+- tez oʻzlashtira
+- original fikrlash qobiliyat
+- oʻzini ifoda etadi
+- oʻzini ifoda etar
+- oʻzini namoyon etadi

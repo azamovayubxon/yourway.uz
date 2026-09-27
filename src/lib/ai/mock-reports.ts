@@ -28,7 +28,7 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
       summary:
         "Судя по вашей очень высокой открытости (88% от максимума шкалы) и сочетанию интересов «исследование + творчество + предприимчивость», вы из тех, кто сначала разбирается, как всё устроено, а потом делает по-своему. Исследовательская жилка даёт вам аналитику, творческая — вкус и желание создавать, а предприимчивая — готовность продавать результат. Свобода и деньги для вас на первых местах, стабильность — ближе к концу: вам подходит путь, где доход растёт вместе с навыком, а не с выслугой лет. Добросовестность у вас на среднем уровне: вы способны на сильные рывки, а длинный маршрут лучше дробить на короткие этапы с видимым результатом — попробуйте двухнедельные циклы и оцените, насколько так легче не бросать начатое.",
       strengths: [
-        "Быстро осваиваете новые инструменты и идеи",
+        "Проявляете живой интерес к новым инструментам и идеям",
         "Соединяете анализ и творчество: видите и логику, и красоту решения",
         "Учитесь через практику — быстрее всего растёте на реальных задачах",
         "Готовы на умеренный риск и не боитесь пробовать новое",
@@ -228,7 +228,7 @@ export const MOCK_REPORTS: Record<TeaserLanguage, MockReport> = {
       summary:
         "Yangilikka ochiqligingiz juda yuqori (shkala maksimumidan 88%), qiziqishlaringiz esa tadqiqot, ijod va tadbirkorlik birikmasi — yaʼni siz avval narsaning qanday ishlashini tushunib olasiz, keyin uni oʻzingizcha qilasiz. Tadqiqotchilik sizga tahlil qilish qobiliyatini, ijodkorlik did va yaratish istagini, tadbirkorlik esa natijani sota olishni beradi. Siz uchun erkinlik va pul birinchi oʻrinda, barqarorlik esa keyinroq: daromad yillar oʻtishi bilan emas, mahoratingiz bilan birga oʻsadigan yoʻl sizga mos. Masʼuliyatlilik oʻrtacha darajada: siz qisqa vaqtda katta kuch bilan ishlay olasiz, uzoq yoʻlni esa natijasi koʻrinadigan qisqa bosqichlarga boʻlish maʼqul — ikki haftalik davrlarni sinab koʻring va bu sizga qanchalik yordam berishini baholang.",
       strengths: [
-        "Yangi dastur va gʻoyalarni tez oʻzlashtirasiz",
+        "Yangi dastur va gʻoyalarga qiziqish bildirasiz",
         "Tahlil va ijodni birlashtirasiz: yechimning ham mantiqini, ham chiroyini koʻrasiz",
         "Amalda oʻrganasiz — haqiqiy vazifalarda eng tez oʻsasiz",
         "Oʻylab tavakkal qilishga va yangi narsani sinab koʻrishga tayyorsiz",

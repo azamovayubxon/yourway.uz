@@ -393,7 +393,8 @@ export const uz: Dictionary = {
         "Sizga mos yoʻnalishlarni tanlayapmiz",
         "Portretingizni yozyapmiz",
       ],
-      wait: "Odatda bu 40 soniyagacha davom etadi. Sahifani yopmang.",
+      wait: "Odatda bu bir daqiqadan kam vaqt oladi. Sahifani yopmang.",
+      longWait: "Natijangiz tayyorlanmoqda. Bu odatdagidan biroz koʻproq vaqt olyapti. Iltimos, kuting.",
     },
     failedTitle: "Portretni tuzib boʻlmadi",
     failedText: "Biz tomonda nimadir notoʻgʻri ketdi. Javoblaringiz saqlangan — yana bir bor urinib koʻring.",
@@ -517,6 +518,8 @@ export const uz: Dictionary = {
       steps: ["Portret va maqsad", "Asosiy yoʻl", "Boshqa yoʻnalishlar va birinchi qadamlar"],
       partOf: "Tayyor qismlar: {total} tadan {n} tasi",
       wait: "Hisobot katta: odatda 3 daqiqadan 8 daqiqagacha vaqt oladi. Sahifani yopmaganingiz maʼqul. Yopsangiz ham hech narsa yoʻqolmaydi: hisobot akkauntingizda turibdi, uni ochganingizda davom ettiramiz.",
+      longWait:
+        "Bu odatdagidan koʻproq vaqt olyapti, lekin jarayon davom etyapti — hisobotning bir qismi allaqachon tayyor. Sahifani yopib, keyinroq qaytishingiz mumkin: hisobot akkauntingizda saqlanadi.",
     },
     failedTitle: "Hisobotni yozib boʻlmadi",
     failedText:
@@ -783,5 +786,12 @@ export const uz: Dictionary = {
   notFound: {
     title: "Sahifa topilmadi",
     text: "Havola eskirgan boʻlishi mumkin.",
+  },
+  accessDenied: {
+    title: "Kirish yopiq",
+    reportText: "Bunday hisobot yoʻq yoki u boshqa akkauntga tegishli. Uni sotib olgan akkauntingiz bilan kirganingizni tekshiring.",
+    checkoutText: "Bunday toʻlov yoʻq yoki u boshqa akkauntga tegishli.",
+    accountCta: "Mening hisobotlarim",
+    checkoutCta: "Toʻlovga oʻtish",
   },
 };

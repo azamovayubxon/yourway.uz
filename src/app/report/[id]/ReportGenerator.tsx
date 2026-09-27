@@ -13,6 +13,9 @@ type ReportDict = Dictionary["report"];
 type Phase = "running" | "failed" | "network";
 
 const POLL_MS = 3000;
+// После этого времени статус честно меняется на «это дольше обычного» (ожидаемый диапазон —
+// 3–8 минут, см. t.generating.wait), а не молчит до самого результата (ТЗ аудита §13).
+const LONG_WAIT_MS = 8 * 60_000;
 
 export function ReportGenerator({
   reportId,
@@ -28,9 +31,16 @@ export function ReportGenerator({
 }) {
   const [phase, setPhase] = useState<Phase>(initial.status === "failed" ? "failed" : "running");
   const [done, setDone] = useState(initial.done);
+  const [longWait, setLongWait] = useState(false);
   const total = initial.total;
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const started = useRef(false);
+
+  useEffect(() => {
+    if (phase !== "running") return;
+    const id = setTimeout(() => setLongWait(true), LONG_WAIT_MS);
+    return () => clearTimeout(id);
+  }, [phase]);
 
   const poll = useCallback(
     async (regenerate = false) => {
@@ -123,7 +133,7 @@ export function ReportGenerator({
               </li>
             ))}
           </ul>
-          <p className="mt-8 text-sm leading-relaxed text-muted">{t.generating.wait}</p>
+          <p className="mt-8 text-sm leading-relaxed text-muted">{longWait ? t.generating.longWait : t.generating.wait}</p>
         </div>
       ) : (
         <div className="mt-10 rounded-3xl border border-slate-200 p-6 text-center">

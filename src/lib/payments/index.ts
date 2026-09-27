@@ -136,7 +136,19 @@ export async function confirmTestPayment(paymentId: string, userId: string): Pro
         where: { id: payment.id, status: "pending" },
         data: { status: "paid", paidAt: new Date(), providerTxnId: `test-${randomBytes(8).toString("hex")}` },
       });
-      if (updated.count === 0) throw new Error("payment: уже обработан");
+      if (updated.count === 0) {
+        // Гонка: два одновременных запроса на подтверждение одной оплаты (двойной клик,
+        // повтор сети/вебхука) — другой уже выиграл и создал отчёт первым. Postgres блокирует
+        // конкурирующий UPDATE до коммита первого, так что к этому моменту отчёт уже виден —
+        // отдаём его id, а не считаем повтор ошибкой (устойчивость этапа C2, пригодится для
+        // вебхуков реального шлюза на этапе 9).
+        const raced = await tx.payment.findUnique({
+          where: { id: payment.id },
+          include: { report: { select: { id: true } } },
+        });
+        if (raced?.status === "paid" && raced.report) return raced.report.id;
+        throw new Error("payment: гонка подтверждения без готового отчёта");
+      }
       await consumePromo(tx, payment.promoCodeId);
       return createReportInTx(tx, payment);
     });
