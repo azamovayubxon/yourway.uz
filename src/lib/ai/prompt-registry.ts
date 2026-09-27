@@ -180,3 +180,29 @@ export function parsePromptVersionLabel(label: string): { version: number } | nu
   const match = /:v(\d+)$/.exec(label);
   return match ? { version: Number(match[1]) } : null;
 }
+
+// Реальный случай (этап B2, найдено владельцем на превью): активная версия teaser_uz когда-то
+// (этап 4б, правка узбекского стиля) была сохранена как версия 2+, и с тех пор код промпта
+// поменялся дважды (добавлены trial_task/free_step, убран locked_toc), а /admin/prompts об этом
+// не предупреждал — баннер сравнивал только версию 1 с кодом, а не текущую активную версию.
+// isDriftedFromCode/activePromptErrors — общая логика для /admin/prompts и тестов ниже, чтобы
+// расхождение между кодом и активной версией в базе больше не проходило незамеченным.
+
+// Отличается ли активная версия (любой номер) от текста в коде прямо сейчас.
+export function isDriftedFromCode(
+  key: PromptKey,
+  active: { systemTemplate: string; userTemplate: string },
+): boolean {
+  const def = PROMPT_DEFAULTS[key];
+  return active.systemTemplate !== def.system.template || active.userTemplate !== def.user.template;
+}
+
+// Проходит ли активная версия те же проверки, что при сохранении новой версии (§ «обязательные
+// подстановки», требование 4 этапа 8б). Непустой список — генерация с этой версией сломана прямо
+// сейчас (например, в тексте нет обязательного поля схемы вроде free_step).
+export function activePromptErrors(
+  key: PromptKey,
+  active: { systemTemplate: string; userTemplate: string },
+): string[] {
+  return validatePromptTemplates(key, active.systemTemplate, active.userTemplate);
+}
