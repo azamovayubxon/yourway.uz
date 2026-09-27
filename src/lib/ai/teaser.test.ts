@@ -132,10 +132,12 @@ describe("генерация тизера", () => {
 
   it("узбекский ответ на «sen», с «Tu» или английским словом — повтор с перечнем того, что исправить", async () => {
     const good = MOCK_TEASERS.uz;
+    // portrait — ровно 2 предложения в каждом случае (иначе основной проблемой станет число
+    // предложений, а не проверяемое здесь нарушение узбекского стиля).
     for (const [bad, code] of [
-      [{ ...good, portrait: "Sen amaliy odamsan va erkinlikni qadrlaysan." }, "rule:uz_sen:Sen"],
+      [{ ...good, portrait: "Sen amaliy odamsan va erkinlikni qadrlaysan. Bu sizga mos keladi." }, "rule:uz_sen:Sen"],
       [{ ...good, personality_type_label: "Pragmatist-Entrepreneur" }, "rule:uz_english:Pragmatist"],
-      [{ ...good, portrait: good.portrait + " Tu kuchli odamsiz." }, "rule:uz_tu:Tu"],
+      [{ ...good, portrait: "Siz amaliy odamsiz va erkinlikni qadrlaysiz. Tu kuchli odamsiz." }, "rule:uz_tu:Tu"],
     ] as const) {
       const provider = scripted([ok(bad), ok(good)]);
       const logs: AttemptLog[] = [];

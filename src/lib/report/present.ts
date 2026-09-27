@@ -3,12 +3,14 @@
 // (src/lib/pdf), чтобы оба места показывали одно и то же одинаково.
 
 import { uzSixteenTypeName } from "@/lib/ai/uz-resources";
+import type { ReportContent } from "@/lib/ai/report-schema";
 import type { Profile } from "@/lib/assessment/profile";
 import { SIXTEEN_TYPES } from "@/lib/assessment/tests";
 import { isLevel } from "@/lib/payments";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
+import { firstSentences } from "./paragraphs";
 
 export interface ReportPresentation {
   levelName: string;
@@ -51,4 +53,29 @@ export function presentReport(
 // содержимое отчёта (report.content) остаётся на report.locale, зафиксированном при оплате.
 export function reportLanguageNote(reportLocale: Locale, t: Dictionary): string {
   return fmt(t.report.languageNote, { lang: t.report.languageNames[reportLocale] });
+}
+
+export interface ReportFirstScreen {
+  // 1–2 предложения — выдержка из уже написанного портрета, а не отдельное поле от ИИ
+  // (ТЗ аудита §9: слой отображения над текущей схемой, без изменения генерации).
+  takeaway: string;
+  direction: string;
+  firstStep: string;
+  // Время, деньги, что понадобится — из первого варианта маршрута (main_path.routes[0]).
+  constraints: string;
+}
+
+// Компактный первый экран отчёта (ТЗ аудита §9): вывод, основное направление, первый шаг,
+// ограничения — собраны из уже существующих полей ReportContent, ничего нового не генерируется.
+export function buildFirstScreen(content: ReportContent): ReportFirstScreen {
+  const route = content.main_path.routes[0];
+  const constraints = route
+    ? [route.time_estimate, route.cost_range, route.requirements[0]].filter(Boolean).join(" · ")
+    : "";
+  return {
+    takeaway: firstSentences(content.portrait.summary, 2),
+    direction: content.goal.statement,
+    firstStep: content.act_now[0] ?? "",
+    constraints,
+  };
 }

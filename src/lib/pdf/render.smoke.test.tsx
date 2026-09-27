@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { MOCK_REPORTS } from "@/lib/ai/mock-reports";
 import { mergeReportParts } from "@/lib/ai/report-schema";
 import { fmt } from "@/i18n/format";
+import type { ReportFirstScreen } from "@/lib/report/present";
 import { ru } from "@/i18n/dictionaries/ru";
 import { uz } from "@/i18n/dictionaries/uz";
 import { registerPdfFonts } from "./fonts";
@@ -19,6 +20,16 @@ async function renderReportPdf(props: ReportPdfProps): Promise<Buffer> {
 // ⚠️ styles.page в ReportDocument.tsx намеренно без lineHeight — с ним react-pdf 4.9 молча
 // перестаёт печатать динамический текст (номер страницы) в колонтитуле. Если это изменится,
 // проверить получившийся PDF глазами (номера страниц внизу).
+// Соответствует buildFirstScreen (src/lib/report/present.ts, покрыта тестами там); здесь — просто
+// готовый проп, чтобы не тянуть в этот файл "server-only" через @/lib/payments (см. комментарий
+// в ReportDocument.tsx про summary).
+const summaryFor = (content: ReturnType<typeof mergeReportParts>): ReportFirstScreen => ({
+  takeaway: content.portrait.summary,
+  direction: content.goal.statement,
+  firstStep: content.act_now[0] ?? "",
+  constraints: content.main_path.routes[0]?.time_estimate ?? "",
+});
+
 describe("renderReportPdf smoke test", () => {
   it("renders a RU report without throwing", async () => {
     const mock = MOCK_REPORTS.ru;
@@ -36,6 +47,7 @@ describe("renderReportPdf smoke test", () => {
       date: "25.09.2026",
       mockNote: `${ru.teaser.mockBadge}. ${ru.teaser.mockNote}`,
       languageNote: fmt(ru.report.languageNote, { lang: ru.report.languageNames.ru }),
+      summary: summaryFor(content),
     });
     expect(pdf.byteLength).toBeGreaterThan(1000);
   });
@@ -56,6 +68,7 @@ describe("renderReportPdf smoke test", () => {
       date: "25.09.2026",
       mockNote: null,
       languageNote: fmt(uz.report.languageNote, { lang: uz.report.languageNames.ru }),
+      summary: summaryFor(content),
     });
     expect(pdf.byteLength).toBeGreaterThan(1000);
   });

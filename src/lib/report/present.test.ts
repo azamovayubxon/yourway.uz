@@ -6,7 +6,7 @@ import { uz } from "@/i18n/dictionaries/uz";
 // src/lib/report/ownership.test.ts. present.ts тянет его транзитивно через @/lib/payments.
 vi.mock("server-only", () => ({}));
 
-const { presentReport, reportLanguageNote } = await import("./present");
+const { presentReport, reportLanguageNote, buildFirstScreen } = await import("./present");
 
 // presentReport/reportLanguageNote — общее для онлайн-страницы отчёта и PDF (аудит UX-06):
 // оболочка (название уровня, 16-тип, стиль обучения, дата, строка о языке) всегда на языке
@@ -68,5 +68,30 @@ describe("reportLanguageNote — явная строка о языке отчё�
     // Раньше строка показывалась только когда report.locale !== interfaceLocale; теперь — всегда.
     expect(reportLanguageNote("ru", ru).length).toBeGreaterThan(0);
     expect(reportLanguageNote("uz", uz).length).toBeGreaterThan(0);
+  });
+});
+
+describe("buildFirstScreen — компактный первый экран (ТЗ аудита §9), без новой генерации", () => {
+  const content = {
+    portrait: { summary: "Вы любите разбираться в деталях. Это помогает в аналитике. Третье предложение не нужно." },
+    goal: { statement: "Стать аналитиком данных" },
+    main_path: {
+      routes: [{ time_estimate: "6–9 месяцев", cost_range: "0–2 млн сум", requirements: ["английский B1"] }],
+    },
+    act_now: ["Пройти бесплатный курс по SQL"],
+  } as unknown as Parameters<typeof buildFirstScreen>[0];
+
+  it("берёт первые два предложения портрета, а не весь текст", () => {
+    expect(buildFirstScreen(content).takeaway).toBe("Вы любите разбираться в деталях. Это помогает в аналитике.");
+  });
+
+  it("направление и первый шаг — уже существующие поля отчёта", () => {
+    const s = buildFirstScreen(content);
+    expect(s.direction).toBe("Стать аналитиком данных");
+    expect(s.firstStep).toBe("Пройти бесплатный курс по SQL");
+  });
+
+  it("ограничения — из первого варианта маршрута", () => {
+    expect(buildFirstScreen(content).constraints).toBe("6–9 месяцев · 0–2 млн сум · английский B1");
   });
 });

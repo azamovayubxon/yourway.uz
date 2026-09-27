@@ -6,6 +6,8 @@
 import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import type { StyleProp } from "@react-pdf/types";
 import type { ReportContent, ReportRoute } from "@/lib/ai/report-schema";
+import type { ReportFirstScreen } from "@/lib/report/present";
+import { splitIntoParagraphs } from "@/lib/report/paragraphs";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
 import { PDF_FONT_FAMILY } from "./fonts";
@@ -19,6 +21,10 @@ export interface ReportPdfProps {
   sixteenType: string;
   learningStyles: string[];
   date: string;
+  // Первый экран (ТЗ аудита §9): собран из уже готового отчёта тем же кодом, что и на онлайн-странице
+  // (buildFirstScreen, src/lib/report/present.ts) — вызывающий код передаёт готовый результат, чтобы
+  // ReportDocument.tsx не тянул за собой "server-only" через @/lib/payments и оставался тестируемым.
+  summary: ReportFirstScreen;
   // Плашка «тестовый режим ИИ» (мок-режим) — как на онлайн-странице.
   mockNote: string | null;
   // Явная строка «на каком языке отчёт» (аудит UX-06) — как на онлайн-странице, показывается
@@ -182,6 +188,12 @@ const styles = StyleSheet.create({
     padding: 8,
     marginBottom: 14,
   },
+
+  // Первый экран (ТЗ аудита §9): короткий вывод сразу после обложки, та же логика, что на сайте.
+  summaryPanel: { borderWidth: 1, borderColor: BORDER, borderRadius: 10, padding: 12, marginTop: 14 },
+  summaryTitle: { fontSize: 11.5, fontWeight: "bold", color: INK },
+  summaryStatsRow: { flexDirection: "row", gap: 8, marginTop: 8 },
+  summaryStat: { flex: 1, borderRadius: 8, padding: 8 },
 });
 
 const ROUTE_TYPE_LABEL: Record<ReportRoute["type"], (t: ReportDict) => string> = {
@@ -190,8 +202,18 @@ const ROUTE_TYPE_LABEL: Record<ReportRoute["type"], (t: ReportDict) => string> =
   online: (t) => t.routeTypes.online,
 };
 
+// Длинные абзацы делятся на несколько Text-блоков (ТЗ аудита §9) — та же логика, что в web-версии.
 function Prose({ children, style }: { children: string; style?: StyleProp }) {
-  return <Text style={[styles.body, style]}>{children}</Text>;
+  const paragraphs = splitIntoParagraphs(children);
+  return (
+    <>
+      {paragraphs.map((p, i) => (
+        <Text key={i} style={[styles.body, style, i > 0 ? { marginTop: 6 } : undefined]}>
+          {p}
+        </Text>
+      ))}
+    </>
+  );
 }
 
 function SectionTitle({ n, title }: { n: number; title: string }) {
@@ -267,6 +289,7 @@ export function ReportDocument({
   date,
   mockNote,
   languageNote,
+  summary,
 }: ReportPdfProps) {
   const { portrait, goal, reality_check: reality, main_path: path, alternatives, act_now: actNow } = content;
   let n = 0;
@@ -286,6 +309,29 @@ export function ReportDocument({
             <Text style={styles.coverPill}>{date}</Text>
           </View>
           <Text style={styles.coverGoal}>{goal.statement}</Text>
+        </View>
+
+        {/* Первый экран (ТЗ аудита §9): короткий вывод, направление, первый шаг и ограничения
+            сразу после обложки — та же логика, что на онлайн-странице отчёта. */}
+        <View style={styles.summaryPanel} wrap={false}>
+          <Text style={styles.summaryTitle}>{t.firstScreen.title}</Text>
+          <Prose style={{ marginTop: 4 }}>{summary.takeaway}</Prose>
+          <View style={styles.summaryStatsRow}>
+            <View style={[styles.summaryStat, { backgroundColor: "#eef6ff" }]}>
+              <Text style={styles.label}>{t.firstScreen.directionLabel.toUpperCase()}</Text>
+              <Text style={[styles.body, { marginTop: 2, fontWeight: "bold" }]}>{summary.direction}</Text>
+            </View>
+            <View style={[styles.summaryStat, { backgroundColor: "#ecfdf5" }]}>
+              <Text style={styles.label}>{t.firstScreen.firstStepLabel.toUpperCase()}</Text>
+              <Text style={[styles.body, { marginTop: 2, fontWeight: "bold" }]}>{summary.firstStep}</Text>
+            </View>
+          </View>
+          {summary.constraints && (
+            <Text style={[styles.bodyMuted, { marginTop: 8 }]}>
+              <Text style={{ fontWeight: "bold", color: INK }}>{t.firstScreen.constraintsLabel}: </Text>
+              {summary.constraints}
+            </Text>
+          )}
         </View>
 
         <View style={styles.section}>

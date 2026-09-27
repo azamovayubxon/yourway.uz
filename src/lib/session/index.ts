@@ -2,7 +2,7 @@ import "server-only";
 import { cookies } from "next/headers";
 import { getCurrentUser } from "@/lib/auth/current";
 import { getDb } from "@/lib/db";
-import { buildProfile } from "@/lib/assessment/profile";
+import { buildProfile, type Profile } from "@/lib/assessment/profile";
 import { computeScores, countAnswered } from "@/lib/assessment/scoring";
 import { surveyQuestionsFor } from "@/lib/assessment/survey";
 import { TOTAL_QUESTIONS, type PathType } from "@/lib/assessment/tests";
@@ -143,4 +143,16 @@ export async function saveSurveyAnswers(
     },
   });
   return { answered, total, surveyDone: true };
+}
+
+// UX-18 (аудит §8): без своей цели человек выбрал «Маршрут» на checkout — до оплаты нужно указать
+// цель (одно из направлений бесплатного результата или свою). Записывает её в профиль сессии,
+// чтобы она пошла в генерацию отчёта как обычная стоящая цель (см. pathRule в prompts.ts).
+export async function setCheckoutGoal(sessionId: string, statement: string): Promise<void> {
+  const db = getDb();
+  const session = await db.testSession.findUniqueOrThrow({ where: { id: sessionId } });
+  const profile = session.profile as unknown as Profile | null;
+  if (!profile) throw new Error("session: профиль ещё не собран");
+  const next: Profile = { ...profile, goal: { ...profile.goal, statement } };
+  await db.testSession.update({ where: { id: sessionId }, data: { profile: JSON.parse(JSON.stringify(next)) } });
 }

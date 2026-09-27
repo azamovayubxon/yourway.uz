@@ -83,7 +83,8 @@ export async function listUserReports(userId: string) {
   return getDb().report.findMany({
     where: { userId },
     orderBy: { createdAt: "desc" },
-    select: { id: true, level: true, locale: true, status: true, createdAt: true, sessionId: true },
+    // content — только для названия по цели в кабинете (UX-19); полный текст туда не идёт.
+    select: { id: true, level: true, locale: true, status: true, createdAt: true, sessionId: true, content: true },
   });
 }
 

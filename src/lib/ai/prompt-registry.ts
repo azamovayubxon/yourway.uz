@@ -86,9 +86,10 @@ const TEASER_DEFAULT: PromptDefault = {
     "portrait",
     "top_strengths",
     "fitting_directions",
+    "trial_task",
+    "free_step",
     "surprise_hook",
     "surprise_direction_internal",
-    "locked_toc",
   ],
 };
 

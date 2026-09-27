@@ -8,14 +8,19 @@ const text = z.string().trim().min(1);
 
 // Схема для API (structured outputs): только форма ответа, без ограничений на длину списков —
 // их API не поддерживает. Количество пунктов проверяем ниже, в validateTeaser.
+//
+// trial_task и free_step — необязательны и здесь, и в TeaserSchema ниже: пока на боевом сайте
+// не активирована новая версия промпта (/admin/prompts → «Создать версию из текста в коде» для
+// teaser_ru/teaser_uz), действует СТАРЫЙ активный промпт из базы, который эти поля у ИИ не просит.
+// Без этой мягкости обычная генерация тизера ломалась бы до нажатия кнопки в админке.
 export const TeaserOutputSchema = z.object({
   personality_type_label: z.string(),
   portrait: z.string(),
   top_strengths: z.array(z.string()),
-  fitting_directions: z.array(z.object({ title: z.string(), one_liner: z.string() })),
+  fitting_directions: z.array(z.object({ title: z.string(), one_liner: z.string(), trial_task: z.string().optional() })),
+  free_step: z.string().optional(),
   surprise_hook: z.string(),
   surprise_direction_internal: z.string(),
-  locked_toc: z.array(z.string()),
 });
 
 // Строгая схема для проверки на нашей стороне.
@@ -24,17 +29,16 @@ export const TeaserOutputSchema = z.object({
 export const TeaserSchema = z.object({
   personality_type_label: text.max(80),
   portrait: text.max(1600),
-  // Промпт просит 3 сильные стороны, ТЗ 3.7.1 — 2–3. Принимаем 2–4, показываем первые 3.
-  top_strengths: z.array(text.max(200)).min(2).max(4),
-  // Промпт: 2–3 сферы. Небольшой запас (4), на экране — первые 3.
+  // Решение владельца (сентябрь 2026, этап B2а): ровно 3 сильные стороны, ровно 3 направления —
+  // без слов «5+» и без разброса, который раньше маскировался обрезкой в интерфейсе.
+  top_strengths: z.array(text.max(200)).length(3),
   fitting_directions: z
-    .array(z.object({ title: text.max(150), one_liner: text.max(400) }))
-    .min(2)
-    .max(4),
+    .array(z.object({ title: text.max(150), one_liner: text.max(400), trial_task: text.max(300).optional() }))
+    .length(3),
+  // Один полезный бесплатный шаг (аудит UX-13, этап B2а); необязательно — см. комментарий выше.
+  free_step: text.max(500).optional(),
   surprise_hook: text.max(700),
   surprise_direction_internal: text.max(200),
-  // Промпт просит 8–12 пунктов. Проверка мягкая (решение (Г)): 7 пунктов из golden example тоже принимаются.
-  locked_toc: z.array(text.max(200)).min(5).max(15),
 });
 
 export type TeaserContent = z.infer<typeof TeaserSchema>;
@@ -49,27 +53,21 @@ export type ValidationResult =
   | { ok: false; error: string; problems: string[] };
 
 // Поля, которые видит пользователь (surprise_direction_internal — нет, оно только для Вызова 2).
+// trial_task/free_step — необязательны (см. комментарий у схемы выше), поэтому отфильтровываем undefined.
 function visibleTexts(t: TeaserContent): string[] {
   return [
     t.personality_type_label,
     t.portrait,
     ...t.top_strengths,
-    ...t.fitting_directions.flatMap((d) => [d.title, d.one_liner]),
+    ...t.fitting_directions.flatMap((d) => [d.title, d.one_liner, d.trial_task]),
+    t.free_step,
     t.surprise_hook,
-    ...t.locked_toc,
-  ];
+  ].filter((v): v is string => v !== undefined);
 }
 
 // Тексты-инсайты: в них не должно быть сумм и цен (правило 5 промпта тизера).
-// В оглавлении цифры допустимы: там может быть цель человека («маршруты к цели $2000+»).
 function insightTexts(t: TeaserContent): string[] {
-  return [
-    t.personality_type_label,
-    t.portrait,
-    ...t.top_strengths,
-    ...t.fitting_directions.flatMap((d) => [d.title, d.one_liner]),
-    t.surprise_hook,
-  ];
+  return visibleTexts(t);
 }
 
 // Недописанные заглушки вроде «[вставьте ...]», «{{...}}», «TODO», «...» вместо текста.
@@ -91,6 +89,15 @@ export function cyrillicShare(value: string): number {
 export function matchesLanguage(value: string, language: TeaserLanguage): boolean {
   const share = cyrillicShare(value);
   return language === "ru" ? share >= 0.6 : share === 0;
+}
+
+// Число предложений в тексте (решение владельца, сентябрь 2026: вывод — строго 2–3 предложения).
+// Считает по знакам конца предложения; несколько подряд («…», «?!») — это конец одного предложения,
+// а не нескольких.
+export function countSentences(value: string): number {
+  const matches = value.match(/[^.!?…]+[.!?…]+/gu);
+  if (matches) return matches.length;
+  return value.trim() ? 1 : 0;
 }
 
 // uzRules — стоп-слова и запрещённые конструкции из глоссария (для узбекского ответа).
@@ -115,6 +122,11 @@ export function validateTeaser(raw: unknown, language: TeaserLanguage, uzRules?:
   const content = parsed.data;
   const visible = visibleTexts(content);
   const found: { code: string; text: string }[] = [];
+
+  const sentences = countSentences(content.portrait);
+  if (sentences < 2 || sentences > 3) {
+    found.push({ code: "rule:portrait_sentences", text: `вывод должен быть из 2–3 предложений, сейчас ${sentences}` });
+  }
 
   if (visible.some((v) => PLACEHOLDER.test(v))) {
     found.push({ code: "rule:placeholder", text: "в тексте осталась заглушка вроде «[вставьте …]»" });
