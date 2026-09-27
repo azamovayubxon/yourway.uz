@@ -29,6 +29,7 @@ import {
 import { createMockProvider, ZERO_USAGE, type AiProvider, type AiRequest } from "./providers";
 import { runReportPartAttempt } from "./report";
 import { mergeReportParts, validateReportPart, type PortraitGoalPart } from "./report-schema";
+import { getUzGlossary } from "./uz-resources";
 
 const doc = readFileSync(path.resolve(import.meta.dirname, "../../../docs/prilozhenie-b-prompty.md"), "utf8");
 const codeBlocks = [...doc.matchAll(/```\n([\s\S]*?)```/g)].map((m) => m[1].replace(/\n$/, ""));
@@ -301,6 +302,29 @@ describe("проверка частей отчёта (Приложение Б §
       expect(all).toContain("business");
       expect(all).toContain("sen");
       expect(all).toContain("кириллица");
+    }
+  });
+
+  it("узбекский отчёт с «Figma» и «Python» проходит (названия инструментов — не нарушение)", () => {
+    const uzCtx = { ...ctx, language: "uz" as const, uzRules: getUzGlossary() };
+    // MOCK_REPORTS.uz уже упоминает Figma, Behance, Dribbble в обычном тексте — это и проверяем
+    // напрямую, без искусственного текста, чтобы гарантия не разошлась с реальным содержимым.
+    const finishResult = validateReportPart("finish", MOCK_REPORTS.uz.finish, uzCtx);
+    expect(finishResult.ok).toBe(true);
+    const mainPathWithPython = structuredClone(MOCK_REPORTS.uz.main_path);
+    mainPathWithPython.main_path.routes[0].steps[0] += " Python asoslarini ham oʻrganing.";
+    const mainPathResult = validateReportPart("main_path", mainPathWithPython, uzCtx);
+    expect(mainPathResult.ok).toBe(true);
+  });
+
+  it("узбекское «deadline»/«feedback» — softOnly, не жёсткий брак (уточнение по ревью)", () => {
+    const part = structuredClone(MOCK_REPORTS.uz.finish);
+    part.act_now[0] = "Deadline yaqinlashmoqda, ustozdan feedback oling";
+    const result = validateReportPart("finish", part, { ...ctx, language: "uz", uzRules: getUzGlossary() });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.softOnly).toBe(true);
+      expect(result.content).toBeDefined();
     }
   });
 
