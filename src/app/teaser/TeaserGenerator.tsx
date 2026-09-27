@@ -11,7 +11,7 @@ import { MockBadge } from "./MockBadge";
 interface GeneratorDict {
   mockBadge: string;
   mockNote: string;
-  generating: { title: string; steps: string[]; wait: string };
+  generating: { title: string; steps: string[]; wait: string; longWait: string };
   failedTitle: string;
   failedText: string;
   networkError: string;
@@ -25,8 +25,11 @@ type Phase = "running" | "failed" | "network" | "limit_session" | "limit_ip";
 
 // Пока генерация идёт в фоне, спрашиваем статус раз в 3 секунды.
 const POLL_MS = 3000;
-// Шаги анимации сменяются каждые 2,5 секунды.
-const STEP_MS = 2500;
+// После этого времени статус честно меняется на «это занимает дольше обычного» (ТЗ аудита §13):
+// список шагов ниже — не наблюдение за реальным прогрессом (для тизера сервер не сообщает
+// промежуточные шаги, это один вызов ИИ), поэтому мы не анимируем «выполнение» по таймеру —
+// только показываем, что вообще происходит, и честно отмечаем долгое ожидание.
+const LONG_WAIT_MS = 25_000;
 
 export function TeaserGenerator({ t, mock, restartLabel }: { t: GeneratorDict; mock: boolean; restartLabel: string }) {
   const [phase, setPhase] = useState<Phase>("running");
@@ -146,12 +149,16 @@ export function TeaserGenerator({ t, mock, restartLabel }: { t: GeneratorDict; m
   );
 }
 
+// Список шагов ниже — общее описание того, что происходит при составлении портрета, а не
+// наблюдение за реальным прогрессом (сервер для тизера не сообщает промежуточные этапы: это
+// один вызов ИИ). Поэтому шаги показаны как есть, без анимации «выполнено/не выполнено»,
+// которая выдавала бы решение художника за точный статус (ТЗ аудита §13, устойчивость этапа C2).
 function Analyzing({ t }: { t: GeneratorDict["generating"] }) {
-  const [step, setStep] = useState(0);
+  const [longWait, setLongWait] = useState(false);
   useEffect(() => {
-    const id = setInterval(() => setStep((s) => Math.min(s + 1, t.steps.length - 1)), STEP_MS);
-    return () => clearInterval(id);
-  }, [t.steps.length]);
+    const id = setTimeout(() => setLongWait(true), LONG_WAIT_MS);
+    return () => clearTimeout(id);
+  }, []);
 
   return (
     <div className="pt-8 text-center" role="status" aria-live="polite">
@@ -166,27 +173,14 @@ function Analyzing({ t }: { t: GeneratorDict["generating"] }) {
       </div>
       <h1 className="mt-8 text-2xl font-extrabold">{t.title}</h1>
       <ul className="mx-auto mt-6 max-w-xs space-y-2.5 text-left">
-        {t.steps.map((label, i) => (
-          <li
-            key={label}
-            className={
-              "flex items-center gap-3 transition-opacity duration-500 " + (i <= step ? "opacity-100" : "opacity-30")
-            }
-          >
-            <span
-              className={
-                "flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold " +
-                (i < step ? "bg-emerald-500 text-white" : i === step ? "bg-brand-500 text-white" : "bg-slate-200")
-              }
-              aria-hidden
-            >
-              {i < step ? "✓" : i === step ? <span className="size-2 animate-pulse rounded-full bg-white" /> : ""}
-            </span>
-            <span className={i === step ? "font-semibold" : "text-muted"}>{label}</span>
+        {t.steps.map((label) => (
+          <li key={label} className="flex items-center gap-3">
+            <span className="size-1.5 shrink-0 rounded-full bg-slate-300" aria-hidden />
+            <span className="text-muted">{label}</span>
           </li>
         ))}
       </ul>
-      <p className="mt-8 text-sm text-muted">{t.wait}</p>
+      <p className="mt-8 text-sm text-muted">{longWait ? t.longWait : t.wait}</p>
     </div>
   );
 }

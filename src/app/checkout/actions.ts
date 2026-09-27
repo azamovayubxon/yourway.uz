@@ -79,7 +79,17 @@ export async function testPaymentAction(formData: FormData) {
   const paymentId = field(formData, "paymentId");
   const outcome = field(formData, "outcome");
   if (outcome === "pay") {
-    const result = await confirmTestPayment(paymentId, user.id);
+    // Двойной клик/повтор запроса на этой же оплате (устойчивость этапа C2) не должен показать
+    // человеку сырую страницу ошибки: confirmTestPayment сам возвращает уже созданный отчёт при
+    // гонке подтверждений, но неожиданный сбой БД тут перехватываем и ведём на checkout с понятной
+    // ошибкой вместо падения server action.
+    let result: Awaited<ReturnType<typeof confirmTestPayment>>;
+    try {
+      result = await confirmTestPayment(paymentId, user.id);
+    } catch (e) {
+      await logError("payments-confirm-test", e, { paymentId });
+      redirect("/checkout?error=server");
+    }
     if (result.ok) redirect(`/report/${result.reportId}`);
     redirect(`/checkout?error=${result.error}`);
   }

@@ -42,6 +42,20 @@ describe("узбекский глоссарий (docs/uz-glossary.md)", () => {
     );
   });
 
+  // Правило тона 8 (дополнение владельца, сентябрь 2026): «qobiliyat» / «tez oʻzlashtirasiz» —
+  // только о том, что тест реально измерил; и не смешивать лица (3-е лицо «oʻzini» вместо «siz»
+  // -формы «oʻzingizni»). Примеры — реальные плохие формулировки, которые привёл владелец.
+  it("ловит приписывание способности и смешение лица из реальных плохих ответов", () => {
+    expect(findUzIssues("Sizda amaliy oʻrganish qobiliyatingiz yaxshi rivojlangan", glossary)).toHaveLength(1);
+    expect(findUzIssues("Siz vazifalarni tez oʻzlashtirasiz", glossary)).toHaveLength(1);
+    expect(findUzIssues("U ijodiy ishlarda oʻzini ifoda etadi", glossary)).toHaveLength(1);
+  });
+
+  it("не ловит заявленный интерес/склонность вместо способности", () => {
+    expect(findUzIssues("Siz amaliyotda oʻrganishga moyilligingizni bildirdingiz", glossary)).toEqual([]);
+    expect(findUzIssues("Siz oʻzingizni ijodiy ishlar bilan ifoda etasiz", glossary)).toEqual([]);
+  });
+
   // Уточнение по ревью (этап C1): названия инструментов/технологий/платформ — не нарушение вообще
   // (у них нет узбекской замены, отчёт про IT/дизайн не должен из-за них проваливаться), а
   // жаргонизмы вроде «deadline»/«feedback», у которых есть обычное узбекское слово, — нарушение.
