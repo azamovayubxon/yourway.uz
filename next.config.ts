@@ -1,24 +1,10 @@
 import type { NextConfig } from "next";
 
-// Заголовки безопасности (этап 10А). Сайт не грузит ничего с посторонних доменов (ни скриптов,
-// ни шрифтов, ни стилей — Tailwind собран в один файл), поэтому CSP может быть строгим.
-// 'unsafe-inline' в style-src нужен: React пишет некоторые стили как атрибут style="…", браузеры
-// требуют его в style-src отдельно от script-src (там inline не разрешён).
-const CSP = [
-  "default-src 'self'",
-  "script-src 'self'",
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data:",
-  "font-src 'self' data:",
-  "connect-src 'self'",
-  "object-src 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-  "frame-ancestors 'none'",
-].join("; ");
-
+// Заголовки безопасности (этап 10А). Content-Security-Policy сюда больше не входит: ей нужен
+// нонс на каждый запрос (иначе она блокирует встроенные скрипты гидратации Next.js — см. срочный
+// фикс сентября 2026, когда сайт грузился, но ни одна кнопка не работала). CSP теперь генерируется
+// в `src/proxy.ts` (Proxy — новое имя Middleware в Next 16) заново на каждый запрос.
 const SECURITY_HEADERS = [
-  { key: "Content-Security-Policy", value: CSP },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },

@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "playwright test",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "postinstall": "prisma generate",
@@ -33,6 +34,7 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^22.20.4",
     "@types/pg": "^8.23.1",

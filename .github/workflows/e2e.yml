@@ -1,0 +1,108 @@
+name: E2E (клики в браузере, CSP и гидратация)
+
+# Срочный фикс (сентябрь 2026): строгая CSP без нонса блокировала встроенные скрипты гидратации
+# Next.js — сайт открывался, но ни одна кнопка не работала (ответ на вопрос теста, вход, checkout).
+# Отсутствие такой проверки и позволило багу пройти этап 10 незамеченным (docker-smoke.yml проверяет
+# только код ответа главной страницы, без единого клика в браузере).
+#
+# Здесь — собранный сайт (`next build` + `.next/standalone`, как в Dockerfile) и PostgreSQL,
+# настоящий браузер (Playwright/Chromium) и те же клики, что при ручной проверке: главная → старт →
+# три ответа теста; регистрация и вход; тизер → чекаут в тестовом режиме → /admin. Падение при любой
+# ошибке Content-Security-Policy или гидратации в консоли браузера роняет джобу.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: yourway
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/yourway
+      DATABASE_URL_UNPOOLED: postgresql://postgres:postgres@localhost:5432/yourway
+      DEFAULT_LOCALE: uz
+      APP_URL: http://localhost:3000
+      AI_MODE: mock
+      # Тестовая оплата и служебные /dev/* страницы (используются в e2e/csp-hydration.spec.ts)
+      # включаются вне боевого сайта. VERCEL_ENV=preview — тот же переключатель, что и на
+      # превью-ссылках Vercel (см. src/lib/dev.ts, src/lib/payments/config.ts): NODE_ENV=production
+      # оставляем таким же, как в реальной сборке (Dockerfile), чтобы проверять настоящий боевой код.
+      NODE_ENV: production
+      VERCEL_ENV: preview
+      PAYMENTS_TEST_MODE: "true"
+      SUPERADMIN_LOGINS: e2eadmin
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - name: Установить зависимости
+        run: npm ci
+
+      - name: Применить миграции Prisma
+        run: npx prisma migrate deploy
+
+      - name: Собрать сайт (production build)
+        run: |
+          mkdir -p public
+          npm run build
+
+      - name: Собрать standalone-папку для запуска (как в Dockerfile)
+        run: |
+          cp -r public .next/standalone/public
+          cp -r .next/static .next/standalone/.next/static
+
+      - name: Установить браузер для Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Запустить собранный сайт в фоне
+        working-directory: .next/standalone
+        run: nohup node server.js > /tmp/next-server.log 2>&1 &
+
+      - name: Подождать, пока сайт станет доступен
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS http://localhost:3000/api/health; then
+              echo "сайт ответил"
+              exit 0
+            fi
+            echo "попытка $i: сайт ещё не готов, ждём…"
+            sleep 2
+          done
+          echo "сайт не поднялся за отведённое время" >&2
+          cat /tmp/next-server.log >&2 || true
+          exit 1
+
+      - name: Клики в браузере (Playwright)
+        run: npm run test:e2e
+
+      - name: Логи сайта при сбое
+        if: failure()
+        run: cat /tmp/next-server.log || true
+
+      - name: Отчёт Playwright при сбое
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

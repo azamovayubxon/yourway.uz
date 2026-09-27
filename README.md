@@ -35,6 +35,7 @@ npm run dev              # запустить сайт на http://localhost:300
 | `npm run dev` | сайт в режиме разработки |
 | `npm run build` / `npm start` | сборка и запуск как на боевом сервере (работает на любом хостинге с Node.js) |
 | `npm test` | автотесты (Vitest) |
+| `npm run test:e2e` | клики в браузере на собранном сайте (Playwright): CSP и гидратация не ломают ни одну кнопку. Нужен собранный сайт (`npm run build`, затем запустить `.next/standalone/server.js` — см. `.github/workflows/e2e.yml`) и Postgres |
 | `npm run typecheck` | проверка типов TypeScript |
 | `npm run uz:export` | пересоздать таблицу узбекских текстов `docs/uz-texts.csv` (исправления владельца сохраняются) |
 | `npm run db:migrate` | создать новую миграцию после правки `prisma/schema.prisma` (для разработки) |
