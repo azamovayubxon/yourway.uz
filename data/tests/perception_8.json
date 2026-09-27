@@ -2,7 +2,7 @@
   "meta": {
     "test_name": "Модуль восприятия (стиль обучения) для yourway.uz",
     "platform": "yourway.uz",
-    "version": "1.1",
+    "version": "1.2",
     "languages": [
       "ru",
       "uz"
@@ -17,49 +17,49 @@
       "id": 1,
       "style": "reading",
       "text_ru": "Мне легче всего усвоить новое, когда я читаю текст или книгу.",
-      "text_uz": "Yangi narsani matn yoki kitob o'qiganimda eng oson o'zlashtiraman."
+      "text_uz": "Yangi narsani matn yoki kitob oʻqiganimda eng oson oʻzlashtiraman."
     },
     {
       "id": 2,
       "style": "auditory",
       "text_ru": "Мне проще учиться, слушая лекции, аудио или устные объяснения.",
-      "text_uz": "Ma'ruza, audio yoki og'zaki tushuntirishlarni tinglab o'rganish men uchun osonroq."
+      "text_uz": "Maʼruza, audio yoki ogʻzaki tushuntirishlarni tinglab oʻrganish men uchun osonroq."
     },
     {
       "id": 3,
       "style": "practice",
       "text_ru": "Я лучше всего учусь, когда сразу пробую делать сам.",
-      "text_uz": "O'zim darhol amalda qilib ko'rganimda eng yaxshi o'rganaman."
+      "text_uz": "Oʻzim darhol amalda qilib koʻrganimda eng yaxshi oʻrganaman."
     },
     {
       "id": 4,
       "style": "repetition",
       "text_ru": "Мне помогает многократное повторение и работа по чётким шаблонам.",
-      "text_uz": "Ko'p marta takrorlash va aniq shablonlar bo'yicha ishlash menga yordam beradi."
+      "text_uz": "Koʻp marta takrorlash va aniq shablonlar boʻyicha ishlash menga yordam beradi."
     },
     {
       "id": 5,
       "style": "reading",
       "text_ru": "Я лучше понимаю материал, когда вижу его написанным, а не слышу.",
-      "text_uz": "Materialni eshitgandan ko'ra yozilgan holda ko'rganimda yaxshiroq tushunaman."
+      "text_uz": "Materialni eshitgandan koʻra yozilgan holda koʻrganimda yaxshiroq tushunaman."
     },
     {
       "id": 6,
       "style": "auditory",
       "text_ru": "Я хорошо запоминаю информацию на слух, когда её проговаривают.",
-      "text_uz": "Ma'lumotni eshitganimda yaxshiroq eslab qolaman."
+      "text_uz": "Maʼlumotni eshitganimda yaxshiroq eslab qolaman."
     },
     {
       "id": 7,
       "style": "practice",
       "text_ru": "Мне нужно применить новое на практике, чтобы по-настоящему понять.",
-      "text_uz": "Yangi narsani chinakam tushunish uchun uni amaliyotda qo'llashim kerak."
+      "text_uz": "Yangi narsani chinakam tushunish uchun uni amaliyotda qoʻllashim kerak."
     },
     {
       "id": 8,
       "style": "repetition",
       "text_ru": "Я лучше усваиваю материал, когда иду по пошаговой схеме и повторяю.",
-      "text_uz": "Bosqichma-bosqich sxema bo'yicha borib takrorlaganimda materialni yaxshiroq o'zlashtiraman."
+      "text_uz": "Bosqichma-bosqich sxema boʻyicha borib takrorlaganimda materialni yaxshiroq oʻzlashtiraman."
     }
   ],
   "scoring": {
@@ -73,7 +73,7 @@
       {
         "value": 2,
         "label_ru": "Скорее не про меня",
-        "label_uz": "Ko'proq men haqimda emas"
+        "label_uz": "Koʻproq men haqimda emas"
       },
       {
         "value": 3,
@@ -83,19 +83,19 @@
       {
         "value": 4,
         "label_ru": "Скорее про меня",
-        "label_uz": "Ko'proq men haqimda"
+        "label_uz": "Koʻproq men haqimda"
       },
       {
         "value": 5,
         "label_ru": "Полностью про меня",
-        "label_uz": "To'liq men haqimda"
+        "label_uz": "Toʻliq men haqimda"
       }
     ],
     "result_rule_ru": "learning_style = стиль с наибольшей суммой баллов (при близких — топ-2).",
     "scales": {
       "reading": {
         "style_ru": "Чтение / текст",
-        "style_uz": "O'qish / matn",
+        "style_uz": "Oʻqish / matn",
         "item_count": 2,
         "raw_min": 2,
         "raw_max": 10,
@@ -106,7 +106,7 @@
       },
       "auditory": {
         "style_ru": "Слушание / лекции",
-        "style_uz": "Tinglash / ma'ruza",
+        "style_uz": "Tinglash / maʼruza",
         "item_count": 2,
         "raw_min": 2,
         "raw_max": 10,
@@ -144,12 +144,12 @@
     "styles": {
       "reading": {
         "name_ru": "Чтение / текст",
-        "name_uz": "O'qish / matn",
+        "name_uz": "Oʻqish / matn",
         "desc_ru": "Учится через чтение, книги, статьи, конспекты."
       },
       "auditory": {
         "name_ru": "Слушание / лекции",
-        "name_uz": "Tinglash / ma'ruza",
+        "name_uz": "Tinglash / maʼruza",
         "desc_ru": "Учится на слух: лекции, аудио, объяснения."
       },
       "practice": {
