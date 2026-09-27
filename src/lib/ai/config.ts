@@ -47,7 +47,7 @@ export function teaserLimits(): TeaserLimits {
   return {
     perSession: intFromEnv("TEASER_LIMIT_PER_SESSION", 1),
     langRegenPerSession: intFromEnv("TEASER_LANG_REGEN_PER_SESSION", 1),
-    perIpPerDay: intFromEnv("TEASER_LIMIT_PER_IP_PER_DAY", 30),
+    perIpPerDay: intFromEnv("TEASER_LIMIT_PER_IP_PER_DAY", 150),
   };
 }
 
