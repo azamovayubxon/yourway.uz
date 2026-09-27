@@ -120,13 +120,13 @@
             },
             {
               "value": "mid",
-              "label_ru": "5–20 млн сум",
-              "label_uz": "5–20 mln so'm"
+              "label_ru": "Свыше 5 — до 20 млн сум",
+              "label_uz": "5 mln so'mdan ko'p — 20 mln so'mgacha"
             },
             {
               "value": "high",
-              "label_ru": "20–50 млн сум",
-              "label_uz": "20–50 mln so'm"
+              "label_ru": "Свыше 20 — до 50 млн сум",
+              "label_uz": "20 mln so'mdan ko'p — 50 mln so'mgacha"
             },
             {
               "value": "very_high",
@@ -155,13 +155,13 @@
             },
             {
               "value": "10-20",
-              "label_ru": "10–20 часов",
-              "label_uz": "10–20 soat"
+              "label_ru": "Свыше 10 — до 20 часов",
+              "label_uz": "10 soatdan ko'p — 20 soatgacha"
             },
             {
               "value": "20-40",
-              "label_ru": "20–40 часов",
-              "label_uz": "20–40 soat"
+              "label_ru": "Свыше 20 — до 40 часов",
+              "label_uz": "20 soatdan ko'p — 40 soatgacha"
             },
             {
               "value": "40+",
@@ -408,13 +408,13 @@
             },
             {
               "value": "10-20m",
-              "label_ru": "10–20 млн сум",
-              "label_uz": "10–20 mln so'm"
+              "label_ru": "Свыше 10 — до 20 млн сум",
+              "label_uz": "10 mln so'mdan ko'p — 20 mln so'mgacha"
             },
             {
               "value": "20-50m",
-              "label_ru": "20–50 млн сум",
-              "label_uz": "20–50 mln so'm"
+              "label_ru": "Свыше 20 — до 50 млн сум",
+              "label_uz": "20 mln so'mdan ko'p — 50 mln so'mgacha"
             },
             {
               "value": "50m+",

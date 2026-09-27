@@ -43,6 +43,12 @@ export const uz: Dictionary = {
     account: "Akkaunt",
     sum: "{n} soʻm",
   },
+  header: {
+    how: "Bu qanday ishlaydi",
+    sample: "Namuna",
+    pricing: "Narxlar",
+    menu: "Menyu",
+  },
   footer: {
     howItWorks: "Bu qanday ishlaydi",
     pricing: "Narxlar",
@@ -62,35 +68,50 @@ export const uz: Dictionary = {
   },
   landing: {
     hero: {
-      title: "Kim boʻlishingizni va bunga qanday erishishni bilib oling",
+      title: "Oʻzingizga mos kasbni toping. Birinchi qadamni biling.",
       subtitle:
-        "Shaxsiyat va qiziqishlarni oʻlchaydigan ilmiy testlar, natijani esa sunʼiy intellekt tahlil qiladi. Portretingiz va sizga mos yoʻnalishlar — bepul. Hozirgi holatingizdan maqsadingizgacha boʻlgan shaxsiy yoʻl esa toʻliq hisobotda.",
-      note: "Roʻyxatdan oʻtish shart emas · taxminan 20 daqiqa",
+        "Qiziqishlaringiz va kuchli tomonlaringizni yaxshiroq tushuning. Testdan soʻng sizga mos yoʻnalishlarni bepul koʻring. Batafsil oʻqish va ish rejasini esa alohida olishingiz mumkin.",
+      ctaSample: "Natija namunasini koʻrish",
+      note: "110 ta test savoli va qisqa anketa. Natijaning asosiy qismi bepul.",
+    },
+    audience: {
+      title: "Kimlarga mos",
+      items: [
+        {
+          title: "Kasb tanlayapman",
+          text: "Maktab yoki kollejdan keyin qayerga borishni hali hal qilmadingiz — test yoʻnalishlar doirasini torraytirishga yordam beradi.",
+        },
+        {
+          title: "Qayerda oʻqishni tanlayapman",
+          text: "Yoʻnalishni taxminan bilasiz va oliygoh, kurs yoki dasturni tanlamoqchisiz.",
+        },
+        {
+          title: "Yoʻnalishni oʻzgartiryapman",
+          text: "Ishlaysiz, lekin qayerga oʻtish va nimadan boshlashni tushunmoqchisiz.",
+        },
+      ],
     },
     how: {
       title: "Bu qanday ishlaydi",
       steps: [
         {
-          title: "Yoʻlni tanlang",
-          text: "Maqsadingizni allaqachon bilasizmi yoki hali aniqlab olmoqchimisiz — shuni belgilang.",
+          title: "Savollarga javob bering.",
+          text: "Qiziqishlaringiz, odatlaringiz va siz uchun muhim jihatlarni bilib olamiz. Har ekranda bitta savol.",
         },
         {
-          title: "Testlardan oʻting",
-          text: "Shaxsiyatingiz, qiziqishlaringiz, qadriyatlaringiz va qanday oʻrganishingiz. Har ekranda bitta savol.",
+          title: "Natijangizni koʻring.",
+          text: "Kuchli tomonlaringiz va koʻrib chiqishga arziydigan yoʻnalishlar bilan tanishing.",
         },
         {
-          title: "Natijangizni koʻring",
-          text: "Bepul: tipingiz, kuchli tomonlaringiz va sizga mos 2–3 ta yoʻnalish.",
-        },
-        {
-          title: "Keyingi qadamingizni rejalashtiring",
-          text: "Toʻliq hisobot: maqsad, qadamlar, muddat va xarajatlar (taxminiy), zaxira yoʻllar.",
+          title: "Keyingi qadamni tanlang.",
+          text: "Batafsil reja kerak boʻlsa, oʻqish va ishga kirish yoʻllarini toʻliq hisobotda koʻring.",
         },
       ],
       more: "Batafsil",
     },
     sample: {
       title: "Hisobot namunasi",
+      badge: "Namuna",
       subtitle: "Bepul qismi shunday koʻrinadi. Maʼlumotlar oʻylab topilgan.",
       typeLabel: "Izlanuvchan ijodkor",
       typeCode: "INTP — Tahlilchi",
@@ -108,15 +129,29 @@ export const uz: Dictionary = {
         "Sizni hayron qoldirishi mumkin boʻlgan yoʻnalish",
         "Shu haftaning oʻzida nimadan boshlash kerak",
       ],
+      routeExample: {
+        title: "Qisqa yoʻl namunasi",
+        badge: "Toʻliq hisobotdan namuna",
+        steps: [
+          "Dizayn asoslarini oʻrganish — 4 hafta",
+          "Birinchi portfolioni yigʻish — 6 hafta",
+          "Birinchi ish oʻrniga murojaat qilish — 8-hafta",
+        ],
+      },
     },
-    dataUse: {
-      title: "Qanday maʼlumotlardan foydalanamiz",
-      text: "Natija uchun javoblaringizdan, istasangiz esa — yoshingiz, jinsingiz, byudjetingiz va tajribangizdan foydalanamiz: bu yoʻnalishlarni aniqroq tanlashga yordam beradi. Ism, telefon va pochta soʻralmaydi.",
+    methodology: {
+      title: "Natija qanday tuziladi va maʼlumotlardan qanday foydalanamiz",
+      resultTitle: "Natija qanday hisoblanadi",
+      resultText:
+        "Shaxsiyat va qiziqish ballari tan olingan metodikalar (Big Five, Holland RIASEC testi) formulalari boʻyicha hisoblanadi — sunʼiy intellektsiz. Sunʼiy intellekt esa profilingizni tushunarli tilda tavsiflaydi, faqat shu ballar va anketa javoblaringizga tayanib.",
+      dataTitle: "Qanday maʼlumotlardan foydalanamiz",
+      dataText:
+        "Natija uchun javoblaringizdan, istasangiz esa — yoshingiz, jinsingiz, byudjetingiz va tajribangizdan foydalanamiz: bu yoʻnalishlarni aniqroq tanlashga yordam beradi. Ism, telefon va pochta soʻralmaydi.",
       link: "Batafsili — maxfiylik siyosatida",
     },
     pricing: {
-      title: "Narxlar",
-      subtitle: "Testlar va portret bepul. Faqat yoʻl xaritasi yozilgan toʻliq hisobot uchun toʻlaysiz.",
+      title: "Bepul va pullik",
+      subtitle: "Testlar va portret bepul. Faqat yoʻl xaritasi yozilgan toʻliq hisobot uchun — bir marta — toʻlaysiz.",
       oneTime: "Bir martalik toʻlov",
       plans: [
         { name: "Bepul", price: "0 soʻm", features: PACKAGE_FEATURES.free },
@@ -156,7 +191,7 @@ export const uz: Dictionary = {
     },
     finalCta: {
       title: "Qaysi yoʻldan borishingizni bilib oling",
-      text: "Birinchi natija bepul — atigi 20 daqiqada.",
+      text: "Testlar va natija — bepul. Batafsil reja esa xohishingizga qarab.",
     },
   },
   pages: {
@@ -224,6 +259,9 @@ export const uz: Dictionary = {
       ],
     },
   },
+  flow: {
+    stages: { test: "Test", survey: "Anketa", result: "Natija" },
+  },
   start: {
     subtitle: "Javobingiz tavsiyalarni maqsadingizga moslashtirishga yordam beradi.",
     hints: {
@@ -257,11 +295,39 @@ export const uz: Dictionary = {
     },
     partOf: "{total} qismdan {n}-qism",
     questionOf: "{total} ta savoldan {n}-savol",
+    blockProgress: "{n}/{total}",
     back: "Orqaga",
-    offline: "Aloqa yoʻq. Javoblar shu qurilmada saqlandi va aloqa tiklanganda yuboriladi.",
+    offline: "Saqlab boʻlmadi. Javoblar shu qurilmada qoldi va aloqa tiklanganda yuboriladi.",
     sessionLost: "Bu sessiya endi faol emas: ehtimol, testlar boshqa oynada qaytadan boshlangan.",
     reload: "Sahifani yangilash",
-    saving: "Oxirgi javoblar saqlanmoqda…",
+    saving: "Saqlanmoqda…",
+    saved: "Saqlandi",
+    retry: "Qayta urinish",
+    pause: "Pauza",
+    pauseTitle: "Keyinroq davom ettirsa boʻladi",
+    pauseText:
+      "Javoblar allaqachon serverda saqlangan. Davom ettirish uchun yourway.uz sahifasini shu qurilma va shu brauzerda oching — xuddi shu savolda davom etasiz. Akkauntsiz boshqa qurilmada davom ettirib boʻlmaydi.",
+    pauseResume: "Testni davom ettirish",
+    pauseBackHome: "Bosh sahifaga",
+    prep: {
+      title: "Boshlashdan oldin",
+      blocksTitle: "Test 4 boʻlimdan iborat",
+      blocks: ["Shaxsiyat", "Qiziqishlar", "Qadriyatlar", "Qanday oʻrganasiz"],
+      afterBlocks:
+        "Keyin — imkoniyatlaringiz va maqsadingiz haqida qisqa anketa, soʻng bepul natija. Batafsil reja esa xohishingizga qarab.",
+      noRightAnswer: "Bu yerda toʻgʻri yoki notoʻgʻri javob yoʻq. Hozir sizga eng mos keladigan javobni tanlang.",
+      autoAdvance:
+        "Javobni tanlaganingizdan soʻng keyingi savol ochiladi. Oldingi javobni oʻzgartirish uchun «Orqaga» tugmasidan foydalaning.",
+      saveNote: "Javoblar darhol saqlanadi. Shu qurilmada toʻxtagan joyingizdan davom ettirishingiz mumkin.",
+      start: "Testni boshlash",
+      back: "Yoʻl tanlashga qaytish",
+    },
+    interstitial: {
+      continue: "Davom etish",
+      afterBigFive: "Shaxsiy xususiyatlar boʻlimi tugadi. Endi sizga qaysi mashgʻulotlar qiziq ekanini bilib olamiz.",
+      afterRiasec: "Qiziqishlar boʻlimi tugadi. Endi siz uchun eng muhim narsalarni soʻraymiz.",
+      afterValues: "Qadriyatlar boʻlimi tugadi. Endi sizga qanday oʻrganish qulayligini bilib olamiz.",
+    },
   },
   survey: {
     next: "Keyingisi",
@@ -270,12 +336,48 @@ export const uz: Dictionary = {
     partOf: "{total} qismdan {n}-qism",
     questionOf: "{total} ta savoldan {n}-savol",
     numberRange: "{min} dan {max} gacha son",
-    offline: "Aloqa yoʻq. Javoblar shu qurilmada saqlandi va aloqa tiklanganda yuboriladi.",
+    blockProgress: "{n}/{total}",
+    offline: "Saqlab boʻlmadi. Javoblar shu qurilmada qoldi va aloqa tiklanganda yuboriladi.",
     sessionLost: "Bu sessiya endi faol emas: ehtimol, soʻrovnoma boshqa oynada qaytadan boshlangan.",
     reload: "Sahifani yangilash",
-    saving: "Oxirgi javoblar saqlanmoqda…",
+    saving: "Saqlanmoqda…",
+    saved: "Saqlandi",
+    retry: "Qayta urinish",
     doneTitle: "Soʻrovnoma yakunlandi!",
     doneText: "Profil tayyor. Hozir bepul portretingiz ochiladi.",
+    pause: "Pauza",
+    pauseTitle: "Keyinroq davom ettirsa boʻladi",
+    pauseText:
+      "Javoblar allaqachon serverda saqlangan. Davom ettirish uchun yourway.uz sahifasini shu qurilma va shu brauzerda oching — xuddi shu savolda davom etasiz. Akkauntsiz boshqa qurilmada davom ettirib boʻlmaydi.",
+    pauseResume: "Soʻrovnomani davom ettirish",
+    pauseBackHome: "Bosh sahifaga",
+    multiSelectHint: "Bir nechta javobni tanlashingiz mumkin.",
+    genderHint: "Yoʻnalishlar boʻyicha misol va statistikani aniqroq tanlashga yordam beradi. Javob bermoqchi boʻlmasangiz, «Koʻrsatmaslik»ni tanlang.",
+    charCount: "{max} tadan {used} tasi",
+    textPlaceholders: {
+      skills_text: "Masalan: kafeda ishlagan, Photoshopni bilaman, gitarada chalaman",
+      interests_note: "Masalan: texnika bilan shugʻullanish, rasm chizish, kitob oʻqishni yoqtiraman",
+    },
+    englishHints: {
+      none: "Ingliz tilida tushunmaysiz va gapirmaysiz.",
+      basic: "Oddiy gaplarni tushunasiz va sayohatda soʻzlasha olasiz.",
+      intermediate: "Kundalik mavzularda suhbatlasha olasiz, oddiy matnlarni oʻqiy olasiz.",
+      advanced: "Erkin gapirasiz, yozasiz va murakkab matnlarni tushunasiz.",
+    },
+    review: {
+      title: "Shartlaringizni tekshiring",
+      intro: "Bu javoblar tavsiyalarga taʼsir qiladi. Notoʻgʻri boʻlsa, natijani hisoblashdan oldin tuzating.",
+      edit: "Oʻzgartirish",
+      confirm: "Hammasi toʻgʻri, davom etish",
+      fields: {
+        budget: "Oʻqish uchun byudjet",
+        hours: "Haftalik vaqt",
+        languages: "Tillar",
+        relocation: "Koʻchishga tayyorlik",
+        goal: "Maqsadingiz",
+      },
+      goalPending: "Maqsad hali tanlanmagan: javoblaringiz asosida 2–3 variant tanlaymiz — bu bepul natijaning bir qismi.",
+    },
   },
   teaser: {
     mockBadge: "Sunʼiy intellekt: test rejimi",

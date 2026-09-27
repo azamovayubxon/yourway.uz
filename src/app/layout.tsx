@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { Footer } from "@/components/Footer";
+import { FooterGate } from "@/components/FooterGate";
 import { Header } from "@/components/Header";
 import { getCurrentUser, type CurrentUser } from "@/lib/auth/current";
 import { logError } from "@/lib/monitoring";
@@ -48,7 +48,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <main id="main" className="flex-1">
           {children}
         </main>
-        <Footer t={t} />
+        <FooterGate t={t} />
       </body>
     </html>
   );
