@@ -7,7 +7,7 @@ export function Steps({ t }: { t: Dictionary }) {
   return (
     <ol className="grid gap-4 sm:grid-cols-3">
       {t.landing.how.steps.map((step, i) => (
-        <li key={i} className="rounded-2xl border border-line bg-white p-5 shadow-sm">
+        <li key={i} className="rounded-3xl border border-line bg-white p-5">
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-50 font-bold text-brand-600">
             {i + 1}
           </span>
@@ -16,20 +16,6 @@ export function Steps({ t }: { t: Dictionary }) {
         </li>
       ))}
     </ol>
-  );
-}
-
-// «Кому подходит» (ТЗ аудита §5, блок 4): три сценария использования, без процентов и отзывов.
-export function AudienceCards({ t }: { t: Dictionary }) {
-  return (
-    <ul className="grid gap-4 sm:grid-cols-3">
-      {t.landing.audience.items.map((item, i) => (
-        <li key={i} className="rounded-2xl border border-line bg-white p-5">
-          <h3 className="font-bold">{item.title}</h3>
-          <p className="mt-1.5 text-sm leading-relaxed text-muted">{item.text}</p>
-        </li>
-      ))}
-    </ul>
   );
 }
 
@@ -44,12 +30,12 @@ export function PricingPlans({ t, prices }: { t: Dictionary; prices: Partial<Rec
         <div
           key={i}
           className={
-            "flex flex-col rounded-2xl border p-5 " +
+            "flex flex-col rounded-3xl border p-6 " +
             (i === 0 ? "border-line bg-white" : "border-brand-100 bg-brand-50")
           }
         >
           <h3 className="text-lg font-bold">{plan.name}</h3>
-          <p className="mt-2 text-2xl font-extrabold">
+          <p className="mt-2 font-display text-2xl font-extrabold">
             {(() => {
               const level = PLAN_LEVELS[i];
               const amount = level ? prices[level] : undefined;
@@ -60,7 +46,7 @@ export function PricingPlans({ t, prices }: { t: Dictionary; prices: Partial<Rec
           <ul className="mt-4 space-y-2 text-sm">
             {plan.features.map((f, j) => (
               <li key={j} className="flex gap-2">
-                <span aria-hidden className="text-brand-500">✓</span>
+                <span aria-hidden className="font-bold text-teal">✓</span>
                 <span>{f}</span>
               </li>
             ))}
@@ -73,10 +59,10 @@ export function PricingPlans({ t, prices }: { t: Dictionary; prices: Partial<Rec
 
 export function FaqList({ t }: { t: Dictionary }) {
   return (
-    <div className="divide-y divide-slate-100 rounded-2xl border border-slate-100 bg-white">
+    <div className="divide-y divide-line rounded-3xl border border-line bg-white">
       {t.landing.faq.items.map((item, i) => (
         <details key={i} className="group p-5">
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold">
+          <summary className="focus-ring -m-2 flex cursor-pointer list-none items-center justify-between gap-4 rounded-2xl p-2 font-semibold">
             {item.q}
             <span aria-hidden className="text-xl text-brand-500 transition-transform group-open:rotate-45">+</span>
           </summary>

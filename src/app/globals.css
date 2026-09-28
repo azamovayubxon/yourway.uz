@@ -1,27 +1,43 @@
 @import "tailwindcss";
 
-/* Дизайн-токены (этап B1, ТЗ аудита §4). Меняются здесь — и по всему сайту.
-   Значения — из «Стартовых дизайн-токенов» ТЗ; контраст реальных сочетаний проверен
-   (см. отчёт сессии): текст на фоне и на белых карточках, белый текст на акценте,
-   вторичный текст на фоне и на карточках — везде запас над WCAG AA (4.5:1). */
+/* Дизайн-токены. Меняются здесь — и по всему сайту.
+   Этап «Новый стиль, часть 1» (сентябрь 2026): тёплая плоская палитра вместо синей. Имена brand-*
+   оставлены прежними (на них построен весь сайт), значения — новые: терракота. Контраст реальных
+   сочетаний проверен (WCAG AA 4.5:1 для обычного текста), таблица — в CLAUDE.md, раздел «Дизайн». */
 @theme {
-  --color-app-bg: #f6f8fc; /* фон страницы; карточки — белые (--color-white) */
-  --color-line: #dde3ee; /* граница карточек и полей, 1px */
-  --color-brand-50: #eef2ff; /* мягкий акцент (фон подсказок, выбранных состояний) */
-  --color-brand-100: #d9e2fb;
-  --color-brand-500: #3157d5; /* основной акцент */
-  --color-brand-600: #2443a8; /* hover */
-  --color-brand-700: #1b3585; /* active/pressed */
-  --color-ink: #172033; /* основной текст */
-  --color-muted: #526079; /* вторичный текст — не бледнее этого, иначе подписи нечитаемы */
-  /* Системные шрифты: быстро грузятся на слабых телефонах. Оценены на RU/UZ-глифах
-     (кириллица, oʻ gʻ U+02BB, ʼ U+02BC) — рендерятся корректно во всех системных наборах
-     (Segoe UI, Roboto, Noto Sans, Arial), проблемы не обнаружено, менять не стали. */
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+  --color-app-bg: #fbf7f0; /* кремовый фон страницы; карточки — белые (--color-white) */
+  --color-line: #eae2d4; /* граница карточек и полей, 1px */
+  --color-sand: #f3e7d3; /* песочный фон блоков */
+
+  /* Основной акцент — терракота: кнопки, ссылки. */
+  --color-brand-50: #fbe9df; /* мягкий фон акцента (подсказки, выбранные состояния) */
+  --color-brand-100: #f5d2bf; /* граница мягкого акцента */
+  --color-brand-500: #c2410c; /* основной акцент */
+  --color-brand-600: #9a3412; /* hover */
+  --color-brand-700: #7c2d12; /* active/pressed */
+
+  /* Второй акцент — бирюза, третий — солнечный (только фоны и значки, не текст на светлом). */
+  --color-teal: #0f766e;
+  --color-teal-50: #d8efec;
+  --color-sun: #f5b83d;
+  --color-sun-50: #fdf0d3;
+
+  --color-ink: #1d1b16; /* основной текст; он же фон тёмных блоков */
+  --color-muted: #5e5a52; /* вторичный текст — не бледнее этого, иначе подписи нечитаемы */
+  --color-faint: #8a8478; /* только крупный текст (от 24px) и декор: контраст 3.5:1 */
+  --color-on-dark: #fbf7f0; /* текст на тёмном блоке */
+  --color-on-dark-muted: #d9d2c3; /* вторичный текст на тёмном блоке */
+
+  /* Шрифты подключаются в layout.tsx через next/font/google (самохостинг, без запросов к Google
+     из браузера). Commissioner — заголовки, Onest — текст. В обоих есть узбекские ʻ (U+02BB) и
+     ʼ (U+02BC) прямо в подмножестве latin. Geologica и Golos Text НЕ использовать: в них нет U+02BB. */
+  --font-sans: var(--font-onest), system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+  --font-display: var(--font-commissioner), var(--font-onest), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 html {
   -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 4.5rem; /* якоря (#mission, #directions…) не прячутся под липкой шапкой */
 }
 
 body {
@@ -30,16 +46,67 @@ body {
   line-height: 1.55;
 }
 
+/* Все заголовки сайта — шрифтом Commissioner. */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+  }
+}
+
 /* Единое кольцо фокуса для интерактивных элементов (кнопки выбора, ссылки, поля).
    Убираем стандартный outline только вместе с заменой — никогда просто outline-none. */
 @layer utilities {
   .focus-ring {
-    @apply focus:outline-none focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-500/35;
+    @apply focus:outline-none focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-500/40;
+  }
+  /* То же на тёмном и цветном фоне (миссия, бирюзовая карточка, терракотовый финал). */
+  .focus-ring-light {
+    @apply focus:outline-none focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/70;
   }
 }
 
+/* Иллюстрация на первом экране главной (src/components/landing/HeroIllustration.tsx). Только CSS:
+   кольцо-«кокон» медленно вращается, пунктир дорожек «бежит», тёплый круг слегка «дышит».
+   При prefers-reduced-motion всё статично — см. правило ниже. */
+@keyframes yw-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes yw-dash {
+  to {
+    stroke-dashoffset: -36;
+  }
+}
+@keyframes yw-breathe {
+  50% {
+    transform: scale(1.035);
+  }
+}
+.yw-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: yw-spin 30s linear infinite;
+}
+.yw-path {
+  animation: yw-dash 2.4s linear infinite;
+}
+.yw-breathe {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: yw-breathe 6s ease-in-out infinite;
+}
+
+/* Окно «Скоро» на главной: затемнение фона. */
+dialog.yw-dialog::backdrop {
+  background: rgb(29 27 22 / 0.55);
+}
+
 /* Доступность (этап 10Г): у кого в системе включено «уменьшить движение» — анимации и переходы
-   почти без длительности, а не резко выключены (иначе спиннер на экране генерации просто не появится). */
+   почти без длительности, а не резко выключены (иначе спиннер на экране генерации просто не появится).
+   Бесконечные декоративные анимации иллюстрации на главной — выключены совсем (статичная картинка). */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -48,5 +115,10 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .yw-ring,
+  .yw-path,
+  .yw-breathe {
+    animation: none !important;
   }
 }

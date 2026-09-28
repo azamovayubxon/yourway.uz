@@ -329,7 +329,7 @@ model ModelOverride {
 // регистрация, оплата) считаются напрямую по TestSession/Teaser/User/Payment — так короче и без дублей.
 model FunnelEvent {
   id        String   @id @default(uuid())
-  // visit | pdf
+  // visit | pdf | soon:<id> (интерес к направлению «Скоро» на главной, id — src/lib/directions.ts)
   event     String
   locale    String
   sessionId String?

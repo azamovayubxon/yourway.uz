@@ -2,6 +2,8 @@ import "server-only";
 import { getDb } from "@/lib/db";
 import { logError } from "@/lib/monitoring";
 import type { Locale } from "@/i18n/config";
+import { ru } from "@/i18n/dictionaries/ru";
+import { SOON_DIRECTIONS, SOON_EVENT_PREFIX, soonEvent, type SoonDirection } from "@/lib/directions";
 
 // Аналитика воронки (этап 8): заход → старт теста → конец теста → тизер → регистрация → оплата → PDF,
 // с разбивкой по языкам. Считаем прямо по существующим таблицам — отдельный журнал событий
@@ -72,4 +74,53 @@ export async function logPdfDownload(locale: Locale, sessionId: string | null): 
   } catch (e) {
     void logError("funnel-pdf", e);
   }
+}
+
+// Интерес к направлениям «Скоро» (главная, src/components/landing/DirectionsGrid.tsx): событие
+// soon:<id> в том же журнале FunnelEvent — без отдельной таблицы и миграции. Дедупликация (не
+// больше одного нажатия на одно направление от посетителя в сутки) — в /api/soon, по cookie.
+export async function logSoonClick(id: SoonDirection, locale: Locale, sessionId: string | null): Promise<void> {
+  try {
+    await getDb().funnelEvent.create({ data: { event: soonEvent(id), locale, sessionId } });
+  } catch (e) {
+    void logError("funnel-soon", e);
+  }
+}
+
+export interface SoonInterestRow {
+  id: SoonDirection;
+  label: string;
+  last7: number;
+  last30: number;
+  total: number;
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+// Таблица «Интерес к направлениям» в /admin/analytics: все направления (и с нулём тоже), по убыванию
+// числа нажатий за всё время; при равенстве — за 30 и за 7 дней.
+export async function getSoonInterest(now = new Date()): Promise<SoonInterestRow[]> {
+  const db = getDb();
+  const count = (since?: Date) =>
+    db.funnelEvent.groupBy({
+      by: ["event"],
+      where: { event: { startsWith: SOON_EVENT_PREFIX }, ...(since ? { createdAt: { gte: since } } : {}) },
+      _count: { _all: true },
+    });
+  const [last7, last30, total] = await Promise.all([
+    count(new Date(now.getTime() - 7 * DAY_MS)),
+    count(new Date(now.getTime() - 30 * DAY_MS)),
+    count(),
+  ]);
+  const toMap = (rows: { event: string; _count: { _all: number } }[]) =>
+    new Map(rows.map((r) => [r.event, r._count._all]));
+  const [m7, m30, mAll] = [toMap(last7), toMap(last30), toMap(total)];
+
+  return SOON_DIRECTIONS.map((id) => ({
+    id,
+    label: ru.landing.directions.soon[id].title,
+    last7: m7.get(soonEvent(id)) ?? 0,
+    last30: m30.get(soonEvent(id)) ?? 0,
+    total: mAll.get(soonEvent(id)) ?? 0,
+  })).sort((a, b) => b.total - a.total || b.last30 - a.last30 || b.last7 - a.last7);
 }
