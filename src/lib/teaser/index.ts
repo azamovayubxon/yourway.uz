@@ -2,19 +2,20 @@ import "server-only";
 import { Prisma } from "@/generated/prisma/client";
 import { getDb } from "@/lib/db";
 import { logError } from "@/lib/monitoring";
-import { teaserLimits } from "@/lib/ai/config";
+import { claudeFallbackTeaserModel, teaserLimits } from "@/lib/ai/config";
 import { resolveTeaserModel } from "@/lib/admin/models";
-import { getAiMode, getAiProvider, modelFor } from "@/lib/ai/providers";
+import { getAiMode, getAiProvider, isOpenAiModel, modelFor, providerForModel } from "@/lib/ai/providers";
 import { promptKeyForTeaser } from "@/lib/ai/prompt-registry";
 import { getActivePromptVersion, promptVersionLabel } from "@/lib/ai/prompt-store";
-import { generateTeaser } from "@/lib/ai/teaser";
+import { generateTeaserWithFallback } from "@/lib/ai/teaser";
 import type { Profile } from "@/lib/assessment/profile";
 import type { Locale } from "@/i18n/config";
 import { checkTeaserLimits, type LimitReason } from "./limits";
 
 // Тизер в статусе generating дольше этого времени считаем зависшим (процесс упал, сервер перезапустился)
-// и разрешаем запустить генерацию заново. Больше, чем maxDuration у /api/teaser (120 с).
-const STALE_GENERATING_MS = 150 * 1000;
+// и разрешаем запустить генерацию заново. Больше, чем maxDuration у /api/teaser (300 с: с запасом
+// на страховку — если модель OpenAI не справилась, тизер генерируется заново на Claude).
+const STALE_GENERATING_MS = 330 * 1000;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 export type TeaserState =
@@ -97,8 +98,10 @@ export async function requestTeaser(options: {
   if (!decision.ok) return state({ status: "limit", reason: decision.reason });
 
   const aiMode = getAiMode();
-  const provider = getAiProvider(aiMode);
   const model = modelFor(aiMode, await resolveTeaserModel(locale));
+  const provider = getAiProvider(aiMode, model);
+  // Страховка: модель OpenAI не справилась окончательно → тизер делается на Claude по умолчанию.
+  const fallbackModel = aiMode === "live" && isOpenAiModel(model) ? claudeFallbackTeaserModel(locale) : null;
   const promptKey = promptKeyForTeaser(locale);
   const promptVersion = await getActivePromptVersion(promptKey);
   const promptVersionTag = promptVersionLabel(promptVersion);
@@ -132,22 +135,24 @@ export async function requestTeaser(options: {
   }
 
   const job = async () => {
-    let result: Awaited<ReturnType<typeof generateTeaser>>;
+    let result: { ok: true; content: unknown; attempts: number; model: string } | { ok: false; error: string; attempts: number };
     try {
-      result = await generateTeaser({
+      result = await generateTeaserWithFallback({
         profile,
         locale,
         model,
         provider,
+        fallback: fallbackModel ? { model: fallbackModel, provider: providerForModel(fallbackModel) } : undefined,
         templates: { system: promptVersion.systemTemplate, user: promptVersion.userTemplate },
-        onAttempt: async (log) => {
-          const costUsd = provider.estimateCostUsd(model, log.usage);
+        onModelAttempt: async (log, { model: callModel, provider: callProvider, fallbackFrom }) => {
+          const costUsd = callProvider.estimateCostUsd(callModel, log.usage);
           // Короткая строка в логи сервера (видно в Vercel → Logs) + запись в журнал AiCall.
           console.info(
-            `[ai] teaser provider=${provider.name} model=${model} locale=${locale} attempt=${log.attempt} ok=${log.ok}` +
+            `[ai] teaser provider=${callProvider.name} model=${callModel} locale=${locale} attempt=${log.attempt} ok=${log.ok}` +
               ` in=${log.usage.inputTokens} out=${log.usage.outputTokens}` +
               ` cache_read=${log.usage.cacheReadTokens} cache_write=${log.usage.cacheWriteTokens}` +
-              ` cost=$${costUsd ?? "?"} ms=${log.durationMs}${log.error ? ` error=${log.error}` : ""}`,
+              ` cost=$${costUsd ?? "?"} ms=${log.durationMs}${log.error ? ` error=${log.error}` : ""}` +
+              (fallbackFrom ? ` fallback_from=${fallbackFrom}` : ""),
           );
           await db.aiCall.create({
             data: {
@@ -156,7 +161,8 @@ export async function requestTeaser(options: {
               teaserId,
               ipHash,
               aiMode,
-              model,
+              model: callModel,
+              fallbackFrom,
               promptVersion: promptVersionTag,
               attempt: log.attempt,
               ok: log.ok,
@@ -180,7 +186,14 @@ export async function requestTeaser(options: {
     await db.teaser.update({
       where: { id: teaserId },
       data: result.ok
-        ? { status: "ready", content: result.content, attempts: result.attempts, error: null }
+        ? {
+            status: "ready",
+            content: result.content as Prisma.InputJsonValue,
+            attempts: result.attempts,
+            error: null,
+            // При страховке тизер написала другая модель (Claude) — в базе должна быть она.
+            model: result.model,
+          }
         : { status: "failed", attempts: result.attempts, error: result.error.slice(0, 300) },
     });
   };

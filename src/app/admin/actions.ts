@@ -3,7 +3,8 @@
 import { redirect } from "next/navigation";
 import { getDb } from "@/lib/db";
 import { requireAdmin, requireSuperAdmin } from "@/lib/admin/guard";
-import { MODEL_OVERRIDE_KEYS, setModelOverride, type ModelOverrideKey } from "@/lib/admin/models";
+import { MODEL_OVERRIDE_KEYS, modelSaveError, setModelOverride, type ModelOverrideKey } from "@/lib/admin/models";
+import { hasOpenAiKey } from "@/lib/ai/providers";
 import { isLevel } from "@/lib/payments/prices";
 import { normalizePromoCode } from "@/lib/payments/promo";
 import { normalizeLogin } from "@/lib/auth/credentials";
@@ -79,6 +80,9 @@ export async function saveModelOverrideAction(formData: FormData) {
   const key = String(formData.get("key") ?? "");
   if (!MODEL_OVERRIDE_KEYS.includes(key as ModelOverrideKey)) redirect("/admin/prompts?error=1");
   const model = String(formData.get("model") ?? "");
+  // Модель OpenAI без OPENAI_API_KEY в окружении не сохраняем — понятная ошибка в админке.
+  const error = modelSaveError(model, hasOpenAiKey());
+  if (error) redirect(`/admin/prompts?error=${error}`);
   await setModelOverride(key as ModelOverrideKey, model, admin.login);
   redirect("/admin/prompts?ok=1");
 }

@@ -28,6 +28,10 @@ interface Props {
   mockBadge: { label: string; note: string } | null;
   languageNote: string;
   footer: ReactNode;
+  // Показать только эти разделы (сравнение моделей в /admin/compare: одна часть отчёта в том же
+  // оформлении, что видит пользователь). Без оглавления и первого экрана — они собираются из всего
+  // отчёта; обложка — только вместе с портретом. Не задано — весь отчёт, как обычно.
+  sections?: SectionId[];
 }
 
 const SECTION_ICONS = {
@@ -41,7 +45,7 @@ const SECTION_ICONS = {
   alternatives: "✨",
   actNow: "✅",
 } as const;
-type SectionId = keyof typeof SECTION_ICONS;
+export type SectionId = keyof typeof SECTION_ICONS;
 
 const ROUTE_ICONS: Record<ReportRoute["type"], string> = { local_cheap: "📍", abroad: "✈️", online: "💻" };
 
@@ -63,7 +67,10 @@ export function ReportView({
   mockBadge,
   languageNote,
   footer,
+  sections,
 }: Props) {
+  const partial = sections !== undefined;
+  const shown = (s: SectionId) => !sections || sections.includes(s);
   const { portrait, goal, reality_check: reality, main_path: path, alternatives, act_now: actNow } = content;
   const lang = reportLocale;
   // plan_30_days — новое поле схемы (report-2.0, этап C1). У старых отчётов (report-1.0) его нет —
@@ -88,12 +95,13 @@ export function ReportView({
 
   return (
     <div className="mx-auto max-w-5xl px-4 pb-14 pt-5 lg:grid lg:grid-cols-[220px_minmax(0,42rem)] lg:justify-center lg:gap-12">
-      <SectionSidebar items={nav} label={t.toc} />
+      {!partial && <SectionSidebar items={nav} label={t.toc} />}
       <article className="min-w-0">
       {mockBadge && <MockBadge label={mockBadge.label} note={mockBadge.note} />}
       <p className="mb-4 rounded-2xl bg-slate-50 px-4 py-3 text-sm text-muted">{languageNote}</p>
 
       {/* Обложка: тип крупно, уровень и дата. */}
+      {shown("portrait") && (
       <header className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-600 via-indigo-600 to-fuchsia-600 p-6 text-white shadow-2xl shadow-indigo-500/30 sm:p-8">
         <div className="pointer-events-none absolute -right-16 -top-16 size-56 rounded-full bg-white/15 blur-2xl" aria-hidden />
         <div className="pointer-events-none absolute -bottom-20 -left-10 size-56 rounded-full bg-fuchsia-400/30 blur-3xl" aria-hidden />
@@ -115,7 +123,9 @@ export function ReportView({
           </p>
         </div>
       </header>
+      )}
 
+      {!partial && (<>
       {/* Первый экран (ТЗ аудита §9): короткий вывод, направление, первый шаг, ограничения —
           собраны из уже готового отчёта, отдельно от ИИ не запрашиваются. */}
       <section className="mt-6 rounded-3xl border border-slate-200 p-5 sm:p-6">
@@ -161,7 +171,9 @@ export function ReportView({
 
       <SectionNav items={nav} label={t.toc} />
       <MobileSectionsMenu items={nav} label={t.sectionsButton} />
+      </>)}
 
+      {shown("portrait") && (
       <Section id="portrait" n={number("portrait")} title={t.sections.portrait}>
         <Prose lang={lang} lead>
           {portrait.summary}
@@ -189,7 +201,9 @@ export function ReportView({
           </ul>
         </div>
       </Section>
+      )}
 
+      {shown("goal") && (
       <Section id="goal" n={number("goal")} title={t.sections.goal}>
         <figure className="rounded-3xl border-2 border-brand-100 bg-gradient-to-br from-brand-50 to-white p-5">
           <figcaption className="text-xs font-bold uppercase tracking-widest text-brand-600">
@@ -218,7 +232,9 @@ export function ReportView({
           </>
         )}
       </Section>
+      )}
 
+      {shown("reality") && (
       <Section id="reality" n={number("reality")} title={t.sections.reality}>
         <div className={"rounded-3xl p-5 " + verdict.box}>
           <p className="flex items-center gap-2 font-extrabold">
@@ -241,7 +257,9 @@ export function ReportView({
         )}
         <p className="mt-3 text-sm font-semibold text-muted">{t.choiceIsYours}</p>
       </Section>
+      )}
 
+      {shown("path") && (
       <Section id="path" n={number("path")} title={t.sections.path}>
         <Prose lang={lang} lead>
           {path.summary}
@@ -256,8 +274,9 @@ export function ReportView({
           ))}
         </div>
       </Section>
+      )}
 
-      {plan30Days && plan30Days.length > 0 && (
+      {shown("plan30") && plan30Days && plan30Days.length > 0 && (
         <Section id="plan30" n={number("plan30")} title={t.sections.plan30}>
           <ol className="space-y-3" lang={lang}>
             {plan30Days.map((item, i) => (
@@ -278,6 +297,7 @@ export function ReportView({
         </Section>
       )}
 
+      {shown("learning") && (
       <Section id="learning" n={number("learning")} title={t.sections.learning}>
         {learningStyles.length > 0 && (
           <p className="mb-3 inline-flex rounded-full bg-brand-50 px-3 py-1 text-sm font-semibold text-brand-700">
@@ -286,13 +306,17 @@ export function ReportView({
         )}
         <Prose lang={lang}>{path.learning_advice}</Prose>
       </Section>
+      )}
 
+      {shown("future") && (
       <Section id="future" n={number("future")} title={t.sections.future}>
         <div className="rounded-3xl bg-slate-50 p-5">
           <Prose lang={lang}>{path.future_outlook}</Prose>
         </div>
       </Section>
+      )}
 
+      {shown("alternatives") && (
       <Section id="alternatives" n={number("alternatives")} title={t.sections.alternatives}>
         <div className="space-y-4">
           {alternatives.map((alt) => (
@@ -320,12 +344,16 @@ export function ReportView({
           ))}
         </div>
       </Section>
+      )}
 
+      {shown("actNow") && (
       <Section id="actNow" n={number("actNow")} title={t.sections.actNow}>
         <ActNowChecklist storageKey={`yw_report_${id}_act_now`} items={actNow} lang={lang} />
         <p className="mt-2 text-xs text-muted">{t.actNowNote}</p>
       </Section>
+      )}
 
+      {shown("actNow") && (
       <aside className="mt-10 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-relaxed text-muted">
         <p className="font-bold text-ink">{t.disclaimerTitle}</p>
         <p className="mt-1" lang={lang}>
@@ -333,6 +361,7 @@ export function ReportView({
         </p>
         <p className="mt-1">{t.disclaimer}</p>
       </aside>
+      )}
 
       {footer}
       </article>

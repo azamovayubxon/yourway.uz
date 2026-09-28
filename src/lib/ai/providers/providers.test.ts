@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { estimateAnthropicCostUsd, supportsEffort, supportsTemperature } from "./anthropic";
-import { getAiMode, getAiProvider, modelFor } from "./index";
-import { reportModel, teaserModel } from "../config";
+import { getAiMode, getAiProvider, isOpenAiModel, modelFor, providerForModel } from "./index";
+import { claudeFallbackReportModel, claudeFallbackTeaserModel, reportModel, teaserModel } from "../config";
 
 describe("выбор режима ИИ", () => {
   afterEach(() => vi.unstubAllEnvs());
@@ -20,6 +20,13 @@ describe("выбор режима ИИ", () => {
     expect(getAiProvider().name).toBe("anthropic");
     vi.stubEnv("AI_MODE", "mock");
     expect(getAiMode()).toBe("mock");
+  });
+
+  it("без ключа Anthropic — тестовый режим, даже если есть ключ OpenAI (режим mock не меняется)", () => {
+    vi.stubEnv("ANTHROPIC_API_KEY", "");
+    vi.stubEnv("OPENAI_API_KEY", "sk-openai");
+    expect(getAiMode()).toBe("mock");
+    expect(getAiProvider(getAiMode(), "gpt-6-sol").name).toBe("mock");
   });
 
   it("в журнал в тестовом режиме пишется модель mock", () => {
@@ -81,5 +88,41 @@ describe("модели полного отчёта", () => {
     expect(reportModel("navigator")).toBe("claude-opus-5-5");
     vi.stubEnv("MODEL_NAVIGATOR", "claude-opus-5");
     expect(reportModel("navigator")).toBe("claude-opus-5");
+  });
+});
+
+describe("выбор поставщика по названию модели", () => {
+  it("gpt-* и o<цифра>* → OpenAI, claude-* → Anthropic", () => {
+    for (const m of ["gpt-6-sol", "gpt-6-astra", "gpt-4.1", "o3", "o4-mini"]) {
+      expect(isOpenAiModel(m), m).toBe(true);
+      expect(providerForModel(m).name, m).toBe("openai");
+    }
+    for (const m of ["claude-sonnet-5", "claude-opus-5-5", "claude-haiku-4-5", "opus", "other"]) {
+      expect(isOpenAiModel(m), m).toBe(false);
+      expect(providerForModel(m).name, m).toBe("anthropic");
+    }
+  });
+
+  it("настоящий ИИ — по модели; тестовый режим — всегда заглушка", () => {
+    expect(getAiProvider("live", "gpt-6-sol").name).toBe("openai");
+    expect(getAiProvider("live", "claude-sonnet-5").name).toBe("anthropic");
+    // Без модели — Anthropic, как было до подключения OpenAI.
+    expect(getAiProvider("live").name).toBe("anthropic");
+    expect(getAiProvider("mock", "gpt-6-sol").name).toBe("mock");
+  });
+});
+
+describe("страховка: Claude-модель по умолчанию", () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("берёт модель из окружения, если это Claude, иначе встроенную", () => {
+    vi.stubEnv("MODEL_ROUTE", "");
+    vi.stubEnv("MODEL_NAVIGATOR", "claude-opus-5");
+    vi.stubEnv("MODEL_TEASER_UZ", "gpt-6-sol");
+    expect(claudeFallbackReportModel("route")).toBe("claude-sonnet-5");
+    expect(claudeFallbackReportModel("navigator")).toBe("claude-opus-5");
+    expect(claudeFallbackTeaserModel("uz")).toBe("claude-sonnet-5");
+    vi.stubEnv("MODEL_ROUTE", "gpt-6-astra");
+    expect(claudeFallbackReportModel("route")).toBe("claude-sonnet-5");
   });
 });

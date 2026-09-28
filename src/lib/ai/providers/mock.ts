@@ -19,6 +19,12 @@ export function mockResponse(request: AiRequest): unknown {
   const language = /строго на языке: uz\b/.test(request.system) ? "uz" : "ru";
   const [kind, part, pathType] = (request.tag ?? "teaser").split(":");
   if (kind !== "report") return MOCK_TEASERS[language];
+  return mockReportPart(language, part, pathType);
+}
+
+// Часть отчёта-образца. Нужна и сравнению моделей (/admin/compare): части, которые идут перед
+// сравниваемой, берутся отсюда — одинаковые для обоих вариантов.
+export function mockReportPart(language: "ru" | "uz", part: string, pathType: string): unknown {
   const report = MOCK_REPORTS[language];
   const variant = pathType === "no_goal" ? "constructed" : "stated";
   switch (part) {

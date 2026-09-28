@@ -58,3 +58,19 @@ export function decideNext(row: ReportRowState, now: Date): "wait" | "start" | "
   }
   return "start";
 }
+
+// Что делать после неудачной попытки части, которую нельзя принять как есть:
+//   retry    — повторить эту часть той же моделью (с подсказкой, что исправить);
+//   fallback — страховка: модель OpenAI не справилась окончательно (фатальная ошибка, исчерпаны
+//              повторы или попытка зависла) — дальше отчёт пишет Claude-модель уровня по умолчанию,
+//              попытки части начинаются заново. Оплативший не получает ошибку из-за OpenAI;
+//   fail     — отчёт «не удалось» (кнопка «Сгенерировать заново», без повторной оплаты).
+// canFallback — модель OpenAI, настоящий ИИ и подмены на этом отчёте ещё не было.
+export function afterFailedAttempt(options: {
+  attempt: number;
+  fatal: boolean;
+  canFallback: boolean;
+}): "retry" | "fallback" | "fail" {
+  if (!options.fatal && options.attempt < MAX_PART_ATTEMPTS) return "retry";
+  return options.canFallback ? "fallback" : "fail";
+}

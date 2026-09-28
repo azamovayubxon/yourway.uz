@@ -4,9 +4,29 @@
 
 // Модель тизера зависит от языка: для узбекского — отдельная, более сильная модель (этап 4б),
 // потому что дешёвая модель пишет по-узбекски как дословный перевод с русского.
+const DEFAULT_TEASER_MODEL = { ru: "claude-haiku-4-5", uz: "claude-sonnet-5" } as const;
+const DEFAULT_REPORT_MODEL = { route: "claude-sonnet-5", navigator: "claude-opus-5-5" } as const;
+
 export function teaserModel(locale: "ru" | "uz" = "ru"): string {
-  if (locale === "uz") return process.env.MODEL_TEASER_UZ?.trim() || "claude-sonnet-5";
-  return process.env.MODEL_TEASER?.trim() || "claude-haiku-4-5";
+  if (locale === "uz") return process.env.MODEL_TEASER_UZ?.trim() || DEFAULT_TEASER_MODEL.uz;
+  return process.env.MODEL_TEASER?.trim() || DEFAULT_TEASER_MODEL.ru;
+}
+
+// ───────────── Страховка на Claude ─────────────
+// Если вызов OpenAI провалился окончательно (неверный ключ, исчерпаны повторы или время), генерация
+// повторяется на Claude-модели этого уровня по умолчанию. «По умолчанию» = значение из переменной
+// окружения, если это модель Claude, иначе — встроенное значение (claude-sonnet-5 / claude-opus-5-5):
+// страховка не должна сама оказаться моделью OpenAI.
+function claudeOr(model: string, fallback: string): string {
+  return model.startsWith("claude-") ? model : fallback;
+}
+
+export function claudeFallbackTeaserModel(locale: "ru" | "uz"): string {
+  return claudeOr(teaserModel(locale), DEFAULT_TEASER_MODEL[locale]);
+}
+
+export function claudeFallbackReportModel(level: "route" | "navigator"): string {
+  return claudeOr(reportModel(level), DEFAULT_REPORT_MODEL[level]);
 }
 
 // Параметры вызова тизера (Приложение Б §1: temperature ~0.7). temperature принимают только старые
@@ -23,7 +43,8 @@ export const TEASER_MAX_TOKENS = 8000;
 // не больше 1 повтора, и в нём ИИ получает свой прошлый ответ и список того, что исправить.
 export const TEASER_MAX_RETRIES = 1;
 // Время на всю генерацию тизера (обе попытки), мс. Генерация идёт в фоне, но хостинг ограничивает
-// время работы функции (maxDuration = 120 с у /api/teaser), поэтому держим запас.
+// время работы функции (maxDuration = 300 с у /api/teaser: основная попытка + страховка на Claude,
+// если модель OpenAI не справилась, — по TEASER_TIME_BUDGET_MS каждая), поэтому держим запас.
 export const TEASER_TIME_BUDGET_MS = 100_000;
 // Лимит на одну попытку, мс. Повтор запускаем, только если на него осталось хотя бы MIN_RETRY_MS.
 export const TEASER_ATTEMPT_TIMEOUT_MS = 60_000;
@@ -55,8 +76,8 @@ export function teaserLimits(): TeaserLimits {
 
 // Модель полного отчёта по уровню (CLAUDE.md §3): «Маршрут» — MODEL_ROUTE, «Навигатор» — MODEL_NAVIGATOR.
 export function reportModel(level: "route" | "navigator"): string {
-  if (level === "navigator") return process.env.MODEL_NAVIGATOR?.trim() || "claude-opus-5-5";
-  return process.env.MODEL_ROUTE?.trim() || "claude-sonnet-5";
+  if (level === "navigator") return process.env.MODEL_NAVIGATOR?.trim() || DEFAULT_REPORT_MODEL.navigator;
+  return process.env.MODEL_ROUTE?.trim() || DEFAULT_REPORT_MODEL.route;
 }
 
 // Сколько секунд хостинг даёт одному запросу генерации части отчёта (maxDuration у /api/report).

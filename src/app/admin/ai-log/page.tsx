@@ -39,6 +39,7 @@ export default async function AdminAiLogPage() {
         locale: true,
         status: true,
         model: true,
+        fallbackFrom: true,
         createdAt: true,
         aiCalls: { select: { durationMs: true, costUsd: true, inputTokens: true, outputTokens: true, cacheReadTokens: true } },
       },
@@ -94,6 +95,9 @@ export default async function AdminAiLogPage() {
                   reportStatusOf(r.status),
                   <span key="m" className="font-mono text-xs">
                     {r.model}
+                    {r.fallbackFrom && (
+                      <span className="block font-sans font-semibold text-amber-700">подмена: вместо {r.fallbackFrom}</span>
+                    )}
                   </span>,
                   String(sum.calls),
                   `${seconds(sum.totalMs)} с`,
@@ -112,6 +116,8 @@ export default async function AdminAiLogPage() {
               (лесть без оснований, голый код типа, повтор пункта и т. п.), это была последняя
               попытка, и мы всё равно использовали его: оплаченный отчёт не должен провалиться
               из‑за одного неудачного слова. Столбец «Что не так» показывает, что именно нашли.
+              «Подмена: вместо gpt-…» — страховка: модель OpenAI не справилась, и эту генерацию
+              сделала Claude-модель по умолчанию.
             </p>
             <DataTable
               head={["Когда", "Вид", "Язык", "Попытка", "Результат", "Модель", "Длительность", "Стоимость", "Что не так"]}
@@ -120,7 +126,11 @@ export default async function AdminAiLogPage() {
                 const problems = Array.isArray(call.problems) ? (call.problems as unknown[]).map(String) : [];
                 return [
                   call.createdAt.toISOString().slice(0, 19).replace("T", " "),
-                  call.kind === "teaser" ? "тизер" : `отчёт${call.part ? ` (${call.part})` : ""}`,
+                  call.kind === "teaser"
+                    ? "тизер"
+                    : call.kind === "compare"
+                      ? `сравнение моделей${call.part ? ` (${call.part})` : ""}`
+                      : `отчёт${call.part ? ` (${call.part})` : ""}`,
                   langName(call.locale),
                   String(call.attempt),
                   <span
@@ -137,6 +147,11 @@ export default async function AdminAiLogPage() {
                   </span>,
                   <span key="m" className="font-mono text-xs">
                     {call.model}
+                    {call.fallbackFrom && (
+                      <span className="block font-sans font-semibold text-amber-700">
+                        подмена: вместо {call.fallbackFrom}
+                      </span>
+                    )}
                   </span>,
                   `${seconds(call.durationMs)} с`,
                   call.costUsd === null ? "—" : `$${call.costUsd.toFixed(4)}`,

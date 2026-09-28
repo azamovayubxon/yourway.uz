@@ -144,7 +144,7 @@ export default async function AiLogPage() {
                     </span>
                   </div>
                   <dl className="mt-2 space-y-1">
-                    <Row label={d.model} value={call.model} mono />
+                    <Row label={d.model} value={call.fallbackFrom ? `${call.model} ← fallback: ${call.fallbackFrom}` : call.model} mono />
                     <Row label={d.duration} value={fmt(d.seconds, { s: seconds(call.durationMs) })} />
                     <Row label={d.tokens} value={`${call.inputTokens} / ${call.outputTokens} / ${call.cacheReadTokens}`} mono />
                     <Row label={d.cost} value={call.costUsd === null ? "—" : `$${call.costUsd.toFixed(4)}`} mono />
