@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { primaryButtonClass } from "@/components/flow";
+import { CompassMark } from "@/components/Logo";
 import { MockBadge } from "./MockBadge";
 
 // Экран генерации: «Анализируем ваш профиль…» с анимацией. Запускает генерацию тизера
@@ -104,21 +106,19 @@ export function TeaserGenerator({ t, mock, restartLabel }: { t: GeneratorDict; m
     };
   }, [run]);
 
+  const limit = phase.startsWith("limit");
   return (
-    <div className="mx-auto max-w-md px-4 pb-10 pt-6">
+    <div className="mx-auto max-w-[640px] px-4 pb-12 pt-6 lg:pt-10">
       {mock && <MockBadge label={t.mockBadge} note={t.mockNote} />}
       {phase === "running" ? (
         <Analyzing t={t.generating} />
       ) : (
-        <div className="mt-10 rounded-3xl border border-slate-200 p-6 text-center">
-          <div
-            className="mx-auto flex size-14 items-center justify-center rounded-full bg-amber-50 text-2xl"
-            aria-hidden
-          >
-            {phase.startsWith("limit") ? "⏳" : "⚠️"}
+        <div className="mt-10 rounded-[28px] border border-line bg-white px-6 py-10 text-center sm:px-10">
+          <div className={"mx-auto flex size-20 items-center justify-center rounded-full " + (limit ? "bg-sand text-ink" : "bg-sun-50 text-brand-600")} aria-hidden>
+            {limit ? <HourglassIcon /> : <AlertIcon />}
           </div>
-          <h1 className="mt-4 text-xl font-extrabold">{phase.startsWith("limit") ? t.limitTitle : t.failedTitle}</h1>
-          <p className="mt-2 text-muted">
+          <h1 className="mt-6 text-2xl font-extrabold leading-tight lg:text-[36px]">{limit ? t.limitTitle : t.failedTitle}</h1>
+          <p className="mx-auto mt-3 max-w-md leading-relaxed text-muted lg:text-lg">
             {phase === "limit_ip"
               ? t.limitIp
               : phase === "limit_session"
@@ -128,18 +128,11 @@ export function TeaserGenerator({ t, mock, restartLabel }: { t: GeneratorDict; m
                   : t.failedText}
           </p>
           {phase === "failed" || phase === "network" ? (
-            <button
-              type="button"
-              onClick={() => void run()}
-              className="mt-6 min-h-12 w-full rounded-2xl bg-brand-500 px-6 font-bold text-white hover:bg-brand-600"
-            >
+            <button type="button" onClick={() => void run()} className={primaryButtonClass + " mt-8"}>
               {t.retry}
             </button>
           ) : phase === "limit_session" ? (
-            <Link
-              href="/start?new=1"
-              className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-brand-500 px-6 font-bold text-white hover:bg-brand-600"
-            >
+            <Link href="/start?new=1" className={primaryButtonClass + " mt-8"}>
               {restartLabel}
             </Link>
           ) : null}
@@ -149,38 +142,62 @@ export function TeaserGenerator({ t, mock, restartLabel }: { t: GeneratorDict; m
   );
 }
 
-// Список шагов ниже — общее описание того, что происходит при составлении портрета, а не
-// наблюдение за реальным прогрессом (сервер для тизера не сообщает промежуточные этапы: это
-// один вызов ИИ). Поэтому шаги показаны как есть, без анимации «выполнено/не выполнено»,
-// которая выдавала бы решение художника за точный статус (ТЗ аудита §13, устойчивость этапа C2).
+// Смена фразы-пояснения, мс.
+const STEP_MS = 3500;
+
+// Экран ожидания. В центре — знак-компас в песочном круге: кольцо медленно вращается, роза
+// «ищет направление». Под заголовком по очереди сменяются фразы из t.steps — ТОЛЬКО как пояснение
+// того, что вообще происходит при составлении портрета, без галочек и «шаг 2 из 5»: сервер для
+// тизера не сообщает промежуточные этапы (это один вызов ИИ), изображать прогресс, которого нет,
+// нельзя (ТЗ аудита §13, UX-20). Честный сигнал — секундомер и смена текста на longWait.
 function Analyzing({ t }: { t: GeneratorDict["generating"] }) {
-  const [longWait, setLongWait] = useState(false);
+  const [seconds, setSeconds] = useState(0);
   useEffect(() => {
-    const id = setTimeout(() => setLongWait(true), LONG_WAIT_MS);
-    return () => clearTimeout(id);
+    const started = Date.now();
+    const id = setInterval(() => setSeconds(Math.floor((Date.now() - started) / 1000)), 1000);
+    return () => clearInterval(id);
   }, []);
+  const longWait = seconds * 1000 >= LONG_WAIT_MS;
+  const step = t.steps[Math.floor((seconds * 1000) / STEP_MS) % t.steps.length];
+  const clock = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
 
   return (
-    <div className="pt-8 text-center" role="status" aria-live="polite">
-      <div className="relative mx-auto size-40">
-        <div className="absolute inset-0 animate-ping rounded-full bg-brand-500/20 [animation-duration:2.4s]" />
-        <div className="absolute inset-3 animate-spin rounded-full bg-[conic-gradient(from_0deg,#c2410c,#f5b83d,#0f766e,#c2410c)] [animation-duration:3s]" />
-        <div className="absolute inset-6 flex items-center justify-center rounded-full bg-white text-5xl shadow-inner">
-          <span className="animate-pulse" aria-hidden>
-            ✨
-          </span>
-        </div>
+    <div className="pt-8 text-center lg:pt-12">
+      <div className="mx-auto flex size-44 items-center justify-center rounded-full bg-sand lg:size-52" aria-hidden>
+        <CompassMark size={128} animated className="lg:size-36" />
       </div>
-      <h1 className="mt-8 text-2xl font-extrabold">{t.title}</h1>
-      <ul className="mx-auto mt-6 max-w-xs space-y-2.5 text-left">
-        {t.steps.map((label) => (
-          <li key={label} className="flex items-center gap-3">
-            <span className="size-1.5 shrink-0 rounded-full bg-slate-300" aria-hidden />
-            <span className="text-muted">{label}</span>
-          </li>
-        ))}
-      </ul>
-      <p className="mt-8 text-sm text-muted">{longWait ? t.longWait : t.wait}</p>
+      {/* Живая область — только заголовок и строка ожидания (меняется один раз, на longWait).
+          Сменяющиеся фразы и секундомер читалкам не объявляются: иначе они говорили бы каждые
+          несколько секунд. */}
+      <div role="status" aria-live="polite">
+        <h1 className="mt-8 text-[28px] font-extrabold leading-tight lg:text-[40px]">{t.title}</h1>
+        <p key={step} aria-hidden className="yw-rise mx-auto mt-3 min-h-[3.25rem] max-w-sm text-lg leading-snug text-muted">
+          {step}
+        </p>
+        <p className="mx-auto mt-6 max-w-sm text-sm leading-relaxed text-muted">{longWait ? t.longWait : t.wait}</p>
+      </div>
+      <p aria-hidden className="mx-auto mt-4 w-fit rounded-full border border-line bg-white px-3.5 py-1 text-sm tabular-nums text-muted">
+        {clock}
+      </p>
     </div>
+  );
+}
+
+function AlertIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" className="size-9" focusable="false">
+      <path d="M12 7.5v6" />
+      <circle cx="12" cy="17" r="0.6" fill="currentColor" />
+      <circle cx="12" cy="12" r="9" />
+    </svg>
+  );
+}
+
+function HourglassIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="size-9" focusable="false">
+      <path d="M7 3.5h10M7 20.5h10" />
+      <path d="M8 3.5c0 4.5 4 5.5 4 8.5s-4 4-4 8.5M16 3.5c0 4.5-4 5.5-4 8.5s4 4 4 8.5" />
+    </svg>
   );
 }
