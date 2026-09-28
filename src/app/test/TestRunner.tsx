@@ -454,16 +454,16 @@ function PartSegments({ done, total, label }: { done: number; total: number; lab
 
 // Направления разлёта точек-конфетти (px) и их цвета.
 const CONFETTI: { dx: number; dy: number; color: string }[] = [
-  { dx: -92, dy: -58, color: "bg-brand-500" },
-  { dx: -70, dy: 48, color: "bg-sun" },
-  { dx: -30, dy: -96, color: "bg-teal" },
-  { dx: 24, dy: -100, color: "bg-sun" },
-  { dx: 76, dy: -66, color: "bg-brand-500" },
-  { dx: 98, dy: 6, color: "bg-teal" },
-  { dx: 70, dy: 62, color: "bg-sun" },
-  { dx: 10, dy: 96, color: "bg-brand-500" },
-  { dx: -100, dy: 0, color: "bg-teal" },
-  { dx: -42, dy: 88, color: "bg-brand-500" },
+  { dx: -108, dy: -52, color: "bg-brand-500" },
+  { dx: -104, dy: 44, color: "bg-sun" },
+  { dx: -40, dy: -94, color: "bg-teal" },
+  { dx: 36, dy: -96, color: "bg-sun" },
+  { dx: 98, dy: -60, color: "bg-brand-500" },
+  { dx: 120, dy: 8, color: "bg-teal" },
+  { dx: 100, dy: 56, color: "bg-sun" },
+  { dx: 14, dy: 86, color: "bg-brand-500" },
+  { dx: -122, dy: 0, color: "bg-teal" },
+  { dx: -62, dy: 76, color: "bg-brand-500" },
 ];
 
 // Бирюзовый круг с галочкой: «выскакивает» и вокруг разлетаются точки (CSS, ~1.5 с, один раз).
@@ -474,7 +474,7 @@ function DoneBurst() {
       {CONFETTI.map((c, i) => (
         <span
           key={i}
-          className={"yw-confetti absolute left-1/2 top-1/2 -ml-1 -mt-1 size-2 rounded-full " + c.color}
+          className={"yw-confetti absolute left-1/2 top-1/2 -ml-1.5 -mt-1.5 size-3 rounded-full " + c.color}
           style={{ "--dx": `${c.dx}px`, "--dy": `${c.dy}px` } as CSSProperties}
         />
       ))}
