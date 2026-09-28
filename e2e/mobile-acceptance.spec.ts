@@ -18,6 +18,14 @@ async function assertNoHorizontalOverflow(page: Page, label: string) {
   );
 }
 
+// UX-04, часть 2: на боевом экране узбекский текст должен использовать oʻ/gʻ/ʼ (U+02BB/U+02BC),
+// а не простой апостроф ('), как это уже приведено в data/tests/*.json и в словаре uz.ts.
+async function assertNoPlainApostropheInWord(page: Page, label: string) {
+  const text = await page.locator("body").innerText();
+  const match = text.match(/[A-Za-zʻʼ]'[A-Za-zʻʼ]/);
+  expect(match, `простой апостроф внутри слова на «${label}»: «${match?.[0]}»`).toBeNull();
+}
+
 for (const locale of ["ru", "uz"] as const) {
   test(`430×932 без горизонтального переполнения: главная, тест, отчёт-тизер [${locale}]`, async ({ page, context }) => {
     test.setTimeout(60_000);
@@ -33,6 +41,7 @@ for (const locale of ["ru", "uz"] as const) {
     const startBtn = page.getByRole("button", { name: /Начать тест|Testni boshlash/ });
     if (await startBtn.count()) await startBtn.click();
     await assertNoHorizontalOverflow(page, "тест");
+    if (locale === "uz") await assertNoPlainApostropheInWord(page, "тест (вопрос)");
 
     await page.goto("/dev/quick-start?path=knows_goal");
     await page.waitForURL("**/teaser", { timeout: 20_000 });

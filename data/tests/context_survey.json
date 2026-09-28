@@ -2,7 +2,7 @@
   "meta": {
     "test_name": "Контекстный опрос (точка А → точка Б) для yourway.uz",
     "platform": "yourway.uz",
-    "version": "1.0",
+    "version": "1.1",
     "languages": [
       "ru",
       "uz"
@@ -56,7 +56,7 @@
             {
               "value": "na",
               "label_ru": "Не указывать",
-              "label_uz": "Ko'rsatmaslik"
+              "label_uz": "Koʻrsatmaslik"
             }
           ]
         },
@@ -71,7 +71,7 @@
             {
               "value": "school",
               "label_ru": "Школьник / выпускник школы",
-              "label_uz": "Maktab o'quvchisi / bitiruvchi"
+              "label_uz": "Maktab oʻquvchisi / bitiruvchi"
             },
             {
               "value": "student",
@@ -86,7 +86,7 @@
             {
               "value": "not_working",
               "label_ru": "Сейчас не работаю и не учусь",
-              "label_uz": "Hozir ishlamayman va o'qimayman"
+              "label_uz": "Hozir ishlamayman va oʻqimayman"
             }
           ]
         }
@@ -103,7 +103,7 @@
           "type": "single_select",
           "required": true,
           "text_ru": "Сколько вы примерно готовы вложить в обучение (в год)?",
-          "text_uz": "O'qishga yiliga taxminan qancha pul ajrata olasiz?",
+          "text_uz": "Oʻqishga yiliga taxminan qancha pul ajrata olasiz?",
           "input": {
             "unit": "сум/год"
           },
@@ -111,27 +111,27 @@
             {
               "value": "none",
               "label_ru": "Пока нет бюджета",
-              "label_uz": "Hozircha byudjet yo'q"
+              "label_uz": "Hozircha byudjet yoʻq"
             },
             {
               "value": "low",
               "label_ru": "До 5 млн сум",
-              "label_uz": "5 mln so'mgacha"
+              "label_uz": "5 mln soʻmgacha"
             },
             {
               "value": "mid",
               "label_ru": "Свыше 5 — до 20 млн сум",
-              "label_uz": "5 mln so'mdan ko'p — 20 mln so'mgacha"
+              "label_uz": "5 mln soʻmdan koʻp — 20 mln soʻmgacha"
             },
             {
               "value": "high",
               "label_ru": "Свыше 20 — до 50 млн сум",
-              "label_uz": "20 mln so'mdan ko'p — 50 mln so'mgacha"
+              "label_uz": "20 mln soʻmdan koʻp — 50 mln soʻmgacha"
             },
             {
               "value": "very_high",
               "label_ru": "Более 50 млн сум",
-              "label_uz": "50 mln so'mdan ko'p"
+              "label_uz": "50 mln soʻmdan koʻp"
             }
           ]
         },
@@ -141,7 +141,7 @@
           "type": "single_select",
           "required": true,
           "text_ru": "Сколько времени в неделю вы можете уделять учёбе/развитию?",
-          "text_uz": "Haftasiga o'qish va o'z ustingizda ishlashga qancha vaqt ajrata olasiz?",
+          "text_uz": "Haftasiga oʻqish va oʻz ustingizda ishlashga qancha vaqt ajrata olasiz?",
           "options": [
             {
               "value": "<5",
@@ -156,17 +156,17 @@
             {
               "value": "10-20",
               "label_ru": "Свыше 10 — до 20 часов",
-              "label_uz": "10 soatdan ko'p — 20 soatgacha"
+              "label_uz": "10 soatdan koʻp — 20 soatgacha"
             },
             {
               "value": "20-40",
               "label_ru": "Свыше 20 — до 40 часов",
-              "label_uz": "20 soatdan ko'p — 40 soatgacha"
+              "label_uz": "20 soatdan koʻp — 40 soatgacha"
             },
             {
               "value": "40+",
               "label_ru": "Более 40 часов",
-              "label_uz": "40 soatdan ko'p"
+              "label_uz": "40 soatdan koʻp"
             }
           ]
         },
@@ -181,7 +181,7 @@
             {
               "value": "uz",
               "label_ru": "Узбекский",
-              "label_uz": "O'zbek"
+              "label_uz": "Oʻzbek"
             },
             {
               "value": "ru",
@@ -216,12 +216,12 @@
             {
               "value": "basic",
               "label_ru": "Базовый",
-              "label_uz": "Boshlang'ich"
+              "label_uz": "Boshlangʻich"
             },
             {
               "value": "intermediate",
               "label_ru": "Средний",
-              "label_uz": "O'rta"
+              "label_uz": "Oʻrta"
             },
             {
               "value": "advanced",
@@ -236,17 +236,17 @@
           "type": "single_select",
           "required": true,
           "text_ru": "Готовы ли вы к переезду ради учёбы или работы?",
-          "text_uz": "O'qish yoki ish uchun boshqa joyga ko'chib o'tishga tayyormisiz?",
+          "text_uz": "Oʻqish yoki ish uchun boshqa joyga koʻchib oʻtishga tayyormisiz?",
           "options": [
             {
               "value": "no",
               "label_ru": "Нет, только там, где живу",
-              "label_uz": "Yo'q, faqat yashaydigan joyimda"
+              "label_uz": "Yoʻq, faqat yashaydigan joyimda"
             },
             {
               "value": "within_country",
               "label_ru": "Да, в пределах Узбекистана",
-              "label_uz": "Ha, O'zbekiston ichida"
+              "label_uz": "Ha, Oʻzbekiston ichida"
             },
             {
               "value": "abroad",
@@ -261,7 +261,7 @@
           "type": "single_select",
           "required": true,
           "text_ru": "Готовы ли вы учиться онлайн?",
-          "text_uz": "Onlayn o'qishga tayyormisiz?",
+          "text_uz": "Onlayn oʻqishga tayyormisiz?",
           "options": [
             {
               "value": "yes",
@@ -286,17 +286,17 @@
           "type": "single_select",
           "required": true,
           "text_ru": "Есть ли у вас опыт работы или навыки в какой-либо сфере?",
-          "text_uz": "Biror sohada ish tajribangiz yoki qo'lingizdan keladigan ishingiz bormi?",
+          "text_uz": "Biror sohada ish tajribangiz yoki qoʻlingizdan keladigan ishingiz bormi?",
           "options": [
             {
               "value": "none",
               "label_ru": "Нет опыта",
-              "label_uz": "Tajriba yo'q"
+              "label_uz": "Tajriba yoʻq"
             },
             {
               "value": "some",
               "label_ru": "Немного, начинающий",
-              "label_uz": "Bir oz, boshlang'ich"
+              "label_uz": "Bir oz, boshlangʻich"
             },
             {
               "value": "experienced",
@@ -340,7 +340,7 @@
           "type": "single_select",
           "required": true,
           "text_ru": "Знаете ли вы, кем хотите стать / какую цель хотите достичь?",
-          "text_uz": "Kim bo'lishni yoki qanday maqsadga erishishni xohlashingizni bilasizmi?",
+          "text_uz": "Kim boʻlishni yoki qanday maqsadga erishishni xohlashingizni bilasizmi?",
           "note_ru": "Может быть уже выбрано на экране-развилке до тестов.",
           "options": [
             {
@@ -351,7 +351,7 @@
             {
               "value": "no_goal",
               "label_ru": "Нет, хочу разобраться",
-              "label_uz": "Yo'q, buni aniqlab olmoqchiman"
+              "label_uz": "Yoʻq, buni aniqlab olmoqchiman"
             }
           ]
         }
@@ -372,7 +372,7 @@
           "type": "text",
           "required": true,
           "text_ru": "Опишите свою цель своими словами",
-          "text_uz": "Maqsadingizni o'z so'zlaringiz bilan yozing",
+          "text_uz": "Maqsadingizni oʻz soʻzlaringiz bilan yozing",
           "input": {
             "max_len": 300
           },
@@ -399,27 +399,27 @@
             {
               "value": "<5m",
               "label_ru": "До 5 млн сум",
-              "label_uz": "5 mln so'mgacha"
+              "label_uz": "5 mln soʻmgacha"
             },
             {
               "value": "5-10m",
               "label_ru": "5–10 млн сум",
-              "label_uz": "5–10 mln so'm"
+              "label_uz": "5–10 mln soʻm"
             },
             {
               "value": "10-20m",
               "label_ru": "Свыше 10 — до 20 млн сум",
-              "label_uz": "10 mln so'mdan ko'p — 20 mln so'mgacha"
+              "label_uz": "10 mln soʻmdan koʻp — 20 mln soʻmgacha"
             },
             {
               "value": "20-50m",
               "label_ru": "Свыше 20 — до 50 млн сум",
-              "label_uz": "20 mln so'mdan ko'p — 50 mln so'mgacha"
+              "label_uz": "20 mln soʻmdan koʻp — 50 mln soʻmgacha"
             },
             {
               "value": "50m+",
               "label_ru": "Более 50 млн сум",
-              "label_uz": "50 mln so'mdan ko'p"
+              "label_uz": "50 mln soʻmdan koʻp"
             }
           ]
         },
@@ -448,7 +448,7 @@
             {
               "value": "business",
               "label_ru": "Свой бизнес",
-              "label_uz": "O'z biznesi"
+              "label_uz": "Oʻz biznesi"
             },
             {
               "value": "freelance",
@@ -492,7 +492,7 @@
             {
               "value": "5y+",
               "label_ru": "Более 5 лет",
-              "label_uz": "5 yildan ko'p"
+              "label_uz": "5 yildan koʻp"
             }
           ]
         },
@@ -516,12 +516,12 @@
             {
               "value": "medium",
               "label_ru": "Средний: готов на разумный риск",
-              "label_uz": "O'rta: oqilona tavakkalga tayyorman"
+              "label_uz": "Oʻrta: oqilona tavakkalga tayyorman"
             },
             {
               "value": "high",
               "label_ru": "Высокий: готов рисковать ради большего",
-              "label_uz": "Yuqori: ko'proq uchun tavakkal qilaman"
+              "label_uz": "Yuqori: koʻproq uchun tavakkal qilaman"
             }
           ]
         },
@@ -555,7 +555,7 @@
             {
               "value": "fast_growth",
               "label_ru": "Быстрый карьерный рост",
-              "label_uz": "Tez martaba o'sishi"
+              "label_uz": "Tez martaba oʻsishi"
             },
             {
               "value": "balance",

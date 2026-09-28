@@ -2,7 +2,7 @@
   "meta": {
     "test_name": "IPIP-NEO-60 — Big Five (короткая версия для yourway.uz)",
     "platform": "yourway.uz",
-    "version": "1.1-short",
+    "version": "1.2-short",
     "derived_from": "ipip_neo_120_full_v2 (v2.0)",
     "languages": [
       "ru",
@@ -32,7 +32,7 @@
       "factor": "Neuroticism",
       "facet": "Anxiety",
       "text_ru": "В большинстве ситуаций чувствую себя спокойно и расслабленно.",
-      "text_uz": "Ko'p vaziyatlarda o'zimni xotirjam va erkin his qilaman.",
+      "text_uz": "Koʻp vaziyatlarda oʻzimni xotirjam va erkin his qilaman.",
       "is_reverse": true
     },
     {
@@ -41,7 +41,7 @@
       "factor": "Neuroticism",
       "facet": "Angry Hostility",
       "text_ru": "Легко выхожу из себя, когда что-то идёт не по плану.",
-      "text_uz": "Biror narsa rejaga muvofiq bo'lmaganda, tez jahlim chiqadi.",
+      "text_uz": "Biror narsa rejaga muvofiq boʻlmaganda, tez jahlim chiqadi.",
       "is_reverse": false
     },
     {
@@ -50,7 +50,7 @@
       "factor": "Neuroticism",
       "facet": "Angry Hostility",
       "text_ru": "Обычно я сдержан даже в раздражающих ситуациях.",
-      "text_uz": "Odatda asabiylashtiradigan vaziyatlarda ham o'zimni tuta olaman.",
+      "text_uz": "Odatda asabiylashtiradigan vaziyatlarda ham oʻzimni tuta olaman.",
       "is_reverse": true
     },
     {
@@ -59,7 +59,7 @@
       "factor": "Neuroticism",
       "facet": "Depression",
       "text_ru": "Временами я чувствую себя совершенно подавленным.",
-      "text_uz": "Ba'zan o'zimni butunlay ezilgan his qilaman.",
+      "text_uz": "Baʼzan oʻzimni butunlay ezilgan his qilaman.",
       "is_reverse": false
     },
     {
@@ -77,7 +77,7 @@
       "factor": "Neuroticism",
       "facet": "Self-Consciousness",
       "text_ru": "В присутствии незнакомых людей я чувствую себя неловко.",
-      "text_uz": "Notanish odamlar oldida o'zimni noqulay his qilaman.",
+      "text_uz": "Notanish odamlar oldida oʻzimni noqulay his qilaman.",
       "is_reverse": false
     },
     {
@@ -86,7 +86,7 @@
       "factor": "Neuroticism",
       "facet": "Self-Consciousness",
       "text_ru": "Меня не беспокоит, что обо мне думают окружающие.",
-      "text_uz": "Atrofdagilarning men haqimda nima deb o'ylashi meni unchalik tashvishlantirmaydi.",
+      "text_uz": "Atrofdagilarning men haqimda nima deb oʻylashi meni unchalik tashvishlantirmaydi.",
       "is_reverse": true
     },
     {
@@ -95,7 +95,7 @@
       "factor": "Neuroticism",
       "facet": "Immoderation",
       "text_ru": "Мне сложно устоять перед соблазнами, даже когда я знаю, что это во вред.",
-      "text_uz": "Zararli ekanini bilsam ham, vasvasalarga qarshi turishim qiyin.",
+      "text_uz": "Zararli ekanini bilsam ham, ayrim istaklarimga qarshi turishim qiyin.",
       "is_reverse": false
     },
     {
@@ -104,7 +104,7 @@
       "factor": "Neuroticism",
       "facet": "Immoderation",
       "text_ru": "Я хорошо контролирую свои импульсивные желания.",
-      "text_uz": "Men to'satdan paydo bo'ladigan istaklarimni yaxshi nazorat qilaman.",
+      "text_uz": "Men toʻsatdan paydo boʻladigan istaklarimni yaxshi nazorat qilaman.",
       "is_reverse": true
     },
     {
@@ -113,7 +113,7 @@
       "factor": "Neuroticism",
       "facet": "Vulnerability",
       "text_ru": "В стрессовых ситуациях я нередко теряюсь и не знаю, что делать.",
-      "text_uz": "Stressli vaziyatlarda ko'pincha adashib qolaman va nima qilishni bilmayman.",
+      "text_uz": "Stressli vaziyatlarda koʻpincha adashib qolaman va nima qilishni bilmayman.",
       "is_reverse": false
     },
     {
@@ -140,7 +140,7 @@
       "factor": "Extraversion",
       "facet": "Friendliness",
       "text_ru": "Мне требуется немало времени, чтобы почувствовать себя комфортно с незнакомцами.",
-      "text_uz": "Notanish odamlar orasida o'zimni erkin his qilishim uchun ko'proq vaqt kerak.",
+      "text_uz": "Notanish odamlar orasida oʻzimni erkin his qilishim uchun koʻproq vaqt kerak.",
       "is_reverse": true
     },
     {
@@ -149,7 +149,7 @@
       "factor": "Extraversion",
       "facet": "Gregariousness",
       "text_ru": "Мне нравится бывать на многолюдных мероприятиях.",
-      "text_uz": "Ko'p odamlar qatnashadigan tadbirlarda bo'lishni yaxshi ko'raman.",
+      "text_uz": "Koʻp odamlar qatnashadigan tadbirlarda boʻlishni yaxshi koʻraman.",
       "is_reverse": false
     },
     {
@@ -158,7 +158,7 @@
       "factor": "Extraversion",
       "facet": "Gregariousness",
       "text_ru": "Я предпочитаю небольшие компании большим собраниям.",
-      "text_uz": "Ko'pchilik yig'ilgan davralardan ko'ra, kichik davralarni afzal ko'raman.",
+      "text_uz": "Koʻpchilik yigʻilgan davralardan koʻra, kichik davralarni afzal koʻraman.",
       "is_reverse": true
     },
     {
@@ -167,7 +167,7 @@
       "factor": "Extraversion",
       "facet": "Assertiveness",
       "text_ru": "В групповых обсуждениях я, как правило, беру слово первым.",
-      "text_uz": "Guruhiy muhokamalar paytida odatda birinchi bo'lib so'z olaman.",
+      "text_uz": "Guruhiy muhokamalar paytida odatda birinchi boʻlib soʻz olaman.",
       "is_reverse": false
     },
     {
@@ -176,7 +176,7 @@
       "factor": "Extraversion",
       "facet": "Assertiveness",
       "text_ru": "Я предпочитаю уступать инициативу другим, а не брать её на себя.",
-      "text_uz": "Tashabbusni o'zimga olishdan ko'ra uni boshqalarga berishni afzal ko'raman.",
+      "text_uz": "Tashabbusni oʻzimga olishdan koʻra uni boshqalarga berishni afzal koʻraman.",
       "is_reverse": true
     },
     {
@@ -185,7 +185,7 @@
       "factor": "Extraversion",
       "facet": "Activity Level",
       "text_ru": "Я обычно занят и веду активный образ жизни.",
-      "text_uz": "Men odatda band bo'laman va faol hayot tarzini olib boraman.",
+      "text_uz": "Men odatda band boʻlaman va faol hayot tarzini olib boraman.",
       "is_reverse": false
     },
     {
@@ -194,7 +194,7 @@
       "factor": "Extraversion",
       "facet": "Activity Level",
       "text_ru": "Мне нравится не спешить и работать в спокойном темпе.",
-      "text_uz": "Shoshilmaslik va tinch sur'atda ishlashni yaxshi ko'raman.",
+      "text_uz": "Shoshilmaslik va tinch surʼatda ishlashni yaxshi koʻraman.",
       "is_reverse": true
     },
     {
@@ -203,7 +203,7 @@
       "factor": "Extraversion",
       "facet": "Excitement-Seeking",
       "text_ru": "Меня привлекают ситуации, связанные с определённым риском и адреналином.",
-      "text_uz": "Ma'lum xavf va adrenalin bilan bog'liq vaziyatlar meni jalb qiladi.",
+      "text_uz": "Maʼlum xavf va adrenalin bilan bogʻliq vaziyatlar meni jalb qiladi.",
       "is_reverse": false
     },
     {
@@ -212,7 +212,7 @@
       "factor": "Extraversion",
       "facet": "Excitement-Seeking",
       "text_ru": "Я предпочитаю предсказуемость и стабильность острым ощущениям.",
-      "text_uz": "Kuchli hayajonlardan ko'ra, barqarorlik va oldindan bilib bo'ladigan vaziyatlarni afzal ko'raman.",
+      "text_uz": "Kuchli hayajonlardan koʻra, oldindan nima boʻlishi maʼlum boʻlgan barqaror hayotni afzal koʻraman.",
       "is_reverse": true
     },
     {
@@ -221,7 +221,7 @@
       "factor": "Extraversion",
       "facet": "Positive Emotions",
       "text_ru": "Большую часть времени я настроен оптимистично и радостно.",
-      "text_uz": "Ko'pincha optimistik va quvnoq kayfiyatda bo'laman.",
+      "text_uz": "Koʻpincha kelajakka umid bilan qarayman va kayfiyatim yaxshi boʻladi.",
       "is_reverse": false
     },
     {
@@ -248,7 +248,7 @@
       "factor": "Agreeableness",
       "facet": "Trust",
       "text_ru": "Мне кажется, что большинство людей преследуют скрытые интересы.",
-      "text_uz": "Menimcha, ko'pchilik odamlar yashirin manfaatlarini ko'zlaydi.",
+      "text_uz": "Menimcha, koʻpchilik odamlar yashirin manfaatlarini koʻzlaydi.",
       "is_reverse": true
     },
     {
@@ -257,7 +257,7 @@
       "factor": "Agreeableness",
       "facet": "Morality",
       "text_ru": "Я считаю, что честность важна даже тогда, когда правда неудобна.",
-      "text_uz": "Haqiqat noqulay bo'lgan paytda ham halollik muhim deb hisoblayman.",
+      "text_uz": "Haqiqat noqulay boʻlgan paytda ham halollik muhim deb hisoblayman.",
       "is_reverse": false
     },
     {
@@ -266,7 +266,7 @@
       "factor": "Agreeableness",
       "facet": "Morality",
       "text_ru": "Иногда небольшая ложь во благо вполне оправдана.",
-      "text_uz": "Ba'zan yaxshilik uchun ozgina yolg'on gapirishni oqlash mumkin, deb hisoblayman.",
+      "text_uz": "Baʼzan yaxshilik uchun ozgina yolgʻon gapirishni oqlash mumkin, deb hisoblayman.",
       "is_reverse": true
     },
     {
@@ -284,7 +284,7 @@
       "factor": "Agreeableness",
       "facet": "Altruism",
       "text_ru": "Я считаю, что каждый должен решать свои проблемы самостоятельно.",
-      "text_uz": "Har kim o'z muammolarini mustaqil hal qilishi kerak deb hisoblayman.",
+      "text_uz": "Har kim oʻz muammolarini mustaqil hal qilishi kerak deb hisoblayman.",
       "is_reverse": true
     },
     {
@@ -302,7 +302,7 @@
       "factor": "Agreeableness",
       "facet": "Cooperation",
       "text_ru": "В споре я настаиваю на своём, пока не убеждён в правоте оппонента.",
-      "text_uz": "Tortishuvda raqibimning haqligiga ishonmaguncha o'z fikrimda turaman.",
+      "text_uz": "Tortishuvda raqibimning haqligiga ishonmaguncha oʻz fikrimda turaman.",
       "is_reverse": true
     },
     {
@@ -311,7 +311,7 @@
       "factor": "Agreeableness",
       "facet": "Modesty",
       "text_ru": "Я не склонен выставлять свои достижения напоказ.",
-      "text_uz": "Men o'z yutuqlarimni namoyish qilishga moyil emasman.",
+      "text_uz": "Men oʻz yutuqlarimni namoyish qilishga moyil emasman.",
       "is_reverse": false
     },
     {
@@ -320,7 +320,7 @@
       "factor": "Agreeableness",
       "facet": "Modesty",
       "text_ru": "Я заслуживаю большего признания, чем обычно получаю.",
-      "text_uz": "Men hozirgidan ko'ra ko'proq e'tirofga loyiqman, deb hisoblayman.",
+      "text_uz": "Men hozirgidan koʻra koʻproq eʼtirofga loyiqman, deb hisoblayman.",
       "is_reverse": true
     },
     {
@@ -329,7 +329,7 @@
       "factor": "Agreeableness",
       "facet": "Sympathy",
       "text_ru": "Чужая боль отзывается во мне так, словно это моя собственная.",
-      "text_uz": "Boshqa odamning dardini o'zimnikidek his qilaman.",
+      "text_uz": "Boshqa odamning dardini oʻzimnikidek his qilaman.",
       "is_reverse": false
     },
     {
@@ -338,7 +338,7 @@
       "factor": "Agreeableness",
       "facet": "Sympathy",
       "text_ru": "Меня мало трогают чужие жалобы — каждый сам строит свою судьбу.",
-      "text_uz": "Boshqalarning shikoyatlari meni unchalik tashvishlantirmaydi — har kim o'z taqdirini o'zi qurar.",
+      "text_uz": "Boshqalarning shikoyatlari meni unchalik tashvishlantirmaydi — har kim oʻz taqdirini oʻzi quradi.",
       "is_reverse": true
     },
     {
@@ -356,7 +356,7 @@
       "factor": "Conscientiousness",
       "facet": "Self-Efficacy",
       "text_ru": "Столкнувшись с трудным заданием, я нередко сомневаюсь в своих силах.",
-      "text_uz": "Qiyin vazifa bilan to'qnashganda, ko'pincha o'z kuchimga shubha qilaman.",
+      "text_uz": "Qiyin vazifa bilan toʻqnashganda, koʻpincha oʻz kuchimga shubha qilaman.",
       "is_reverse": true
     },
     {
@@ -383,7 +383,7 @@
       "factor": "Conscientiousness",
       "facet": "Dutifulness",
       "text_ru": "Я выполняю взятые на себя обязательства, даже если это неудобно.",
-      "text_uz": "Noqulay bo'lsa ham, o'z zimmamdagi majburiyatlarni bajaraman.",
+      "text_uz": "Noqulay boʻlsa ham, oʻz zimmamdagi majburiyatlarni bajaraman.",
       "is_reverse": false
     },
     {
@@ -392,7 +392,7 @@
       "factor": "Conscientiousness",
       "facet": "Dutifulness",
       "text_ru": "Иногда я нарушаю правила, если считаю их излишними.",
-      "text_uz": "Ba'zan qoidalarni ortiqcha deb hisoblasam, ularni buzaman.",
+      "text_uz": "Baʼzan qoidalarni ortiqcha deb hisoblasam, ularni buzaman.",
       "is_reverse": true
     },
     {
@@ -401,7 +401,7 @@
       "factor": "Conscientiousness",
       "facet": "Achievement Striving",
       "text_ru": "Я ставлю перед собой амбициозные цели и прилагаю усилия для их достижения.",
-      "text_uz": "Men o'z oldimga katta maqsadlar qo'yaman va ularga erishish uchun harakat qilaman.",
+      "text_uz": "Men oʻz oldimga katta maqsadlar qoʻyaman va ularga erishish uchun harakat qilaman.",
       "is_reverse": false
     },
     {
@@ -419,7 +419,7 @@
       "factor": "Conscientiousness",
       "facet": "Self-Discipline",
       "text_ru": "Я придерживаюсь намеченного плана, даже когда хочется отложить дело.",
-      "text_uz": "Ishni keyinga qoldirmoqchi bo'lsam ham, belgilangan rejaga amal qilaman.",
+      "text_uz": "Ishni keyinga qoldirmoqchi boʻlsam ham, belgilangan rejaga amal qilaman.",
       "is_reverse": false
     },
     {
@@ -428,7 +428,7 @@
       "factor": "Conscientiousness",
       "facet": "Self-Discipline",
       "text_ru": "Мне трудно заставить себя взяться за задачу, которая кажется скучной.",
-      "text_uz": "Zerikarli ko'rinadigan vazifaga kirishishga o'zimni majburlash menga qiyin.",
+      "text_uz": "Zerikarli koʻrinadigan vazifaga kirishishga oʻzimni majburlash menga qiyin.",
       "is_reverse": true
     },
     {
@@ -437,7 +437,7 @@
       "factor": "Conscientiousness",
       "facet": "Cautiousness",
       "text_ru": "Прежде чем действовать, я тщательно обдумываю возможные последствия.",
-      "text_uz": "Harakat qilishdan oldin mumkin bo'lgan oqibatlarni puxta o'ylab ko'raman.",
+      "text_uz": "Harakat qilishdan oldin mumkin boʻlgan oqibatlarni puxta oʻylab koʻraman.",
       "is_reverse": false
     },
     {
@@ -446,7 +446,7 @@
       "factor": "Conscientiousness",
       "facet": "Cautiousness",
       "text_ru": "Я нередко принимаю решения импульсивно, не задумываясь о последствиях.",
-      "text_uz": "Ko'pincha oqibatlarini o'ylamasdan, impulsiv qarorlar qabul qilaman.",
+      "text_uz": "Koʻpincha oqibatlarini oʻylab oʻtirmay, shoshilib qaror qilaman.",
       "is_reverse": true
     },
     {
@@ -455,7 +455,7 @@
       "factor": "Openness",
       "facet": "Imagination",
       "text_ru": "У меня богатое воображение, и я часто погружаюсь в собственные фантазии.",
-      "text_uz": "Mening kuchli tasavvurim bor va tez-tez o'z xayollarimga cho'mib ketaman.",
+      "text_uz": "Mening kuchli tasavvurim bor va tez-tez oʻz xayollarimga choʻmib ketaman.",
       "is_reverse": false
     },
     {
@@ -464,7 +464,7 @@
       "factor": "Openness",
       "facet": "Imagination",
       "text_ru": "Я предпочитаю факты и реальность, а не абстрактные идеи и фантазии.",
-      "text_uz": "Abstrakt g'oyalar va xayollardan ko'ra faktlar va haqiqatni afzal ko'raman.",
+      "text_uz": "Abstrakt gʻoyalar va xayollardan koʻra faktlar va haqiqatni afzal koʻraman.",
       "is_reverse": true
     },
     {
@@ -473,7 +473,7 @@
       "factor": "Openness",
       "facet": "Artistic Interests",
       "text_ru": "Меня глубоко трогает музыка, живопись или литература.",
-      "text_uz": "Musiqa, rassomlik yoki adabiyot meni chuqur ta'sirlantiradi.",
+      "text_uz": "Musiqa, rassomlik yoki adabiyot meni chuqur taʼsirlantiradi.",
       "is_reverse": false
     },
     {
@@ -482,7 +482,7 @@
       "factor": "Openness",
       "facet": "Artistic Interests",
       "text_ru": "Я редко нахожу время или интерес для занятий искусством или культурой.",
-      "text_uz": "San'at yoki madaniyat bilan shug'ullanish uchun kamdan-kam vaqt yoki qiziqish topaman.",
+      "text_uz": "Sanʼat yoki madaniyat bilan shugʻullanish uchun kamdan-kam vaqt yoki qiziqish topaman.",
       "is_reverse": true
     },
     {
@@ -491,7 +491,7 @@
       "factor": "Openness",
       "facet": "Emotionality",
       "text_ru": "Я хорошо осознаю свои эмоции и понимаю, что именно их вызывает.",
-      "text_uz": "O'z his-tuyg'ularimni yaxshi anglayman va ularni nima keltirib chiqarishini tushunaman.",
+      "text_uz": "Oʻz his-tuygʻularimni yaxshi anglayman va ularni nima keltirib chiqarishini tushunaman.",
       "is_reverse": false
     },
     {
@@ -500,7 +500,7 @@
       "factor": "Openness",
       "facet": "Emotionality",
       "text_ru": "Я редко задумываюсь о своих внутренних переживаниях.",
-      "text_uz": "O'z ichki kechinmalarim haqida kamdan-kam o'ylayman.",
+      "text_uz": "Oʻz ichki kechinmalarim haqida kamdan-kam oʻylayman.",
       "is_reverse": true
     },
     {
@@ -509,7 +509,7 @@
       "factor": "Openness",
       "facet": "Adventurousness",
       "text_ru": "Я охотно пробую новые виды деятельности, даже если не знаю, чего ожидать.",
-      "text_uz": "Nima kutishni bilmasam ham, yangi faoliyat turlarini xursandchilik bilan sinab ko'raman.",
+      "text_uz": "Nima kutishni bilmasam ham, yangi faoliyat turlarini xursandchilik bilan sinab koʻraman.",
       "is_reverse": false
     },
     {
@@ -518,7 +518,7 @@
       "factor": "Openness",
       "facet": "Adventurousness",
       "text_ru": "Я предпочитаю привычные маршруты и устоявшийся распорядок новым экспериментам.",
-      "text_uz": "Yangi tajribalardan ko'ra tanish yo'nalishlar va o'rnatilgan tartibni afzal ko'raman.",
+      "text_uz": "Yangi tajribalardan koʻra tanish yoʻnalishlar va oʻrnatilgan tartibni afzal koʻraman.",
       "is_reverse": true
     },
     {
@@ -527,7 +527,7 @@
       "factor": "Openness",
       "facet": "Intellect",
       "text_ru": "Мне нравится размышлять над сложными философскими или научными вопросами.",
-      "text_uz": "Murakkab falsafiy yoki ilmiy savollar ustida o'ylashni yaxshi ko'raman.",
+      "text_uz": "Murakkab falsafiy yoki ilmiy savollar ustida oʻylashni yaxshi koʻraman.",
       "is_reverse": false
     },
     {
@@ -545,7 +545,7 @@
       "factor": "Openness",
       "facet": "Liberalism",
       "text_ru": "Я считаю, что общественные нормы должны меняться вместе с развитием общества.",
-      "text_uz": "Jamiyat me'yorlari jamiyat rivojlanishi bilan birga o'zgarishi kerak deb hisoblayman.",
+      "text_uz": "Jamiyat meʼyorlari jamiyat rivojlanishi bilan birga oʻzgarishi kerak deb hisoblayman.",
       "is_reverse": false
     },
     {
@@ -554,7 +554,7 @@
       "factor": "Openness",
       "facet": "Liberalism",
       "text_ru": "Мне кажется, что проверенные временем традиции важнее новомодных идей.",
-      "text_uz": "Vaqt sinovidan o'tgan an'analar yangi moda g'oyalardan muhimroq ko'rinadi.",
+      "text_uz": "Vaqt sinovidan oʻtgan anʼanalar yangi moda gʻoyalardan muhimroq koʻrinadi.",
       "is_reverse": true
     }
   ],
@@ -584,7 +584,7 @@
       {
         "value": 5,
         "label_ru": "Полностью про меня / полностью согласен",
-        "label_uz": "To'liq mos"
+        "label_uz": "Toʻliq mos"
       }
     ],
     "reverse_rule": "score = 6 - answer (применяется только к пунктам с is_reverse=true)",
@@ -1268,7 +1268,7 @@
           },
           "low_low": {
             "type_title_ru": "Равнодушный — слишком расслабленный",
-            "type_title_uz": "Befarq — haddan tashqari bo'shashgan",
+            "type_title_uz": "Befarq — haddan tashqari boʻshashgan",
             "ru": {
               "portrait": "Тестируемый демонстрирует низкую тревожность и высокую эмоциональную стабильность в сочетании со сниженной самодисциплиной и мотивацией к достижению результата. Кандидат редко испытывает стресс и не подвержен выгоранию, однако это достигается не за счёт высокой устойчивости, а за счёт низкой вовлечённости в рабочие процессы. Такой сотрудник производит впечатление спокойного и уравновешенного, однако в условиях высоких требований и нагрузки не демонстрирует ожидаемой мобилизации.",
               "strengths": "Устойчивость к стрессу и выгоранию — стабилен даже в трудные периоды. Способность сохранять хладнокровие там, где другие теряются. Редко создаёт конфликтов, не генерирует напряжения в команде.",
@@ -1285,7 +1285,7 @@
         },
         "agreeableness_extraversion": {
           "dyad_title_ru": "Стиль командного взаимодействия",
-          "dyad_title_uz": "Jamoa o'zaro ta'sir uslubi",
+          "dyad_title_uz": "Jamoa oʻzaro taʼsir uslubi",
           "high_high": {
             "type_title_ru": "Душа команды — идеальный фасилитатор",
             "type_title_uz": "Jamoa ruhi — ideal fasilitator",
@@ -1336,7 +1336,7 @@
           },
           "low_low": {
             "type_title_ru": "Отстранённый одиночка — индивидуальный игрок",
-            "type_title_uz": "Uzoqlashgan yolg'iz — individual o'yinchi",
+            "type_title_uz": "Uzoqlashgan yolgʻiz — individual oʻyinchi",
             "ru": {
               "portrait": "Тестируемый демонстрирует низкую просоциальную ориентацию в сочетании с интровертностью. Кандидат функционирует преимущественно автономно, редко инициирует взаимодействие и не испытывает потребности в социальном признании или командной принадлежности. Такой сотрудник наиболее продуктивен в изолированных, технически сложных ролях, где от него не требуется интенсивного взаимодействия с командой. В командных контекстах воспринимается как труднодоступный и незаинтересованный в общих целях.",
               "strengths": "Полная независимость от социального одобрения и командной динамики. Высокая автономность и способность к длительной независимой работе. Устойчивость к давлению социального консенсуса. Объективность суждений, не искажённых эмоциональными отношениями.",
@@ -1356,7 +1356,7 @@
           "dyad_title_uz": "Innovatsiyalar jarayonlarga qarshi",
           "high_high": {
             "type_title_ru": "Стратегический инноватор — системный архитектор",
-            "type_title_uz": "Strategik innovator — tizimli me'mor",
+            "type_title_uz": "Strategik innovator — tizimli meʼmor",
             "ru": {
               "portrait": "Тестируемый демонстрирует редкую и высокоценную комбинацию: способность генерировать новаторские идеи и видеть системные возможности в сочетании с дисциплиной, позволяющей эти идеи воплощать. Кандидат не только мыслит стратегически и нестандартно, но и создаёт устойчивые операционные системы, которые переживают его личное участие. Такой сотрудник является двигателем трансформации: он переводит абстрактные концепции в конкретные, воспроизводимые процессы. Данная комбинация наиболее часто встречается среди успешных CTO, Product Lead и Strategy Directors.",
               "strengths": "Способность создавать инновационные решения, которые реально масштабируются. Системное мышление: видит и большую картину, и операционные детали. Высокая ценность при построении новых продуктов, функций или организаций с нуля. Способность к качественному технологическому или методологическому лидерству. Баланс между видением и исполнением — редкое сочетание.",
@@ -1421,7 +1421,7 @@
         },
         "neuroticism_extraversion": {
           "dyad_title_ru": "Эмоциональный стиль в социальном взаимодействии",
-          "dyad_title_uz": "Ijtimoiy o'zaro munosabatdagi hissiy uslub",
+          "dyad_title_uz": "Ijtimoiy oʻzaro munosabatdagi hissiy uslub",
           "high_high": {
             "type_title_ru": "Экспрессивный тревожный коммуникатор",
             "type_title_uz": "Ekspressiv tashvishli kommunikator",
@@ -1625,7 +1625,7 @@
         },
         "extraversion_openness": {
           "dyad_title_ru": "Стиль вовлечённости и исследования",
-          "dyad_title_uz": "Jalb bo'lish va tadqiq qilish uslubi",
+          "dyad_title_uz": "Jalb boʻlish va tadqiq qilish uslubi",
           "high_high": {
             "type_title_ru": "Харизматичный визионер",
             "type_title_uz": "Xarizmatik vizioner",
@@ -1696,7 +1696,7 @@
           "dyad_title_uz": "Ishonchlilik va hamkorlik uslubi",
           "high_high": {
             "type_title_ru": "Надёжный командный игрок",
-            "type_title_uz": "Ishonchli jamoaviy o'yinchi",
+            "type_title_uz": "Ishonchli jamoaviy oʻyinchi",
             "ru": {
               "portrait": "Тестируемый сочетает высокую доброжелательность с дисциплиной и ответственностью: искренне заботится о команде и при этом методично выполняет взятые на себя обязательства. Кандидат — один из наиболее предсказуемых и лояльных типов сотрудников, на которого можно положиться и в отношениях, и в задачах.",
               "strengths": "Высокая надёжность в сочетании с заботой о командном климате. Готовность помогать коллегам без потери собственной результативности. Устойчивая репутация человека слова.",
@@ -1761,7 +1761,7 @@
         },
         "agreeableness_openness": {
           "dyad_title_ru": "Открытость во взаимодействии с людьми и идеями",
-          "dyad_title_uz": "Odamlar va g'oyalar bilan o'zaro munosabatdagi ochiqlik",
+          "dyad_title_uz": "Odamlar va gʻoyalar bilan oʻzaro munosabatdagi ochiqlik",
           "high_high": {
             "type_title_ru": "Эмпатичный визионер",
             "type_title_uz": "Empatik vizioner",
@@ -1780,7 +1780,7 @@
           },
           "high_low": {
             "type_title_ru": "Заботливый традиционалист",
-            "type_title_uz": "G'amxo'r an'anaviychi",
+            "type_title_uz": "Gʻamxoʻr anʼanaviychi",
             "ru": {
               "portrait": "Тестируемый сочетает высокую доброжелательность с предпочтением проверенного и привычного: искренне заботится о людях, но предпочитает делать это через устоявшиеся, надёжные практики, а не эксперименты. Кандидат — стабильная опора команды, к которой обращаются за поддержкой и в предсказуемости.",
               "strengths": "Надёжная, последовательная забота о команде без резких экспериментов. Стабильность подхода, вызывающая доверие коллег. Эффективность в ролях поддержки, где ценится предсказуемость.",

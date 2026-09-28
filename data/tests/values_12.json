@@ -2,7 +2,7 @@
   "meta": {
     "test_name": "Модуль ценностей / мотивации для yourway.uz",
     "platform": "yourway.uz",
-    "version": "1.1",
+    "version": "1.2",
     "languages": [
       "ru",
       "uz"
@@ -16,13 +16,13 @@
       "id": 1,
       "value": "money",
       "text_ru": "Зарабатывать много и иметь высокий доход.",
-      "text_uz": "Yuqori daromadga ega bo'lish."
+      "text_uz": "Yuqori daromadga ega boʻlish."
     },
     {
       "id": 2,
       "value": "freedom",
       "text_ru": "Быть независимым, самому распоряжаться своим временем.",
-      "text_uz": "Mustaqil bo'lish, o'z vaqtini o'zi tasarruf etish."
+      "text_uz": "Mustaqil boʻlish, oʻz vaqtini oʻzi tasarruf etish."
     },
     {
       "id": 3,
@@ -34,7 +34,7 @@
       "id": 4,
       "value": "recognition",
       "text_ru": "Признание, уважение и высокий статус в обществе.",
-      "text_uz": "Jamiyatda e'tirof, hurmat va yuqori maqom."
+      "text_uz": "Jamiyatda eʼtirof, hurmat va yuqori maqom."
     },
     {
       "id": 5,
@@ -46,7 +46,7 @@
       "id": 6,
       "value": "creativity",
       "text_ru": "Создавать новое и выражать себя.",
-      "text_uz": "Yangilik yaratish va o'zini ifodalash."
+      "text_uz": "Yangilik yaratish va oʻzini ifodalash."
     },
     {
       "id": 7,
@@ -58,19 +58,19 @@
       "id": 8,
       "value": "freedom",
       "text_ru": "Свобода выбора и отсутствие жёсткого контроля.",
-      "text_uz": "Tanlov erkinligi va qat'iy nazoratning yo'qligi."
+      "text_uz": "Tanlov erkinligi va qatʼiy nazoratning yoʻqligi."
     },
     {
       "id": 9,
       "value": "stability",
       "text_ru": "Надёжная, предсказуемая работа без резких перемен.",
-      "text_uz": "Keskin o'zgarishlar bo'lmaydigan, shartlari oldindan ma'lum barqaror ish."
+      "text_uz": "Keskin oʻzgarishlar boʻlmaydigan, shartlari oldindan maʼlum barqaror ish."
     },
     {
       "id": 10,
       "value": "recognition",
       "text_ru": "Чтобы ваши достижения замечали и ценили.",
-      "text_uz": "Yutuqlaringiz e'tiborga olinishi va qadrlanishi."
+      "text_uz": "Yutuqlaringiz eʼtiborga olinishi va qadrlanishi."
     },
     {
       "id": 11,
@@ -82,7 +82,7 @@
       "id": 12,
       "value": "creativity",
       "text_ru": "Творческая свобода и оригинальность в работе.",
-      "text_uz": "Ishda ijodiy erkinlik va o'ziga xoslik."
+      "text_uz": "Ishda ijodiy erkinlik va oʻziga xoslik."
     }
   ],
   "scoring": {
@@ -101,7 +101,7 @@
       {
         "value": 3,
         "label_ru": "Средне",
-        "label_uz": "O'rtacha muhim"
+        "label_uz": "Oʻrtacha muhim"
       },
       {
         "value": 4,
@@ -151,7 +151,7 @@
       },
       "recognition": {
         "value_ru": "Признание / статус",
-        "value_uz": "E'tirof / maqom",
+        "value_uz": "Eʼtirof / maqom",
         "item_count": 2,
         "raw_min": 2,
         "raw_max": 10,
@@ -173,7 +173,7 @@
       },
       "creativity": {
         "value_ru": "Творчество / самовыражение",
-        "value_uz": "Ijod / o'zini ifodalash",
+        "value_uz": "Ijod / oʻzini ifodalash",
         "item_count": 2,
         "raw_min": 2,
         "raw_max": 10,

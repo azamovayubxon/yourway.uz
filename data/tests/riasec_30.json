@@ -2,7 +2,7 @@
   "meta": {
     "test_name": "RIASEC — тест интересов (Холланд) для yourway.uz",
     "platform": "yourway.uz",
-    "version": "1.1",
+    "version": "1.2",
     "languages": [
       "ru",
       "uz"
@@ -16,7 +16,7 @@
       "id": 1,
       "type": "R",
       "text_ru": "Ремонтировать технику или механизмы.",
-      "text_uz": "Texnika yoki mexanizmlarni ta'mirlash."
+      "text_uz": "Texnika yoki mexanizmlarni taʼmirlash."
     },
     {
       "id": 2,
@@ -28,7 +28,7 @@
       "id": 3,
       "type": "A",
       "text_ru": "Придумывать что-то новое и оригинальное.",
-      "text_uz": "Yangi va o'ziga xos narsalar o'ylab topish."
+      "text_uz": "Yangi va oʻziga xos narsalar oʻylab topish."
     },
     {
       "id": 4,
@@ -40,7 +40,7 @@
       "id": 5,
       "type": "E",
       "text_ru": "Убеждать людей и вести их за собой.",
-      "text_uz": "Odamlarni ishontirish va o'z ortimdan ergashtirish."
+      "text_uz": "Odamlarni ishontirish va oʻz ortimdan ergashtirish."
     },
     {
       "id": 6,
@@ -52,7 +52,7 @@
       "id": 7,
       "type": "R",
       "text_ru": "Работать инструментами, собирать или чинить своими руками.",
-      "text_uz": "Asboblar bilan ishlash, buyumlarni qo'lda yig'ish yoki ta'mirlash."
+      "text_uz": "Asboblar bilan ishlash, buyumlarni qoʻlda yigʻish yoki taʼmirlash."
     },
     {
       "id": 8,
@@ -70,19 +70,19 @@
       "id": 10,
       "type": "S",
       "text_ru": "Обучать или объяснять что-то другим.",
-      "text_uz": "Boshqalarga biror narsani o'rgatish yoki tushuntirish."
+      "text_uz": "Boshqalarga biror narsani oʻrgatish yoki tushuntirish."
     },
     {
       "id": 11,
       "type": "E",
       "text_ru": "Начинать своё дело, запускать проекты.",
-      "text_uz": "O'z ishini boshlash, loyihalarni ishga tushirish."
+      "text_uz": "Oʻz ishini boshlash, loyihalarni ishga tushirish."
     },
     {
       "id": 12,
       "type": "C",
       "text_ru": "Наводить порядок и систематизировать информацию.",
-      "text_uz": "Tartib o'rnatish va ma'lumotni tizimlashtirish."
+      "text_uz": "Tartib oʻrnatish va maʼlumotni tizimlashtirish."
     },
     {
       "id": 13,
@@ -94,7 +94,7 @@
       "id": 14,
       "type": "I",
       "text_ru": "Анализировать данные, факты, статистику.",
-      "text_uz": "Ma'lumot, faktlar va statistikani tahlil qilish."
+      "text_uz": "Maʼlumot, faktlar va statistikani tahlil qilish."
     },
     {
       "id": 15,
@@ -106,7 +106,7 @@
       "id": 16,
       "type": "S",
       "text_ru": "Работать в команде и много общаться.",
-      "text_uz": "Jamoada ishlash va ko'p muloqot qilish."
+      "text_uz": "Jamoada ishlash va koʻp muloqot qilish."
     },
     {
       "id": 17,
@@ -118,7 +118,7 @@
       "id": 18,
       "type": "C",
       "text_ru": "Следовать чётким инструкциям и правилам.",
-      "text_uz": "Aniq ko'rsatma va qoidalarga amal qilish."
+      "text_uz": "Aniq koʻrsatma va qoidalarga amal qilish."
     },
     {
       "id": 19,
@@ -130,25 +130,25 @@
       "id": 20,
       "type": "I",
       "text_ru": "Изучать науку, проводить эксперименты.",
-      "text_uz": "Fanni o'rganish, tajribalar o'tkazish."
+      "text_uz": "Fanni oʻrganish, tajribalar oʻtkazish."
     },
     {
       "id": 21,
       "type": "A",
       "text_ru": "Выражать себя через творчество.",
-      "text_uz": "O'zini ijod orqali ifodalash."
+      "text_uz": "Oʻzini ijod orqali ifodalash."
     },
     {
       "id": 22,
       "type": "S",
       "text_ru": "Поддерживать и заботиться о людях.",
-      "text_uz": "Odamlarni qo'llab-quvvatlash va ularga g'amxo'rlik qilish."
+      "text_uz": "Odamlarni qoʻllab-quvvatlash va ularga gʻamxoʻrlik qilish."
     },
     {
       "id": 23,
       "type": "E",
       "text_ru": "Брать на себя ответственность и руководить.",
-      "text_uz": "Mas'uliyatni o'z zimmasiga olish va rahbarlik qilish."
+      "text_uz": "Masʼuliyatni oʻz zimmasiga olish va rahbarlik qilish."
     },
     {
       "id": 24,
@@ -160,25 +160,25 @@
       "id": 25,
       "type": "R",
       "text_ru": "Заниматься физическим трудом, строительством, монтажом.",
-      "text_uz": "Jismoniy mehnat, qurilish, montaj bilan shug'ullanish."
+      "text_uz": "Jismoniy mehnat, qurilish, montaj bilan shugʻullanish."
     },
     {
       "id": 26,
       "type": "I",
       "text_ru": "Докапываться до сути проблемы логическим путём.",
-      "text_uz": "Muammoning mohiyatiga mantiqiy yo'l bilan yetib borish."
+      "text_uz": "Muammoning mohiyatiga mantiqiy yoʻl bilan yetib borish."
     },
     {
       "id": 27,
       "type": "A",
       "text_ru": "Работать там, где нет жёстких правил и есть свобода самовыражения.",
-      "text_uz": "Qat'iy qoidalar yo'q, o'zini erkin ifodalash imkoni bor joyda ishlash."
+      "text_uz": "Qatʼiy qoidalar yoʻq, oʻzini erkin ifodalash imkoni bor joyda ishlash."
     },
     {
       "id": 28,
       "type": "S",
       "text_ru": "Разрешать конфликты и налаживать отношения.",
-      "text_uz": "Nizolarni hal qilish va munosabatlarni yo'lga qo'yish."
+      "text_uz": "Nizolarni hal qilish va munosabatlarni yoʻlga qoʻyish."
     },
     {
       "id": 29,
@@ -190,7 +190,7 @@
       "id": 30,
       "type": "C",
       "text_ru": "Выполнять аккуратную, точную работу по алгоритму.",
-      "text_uz": "Algoritm bo'yicha aniq va puxta ish bajarish."
+      "text_uz": "Belgilangan tartib boʻyicha ishni aniq va puxta bajarish."
     }
   ],
   "scoring": {
@@ -209,7 +209,7 @@
       {
         "value": 3,
         "label_ru": "Нейтрально",
-        "label_uz": "O'rtacha qiziq"
+        "label_uz": "Oʻrtacha qiziq"
       },
       {
         "value": 4,
@@ -296,7 +296,7 @@
       },
       "C": {
         "type_ru": "Конвенциональный",
-        "type_uz": "An'anaviy",
+        "type_uz": "Anʼanaviy",
         "item_count": 5,
         "raw_min": 5,
         "raw_max": 25,
@@ -340,7 +340,7 @@
       },
       "C": {
         "name_ru": "Конвенциональный",
-        "name_uz": "An'anaviy",
+        "name_uz": "Anʼanaviy",
         "desc_ru": "порядок, структура, данные, администрирование"
       }
     }
