@@ -15,6 +15,12 @@ export const ADMIN_NAV = [
   { href: "/admin/errors", label: "Ошибки" },
 ] as const;
 
+// Разделы только для superadmin.
+const SUPERADMIN_NAV = [
+  { href: "/admin/compare", label: "Сравнение моделей" },
+  { href: "/admin/admins", label: "Администраторы" },
+] as const;
+
 export function AdminShell({
   title,
   isSuperAdmin,
@@ -40,16 +46,17 @@ export function AdminShell({
                 </Link>
               </li>
             ))}
-            {isSuperAdmin && (
-              <li className="shrink-0">
-                <Link
-                  href="/admin/admins"
-                  className="block whitespace-nowrap rounded-xl px-3 py-2 text-sm font-semibold text-ink/80 hover:bg-slate-100 hover:text-ink"
-                >
-                  Администраторы
-                </Link>
-              </li>
-            )}
+            {isSuperAdmin &&
+              SUPERADMIN_NAV.map((item) => (
+                <li key={item.href} className="shrink-0">
+                  <Link
+                    href={item.href}
+                    className="block whitespace-nowrap rounded-xl px-3 py-2 text-sm font-semibold text-ink/80 hover:bg-slate-100 hover:text-ink"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
           </ul>
         </nav>
         <div className="min-w-0 flex-1">

@@ -53,7 +53,8 @@ jobs:
       # «Запустить собранный сайт в фоне» ниже.
       VERCEL_ENV: preview
       PAYMENTS_TEST_MODE: "true"
-      SUPERADMIN_LOGINS: e2eadmin
+      # e2ecompare — отдельный суперадмин для e2e/admin-compare.spec.ts (слепое сравнение моделей).
+      SUPERADMIN_LOGINS: e2eadmin,e2ecompare
     steps:
       - uses: actions/checkout@v5
 

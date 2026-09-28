@@ -132,7 +132,11 @@ model AiCall {
   outputTokens     Int          @default(0)
   cacheReadTokens  Int          @default(0)
   cacheWriteTokens Int          @default(0)
-  // Примерная стоимость в долларах США по прайсу из src/lib/ai/config.ts. Пусто, если цена модели неизвестна.
+  // Страховка (два поставщика ИИ): модель OpenAI, которую подменили на Claude. Пусто — подмены не было.
+  fallbackFrom     String?
+  // Слепое сравнение моделей (/admin/compare, kind = compare): к какому сравнению относится вызов.
+  comparisonId     String?
+  // Примерная стоимость в долларах США по прайсу из src/lib/ai/providers/prices.ts. Пусто, если цена модели неизвестна.
   costUsd          Float?
   durationMs       Int
   createdAt        DateTime     @default(now())
@@ -363,6 +367,9 @@ model Report {
   content       Json?
   aiMode        String
   model         String
+  // Страховка: модель OpenAI, которая не справилась; с этого момента отчёт пишет model (Claude).
+  // Пусто — подмены не было.
+  fallbackFrom  String?
   promptVersion String
   // Попытка текущей части (0 — ещё не начинали) и данные для повтора с подсказкой:
   // { previousResponse, problems }.
@@ -381,4 +388,63 @@ model Report {
 
   @@index([userId, createdAt])
   @@index([sessionId])
+}
+
+// Слепое сравнение двух моделей ИИ (/admin/compare, только superadmin): одна и та же генерация
+// (тизер или одна часть отчёта на узбекском) двумя моделями через боевые промпты и проверки.
+// Владелец видит «Variant 1 / Variant 2» без названий моделей, ставит оценку, и только потом
+// видит, какая модель какая. Сравнения не создают Teaser/Report и не тратят лимиты пользователей.
+model ModelComparison {
+  id              String   @id @default(uuid())
+  createdBy       String
+  // golden | golden_no_goal | session:<id> — откуда взят профиль, и сам профиль на момент запуска.
+  profileSource   String
+  profile         Json
+  // Тизер — вход для части отчёта (как на боевом сайте: полный отчёт получает JSON тизера).
+  // У реальной сессии — её готовый тизер, у golden-профиля — образец тестового режима.
+  teaser          Json?
+  // teaser | report_route | report_navigator; part — часть отчёта (portrait_goal | main_path | finish).
+  kind            String
+  part            String?
+  locale          String   @default("uz")
+  // Версия промпта (активная в момент запуска) — одна на оба варианта.
+  promptVersion   String
+  aiMode          String
+  // Оценка: 1 | 2 (какой вариант лучше) | equal. Пусто — ещё не оценено (модели скрыты).
+  verdict         String?
+  comment         String?
+  ratedAt         DateTime?
+  createdAt       DateTime @default(now())
+  variants        ModelComparisonVariant[]
+
+  @@index([createdAt])
+}
+
+// Один вариант сравнения. slot — номер на экране (1 или 2), модели раскладываются по номерам случайно.
+model ModelComparisonVariant {
+  id            String          @id @default(uuid())
+  comparisonId  String
+  comparison    ModelComparison @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+  slot          Int
+  model         String
+  // pending — ещё не начинали; generating — идёт попытка; ready — готово; failed — не удалось.
+  status        String          @default("pending")
+  // Номер текущей попытки и данные для повтора с подсказкой ({ previousResponse, problems }) — как у отчёта.
+  attempt       Int             @default(0)
+  retry         Json?
+  lockedAt      DateTime?
+  // Проверенный ответ (тизер или часть отчёта). У части отчёта может быть и при failed, если нарушения
+  // только «мягкие» (как на боевом сайте — там такой ответ принимается на последней попытке).
+  content       Json?
+  error         String?
+  problems      Json?
+  // Сумма по всем попыткам этого варианта.
+  costUsd       Float?
+  durationMs    Int             @default(0)
+  inputTokens   Int             @default(0)
+  outputTokens  Int             @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@unique([comparisonId, slot])
 }

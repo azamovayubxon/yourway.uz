@@ -12,7 +12,8 @@ import type { ReportLevel, ReportPathType } from "./prompts";
 // Кнопка «Проверить» в /admin/prompts (этап 8б, требование 5): прогоняет черновик промпта на
 // golden-профиле (Приложение Б §9) и возвращает, прошёл ли ответ проверку схемой. Ничего не
 // сохраняется как отчёт пользователя — только результат для показа в админке. В мок-режиме
-// (нет ANTHROPIC_API_KEY) отдаёт заглушку, как и обычная генерация.
+// (нет ANTHROPIC_API_KEY) отдаёт заглушку, как и обычная генерация. Страховки на Claude здесь нет:
+// проверка должна показать, как справляется именно выбранная модель.
 //
 // withGoal — переключатель «с целью / без цели» рядом с кнопкой (доработка этапа 8б): выбирает
 // между GOLDEN_PROFILE (knows_goal, с заполненным goal) и GOLDEN_PROFILE_NO_GOAL (no_goal, без
@@ -53,14 +54,14 @@ export async function runPromptCheck(
   }
 
   const locale = localeOf(key);
-  const provider = getAiProvider(aiMode);
   const templates = { system: systemTemplate, user: userTemplate };
   const profile = withGoal ? GOLDEN_PROFILE : GOLDEN_PROFILE_NO_GOAL;
 
   if (isReportKey(key)) {
     const level: ReportLevel = key.includes("navigator") ? "navigator" : "route";
     const pathType = profile.path_type as ReportPathType;
-    const model = modelFor(aiMode, await resolveReportModel(level));
+    const model = modelFor(aiMode, await resolveReportModel(level, locale));
+    const provider = getAiProvider(aiMode, model);
     const result = await runReportPartAttempt({
       part: "portrait_goal",
       profile,
@@ -85,6 +86,7 @@ export async function runPromptCheck(
   }
 
   const model = modelFor(aiMode, await resolveTeaserModel(locale));
+  const provider = getAiProvider(aiMode, model);
   const attempts: AttemptLog[] = [];
   const result = await generateTeaser({
     profile,

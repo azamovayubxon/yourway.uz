@@ -6,12 +6,13 @@ import { resolveReportModel } from "@/lib/admin/models";
 import { REPORT_PARTS, type ReportLevel, type ReportPathType } from "@/lib/ai/prompts";
 import { promptKeyForReport } from "@/lib/ai/prompt-registry";
 import { getActivePromptVersion, getPromptVersionByNumber, parsePromptVersionLabel, promptVersionLabel } from "@/lib/ai/prompt-store";
-import { createFailingProvider, getAiMode, getAiProvider, modelFor } from "@/lib/ai/providers";
+import { claudeFallbackReportModel } from "@/lib/ai/config";
+import { createFailingProvider, getAiMode, getAiProvider, isOpenAiModel, modelFor } from "@/lib/ai/providers";
 import { runReportPartAttempt } from "@/lib/ai/report";
 import { mergeReportParts, type ReportContent } from "@/lib/ai/report-schema";
 import type { Profile } from "@/lib/assessment/profile";
 import type { Locale } from "@/i18n/config";
-import { decideNext, MAX_PART_ATTEMPTS, nextPart, partsDone, shouldAcceptDespiteWarnings, type ReportStatus } from "./progress";
+import { afterFailedAttempt, decideNext, nextPart, partsDone, shouldAcceptDespiteWarnings, type ReportStatus } from "./progress";
 
 // Полный отчёт: создание после оплаты и фоновая генерация по частям (Приложение Б §5а).
 //
@@ -64,7 +65,7 @@ export async function createReportInTx(
       profile: { ...profile, level: payment.level } as unknown as Prisma.InputJsonValue,
       teaser: teaser.content as Prisma.InputJsonValue,
       aiMode,
-      model: modelFor(aiMode, await resolveReportModel(payment.level as ReportLevel)),
+      model: modelFor(aiMode, await resolveReportModel(payment.level as ReportLevel, payment.locale as Locale)),
       // Версия промпта фиксируется на момент оплаты: все части генерируются одной и той же версией,
       // даже если владелец сохранит новую, пока отчёт ещё генерируется (см. advanceReport).
       promptVersion: promptVersionLabel(promptVersion),
@@ -121,8 +122,23 @@ export async function advanceReport(options: {
   }
 
   const parts = (report.parts ?? {}) as Record<string, unknown>;
+  const aiMode = getAiMode();
+  const level = report.level as ReportLevel;
+  // После подмены (страховки) отчёт до конца пишет Claude-модель, записанная в report.model;
+  // иначе — модель уровня и языка из настроек (могла поменяться в админке, пока отчёт генерируется).
+  const model = report.fallbackFrom ? report.model : modelFor(aiMode, await resolveReportModel(level, report.locale as Locale));
+  const canFallback = aiMode === "live" && !report.fallbackFrom && isOpenAiModel(model) && !options.simulateFailure;
+
   const decision = decideNext({ ...report, parts }, new Date());
   if (decision === "done" || decision === "wait") return { state: toState(report.status, parts) };
+  if (decision === "timeout" && canFallback) {
+    // Попытка OpenAI зависла, и попыток больше нет — не «не удалось», а страховка на Claude.
+    await db.report.updateMany({
+      where: { id: report.id, lockedAt: report.lockedAt },
+      data: fallbackData(model, level),
+    });
+    return { state: toState("generating", parts) };
+  }
   if (decision === "timeout") {
     await db.report.updateMany({
       where: { id: report.id, lockedAt: report.lockedAt },
@@ -138,9 +154,6 @@ export async function advanceReport(options: {
     return { state: toState("ready", parts) };
   }
 
-  const aiMode = getAiMode();
-  const level = report.level as ReportLevel;
-  const model = modelFor(aiMode, await resolveReportModel(level));
   // «Захватываем» часть атомарно: две вкладки не запустят одну и ту же попытку дважды.
   // Номер попытки увеличиваем сразу — так зависшая попытка тоже считается (см. decideNext).
   const claimed = await db.report.updateMany({
@@ -151,8 +164,8 @@ export async function advanceReport(options: {
 
   const attempt = report.partAttempt + 1;
   const retry = report.retry as { previousResponse: string; problems: string[] } | null;
-  const provider = options.simulateFailure ? createFailingProvider() : getAiProvider(aiMode);
-  const { id: reportId, sessionId, locale, promptVersion: promptVersionTag } = report;
+  const provider = options.simulateFailure ? createFailingProvider() : getAiProvider(aiMode, model);
+  const { id: reportId, sessionId, locale, promptVersion: promptVersionTag, fallbackFrom } = report;
   const profile = report.profile as unknown as Profile;
   const teaser = report.teaser;
   const pathType = report.pathType as ReportPathType;
@@ -192,7 +205,8 @@ export async function advanceReport(options: {
         `[ai] report=${reportId} part=${part} provider=${provider.name} model=${model} locale=${locale}` +
           ` attempt=${attempt} ok=${result.ok} in=${result.usage.inputTokens} out=${result.usage.outputTokens}` +
           ` cache_read=${result.usage.cacheReadTokens} cache_write=${result.usage.cacheWriteTokens}` +
-          ` cost=$${costUsd ?? "?"} ms=${result.durationMs}${loggedError ? ` error=${loggedError}` : ""}`,
+          ` cost=$${costUsd ?? "?"} ms=${result.durationMs}${loggedError ? ` error=${loggedError}` : ""}` +
+          (fallbackFrom ? ` fallback_from=${fallbackFrom}` : ""),
       );
       await db.aiCall.create({
         data: {
@@ -202,6 +216,7 @@ export async function advanceReport(options: {
           reportId,
           aiMode,
           model,
+          fallbackFrom,
           promptVersion: promptVersionTag,
           attempt,
           ok: result.ok,
@@ -231,10 +246,15 @@ export async function advanceReport(options: {
         return;
       }
 
-      const canRetry = !result.fatal && attempt < MAX_PART_ATTEMPTS;
+      const next = afterFailedAttempt({ attempt, fatal: result.fatal, canFallback });
+      if (next === "fallback") {
+        console.info(`[ai] report=${reportId} part=${part} fallback ${model} → ${claudeFallbackReportModel(level)}`);
+        await db.report.update({ where: { id: reportId }, data: { ...fallbackData(model, level), attempts: { increment: 1 } } });
+        return;
+      }
       await db.report.update({
         where: { id: reportId },
-        data: canRetry
+        data: next === "retry"
           ? {
               // Повтор с подсказкой: прошлый ответ и что в нём исправить. Если ответа не было
               // (сеть, таймаут) — повтор с чистого листа.
@@ -263,6 +283,21 @@ export async function advanceReport(options: {
   };
 
   return { state: toState("generating", parts), job };
+}
+
+// Страховка (подмена модели): модель OpenAI не справилась — дальше отчёт пишет Claude-модель уровня
+// по умолчанию, попытки текущей части начинаются заново. fallbackFrom остаётся в отчёте и в журнале
+// AiCall каждой следующей попытки — в /admin/ai-log видно, что сработала подмена.
+function fallbackData(fromModel: string, level: ReportLevel) {
+  return {
+    status: "generating",
+    model: claudeFallbackReportModel(level),
+    fallbackFrom: fromModel,
+    partAttempt: 0,
+    retry: Prisma.DbNull,
+    lockedAt: null,
+    error: null,
+  };
 }
 
 async function finalize(reportId: string, parts: Record<string, unknown>) {

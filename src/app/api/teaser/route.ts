@@ -14,8 +14,9 @@ import { getLocale } from "@/i18n/server";
 // "failed" | "none" }. Страница опрашивает его, пока идёт генерация.
 export const dynamic = "force-dynamic";
 // Сколько секунд хостинг даёт функции вместе с фоновой работой (Vercel читает это поле,
-// другие хостинги его игнорируют). Генерация укладывается в TEASER_TIME_BUDGET_MS = 100 с.
-export const maxDuration = 120;
+// другие хостинги его игнорируют). Генерация укладывается в TEASER_TIME_BUDGET_MS = 100 с, а если
+// модель OpenAI не справилась — ещё столько же на страховку Claude (итого до 200 с).
+export const maxDuration = 300;
 
 export async function POST(request: Request) {
   const session = await getCurrentSession();

@@ -3,34 +3,15 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
-import { AiFatalError, type AiProvider, type TokenUsage } from "./types";
+import { estimateAnthropicCostUsd } from "./prices";
+import { AiFatalError, type AiProvider } from "./types";
 
 // Время ожидания одного ответа, мс, и число автоматических повторов при сетевых сбоях.
 const TIMEOUT_MS = 60_000;
 const NETWORK_RETRIES = 1;
 
-// Цены моделей, $ за 1 млн токенов (прайс Anthropic, сентябрь 2026). Нужны только для примерной
-// оценки себестоимости в журнале. Запись в кэш стоит 1,25 от цены входа, чтение из кэша — 0,1.
-const PRICES_PER_MTOK: Record<string, { input: number; output: number }> = {
-  "claude-haiku-4-5": { input: 1, output: 5 },
-  "claude-sonnet-5": { input: 2, output: 10 },
-  "claude-sonnet-4-6": { input: 3, output: 15 },
-  "claude-opus-5-5": { input: 4, output: 20 },
-  "claude-opus-5": { input: 5, output: 25 },
-  "claude-opus-4-8": { input: 5, output: 25 },
-};
-
-export function estimateAnthropicCostUsd(model: string, usage: TokenUsage): number | null {
-  const price = PRICES_PER_MTOK[model];
-  if (!price) return null;
-  const usd =
-    (usage.inputTokens * price.input +
-      usage.cacheWriteTokens * price.input * 1.25 +
-      usage.cacheReadTokens * price.input * 0.1 +
-      usage.outputTokens * price.output) /
-    1_000_000;
-  return Math.round(usd * 1_000_000) / 1_000_000;
-}
+// Цены моделей (для примерной себестоимости в журнале) — в prices.ts, общем для всех поставщиков.
+export { estimateAnthropicCostUsd } from "./prices";
 
 // Параметр effort (глубина «размышлений») принимают Sonnet 5, Opus 4.5+ и Fable; Haiku 4.5 — нет.
 // У Sonnet 5 размышления включены по умолчанию на уровне high: для короткого тизера это лишние

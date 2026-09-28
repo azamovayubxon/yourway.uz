@@ -59,7 +59,7 @@ export interface AttemptLog {
 
 export type TeaserResult =
   | { ok: true; content: TeaserContent; attempts: number }
-  | { ok: false; error: string; attempts: number };
+  | { ok: false; error: string; attempts: number; fatal?: boolean };
 
 function parseJsonOrNull(text: string): unknown {
   try {
@@ -86,6 +86,10 @@ export async function generateTeaser(options: {
   now?: () => number;
   // Версия промпта из БД (этап 8б); по умолчанию — текст из кода (TEASER_SYSTEM/USER_TEMPLATE).
   templates?: { system: string; user: string };
+  // Сдвиг номера попытки в журнале: при страховке на Claude попытки продолжают нумерацию
+  // (3, 4 после 1, 2 у OpenAI), чтобы первая попытка (attempt = 1) по-прежнему была одна на тизер
+  // — по ней считается лимит тизеров с одного IP.
+  attemptOffset?: number;
 }): Promise<TeaserResult> {
   const { locale, model, provider, onAttempt } = options;
   const now = options.now ?? Date.now;
@@ -147,7 +151,7 @@ export async function generateTeaser(options: {
     }
 
     await onAttempt?.({
-      attempt,
+      attempt: attempt + (options.attemptOffset ?? 0),
       ok: outcome.ok,
       error: outcome.ok ? null : outcome.error,
       problems: outcome.ok ? [] : outcome.problems,
@@ -158,7 +162,7 @@ export async function generateTeaser(options: {
 
     if (outcome.ok) return { ok: true, content: outcome.content, attempts: attempt };
     lastError = outcome.error;
-    if (fatal) return { ok: false, error: lastError, attempts: attempt };
+    if (fatal) return { ok: false, error: lastError, attempts: attempt, fatal: true };
     // Если модель что-то ответила, при повторе покажем ей этот ответ и список проблем.
     // Если ответа не было (сеть, таймаут), повтор идёт с чистого листа.
     retry = responseText.trim()
@@ -166,4 +170,43 @@ export async function generateTeaser(options: {
       : undefined;
   }
   return { ok: false, error: lastError, attempts: maxAttempts };
+}
+
+// Тизер со страховкой (два поставщика ИИ): если основная модель (OpenAI) не справилась окончательно
+// — неверный ключ, исчерпаны повторы или время, — генерация повторяется на Claude-модели по
+// умолчанию, со своим бюджетом времени. Если fallback не задан (модель Claude), это обычный generateTeaser.
+export async function generateTeaserWithFallback(
+  options: Parameters<typeof generateTeaser>[0] & {
+    fallback?: { model: string; provider: AiProvider };
+    // Каждая попытка с моделью и поставщиком, которые её сделали; fallbackFrom — модель, которую
+    // подменили (пусто для обычных попыток). Нужно для журнала: там видно, что сработала подмена.
+    onModelAttempt?: (
+      log: AttemptLog,
+      meta: { model: string; provider: AiProvider; fallbackFrom: string | null },
+    ) => Promise<void> | void;
+  },
+): Promise<TeaserResult & { model: string; fallbackFrom: string | null }> {
+  const { fallback, onModelAttempt, ...base } = options;
+  let used = 0;
+  const first = await generateTeaser({
+    ...base,
+    onAttempt: async (log) => {
+      used = Math.max(used, log.attempt);
+      await base.onAttempt?.(log);
+      await onModelAttempt?.(log, { model: base.model, provider: base.provider, fallbackFrom: null });
+    },
+  });
+  if (first.ok || !fallback) return { ...first, model: base.model, fallbackFrom: null };
+
+  const second = await generateTeaser({
+    ...base,
+    model: fallback.model,
+    provider: fallback.provider,
+    attemptOffset: used,
+    onAttempt: async (log) => {
+      await base.onAttempt?.(log);
+      await onModelAttempt?.(log, { model: fallback.model, provider: fallback.provider, fallbackFrom: base.model });
+    },
+  });
+  return { ...second, attempts: used + second.attempts, model: fallback.model, fallbackFrom: base.model };
 }

@@ -14,6 +14,15 @@ const LABELS: Record<ModelOverrideRow["key"], string> = {
   teaser_uz: "Тизер · узбекский язык",
   report_route: "Полный отчёт · «Маршрут»",
   report_navigator: "Полный отчёт · «Навигатор»",
+  report_route_uz: "Полный отчёт · «Маршрут» · только узбекский",
+  report_navigator_uz: "Полный отчёт · «Навигатор» · только узбекский",
+};
+
+const SAVE_ERRORS: Record<string, string> = {
+  openai_key:
+    "Не сохранено: это модель OpenAI, а в окружении сайта нет ключа OPENAI_API_KEY. Сначала добавьте ключ " +
+    "(Vercel → Settings → Environment Variables) и передеплойте сайт, потом выберите модель.",
+  bad_name: "Не сохранено: в названии модели допустимы только латинские буквы, цифры, точка, дефис, двоеточие и «_».",
 };
 
 function toSummary(row: Awaited<ReturnType<typeof listPromptVersions>>[number]): PromptVersionSummary {
@@ -47,13 +56,24 @@ export default async function AdminPromptsPage({
   return (
     <AdminShell title="Промпты и модели" isSuperAdmin={isSuperAdmin}>
       {params.ok && <Notice>Сохранено.</Notice>}
-      {params.error && <Notice kind="error">Не получилось сохранить — попробуйте ещё раз.</Notice>}
+      {params.error && (
+        <Notice kind="error">{SAVE_ERRORS[params.error] ?? "Не получилось сохранить — попробуйте ещё раз."}</Notice>
+      )}
 
       <Card title="Модель ИИ по уровню и языку">
         <p className="text-sm text-muted">
           По умолчанию модель берётся из переменных окружения (MODEL_TEASER, MODEL_TEASER_UZ,
           MODEL_ROUTE, MODEL_NAVIGATOR). Здесь можно временно подставить другую модель без деплоя —
           пустое поле возвращает значение по умолчанию.
+        </p>
+        <p className="mt-2 text-sm text-muted">
+          Два поставщика ИИ: модели <span className="font-mono">claude-*</span> — Anthropic,{" "}
+          <span className="font-mono">gpt-*</span> и <span className="font-mono">o*</span> — OpenAI (нужен ключ
+          OPENAI_API_KEY). Поля «только узбекский» задают модель отчёта на узбекском; пустое поле — как раньше,
+          модель уровня. Если модель OpenAI не справилась, генерация автоматически повторяется на Claude
+          (страховка) — это видно в «Себестоимости ИИ». Какая модель лучше пишет — можно выбрать вслепую
+          на странице <a href="/admin/compare" className="font-semibold text-brand-600">«Сравнение моделей»</a>{" "}
+          (только superadmin).
         </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {overrides.map((row) => (
