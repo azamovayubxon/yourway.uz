@@ -16,9 +16,10 @@ export function CtaButton({ href, children, className = "" }: { href: string; ch
   );
 }
 
-// Карточка-вариант ответа: используется в тестах, опросе и на экране выбора сценария.
-// Состояния default / hover / selected(aria-pressed) / focus / disabled — в одном месте,
-// чтобы визуально не расходились между экранами (ТЗ аудита §4).
+// Карточка-вариант ответа в анкете: крупная белая «таблетка», выбранная — терракотовая рамка и
+// мягкий терракотовый фон. Состояния default / hover / selected(aria-pressed) / focus / disabled —
+// в одном месте, чтобы визуально не расходились между экранами (ТЗ аудита §4).
+// (Ответы тестов — шкала-круги LikertScale из components/flow.tsx.)
 export function OptionButton({
   active,
   leading,
@@ -34,10 +35,8 @@ export function OptionButton({
       type="button"
       aria-pressed={active}
       className={
-        "focus-ring flex min-h-14 w-full items-center gap-3 rounded-2xl border-2 px-4 py-2.5 text-left font-medium leading-tight transition-colors disabled:cursor-not-allowed disabled:opacity-60 " +
-        (active
-          ? "border-brand-500 bg-brand-500 text-white"
-          : "border-line bg-white hover:border-brand-500 active:bg-brand-50") +
+        "focus-ring flex min-h-14 w-full items-center gap-3 rounded-3xl border-2 px-5 py-3 text-left font-semibold leading-tight transition-colors disabled:cursor-not-allowed disabled:opacity-60 " +
+        (active ? "border-brand-500 bg-brand-50 text-ink" : "border-line bg-white text-ink hover:border-brand-500") +
         " " +
         className
       }
@@ -49,28 +48,14 @@ export function OptionButton({
   );
 }
 
-// Числовой бейдж 1–5 слева от варианта ответа шкалы (Big Five/RIASEC/ценности/восприятие).
-export function ScaleBadge({ value, active }: { value: number; active?: boolean }) {
-  return (
-    <span
-      className={
-        "flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-bold " +
-        (active ? "bg-white text-brand-600" : "bg-slate-100 text-ink")
-      }
-    >
-      {value}
-    </span>
-  );
-}
-
 // Галочка слева от варианта в множественном выборе.
 export function CheckBadge({ active }: { active?: boolean }) {
   return (
     <span
       aria-hidden
       className={
-        "flex size-6 shrink-0 items-center justify-center rounded-md border-2 text-xs " +
-        (active ? "border-white bg-white text-brand-600" : "border-slate-300")
+        "flex size-6 shrink-0 items-center justify-center rounded-lg border-2 text-xs font-bold " +
+        (active ? "border-brand-500 bg-brand-500 text-white" : "border-faint bg-white")
       }
     >
       {active ? "✓" : ""}

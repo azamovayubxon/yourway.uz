@@ -4,7 +4,16 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { fmt } from "@/i18n/format";
 import { CheckBadge, OptionButton } from "@/components/ui";
-import { PausePanel, SaveStatus, StageBreadcrumb, type SaveState } from "@/components/flow";
+import {
+  BackIconButton,
+  PartsNav,
+  PauseButton,
+  PausePanel,
+  SaveStatus,
+  primaryButtonClass,
+  type FlowPart,
+  type SaveState,
+} from "@/components/flow";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { PathType } from "@/lib/assessment/tests";
 
@@ -36,7 +45,7 @@ interface Props {
   sections: RunnerSurveySection[];
   initialAnswers: Record<string, SurveyValue>;
   t: SurveyDict;
-  stages: Dictionary["flow"]["stages"];
+  flow: Dictionary["flow"];
   pathType: PathType;
 }
 
@@ -64,7 +73,7 @@ function writePending(sessionId: string, pending: Record<string, SurveyValue>) {
 // Поля, которые показываем на экране «Проверьте ваши условия» перед генерацией (ТЗ аудита §6).
 const REVIEW_FIELD_IDS = ["budget", "hours", "languages", "relocation"] as const;
 
-export function SurveyRunner({ sessionId, sections, initialAnswers, t, stages, pathType }: Props) {
+export function SurveyRunner({ sessionId, sections, initialAnswers, t, flow, pathType }: Props) {
   const items = useMemo(
     () =>
       sections.flatMap((section, sectionIndex) =>
@@ -191,7 +200,6 @@ export function SurveyRunner({ sessionId, sections, initialAnswers, t, stages, p
     if (allSaved && reviewConfirmed && syncState === "idle") router.replace("/teaser");
   }, [allSaved, reviewConfirmed, syncState, router]);
 
-  const progress = Math.round((Math.min(index, total) / total) * 100);
 
   const saveState: SaveState = syncState === "lost" ? "lost" : syncState === "offline" ? "offline" : pendingCount > 0 ? "saving" : "saved";
   const saveStatus = (
@@ -218,14 +226,15 @@ export function SurveyRunner({ sessionId, sections, initialAnswers, t, stages, p
   if (index >= total) {
     const saved = allSaved;
     return (
-      <div className="mx-auto max-w-2xl px-4 pt-10">
-        <ProgressBar value={100} />
-        <h1 className="mt-8 text-2xl font-extrabold sm:text-3xl">{t.doneTitle}</h1>
-        <p className="mt-4 text-lg leading-relaxed text-muted">{t.doneText}</p>
-        <div className="mt-6 space-y-4">
+      <div className="mx-auto max-w-[640px] px-4 pb-12 pt-10 text-center lg:pt-16">
+        <h1 className="text-[28px] font-extrabold leading-tight lg:text-[40px]">{t.doneTitle}</h1>
+        <p className="mt-3 text-lg leading-relaxed text-muted">{t.doneText}</p>
+        <div className="mt-8 flex flex-col items-center gap-4">
           {!saved && syncState !== "lost" && saveStatus}
           {(syncState === "lost" || syncState === "offline") && saveStatus}
-          <BackButton label={t.back} onClick={back} disabled={false} />
+          <button type="button" onClick={back} className="focus-ring min-h-11 rounded px-2 py-2 font-semibold text-muted underline-offset-4 hover:underline">
+            ← {t.back}
+          </button>
         </div>
       </div>
     );
@@ -235,85 +244,106 @@ export function SurveyRunner({ sessionId, sections, initialAnswers, t, stages, p
   const value = answers[item.id];
   const titleId = `survey-q-${item.id}`;
 
+  const parts: FlowPart[] = sections.map((section, i) => ({
+    id: section.id,
+    name: section.title,
+    state: i < item.sectionIndex ? "done" : i === item.sectionIndex ? "current" : "upcoming",
+    progress: i === item.sectionIndex ? Math.round(((item.number - 1) / section.questions.length) * 100) : undefined,
+    counter: i === item.sectionIndex ? fmt(t.blockProgress, { n: item.number, total: section.questions.length }) : undefined,
+  }));
+  const pauseTexts = { button: t.pause, title: t.pauseTitle, text: t.pauseText, resume: t.pauseResume, backHome: t.pauseBackHome };
+
+  // Тот же каркас, что у экрана вопроса теста (globals.css, .yw-flow): на компьютере слева
+  // «Test ✓» и разделы анкеты, справа вопрос в карточке и варианты.
   return (
-    <div className="mx-auto max-w-2xl px-4 pt-6">
-      <StageBreadcrumb current="survey" labels={stages} />
-      <div className="mt-2 flex items-baseline justify-between gap-3 text-sm">
-        <p className="font-semibold text-brand-600">
-          {fmt(t.partOf, { n: item.sectionIndex + 1, total: sections.length })} · {item.section.title}
-        </p>
-        <p className="shrink-0 text-muted">{fmt(t.blockProgress, { n: item.number, total: item.section.questions.length })}</p>
-      </div>
-      <ProgressBar value={progress} />
-
-      <h1 id={titleId} ref={headingRef} tabIndex={-1} className="mt-8 min-h-[5.5rem] text-xl font-bold leading-snug sm:text-2xl" aria-live="polite">
-        {item.text}
-      </h1>
-      {item.id === "gender" && <p className="mt-2 text-sm text-muted">{t.genderHint}</p>}
-      {item.type === "multi_select" && <p className="mt-2 text-sm text-muted">{t.multiSelectHint}</p>}
-
-      <div className="mt-4">
-        {item.type === "single_select" && (
-          <SingleSelect
-            options={item.options}
-            value={typeof value === "string" ? value : undefined}
-            onPick={commit}
-            titleId={titleId}
-            hints={item.id === "english_level" ? t.englishHints : undefined}
-          />
-        )}
-        {item.type === "multi_select" && (
-          <MultiSelect
-            key={item.id}
-            options={item.options}
-            initialValue={Array.isArray(value) ? value : []}
-            required={item.required}
-            nextLabel={t.next}
-            onSubmit={commit}
-            titleId={titleId}
-          />
-        )}
-        {item.type === "number" && (
-          <NumberInput
-            key={item.id}
-            initialValue={typeof value === "number" ? value : undefined}
-            min={item.input.min}
-            max={item.input.max}
-            nextLabel={t.next}
-            rangeLabel={fmt(t.numberRange, { min: item.input.min ?? "", max: item.input.max ?? "" })}
-            onSubmit={commit}
-            titleId={titleId}
-          />
-        )}
-        {item.type === "text" && (
-          <TextInput
-            key={item.id}
-            initialValue={typeof value === "string" ? value : ""}
-            maxLen={item.input.maxLen}
-            required={item.required}
-            nextLabel={t.next}
-            skipLabel={t.skip}
-            placeholder={t.textPlaceholders[item.id as keyof typeof t.textPlaceholders]}
-            charCountFmt={t.charCount}
-            onSubmit={commit}
-            titleId={titleId}
-          />
-        )}
-      </div>
-
-      <div className="mt-6 space-y-4">
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-          <BackButton label={t.back} onClick={back} disabled={index === 0} />
-          <button type="button" onClick={() => setPaused((p) => !p)} className="focus-ring min-h-11 rounded py-2 font-semibold text-muted">
-            {t.pause}
-          </button>
+    <div className="mx-auto max-w-[640px] px-4 pb-12 pt-4 lg:max-w-6xl lg:pt-6">
+      <div className="yw-flow">
+        <div className="yw-flow-back">
+          <BackIconButton label={t.back} onClick={back} disabled={index === 0} />
         </div>
-        <PausePanel
-          open={paused}
-          onResume={() => setPaused(false)}
-          texts={{ button: t.pause, title: t.pauseTitle, text: t.pauseText, resume: t.pauseResume, backHome: t.pauseBackHome }}
-        />
-        {saveStatus}
+        <div className="yw-flow-pause justify-self-end">
+          <PauseButton label={t.pause} onClick={() => setPaused((p) => !p)} expanded={paused} />
+        </div>
+        <div className="yw-flow-panel mt-4 empty:hidden">
+          <PausePanel open={paused} onResume={() => setPaused(false)} texts={pauseTexts} />
+        </div>
+        <aside className="yw-flow-parts mt-5 lg:mt-8">
+          <PartsNav label={`${flow.brandLabel} · ${flow.stages.survey}`} parts={parts} lead={flow.stages.test} doneLabel={flow.partDone} />
+        </aside>
+        <section className="yw-flow-main mt-5 lg:mt-8 lg:pl-24">
+          <div className="lg:max-w-[760px]">
+            <div className="mb-5 hidden items-center gap-4 lg:flex">
+              <BackIconButton label={t.back} onClick={back} disabled={index === 0} />
+              <p className="text-sm text-muted">
+                {fmt(t.partOf, { n: item.sectionIndex + 1, total: sections.length })} · {fmt(t.questionOf, { n: item.number, total: item.section.questions.length })}
+              </p>
+            </div>
+            <div className="rounded-[28px] border border-line bg-white p-5 sm:p-7 lg:px-11 lg:py-9">
+              <h1
+                id={titleId}
+                ref={headingRef}
+                tabIndex={-1}
+                className="rounded-md text-2xl font-bold leading-[1.2] focus-visible:outline-offset-4 sm:text-[26px] lg:text-[32px]"
+                aria-live="polite"
+              >
+                <span key={item.id} className="yw-rise block">
+                  {item.text}
+                </span>
+              </h1>
+              {item.id === "gender" && <p className="mt-3 text-sm leading-relaxed text-muted">{t.genderHint}</p>}
+              {item.type === "multi_select" && <p className="mt-3 text-sm font-semibold text-teal">{t.multiSelectHint}</p>}
+            </div>
+            <div className="mt-6 lg:mt-8">
+              {item.type === "single_select" && (
+                <SingleSelect
+                  options={item.options}
+                  value={typeof value === "string" ? value : undefined}
+                  onPick={commit}
+                  titleId={titleId}
+                  hints={item.id === "english_level" ? t.englishHints : undefined}
+                />
+              )}
+              {item.type === "multi_select" && (
+                <MultiSelect
+                  key={item.id}
+                  options={item.options}
+                  initialValue={Array.isArray(value) ? value : []}
+                  required={item.required}
+                  nextLabel={t.next}
+                  onSubmit={commit}
+                  titleId={titleId}
+                />
+              )}
+              {item.type === "number" && (
+                <NumberInput
+                  key={item.id}
+                  initialValue={typeof value === "number" ? value : undefined}
+                  min={item.input.min}
+                  max={item.input.max}
+                  nextLabel={t.next}
+                  rangeLabel={fmt(t.numberRange, { min: item.input.min ?? "", max: item.input.max ?? "" })}
+                  onSubmit={commit}
+                  titleId={titleId}
+                />
+              )}
+              {item.type === "text" && (
+                <TextInput
+                  key={item.id}
+                  initialValue={typeof value === "string" ? value : ""}
+                  maxLen={item.input.maxLen}
+                  required={item.required}
+                  nextLabel={t.next}
+                  skipLabel={t.skip}
+                  placeholder={t.textPlaceholders[item.id as keyof typeof t.textPlaceholders]}
+                  charCountFmt={t.charCount}
+                  onSubmit={commit}
+                  titleId={titleId}
+                />
+              )}
+            </div>
+          </div>
+        </section>
+        <div className="yw-flow-status mt-8 lg:mr-4 lg:mt-0 lg:max-w-md lg:justify-self-end">{saveStatus}</div>
       </div>
     </div>
   );
@@ -353,17 +383,17 @@ function ReviewScreen({
   const goalItem = items.find((x) => x.id === "goal_text");
 
   return (
-    <div className="mx-auto max-w-2xl px-4 pt-10">
-      <h1 className="text-2xl font-extrabold sm:text-3xl">{t.title}</h1>
-      <p className="mt-3 leading-relaxed text-muted">{t.intro}</p>
-      <ul className="mt-6 divide-y divide-line rounded-2xl border border-line bg-white">
+    <div className="mx-auto max-w-[640px] px-4 pb-12 pt-8 lg:pt-14">
+      <h1 className="text-[28px] font-extrabold leading-tight lg:text-[40px]">{t.title}</h1>
+      <p className="mt-3 leading-relaxed text-muted lg:text-lg">{t.intro}</p>
+      <ul className="mt-6 divide-y divide-line rounded-[28px] border border-line bg-white px-1">
         {rows.map((row) => (
           <li key={row.id} className="flex items-center justify-between gap-4 px-4 py-3.5">
             <div>
               <p className="text-sm text-muted">{row.label}</p>
               <p className="font-semibold">{row.value}</p>
             </div>
-            <button type="button" onClick={() => onEdit(row.id)} className="focus-ring shrink-0 rounded py-1 font-semibold text-brand-600">
+            <button type="button" onClick={() => onEdit(row.id)} className="focus-ring min-h-11 shrink-0 rounded-full px-3 font-semibold text-brand-600 hover:bg-brand-50">
               {t.edit}
             </button>
           </li>
@@ -374,17 +404,13 @@ function ReviewScreen({
             <p className="font-semibold">{pathType === "knows_goal" && goalItem ? labelFor("goal_text") : t.goalPending}</p>
           </div>
           {pathType === "knows_goal" && goalItem && (
-            <button type="button" onClick={() => onEdit("goal_text")} className="focus-ring shrink-0 rounded py-1 font-semibold text-brand-600">
+            <button type="button" onClick={() => onEdit("goal_text")} className="focus-ring min-h-11 shrink-0 rounded-full px-3 font-semibold text-brand-600 hover:bg-brand-50">
               {t.edit}
             </button>
           )}
         </li>
       </ul>
-      <button
-        type="button"
-        onClick={onConfirm}
-        className="focus-ring mt-6 min-h-12 w-full rounded-2xl bg-brand-500 px-6 font-bold text-white transition-colors hover:bg-brand-600 active:bg-brand-700 sm:w-auto"
-      >
+      <button type="button" onClick={onConfirm} className={primaryButtonClass + " mt-8"}>
         {t.confirm}
       </button>
     </div>
@@ -409,10 +435,10 @@ function SingleSelect({
       {options.map((o) => {
         const active = value === o.value;
         return (
-          <OptionButton key={o.value} active={active} onClick={() => onPick(o.value)} className="!items-start">
+          <OptionButton key={o.value} active={active} onClick={() => onPick(o.value)} className={hints ? "!items-start" : ""}>
             <span className="block">{o.label}</span>
             {hints?.[o.value] && (
-              <span className={"mt-0.5 block text-sm font-normal " + (active ? "text-brand-50" : "text-muted")}>{hints[o.value]}</span>
+              <span className="mt-0.5 block text-sm font-normal text-muted">{hints[o.value]}</span>
             )}
           </OptionButton>
         );
@@ -462,7 +488,7 @@ function MultiSelect({
         type="button"
         disabled={required && selected.length === 0}
         onClick={() => onSubmit(selected)}
-        className="focus-ring mt-4 min-h-12 w-full rounded-2xl bg-brand-500 px-6 font-bold text-white transition-colors hover:bg-brand-600 disabled:bg-slate-200 disabled:text-slate-400"
+        className={primaryButtonClass + " mt-6"}
       >
         {nextLabel}
       </button>
@@ -506,15 +532,11 @@ function NumberInput({
         max={max}
         aria-labelledby={titleId}
         onChange={(e) => setText(e.target.value)}
-        className="focus-ring w-full rounded-2xl border-2 border-line px-4 py-3 text-lg font-semibold focus:border-brand-500"
+        className="focus-ring min-h-16 w-full rounded-3xl border-2 border-line bg-white px-5 py-3 font-display text-2xl font-bold focus:border-brand-500 sm:max-w-60"
         autoFocus
       />
       <p className="mt-2 text-sm text-muted">{rangeLabel}</p>
-      <button
-        type="submit"
-        disabled={!valid}
-        className="focus-ring mt-4 min-h-12 w-full rounded-2xl bg-brand-500 px-6 font-bold text-white transition-colors hover:bg-brand-600 disabled:bg-slate-200 disabled:text-slate-400"
-      >
+      <button type="submit" disabled={!valid} className={primaryButtonClass + " mt-6"}>
         {nextLabel}
       </button>
     </form>
@@ -559,48 +581,27 @@ function TextInput({
         placeholder={placeholder}
         aria-labelledby={titleId}
         onChange={(e) => setText(e.target.value)}
-        rows={3}
-        className="focus-ring w-full rounded-2xl border-2 border-line px-4 py-3 text-base focus:border-brand-500"
+        rows={4}
+        className="focus-ring w-full rounded-3xl border-2 border-line bg-white px-5 py-4 text-base leading-relaxed placeholder:text-muted focus:border-brand-500"
         autoFocus
       />
       {maxLen !== undefined && (
         <p className="mt-1.5 text-right text-xs text-muted">{fmt(charCountFmt, { used: text.length, max: maxLen })}</p>
       )}
-      <div className="mt-4 flex gap-3">
-        <button
-          type="submit"
-          disabled={required && trimmed === ""}
-          className="focus-ring min-h-12 flex-1 rounded-2xl bg-brand-500 px-6 font-bold text-white transition-colors hover:bg-brand-600 disabled:bg-slate-200 disabled:text-slate-400"
-        >
+      <div className="mt-6 flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
+        <button type="submit" disabled={required && trimmed === ""} className={primaryButtonClass}>
           {nextLabel}
         </button>
         {!required && (
-          <button type="button" onClick={() => onSubmit("")} className="focus-ring min-h-12 rounded px-4 font-semibold text-muted">
+          <button
+            type="button"
+            onClick={() => onSubmit("")}
+            className="focus-ring min-h-12 w-full rounded-full border border-line bg-white px-6 font-semibold text-muted transition-colors hover:border-brand-500 hover:text-ink sm:w-auto"
+          >
             {skipLabel}
           </button>
         )}
       </div>
     </form>
-  );
-}
-
-function ProgressBar({ value }: { value: number }) {
-  return (
-    <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}>
-      <div className="h-full rounded-full bg-brand-500 transition-[width] duration-300" style={{ width: `${value}%` }} />
-    </div>
-  );
-}
-
-function BackButton({ label, onClick, disabled }: { label: string; onClick: () => void; disabled: boolean }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      className="focus-ring min-h-11 rounded py-2 font-semibold text-brand-600 disabled:text-slate-300"
-    >
-      ← {label}
-    </button>
   );
 }

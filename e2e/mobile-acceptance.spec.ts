@@ -59,9 +59,9 @@ test.describe("клавиатура и фокус в тесте (ТЗ аудит
     const startBtn = page.getByRole("button", { name: /Начать тест|Testni boshlash/ });
     if (await startBtn.count()) await startBtn.click();
 
-    // Кнопки вариантов ответа — единственные интерактивные элементы в группе; добираемся до первой
-    // клавиатурой и активируем Enter, как это делал бы человек, не пользующийся мышью.
-    const firstOption = page.getByRole("group").getByRole("button").first();
+    // Круги шкалы — радиокнопки в группе (этап 2а); добираемся до первого клавиатурой и активируем
+    // Enter, как это делал бы человек, не пользующийся мышью.
+    const firstOption = page.getByRole("radiogroup").getByRole("radio").first();
     await firstOption.focus();
     await page.keyboard.press("Enter");
 
@@ -82,7 +82,7 @@ test.describe("клавиатура и фокус в тесте (ТЗ аудит
     for (let i = 0; i < 25; i++) {
       await page.keyboard.press("Tab");
       const active = page.locator(":focus");
-      const withinGroup = await active.evaluate((el) => !!el.closest('[role="group"]')).catch(() => false);
+      const withinGroup = await active.evaluate((el) => el.getAttribute("role") === "radio" && !!el.closest('[role="radiogroup"]')).catch(() => false);
       if (withinGroup) {
         reachedOption = true;
         break;
@@ -121,12 +121,29 @@ test.describe("увеличение текста до 200% (ТЗ аудита §
     await page.evaluate(() => {
       (document.documentElement.style as CSSStyleDeclaration & { zoom?: string }).zoom = "2";
     });
-    const options = page.getByRole("group").getByRole("button");
-    await expect(options.first()).toBeVisible();
-    // Соседние варианты не должны схлопываться в одну точку (перекрытие блоков при увеличении).
-    const first = await options.nth(0).boundingBox();
-    const second = await options.nth(1).boundingBox();
-    expect(first && second, "варианты ответа должны иметь размеры при zoom 200%").toBeTruthy();
-    expect(second!.y).toBeGreaterThan(first!.y);
+    const options = page.getByRole("radiogroup").getByRole("radio");
+    await expect(options).toHaveCount(5);
+    // Круги шкалы стоят в ряд (этап 2а): соседние не должны перекрываться и схлопываться в одну
+    // точку при увеличении. При 200% на 390px шкале остаётся ~160px, круги уменьшаются, но область
+    // нажатия — не меньше 24×24 (WCAG 2.5.8); без увеличения — 44×44 (e2e/test-flow.spec.ts).
+    const boxes = await options.evaluateAll((els) =>
+      els.map((el) => {
+        const r = el.getBoundingClientRect();
+        return { x: r.x, y: r.y, width: r.width, height: r.height };
+      }),
+    );
+    for (const [i, box] of boxes.entries()) {
+      expect(box.width, `круг ${i + 1}: ширина области нажатия`).toBeGreaterThanOrEqual(24);
+      expect(box.height, `круг ${i + 1}: высота области нажатия`).toBeGreaterThanOrEqual(24);
+      if (i > 0) {
+        const prev = boxes[i - 1]!;
+        const apart = box.x >= prev.x + prev.width - 0.5 || box.y >= prev.y + prev.height - 0.5;
+        expect(apart, `круги ${i} и ${i + 1} перекрываются при zoom 200%`).toBe(true);
+      }
+    }
+    // И весь ряд помещается в свою строку — последний круг не вылезает за край шкалы.
+    const row = (await page.getByRole("radiogroup").boundingBox())!;
+    const last = boxes[boxes.length - 1]!;
+    expect(last.x + last.width, "шкала не помещается в ширину при zoom 200%").toBeLessThanOrEqual(row.x + row.width + 1);
   });
 });

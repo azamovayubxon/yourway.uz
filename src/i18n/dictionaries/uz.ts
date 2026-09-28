@@ -329,6 +329,8 @@ export const uz: Dictionary = {
   },
   flow: {
     stages: { test: "Test", survey: "Anketa", result: "Natija" },
+    brandLabel: "Kasb yoʻli",
+    partDone: "yakunlandi",
   },
   start: {
     subtitle: "Javobingiz tavsiyalarni maqsadingizga moslashtirishga yordam beradi.",
@@ -364,6 +366,9 @@ export const uz: Dictionary = {
     partOf: "{total} qismdan {n}-qism",
     questionOf: "{total} ta savoldan {n}-savol",
     blockProgress: "{n}/{total}",
+    questionsCount: "{n} ta savol",
+    chooseAnswer: "Javobni tanlang",
+    keyboardHint: "Klaviaturadan ham javob bersa boʻladi: 1 dan 5 gacha tugmalar",
     back: "Orqaga",
     offline: "Saqlab boʻlmadi. Javoblar shu qurilmada qoldi va aloqa tiklanganda yuboriladi.",
     sessionLost: "Bu sessiya endi faol emas: ehtimol, testlar boshqa oynada qaytadan boshlangan.",
@@ -379,8 +384,15 @@ export const uz: Dictionary = {
     pauseBackHome: "Bosh sahifaga",
     prep: {
       title: "Boshlashdan oldin",
+      subtitle: "Test {parts} boʻlimdan iborat · taxminan {min} daqiqa",
       blocksTitle: "Test 4 boʻlimdan iborat",
       blocks: ["Shaxsiyat", "Qiziqishlar", "Qadriyatlar", "Qanday oʻrganasiz"],
+      blockHints: ["Feʼl-atvoringiz qanday", "Nima bilan shugʻullanish yoqadi", "Siz uchun nima muhim", "Sizga qulay usul"],
+      rules: [
+        "Toʻgʻri yoki notoʻgʻri javob yoʻq",
+        "Javobni tanlasangiz — keyingi savol oʻzi ochiladi",
+        "Javoblar darhol saqlanadi, pauza qilsa boʻladi",
+      ],
       afterBlocks:
         "Keyin — imkoniyatlaringiz va maqsadingiz haqida qisqa anketa, soʻng bepul natija. Batafsil reja esa xohishingizga qarab.",
       noRightAnswer: "Bu yerda toʻgʻri yoki notoʻgʻri javob yoʻq. Hozir sizga eng mos keladigan javobni tanlang.",
@@ -392,6 +404,10 @@ export const uz: Dictionary = {
     },
     interstitial: {
       continue: "Davom etish",
+      progress: "{total} qismdan {n}-qism tugadi",
+      title: "{n}-qism tugadi!",
+      nextMeta: "{questions} · taxminan {min} daqiqa",
+      pauseLink: "Pauza — keyinroq davom ettiraman",
       afterBigFive: "Shaxsiy xususiyatlar boʻlimi tugadi. Endi sizga qaysi mashgʻulotlar qiziq ekanini bilib olamiz.",
       afterRiasec: "Qiziqishlar boʻlimi tugadi. Endi siz uchun eng muhim narsalarni soʻraymiz.",
       afterValues: "Qadriyatlar boʻlimi tugadi. Endi sizga qanday oʻrganish qulayligini bilib olamiz.",
