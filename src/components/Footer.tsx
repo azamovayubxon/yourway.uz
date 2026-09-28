@@ -1,5 +1,11 @@
 import Link from "next/link";
 import type { Dictionary } from "@/i18n/dictionaries";
+import { Logo } from "./Logo";
+
+// Ссылка на Telegram-канал из подвала — одна на весь сайт (главная: карточки «Скоро», подписка).
+export function telegramUrl(t: Dictionary): string {
+  return `https://t.me/${t.footer.telegram.replace(/^@/, "")}`;
+}
 
 // Внутри теста/опроса — сокращённый footer (ТЗ аудита §6): длинная маркетинговая навигация
 // отвлекает от прохождения, но помощь (FAQ) и ссылка о данных (приватность) остаются.
@@ -34,10 +40,8 @@ export function Footer({ t, compact = false }: { t: Dictionary; compact?: boolea
     <footer className="mt-16 border-t border-line bg-app-bg">
       <div className="mx-auto grid max-w-5xl gap-8 px-4 py-10 sm:grid-cols-3">
         <div>
-          <p className="text-lg font-extrabold">
-            your<span className="text-brand-500">way</span>.uz
-          </p>
-          <p className="mt-2 text-sm text-muted">{t.footer.tagline}</p>
+          <Logo />
+          <p className="mt-3 text-sm text-muted">{t.footer.tagline}</p>
         </div>
         <nav className="flex flex-col gap-1 text-sm">
           {links.map((l) => (
@@ -50,7 +54,7 @@ export function Footer({ t, compact = false }: { t: Dictionary; compact?: boolea
           <p className="font-semibold">{t.footer.contactsTitle}</p>
           <ul className="mt-2 space-y-1.5 text-muted">
             <li>
-              <a href={`https://t.me/${t.footer.telegram.replace(/^@/, "")}`} className="focus-ring rounded hover:text-brand-600">
+              <a href={telegramUrl(t)} className="focus-ring rounded hover:text-brand-600">
                 {t.footer.telegramLabel}: {t.footer.telegram}
               </a>
             </li>

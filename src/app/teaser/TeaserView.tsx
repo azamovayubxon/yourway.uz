@@ -66,13 +66,13 @@ export function TeaserView({
       {otherLanguage}
 
       {/* Главная карточка: тип крупно — «вау-момент» и картинка для скриншота. */}
-      <section className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-600 via-indigo-600 to-fuchsia-600 p-6 text-white shadow-2xl shadow-indigo-500/30 sm:p-8">
+      <section className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-700 via-brand-600 to-brand-500 p-6 text-white shadow-2xl shadow-brand-700/20 sm:p-8">
         <div
           className="pointer-events-none absolute -right-16 -top-16 size-56 rounded-full bg-white/15 blur-2xl"
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute -bottom-20 -left-10 size-56 rounded-full bg-fuchsia-400/30 blur-3xl"
+          className="pointer-events-none absolute -bottom-20 -left-10 size-56 rounded-full bg-brand-700/40 blur-3xl"
           aria-hidden
         />
         <div className="relative">
@@ -129,7 +129,7 @@ export function TeaserView({
         <ol className="mt-3 grid gap-3" lang={teaserLocale}>
           {directions.map((d, i) => (
             <li key={d.title} className="flex gap-4 rounded-2xl border border-slate-200 p-4">
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-indigo-600 font-black text-white">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 font-black text-white">
                 {i + 1}
               </span>
               <div>
@@ -166,7 +166,7 @@ export function TeaserView({
       {/* Крючок-сюрприз: направление названо только как факт, само оно — под замком. */}
       <section className="relative mt-8 overflow-hidden rounded-[2rem] bg-ink p-6 text-white">
         <div
-          className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-fuchsia-500/30 blur-3xl"
+          className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-brand-500/30 blur-3xl"
           aria-hidden
         />
         <div className="relative">
@@ -213,7 +213,7 @@ export function TeaserView({
 
       {/* Компактный платный блок (аудит §7, п.5): пакет и цена — из единого источника тарифов,
           разовая оплата, без подписки. */}
-      <section className="mt-8 rounded-[2rem] bg-gradient-to-br from-brand-50 to-fuchsia-50 p-6 text-center">
+      <section className="mt-8 rounded-[2rem] bg-gradient-to-br from-brand-50 to-sun-50 p-6 text-center">
         <h2 className="text-2xl font-extrabold">{t.unlockTitle}</h2>
         <p className="mt-2 text-muted">{t.unlockText}</p>
         <p className="mt-4 text-sm">
@@ -228,7 +228,7 @@ export function TeaserView({
         <p className="mt-1 text-sm text-muted">{t.noSubscription}</p>
         <Link
           href={unlockHref}
-          className="mt-4 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-brand-500 to-indigo-600 px-6 text-lg font-bold text-white shadow-lg shadow-brand-500/30 transition-transform active:scale-[0.98]"
+          className="mt-4 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-brand-500 to-brand-700 px-6 text-lg font-bold text-white shadow-lg shadow-brand-500/30 transition-transform active:scale-[0.98]"
         >
           <LockIcon className="size-5" open />
           {t.unlockCta}

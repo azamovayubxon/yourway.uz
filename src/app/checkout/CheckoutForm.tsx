@@ -112,7 +112,7 @@ export function CheckoutForm({
               }
             >
               {isRecommended && (
-                <span className="absolute -top-3 left-5 rounded-full bg-gradient-to-r from-brand-500 to-indigo-600 px-3 py-1 text-xs font-bold text-white shadow">
+                <span className="absolute -top-3 left-5 rounded-full bg-gradient-to-r from-brand-500 to-brand-700 px-3 py-1 text-xs font-bold text-white shadow">
                   ★ {t.recommended}
                 </span>
               )}
@@ -354,7 +354,7 @@ export function CheckoutForm({
             <button
               type="submit"
               disabled={submitting || blocked || goalMissing}
-              className="inline-flex min-h-14 w-full items-center justify-center rounded-2xl bg-gradient-to-r from-brand-500 to-indigo-600 px-6 text-lg font-bold text-white shadow-lg shadow-brand-500/30 transition-transform active:scale-[0.98] disabled:opacity-60"
+              className="inline-flex min-h-14 w-full items-center justify-center rounded-2xl bg-gradient-to-r from-brand-500 to-brand-700 px-6 text-lg font-bold text-white shadow-lg shadow-brand-500/30 transition-transform active:scale-[0.98] disabled:opacity-60"
             >
               {submitting ? t.sending : amount === 0 ? t.getFree : fmt(t.pay, { sum: sum(amount) })}
             </button>

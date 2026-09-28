@@ -1,11 +1,15 @@
 import Link from "next/link";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
-export function CtaButton({ href, children }: { href: string; children: ReactNode }) {
+// Основная кнопка сайта: терракота, полностью круглая (pill), без тени — стиль «тёплый плоский».
+export function CtaButton({ href, children, className = "" }: { href: string; children: ReactNode; className?: string }) {
   return (
     <Link
       href={href}
-      className="focus-ring inline-flex min-h-12 items-center justify-center rounded-2xl bg-brand-500 px-6 text-base font-bold text-white shadow-lg shadow-brand-500/25 transition-colors hover:bg-brand-600 active:bg-brand-700"
+      className={
+        "focus-ring inline-flex min-h-12 items-center justify-center rounded-full bg-brand-500 px-7 text-base font-bold text-white transition-colors hover:bg-brand-600 active:bg-brand-700 " +
+        className
+      }
     >
       {children}
     </Link>
@@ -76,8 +80,8 @@ export function CheckBadge({ active }: { active?: boolean }) {
 
 export function Section({ id, title, children }: { id?: string; title: string; children: ReactNode }) {
   return (
-    <section id={id} className="mx-auto max-w-5xl px-4 pt-14">
-      <h2 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{title}</h2>
+    <section id={id} className="mx-auto max-w-6xl px-4 pt-14 sm:pt-20">
+      <h2 className="text-[28px] font-extrabold leading-tight tracking-tight sm:text-4xl">{title}</h2>
       <div className="mt-6">{children}</div>
     </section>
   );

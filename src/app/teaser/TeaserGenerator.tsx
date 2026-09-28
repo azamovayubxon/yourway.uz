@@ -164,7 +164,7 @@ function Analyzing({ t }: { t: GeneratorDict["generating"] }) {
     <div className="pt-8 text-center" role="status" aria-live="polite">
       <div className="relative mx-auto size-40">
         <div className="absolute inset-0 animate-ping rounded-full bg-brand-500/20 [animation-duration:2.4s]" />
-        <div className="absolute inset-3 animate-spin rounded-full bg-[conic-gradient(from_0deg,#2f6fed,#7c3aed,#db2777,#2f6fed)] [animation-duration:3s]" />
+        <div className="absolute inset-3 animate-spin rounded-full bg-[conic-gradient(from_0deg,#c2410c,#f5b83d,#0f766e,#c2410c)] [animation-duration:3s]" />
         <div className="absolute inset-6 flex items-center justify-center rounded-full bg-white text-5xl shadow-inner">
           <span className="animate-pulse" aria-hidden>
             ✨

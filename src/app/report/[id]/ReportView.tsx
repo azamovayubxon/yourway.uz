@@ -102,9 +102,9 @@ export function ReportView({
 
       {/* Обложка: тип крупно, уровень и дата. */}
       {shown("portrait") && (
-      <header className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-600 via-indigo-600 to-fuchsia-600 p-6 text-white shadow-2xl shadow-indigo-500/30 sm:p-8">
+      <header className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-700 via-brand-600 to-brand-500 p-6 text-white shadow-2xl shadow-brand-700/20 sm:p-8">
         <div className="pointer-events-none absolute -right-16 -top-16 size-56 rounded-full bg-white/15 blur-2xl" aria-hidden />
-        <div className="pointer-events-none absolute -bottom-20 -left-10 size-56 rounded-full bg-fuchsia-400/30 blur-3xl" aria-hidden />
+        <div className="pointer-events-none absolute -bottom-20 -left-10 size-56 rounded-full bg-brand-700/40 blur-3xl" aria-hidden />
         <div className="relative">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/75">{fmt(t.kicker, { level: levelName })}</p>
           <h1
@@ -219,7 +219,7 @@ export function ReportView({
             <ol className="mt-3 grid gap-3" lang={lang}>
               {goal.constructed_options.map((o, i) => (
                 <li key={o.goal} className="flex gap-4 rounded-2xl border border-slate-200 p-4">
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-indigo-600 font-black text-white">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 font-black text-white">
                     {i + 1}
                   </span>
                   <div className="min-w-0">
@@ -321,7 +321,7 @@ export function ReportView({
         <div className="space-y-4">
           {alternatives.map((alt) => (
             <div key={alt.direction} className="relative overflow-hidden rounded-[2rem] bg-ink p-6 text-white">
-              <div className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-fuchsia-500/30 blur-3xl" aria-hidden />
+              <div className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-brand-500/30 blur-3xl" aria-hidden />
               <div className="relative" lang={lang}>
                 <p className="text-2xl font-black leading-tight tracking-tight">{alt.direction}</p>
                 <h4 className="mt-4 text-xs font-bold uppercase tracking-widest text-amber-300">{t.whyYou}</h4>

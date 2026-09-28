@@ -95,7 +95,7 @@ export function ReportGenerator({
         <div className="pt-6 text-center" role="status" aria-live="polite">
           <div className="relative mx-auto size-36">
             <div className="absolute inset-0 animate-ping rounded-full bg-brand-500/20 [animation-duration:2.4s]" />
-            <div className="absolute inset-3 animate-spin rounded-full bg-[conic-gradient(from_0deg,#2f6fed,#7c3aed,#db2777,#2f6fed)] [animation-duration:3s]" />
+            <div className="absolute inset-3 animate-spin rounded-full bg-[conic-gradient(from_0deg,#c2410c,#f5b83d,#0f766e,#c2410c)] [animation-duration:3s]" />
             <div className="absolute inset-6 flex items-center justify-center rounded-full bg-white text-5xl shadow-inner">
               <span className="animate-pulse" aria-hidden>
                 🧭
@@ -110,7 +110,7 @@ export function ReportGenerator({
           <div className="mx-auto mt-6 max-w-xs">
             <div className="h-2.5 overflow-hidden rounded-full bg-slate-100">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-brand-500 to-fuchsia-500 transition-[width] duration-1000"
+                className="h-full rounded-full bg-gradient-to-r from-brand-500 to-sun transition-[width] duration-1000"
                 style={{ width: `${percent}%` }}
               />
             </div>

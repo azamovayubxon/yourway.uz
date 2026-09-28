@@ -28,9 +28,9 @@ const PACKAGE_FEATURES: Record<"free" | "route" | "navigator", string[]> = {
 
 export const uz: Dictionary = {
   meta: {
-    title: "yourway.uz — qaysi yoʻldan borishingizni bilib oling",
+    title: "yourway.uz — imkoniyatlaringizni koʻring",
     description:
-      "Testlardan bepul oʻting va shaxsiy yoʻl xaritangizni oling: kimsiz, qaysi maqsad sizga mos va unga qanday yetib borasiz.",
+      "Ichingizdagi va dunyodagi imkoniyatlarni koʻrishga yordam beradigan platforma. Hozir — kasb tanlash: bepul testlar, portret va sizga mos yoʻnalishlar.",
   },
   common: {
     brand: "yourway.uz",
@@ -44,8 +44,9 @@ export const uz: Dictionary = {
     sum: "{n} soʻm",
   },
   header: {
+    about: "Biz haqimizda",
+    directions: "Yoʻnalishlar",
     how: "Bu qanday ishlaydi",
-    sample: "Namuna",
     pricing: "Narxlar",
     menu: "Menyu",
   },
@@ -68,31 +69,98 @@ export const uz: Dictionary = {
   },
   landing: {
     hero: {
-      title: "Oʻzingizga mos kasbni toping. Birinchi qadamni biling.",
+      badge: "Imkoniyatlarni koʻrish platformasi",
+      titleStart: "Siz oʻylagandan ",
+      titleAccent: "koʻproq yoʻlingiz",
+      titleEnd: " bor.",
       subtitle:
-        "Qiziqishlaringiz va kuchli tomonlaringizni yaxshiroq tushuning. Testdan soʻng sizga mos yoʻnalishlarni bepul koʻring. Batafsil oʻqish va ish rejasini esa alohida olishingiz mumkin.",
-      ctaSample: "Natija namunasini koʻrish",
+        "Ichingizdagi imkoniyatlarni va dunyodagi imkoniyatlarni koʻring. Kasb, oʻqish, til, biznes — qaysi savol sizni qiynayotgan boʻlsa, oʻshandan boshlang.",
+      ctaDirections: "Barcha yoʻnalishlar",
       note: "110 ta test savoli va qisqa anketa. Natijaning asosiy qismi bepul.",
+      illustration: {
+        you: "Siz",
+        labels: ["Kasb", "Oliygoh", "Chet el", "Til", "Biznes", "Sport", "+6"],
+      },
     },
-    audience: {
-      title: "Kimlarga mos",
-      items: [
+    mission: {
+      label: "BIZNING MAQSADIMIZ",
+      titleStart: "Tanlov har doim bor.",
+      titleAccent: "Biz uni koʻrishga yordam beramiz.",
+      p1: "Koʻpchilik odamlar oʻz qobigʻida yashaydi. Hayotdagi muammolar, sharoit, atrofdagilarning gapi — bularning barchasi «hayot shunaqa, boshqa tanlovim yoʻq» deb oʻylashga oʻrgatadi. Natijada odam ikki narsani koʻrmaydi: oʻzining ichidagi imkoniyatlarni va dunyoda uni kutayotgan son-sanoqsiz imkoniyatlarni.",
+      p2: "Biz quruq umid bermaymiz. Biz fikrlashingizni kengaytiramiz: tanlovingiz borligini va odatda oʻylaganingizdan tashqari ham yoʻllar borligini koʻrsatamiz. Oʻzingizni yaxshiroq tanib, dunyoga kengroq qarasangiz — koʻp narsaga erisha olasiz.",
+      cards: [
         {
-          title: "Kasb tanlayapman",
-          text: "Maktab yoki kollejdan keyin qayerga borishni hali hal qilmadingiz — test yoʻnalishlar doirasini torraytirishga yordam beradi.",
+          title: "Ichingizdagi imkoniyatlar",
+          text: "Feʼl-atvoringiz, qiziqishlaringiz, kuchli tomonlaringiz va siz uchun muhim narsalar — ilmiy testlar orqali.",
         },
         {
-          title: "Qayerda oʻqishni tanlayapman",
-          text: "Yoʻnalishni taxminan bilasiz va oliygoh, kurs yoki dasturni tanlamoqchisiz.",
+          title: "Dunyodagi imkoniyatlar",
+          text: "Kasblar, oliygohlar, davlatlar, tillar, biznes yoʻllari — siz hali oʻylab koʻrmagan variantlar ham.",
+        },
+      ],
+    },
+    directions: {
+      label: "YOʻNALISHLAR",
+      title: "Qaysi savol sizni qiynayapti?",
+      subtitle: "Hozir «Kasb yoʻli» ishlaydi. Qolganlari tayyorlanmoqda — ochilganda birinchilardan boʻlib xabar oling.",
+      main: {
+        badge: "Hozir mavjud",
+        title: "Kasb yoʻli",
+        question: "Qaysi kasb va yoʻnalish sizniki — va unga qanday yetib borasiz?",
+        free: "Portret va 2–3 ta mos yoʻnalish — bepul",
+        route: "«Marshrut» — {price}: maqsadgacha reja",
+        navigator: "«Navigator» — {price}: yoʻllarni solishtirish",
+        cta: "Testni boshlash",
+      },
+      soonBadge: "Tez orada",
+      soon: {
+        university: { title: "Oliygoh tanlash", text: "Qaysi oliygoh va fakultet sizga mos?" },
+        parents: { title: "Farzandim uchun", text: "Farzandingiz nimaga qiziqadi — va ota-onaga alohida maslahat" },
+        abroad: { title: "Chet elda oʻqish", text: "Qaysi davlat va dastur sizga toʻgʻri keladi?" },
+        language: { title: "Qaysi tilni oʻrganay?", text: "Maqsadingizga qaysi til va qanday usul mos?" },
+        exam: { title: "Imtihonga tayyorgarlik", text: "DTM, IELTS, SAT — feʼl-atvoringizga mos reja" },
+        online: { title: "Onlayn kasb", text: "Qaysi masofaviy ish sizga mos va qayerdan boshlash kerak?" },
+        business: { title: "Oʻz biznesim", text: "Gʻoyangizni baholang va yoʻl xaritasini oling" },
+        sport: { title: "Menga mos sport", text: "Qaysi sport feʼl-atvoringiz va maqsadingizga mos?" },
+        hobby: { title: "Hobbi", text: "Rivojlanish uchun qanday mashgʻulot tanlasangiz boʻladi?" },
+        money: { title: "Pul va sarmoya", text: "Risk profilingiz va pulga munosabatingiz" },
+        people: { title: "Sizga mos odamlar", text: "Qanday feʼl-atvordagi odamlar bilan oson til topishasiz?" },
+      },
+      ask: {
+        title: "Sizga yana nima kerak?",
+        text: "Qaysi yoʻnalish kerakligini yozing — eng koʻp soʻralganini birinchi ochamiz.",
+        link: "Telegramda yozish",
+      },
+      dialog: {
+        text: "Bu yoʻnalish tayyorlanmoqda. Ochilganda Telegram-kanalda xabar beramiz.",
+        subscribe: "Obuna boʻlish",
+        close: "Yopish",
+      },
+      subscribe: {
+        lead: "Yangi yoʻnalish ochilganda xabar beramiz.",
+        text: "Telegram-kanalga obuna boʻling — spam yoʻq, faqat yangiliklar.",
+        button: "Obuna boʻlish",
+      },
+    },
+    grow: {
+      title: "Portretingiz siz bilan birga oʻsadi",
+      subtitle: "Asosiy testlarni bir marta topshirasiz. Yangi yoʻnalishlar ochilganda — ular faqat yetishmayotgan savollarni soʻraydi.",
+      steps: [
+        {
+          title: "Oʻzingizni taniysiz",
+          text: "Feʼl-atvor, qiziqishlar, qadriyatlar va oʻrganish uslubi boʻyicha testlar. Toʻgʻri yoki notoʻgʻri javob yoʻq.",
         },
         {
-          title: "Yoʻnalishni oʻzgartiryapman",
-          text: "Ishlaysiz, lekin qayerga oʻtish va nimadan boshlashni tushunmoqchisiz.",
+          title: "Savolingizni tanlaysiz",
+          text: "Kasb, oʻqish, biznes yoki boshqa yoʻnalish. Kerak boʻlsa — shu yoʻnalishning oʻz qisqa testlari: masalan, biznes uchun jamoadagi rolingiz.",
+        },
+        {
+          title: "Yoʻllaringizni koʻrasiz",
+          text: "Oʻylamagan variantlaringiz ham chiqadi. Asosiy natija — bepul, batafsil reja — xohishingizga qarab.",
         },
       ],
     },
     how: {
-      title: "Bu qanday ishlaydi",
       steps: [
         {
           title: "Savollarga javob bering.",
@@ -107,7 +175,6 @@ export const uz: Dictionary = {
           text: "Batafsil reja kerak boʻlsa, oʻqish va ishga kirish yoʻllarini toʻliq hisobotda koʻring.",
         },
       ],
-      more: "Batafsil",
     },
     sample: {
       title: "Hisobot namunasi",
@@ -190,8 +257,9 @@ export const uz: Dictionary = {
       more: "Barcha savollar",
     },
     finalCta: {
-      title: "Qaysi yoʻldan borishingizni bilib oling",
-      text: "Testlar va natija — bepul. Batafsil reja esa xohishingizga qarab.",
+      title: "Imkoniyatlaringizni koʻring.",
+      text: "«Kasb yoʻli»dan boshlang — test va asosiy natija bepul.",
+      cta: "Testni boshlash",
     },
   },
   pages: {
