@@ -514,6 +514,14 @@ export const uz: Dictionary = {
     otherLanguage: "Bu portret {lang} tilida tuzilgan.",
     makeInLanguage: "Portretni {lang} tilida tuzish",
     langRegenUsed: "Bu sessiyada portretni boshqa tilda endi tuzib boʻlmaydi.",
+    // Этап 2б: «карта интересов» — шестиугольник RIASEC без чисел (UX-16), подписи вершин.
+    interestMap: {
+      title: "Qiziqishlaringiz xaritasi",
+      subtitle: "Olti turdagi mashgʻulotdan qaysilari sizni koʻproq tortadi",
+      strongest: "Eng kuchlilari: {a} va {b}",
+      names: { R: "Amaliy", I: "Tadqiqotchi", A: "Ijodiy", S: "Ijtimoiy", E: "Tadbirkor", C: "Tartibli" },
+    },
+    directionLabel: "{n}-yoʻnalish",
   },
   checkout: {
     title: "Toʻliq hisobotni tanlang",

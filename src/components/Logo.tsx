@@ -21,10 +21,6 @@ export function CompassMark({
   className?: string;
 }) {
   const ring = size >= RING_MIN_SIZE;
-  const c =
-    variant === "light"
-      ? { ring: "#1D1B16", n1: "#9A3412", n2: "#C2410C", a: "#5E5A52", b: "#1D1B16" }
-      : { ring: "#FBF7F0", n1: "#C2410C", n2: "#F0673A", a: "#FBF7F0", b: "#BDB5A6" };
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +37,7 @@ export function CompassMark({
           cy="60"
           r="56"
           fill="none"
-          stroke={c.ring}
+          stroke={variant === "light" ? "#1D1B16" : "#FBF7F0"}
           strokeWidth="3.4"
           strokeLinecap="round"
           strokeDasharray="0.1 8.8"
@@ -49,17 +45,29 @@ export function CompassMark({
           className={animated ? "yw-compass-ring" : undefined}
         />
       )}
-      <g className={animated ? "yw-compass-rose" : undefined}>
-        <path d="M60 7 L48 48 L60 60Z" fill={c.n1} />
-        <path d="M60 7 L72 48 L60 60Z" fill={c.n2} />
-        <path d="M96 60 L72 48 L60 60Z" fill={c.a} />
-        <path d="M96 60 L72 72 L60 60Z" fill={c.b} />
-        <path d="M60 96 L72 72 L60 60Z" fill={c.b} />
-        <path d="M60 96 L48 72 L60 60Z" fill={c.a} />
-        <path d="M24 60 L48 72 L60 60Z" fill={c.b} />
-        <path d="M24 60 L48 48 L60 60Z" fill={c.a} />
-      </g>
+      <CompassRose variant={variant} className={animated ? "yw-compass-rose" : undefined} />
     </svg>
+  );
+}
+
+// Сама роза знака (без кольца) в координатах 0–120 — для вставки внутрь другой SVG-картинки
+// (иллюстрация на карточке типа, этап 2б). Правила те же: север вверху, цвета не менять.
+export function CompassRose({ variant = "light", className }: { variant?: "light" | "dark"; className?: string }) {
+  const c =
+    variant === "light"
+      ? { n1: "#9A3412", n2: "#C2410C", a: "#5E5A52", b: "#1D1B16" }
+      : { n1: "#C2410C", n2: "#F0673A", a: "#FBF7F0", b: "#BDB5A6" };
+  return (
+    <g className={className}>
+      <path d="M60 7 L48 48 L60 60Z" fill={c.n1} />
+      <path d="M60 7 L72 48 L60 60Z" fill={c.n2} />
+      <path d="M96 60 L72 48 L60 60Z" fill={c.a} />
+      <path d="M96 60 L72 72 L60 60Z" fill={c.b} />
+      <path d="M60 96 L72 72 L60 60Z" fill={c.b} />
+      <path d="M60 96 L48 72 L60 60Z" fill={c.a} />
+      <path d="M24 60 L48 72 L60 60Z" fill={c.b} />
+      <path d="M24 60 L48 48 L60 60Z" fill={c.a} />
+    </g>
   );
 }
 

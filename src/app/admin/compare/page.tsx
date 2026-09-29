@@ -234,6 +234,8 @@ function VariantBody({ comparison, variant }: { comparison: ComparisonRow; varia
           teaserLocale="uz"
           mock={mockBadge !== null}
           sixteenType={presentation.sixteenType}
+          riasecScores={profile.riasec.scores}
+          shareActions={null}
           features={t.checkout.levels[profile.level].features}
           recommendedLevel={profile.level}
           recommendedPrice={null}
