@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MockBadge } from "@/app/teaser/MockBadge";
+import { CheckIcon } from "@/components/flow";
+import { CompassMark } from "@/components/Logo";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
 
@@ -86,74 +88,99 @@ export function ReportGenerator({
     };
   }, [poll, initial.status]);
 
-  const percent = Math.round((Math.max(done, 0.35) / total) * 100);
-
   return (
-    <div className="mx-auto max-w-md px-4 pb-12 pt-6">
+    <div className="mx-auto max-w-[640px] px-4 pb-14 pt-6 lg:pt-10">
       {mockBadge && <MockBadge label={mockBadge.label} note={mockBadge.note} />}
       {phase === "running" ? (
-        <div className="pt-6 text-center" role="status" aria-live="polite">
-          <div className="relative mx-auto size-36">
-            <div className="absolute inset-0 animate-ping rounded-full bg-brand-500/20 [animation-duration:2.4s]" />
-            <div className="absolute inset-3 animate-spin rounded-full bg-[conic-gradient(from_0deg,#c2410c,#f5b83d,#0f766e,#c2410c)] [animation-duration:3s]" />
-            <div className="absolute inset-6 flex items-center justify-center rounded-full bg-white text-5xl shadow-inner">
-              <span className="animate-pulse" aria-hidden>
-                🧭
-              </span>
-            </div>
-          </div>
-          <p className="mt-6 inline-flex rounded-full bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-800">
-            ✓ {t.generating.paid}
+        <div className="text-center">
+          <p className="mx-auto inline-flex items-center gap-2 rounded-full bg-teal-50 px-4 py-1.5 text-sm font-semibold text-teal">
+            <CheckIcon className="size-4" />
+            {t.generating.paid}
           </p>
-          <h1 className="mt-4 text-2xl font-extrabold">{t.generating.title}</h1>
-
-          <div className="mx-auto mt-6 max-w-xs">
-            <div className="h-2.5 overflow-hidden rounded-full bg-slate-100">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-brand-500 to-sun transition-[width] duration-1000"
-                style={{ width: `${percent}%` }}
-              />
-            </div>
-            <p className="mt-2 text-sm text-muted">{fmt(t.generating.partOf, { n: done, total })}</p>
+          <div className="mx-auto mt-8 flex size-40 items-center justify-center rounded-full bg-sand lg:size-48" aria-hidden>
+            <CompassMark size={112} animated className="lg:size-32" />
           </div>
-
-          <ul className="mx-auto mt-6 max-w-xs space-y-2.5 text-left">
-            {t.generating.steps.map((label, i) => (
-              <li key={label} className={"flex items-center gap-3 " + (i <= done ? "opacity-100" : "opacity-40")}>
-                <span
-                  className={
-                    "flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold " +
-                    (i < done ? "bg-emerald-500 text-white" : i === done ? "bg-brand-500 text-white" : "bg-slate-200")
-                  }
-                  aria-hidden
-                >
-                  {i < done ? "✓" : i === done ? <span className="size-2 animate-pulse rounded-full bg-white" /> : ""}
-                </span>
-                <span className={i === done ? "font-semibold" : "text-muted"}>{label}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-8 text-sm leading-relaxed text-muted">{longWait ? t.generating.longWait : t.generating.wait}</p>
+          {/* Живая область — заголовок и «готово N из 3»: меняется только когда часть действительно
+              дописана (данные с сервера), а не по таймеру. */}
+          <div role="status" aria-live="polite">
+            <h1 className="mt-8 text-[28px] font-extrabold leading-tight lg:text-[40px]">{t.generating.title}</h1>
+            <p className="sr-only">{fmt(t.generating.partOf, { n: done, total })}</p>
+          </div>
+          <PartsList steps={t.generating.steps} done={done} t={t.generating} />
+          <p className="mx-auto mt-5 max-w-md text-sm leading-relaxed text-muted" aria-hidden>
+            {fmt(t.generating.partOf, { n: done, total })}
+          </p>
+          <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted">{longWait ? t.generating.longWait : t.generating.wait}</p>
         </div>
       ) : (
-        <div className="mt-10 rounded-3xl border border-slate-200 p-6 text-center">
-          <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-amber-50 text-2xl" aria-hidden>
-            ⚠️
+        <div className="mt-6 rounded-[28px] border border-line bg-white px-6 py-10 text-center sm:px-10">
+          <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-sun-50 text-brand-600" aria-hidden>
+            <AlertIcon />
           </div>
-          <h1 className="mt-4 text-xl font-extrabold">{phase === "failed" ? t.failedTitle : t.networkError}</h1>
-          {phase === "failed" && <p className="mt-2 text-muted">{t.failedText}</p>}
+          <h1 className="mt-6 text-2xl font-extrabold leading-tight lg:text-[32px]">
+            {phase === "failed" ? t.failedTitle : t.networkError}
+          </h1>
+          {phase === "failed" && <p className="mx-auto mt-3 max-w-md leading-relaxed text-muted">{t.failedText}</p>}
+          {done > 0 && <p className="mt-3 text-sm text-muted">{fmt(t.generating.partOf, { n: done, total })}</p>}
           <button
             type="button"
             onClick={() => {
               setPhase("running");
               void poll(phase === "failed");
             }}
-            className="mt-6 min-h-12 w-full rounded-2xl bg-brand-500 px-6 font-bold text-white hover:bg-brand-600"
+            className="focus-ring mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-brand-500 px-7 font-bold text-white transition-colors hover:bg-brand-600 active:bg-brand-700 sm:w-auto"
           >
             {phase === "failed" ? t.regenerate : t.retry}
           </button>
         </div>
       )}
     </div>
+  );
+}
+
+// Три части отчёта с их НАСТОЯЩИМ состоянием. Это не «фальшивый прогресс» (UX-20): части пишутся
+// строго по очереди (REPORT_PARTS), сервер знает, сколько уже готово (done из POST /api/report/<id>),
+// значит первая неготовая часть — та, что пишется сейчас. Готова — бирюзовая галочка; пишется —
+// терракотовая рамка и крутящийся индикатор; ещё не начата — серая.
+function PartsList({ steps, done, t }: { steps: string[]; done: number; t: ReportDict["generating"] }) {
+  return (
+    <ol className="mx-auto mt-8 max-w-md space-y-2.5 text-left">
+      {steps.map((label, i) => {
+        const state = i < done ? "done" : i === done ? "current" : "upcoming";
+        return (
+          <li
+            key={label}
+            aria-current={state === "current" ? "step" : undefined}
+            className={
+              "flex min-h-14 items-center gap-3 rounded-2xl border-2 bg-white px-4 py-3 " +
+              (state === "current" ? "border-brand-500" : "border-line")
+            }
+          >
+            {state === "done" ? (
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-teal text-white" aria-hidden>
+                <CheckIcon className="size-4" />
+              </span>
+            ) : state === "current" ? (
+              <span className="size-7 shrink-0 animate-spin rounded-full border-[3px] border-brand-100 border-t-brand-500" aria-hidden />
+            ) : (
+              <span className="size-7 shrink-0 rounded-full border-2 border-line" aria-hidden />
+            )}
+            <span className={"min-w-0 flex-1 leading-snug " + (state === "upcoming" ? "text-muted" : "font-semibold")}>{label}</span>
+            {state === "current" && <span className="shrink-0 text-xs text-muted">{t.stepWriting}</span>}
+            {state === "done" && <span className="sr-only">{t.stepDone}</span>}
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+function AlertIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" className="size-9" focusable="false">
+      <path d="M12 7.5v6" />
+      <circle cx="12" cy="17" r="0.6" fill="currentColor" />
+      <circle cx="12" cy="12" r="9" />
+    </svg>
   );
 }

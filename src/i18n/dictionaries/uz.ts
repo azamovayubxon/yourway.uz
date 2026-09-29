@@ -629,6 +629,9 @@ export const uz: Dictionary = {
       title: "Toʻliq hisobotingizni yozyapmiz…",
       paid: "Toʻlov oʻtdi — hisobot endi doim sizniki.",
       steps: ["Portret va maqsad", "Asosiy yoʻl", "Boshqa yoʻnalishlar va birinchi qadamlar"],
+      // Этап 3: состояние части на экране генерации (части реальные, см. ReportGenerator).
+      stepWriting: "yozilmoqda",
+      stepDone: "tayyor",
       partOf: "Tayyor qismlar: {total} tadan {n} tasi",
       wait: "Hisobot katta: odatda 3 daqiqadan 8 daqiqagacha vaqt oladi. Sahifani yopmaganingiz maʼqul. Yopsangiz ham hech narsa yoʻqolmaydi: hisobot akkauntingizda turibdi, uni ochganingizda davom ettiramiz.",
       longWait:

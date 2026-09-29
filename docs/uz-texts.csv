@@ -479,6 +479,8 @@ ui.report.generating.paid,Страница полного отчёта (/report)
 ui.report.generating.steps.0,Страница полного отчёта (/report),Портрет и цель,Portret va maqsad,
 ui.report.generating.steps.1,Страница полного отчёта (/report),Главный маршрут,Asosiy yoʻl,
 ui.report.generating.steps.2,Страница полного отчёта (/report),Альтернативы и первые шаги,Boshqa yoʻnalishlar va birinchi qadamlar,
+ui.report.generating.stepWriting,Страница полного отчёта (/report),пишется,yozilmoqda,
+ui.report.generating.stepDone,Страница полного отчёта (/report),готово,tayyor,
 ui.report.generating.partOf,Страница полного отчёта (/report),Готово частей: {n} из {total},Tayyor qismlar: {total} tadan {n} tasi,
 ui.report.generating.wait,Страница полного отчёта (/report),"Отчёт большой: обычно это занимает от 3 до 8 минут. Лучше не закрывать страницу. Если закроете — ничего не пропадёт: отчёт есть в вашем аккаунте, и мы продолжим, когда вы его откроете.","Hisobot katta: odatda 3 daqiqadan 8 daqiqagacha vaqt oladi. Sahifani yopmaganingiz maʼqul. Yopsangiz ham hech narsa yoʻqolmaydi: hisobot akkauntingizda turibdi, uni ochganingizda davom ettiramiz.",
 ui.report.generating.longWait,Страница полного отчёта (/report),"Это занимает дольше, чем обычно, но всё ещё в процессе — часть отчёта уже готова. Можно закрыть страницу и вернуться позже: отчёт останется в вашем аккаунте.","Bu odatdagidan koʻproq vaqt olyapti, lekin jarayon davom etyapti — hisobotning bir qismi allaqachon tayyor. Sahifani yopib, keyinroq qaytishingiz mumkin: hisobot akkauntingizda saqlanadi.",
