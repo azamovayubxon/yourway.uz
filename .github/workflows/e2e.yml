@@ -56,6 +56,10 @@ jobs:
       # e2ecompare — отдельный суперадмин для e2e/admin-compare.spec.ts (слепое сравнение моделей),
       # e2ehome — для e2e/home.spec.ts (таблица «Интерес к направлениям» в /admin/analytics).
       SUPERADMIN_LOGINS: e2eadmin,e2ecompare,e2ehome
+      # Все e2e регистрируют аккаунты с одного IP (localhost). Боевой лимит — 20 в час (см.
+      # .env.example); здесь запас, чтобы новые проверки не упирались в него. Сама логика лимита
+      # покрыта src/lib/auth/limits.test.ts.
+      AUTH_REGISTER_PER_IP_PER_HOUR: "100"
     steps:
       - uses: actions/checkout@v5
 
