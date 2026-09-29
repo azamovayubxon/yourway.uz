@@ -99,6 +99,135 @@ body {
   animation: yw-breathe 6s ease-in-out infinite;
 }
 
+/* Каркас экрана вопроса — тест и анкета (этап 2а, CLAUDE.md «Дизайн»). Один и тот же DOM в двух
+   раскладках, меняются только области сетки:
+   • телефон и планшет (до 1023px, колонка до 640px): «Назад» | «Пауза», панель паузы, части,
+     вопрос со шкалой, статус сохранения внизу;
+   • компьютер (от 1024px): колонка частей слева (260px) и вопрос справа; статус сохранения и
+     «Пауза» — вверху справа. */
+.yw-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "back pause"
+    "panel panel"
+    "parts parts"
+    "main main"
+    "status status";
+  align-items: center;
+}
+.yw-flow-back {
+  grid-area: back;
+}
+.yw-flow-pause {
+  grid-area: pause;
+}
+.yw-flow-panel {
+  grid-area: panel;
+}
+.yw-flow-parts {
+  grid-area: parts;
+}
+.yw-flow-main {
+  grid-area: main;
+}
+.yw-flow-status {
+  grid-area: status;
+}
+@media (min-width: 64rem) {
+  .yw-flow {
+    grid-template-columns: 260px minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      ". . status pause"
+      "panel panel panel panel"
+      "parts main main main";
+    align-items: start;
+  }
+  .yw-flow-back {
+    display: none;
+  }
+  .yw-flow-status,
+  .yw-flow-pause {
+    align-self: center;
+  }
+}
+
+/* Смена вопроса: текст поднимается и проявляется (~0.4 с). */
+@keyframes yw-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.yw-rise {
+  animation: yw-rise 0.4s ease-out both;
+}
+
+/* Экран между частями: круг-галочка «выскакивает», вокруг разлетаются точки-конфетти — один раз,
+   ~1.5 с. Точки вылетают от края круга; направление и дальность — переменные --dx/--dy в style. */
+@keyframes yw-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.yw-pop {
+  animation: yw-pop 0.5s cubic-bezier(0.2, 0.8, 0.3, 1.2) both;
+}
+@keyframes yw-confetti {
+  0% {
+    opacity: 0;
+    transform: translate(calc(var(--dx) * 0.55), calc(var(--dy) * 0.55)) scale(0.5);
+  }
+  20%,
+  65% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(1);
+  }
+}
+.yw-confetti {
+  animation: yw-confetti 1.5s ease-out 0.15s both;
+}
+
+/* Ожидание бесплатного результата: пунктирное кольцо знака-компаса медленно вращается, роза
+   «ищет направление» — покачивается ±40° (цикл 4 с). Центр вращения — центр знака (60,60). */
+@keyframes yw-seek {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-40deg);
+  }
+  75% {
+    transform: rotate(40deg);
+  }
+}
+.yw-compass-ring {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  animation: yw-spin 24s linear infinite;
+}
+.yw-compass-rose {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  animation: yw-seek 4s ease-in-out infinite;
+}
+
 /* Окно «Скоро» на главной: затемнение фона. */
 dialog.yw-dialog::backdrop {
   background: rgb(29 27 22 / 0.55);
@@ -118,7 +247,15 @@ dialog.yw-dialog::backdrop {
   }
   .yw-ring,
   .yw-path,
-  .yw-breathe {
+  .yw-breathe,
+  .yw-rise,
+  .yw-pop,
+  .yw-compass-ring,
+  .yw-compass-rose {
     animation: none !important;
+  }
+  /* Конфетти при «уменьшить движение» не показываем вовсе. */
+  .yw-confetti {
+    display: none;
   }
 }

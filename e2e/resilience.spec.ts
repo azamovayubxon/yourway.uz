@@ -160,7 +160,8 @@ test.describe("устойчивость теста при обрыве сети 
     const startBtn = page.getByRole("button", { name: /Начать тест|Testni boshlash/ });
     if (await startBtn.count()) await startBtn.click();
 
-    const options = page.getByRole("group").getByRole("button");
+    // Шкала-круги (этап 2а): группа радиокнопок, у каждого круга имя — полная подпись варианта.
+    const options = page.getByRole("radiogroup").getByRole("radio");
 
     // Первый ответ — обычная сеть, должен сохраниться.
     await options.nth(0).click();

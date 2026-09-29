@@ -37,7 +37,7 @@ export default async function SurveyPage() {
       sections={sections}
       initialAnswers={session.surveyAnswerMap}
       t={t.survey}
-      stages={t.flow.stages}
+      flow={t.flow}
       pathType={pathType}
     />
   );

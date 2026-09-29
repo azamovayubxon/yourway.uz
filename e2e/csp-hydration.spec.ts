@@ -60,13 +60,13 @@ test.describe("CSP с нонсом не блокирует гидратацию"
     // требует клиентского состояния (React), поэтому клик здесь тоже проверяет гидратацию.
     await page.getByRole("button", { name: /Testni boshlash|Начать тест/ }).click();
 
-    // Один вопрос на экран, крупные кнопки 1–5, автопереход к следующему (CLAUDE.md §5).
+    // Один вопрос на экран, шкала-круги 1–5, автопереход к следующему (CLAUDE.md §5).
     for (let i = 0; i < 3; i++) {
       const heading = page.locator("h1[aria-live='polite']");
       await expect(heading).toBeVisible();
       const before = await heading.textContent();
 
-      const options = page.getByRole("group").locator("button");
+      const options = page.getByRole("radiogroup").getByRole("radio");
       const middle = Math.min(2, (await options.count()) - 1);
       await options.nth(middle).click();
 

@@ -1,12 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import type { TestId } from "@/lib/assessment/tests";
 import type { Dictionary } from "@/i18n/dictionaries";
-import { fmt } from "@/i18n/format";
-import { OptionButton, ScaleBadge } from "@/components/ui";
-import { PausePanel, SaveStatus, StageBreadcrumb, type SaveState } from "@/components/flow";
+import { estimateMinutes, fmt, fmtCount } from "@/i18n/format";
+import {
+  BackIconButton,
+  CheckIcon,
+  FlowLabel,
+  LikertScale,
+  PartNumber,
+  PartsNav,
+  PauseButton,
+  PausePanel,
+  SaveStatus,
+  primaryButtonClass,
+  type FlowPart,
+  type SaveState,
+} from "@/components/flow";
 
 // Прохождение 4 тестов: экран подготовки → один вопрос на экран (кнопки 1–5, автопереход,
 // «Назад», прогресс) → промежуточный экран между блоками → готово.
@@ -28,7 +40,7 @@ interface Props {
   tests: RunnerTest[];
   initialAnswers: Record<string, number>; // ключ "big_five:12" → ответ
   t: TestDict;
-  stages: Dictionary["flow"]["stages"];
+  flow: Dictionary["flow"];
 }
 
 const ADVANCE_DELAY_MS = 180; // короткая пауза, чтобы было видно, какая кнопка нажата
@@ -53,7 +65,7 @@ function writePending(sessionId: string, pending: Record<string, number>) {
   }
 }
 
-export function TestRunner({ sessionId, tests, initialAnswers, t, stages }: Props) {
+export function TestRunner({ sessionId, tests, initialAnswers, t, flow }: Props) {
   // Все вопросы подряд в порядке воронки.
   const items = useMemo(
     () =>
@@ -190,8 +202,31 @@ export function TestRunner({ sessionId, tests, initialAnswers, t, stages }: Prop
     if (index > 0 && !locked) setIndex(index - 1);
   }
 
+  // Клавиши 1–5 выбирают ответ (подсказка — в колонке слева на компьютере). Не срабатывают, когда
+  // фокус в поле ввода, открыта пауза, на экранах подготовки/между частями и с Ctrl/Alt/Cmd.
+  // Стрелки по-прежнему двигают фокус внутри шкалы (LikertScale), Enter/Space — выбирают.
+  const onQuestion = prepDismissed && !atBoundary && index < total && !paused;
+  const answerRef = useRef(answer);
+  useEffect(() => {
+    answerRef.current = answer;
+  });
+  useEffect(() => {
+    if (!onQuestion) return;
+    const onKey = (e: globalThis.KeyboardEvent) => {
+      if (e.ctrlKey || e.altKey || e.metaKey || e.repeat) return;
+      const el = e.target as HTMLElement | null;
+      if (el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))) return;
+      const n = Number(e.key);
+      const option = Number.isInteger(n) ? items[index]?.test.scaleLabels[n - 1] : undefined;
+      if (!option) return;
+      e.preventDefault();
+      answerRef.current(option.value);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onQuestion, index, items]);
+
   const answeredCount = items.filter((item) => answers[item.key] !== undefined).length;
-  const progress = Math.round((Math.min(index, total) / total) * 100);
 
   const saveState: SaveState = syncState === "lost" ? "lost" : syncState === "offline" ? "offline" : pendingCount > 0 ? "saving" : "saved";
   const saveStatus = (
@@ -202,37 +237,50 @@ export function TestRunner({ sessionId, tests, initialAnswers, t, stages }: Prop
     />
   );
 
+  const flowLabel = `${flow.brandLabel} · ${flow.stages.test}`;
+  const pauseTexts = { button: t.pause, title: t.pauseTitle, text: t.pauseText, resume: t.pauseResume, backHome: t.pauseBackHome };
+  const pausePanel = <PausePanel open={paused} onResume={() => setPaused(false)} texts={pauseTexts} />;
+
   // Экран подготовки (UX-09): что за тестом и как он устроен, до первого вопроса.
+  // Телефон — одна колонка; компьютер — слева заголовок, правила и кнопки, справа сетка 2×2 частей.
   if (!prepDismissed) {
+    const minutes = estimateMinutes(total);
     return (
-      <div className="mx-auto max-w-2xl px-4 pt-10">
-        <StageBreadcrumb current="test" labels={stages} />
-        <h1 className="mt-4 text-2xl font-extrabold sm:text-3xl">{t.prep.title}</h1>
-        <p className="mt-5 font-bold">{t.prep.blocksTitle}</p>
-        <ol className="mt-2 grid gap-2 sm:grid-cols-2">
-          {t.prep.blocks.map((b, i) => (
-            <li key={i} className="flex items-center gap-2.5 rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm">
-              <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-bold text-brand-600">
-                {i + 1}
-              </span>
-              {b}
-            </li>
-          ))}
-        </ol>
-        <p className="mt-4 text-sm leading-relaxed text-muted">{t.prep.afterBlocks}</p>
-        <p className="mt-4 leading-relaxed">{t.prep.noRightAnswer}</p>
-        <p className="mt-2 text-sm leading-relaxed text-muted">{t.prep.autoAdvance}</p>
-        <p className="mt-2 text-sm leading-relaxed text-muted">{t.prep.saveNote}</p>
-        <button
-          type="button"
-          onClick={() => setPrepDismissed(true)}
-          className="focus-ring mt-6 min-h-12 w-full rounded-2xl bg-brand-500 px-6 font-bold text-white transition-colors hover:bg-brand-600 active:bg-brand-700 sm:w-auto"
-        >
-          {t.prep.start}
-        </button>
-        <Link href="/start?new=1" className="focus-ring mt-4 block rounded py-2 text-sm font-semibold text-muted underline">
-          {t.prep.back}
-        </Link>
+      <div className="mx-auto max-w-[640px] px-4 pb-12 pt-8 lg:max-w-6xl lg:pt-16">
+        <div className="lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:items-start lg:gap-16">
+          <div>
+            <FlowLabel>{flow.brandLabel}</FlowLabel>
+            <h1 className="mt-3 text-[32px] font-extrabold leading-[1.1] lg:text-6xl">{t.prep.title}</h1>
+            <p className="mt-3 text-muted lg:mt-5 lg:text-lg">{fmt(t.prep.subtitle, { parts: tests.length, min: minutes })}</p>
+            <ol className="mt-6 grid gap-3 lg:hidden">
+              {tests.map((test, i) => (
+                <PrepPart key={test.id} n={i + 1} name={t.prep.blocks[i] ?? t.parts[test.id]} hint={t.prep.blockHints[i]} count={fmtCount(t.questionsCount, test.questions.length)} />
+              ))}
+            </ol>
+            <ul className="mt-4 space-y-2.5 rounded-3xl bg-sand p-5 text-[15px] leading-snug lg:mt-8">
+              {t.prep.rules.map((rule) => (
+                <li key={rule} className="flex gap-2.5">
+                  <CheckIcon className="mt-0.5 size-4 text-teal" />
+                  <span>{rule}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-sm leading-relaxed text-muted">{t.prep.afterBlocks}</p>
+            <div className="mt-8 flex flex-col items-center gap-2 sm:flex-row sm:gap-6">
+              <button type="button" onClick={() => setPrepDismissed(true)} className={primaryButtonClass}>
+                {t.prep.start}
+              </button>
+              <Link href="/start?new=1" className="focus-ring rounded px-2 py-3 text-sm font-semibold text-muted underline-offset-4 hover:underline">
+                {t.prep.back}
+              </Link>
+            </div>
+          </div>
+          <ol className="hidden grid-cols-2 gap-5 lg:grid">
+            {tests.map((test, i) => (
+              <PrepPart key={test.id} wide n={i + 1} name={t.prep.blocks[i] ?? t.parts[test.id]} hint={t.prep.blockHints[i]} count={fmtCount(t.questionsCount, test.questions.length)} />
+            ))}
+          </ol>
+        </div>
       </div>
     );
   }
@@ -241,24 +289,29 @@ export function TestRunner({ sessionId, tests, initialAnswers, t, stages }: Prop
   if (index >= total) {
     const saved = pendingCount === 0 && answeredCount === total;
     return (
-      <div className="mx-auto max-w-2xl px-4 pt-10">
-        <ProgressBar value={100} />
-        <h1 className="mt-8 text-2xl font-extrabold sm:text-3xl">{t.doneTitle}</h1>
-        <p className="mt-4 text-lg leading-relaxed text-muted">{t.doneText}</p>
-        <div className="mt-6 space-y-4">
+      <CenteredStep>
+        <PartSegments done={tests.length} total={tests.length} label={fmt(t.interstitial.progress, { n: tests.length, total: tests.length })} />
+        <DoneBurst />
+        <h1 className="mt-8 text-center text-[28px] font-extrabold leading-tight lg:text-[40px]">{t.doneTitle}</h1>
+        <p className="mx-auto mt-3 max-w-md text-center text-lg leading-relaxed text-muted">{t.doneText}</p>
+        <div className="mt-8 flex flex-col items-center gap-4">
           {!saved && syncState !== "lost" && saveStatus}
           {(syncState === "lost" || syncState === "offline") && saveStatus}
           {saved && (
-            <Link
-              href="/survey"
-              className="focus-ring inline-flex min-h-12 items-center justify-center rounded-2xl bg-brand-500 px-6 text-base font-bold text-white shadow-lg shadow-brand-500/25 transition-colors hover:bg-brand-600 active:bg-brand-700"
-            >
+            <Link href="/survey" className={primaryButtonClass}>
               {t.continueToSurvey}
             </Link>
           )}
-          <BackButton label={t.back} onClick={back} disabled={locked} />
+          <button
+            type="button"
+            onClick={back}
+            disabled={locked}
+            className="focus-ring min-h-11 rounded px-2 py-2 font-semibold text-muted underline-offset-4 hover:underline"
+          >
+            ← {t.back}
+          </button>
         </div>
-      </div>
+      </CenteredStep>
     );
   }
 
@@ -269,102 +322,206 @@ export function TestRunner({ sessionId, tests, initialAnswers, t, stages }: Prop
       values: t.interstitial.afterRiasec,
       perception: t.interstitial.afterValues,
     };
+    const finished = currentItem.testIndex; // сколько частей уже пройдено
+    const next = currentItem.test;
+    const nextCount = next.questions.length;
     return (
-      <div className="mx-auto max-w-2xl px-4 pt-10">
-        <StageBreadcrumb current="test" labels={stages} />
-        <ProgressBar value={progress} />
-        <p className="mt-8 text-lg leading-relaxed" aria-live="polite">
-          {texts[currentItem.test.id]}
-        </p>
-        <button
-          type="button"
-          onClick={() => setAckBoundary(index)}
-          className="focus-ring mt-6 min-h-12 w-full rounded-2xl bg-brand-500 px-6 font-bold text-white transition-colors hover:bg-brand-600 active:bg-brand-700 sm:w-auto"
-        >
-          {t.interstitial.continue}
-        </button>
-      </div>
+      <CenteredStep>
+        <PartSegments done={finished} total={tests.length} label={fmt(t.interstitial.progress, { n: finished, total: tests.length })} />
+        <DoneBurst />
+        <div aria-live="polite">
+          <h1 className="mt-8 text-center text-[28px] font-extrabold leading-tight lg:text-[40px]">{fmt(t.interstitial.title, { n: finished })}</h1>
+          <p className="mx-auto mt-3 max-w-md text-center text-lg leading-relaxed text-muted">{texts[next.id]}</p>
+        </div>
+        <div className="mx-auto mt-6 flex w-fit max-w-full items-center gap-3 rounded-3xl border border-line bg-white px-4 py-3">
+          <PartNumber n={currentItem.testIndex + 1} />
+          <div className="min-w-0">
+            <p className="font-display font-bold leading-tight">{t.parts[next.id]}</p>
+            <p className="text-sm text-muted">
+              {fmt(t.interstitial.nextMeta, { questions: fmtCount(t.questionsCount, nextCount), min: estimateMinutes(nextCount) })}
+            </p>
+          </div>
+        </div>
+        <div className="mt-8 flex flex-col items-center gap-2">
+          <button type="button" onClick={() => setAckBoundary(index)} className={primaryButtonClass + " sm:min-w-72"}>
+            {t.interstitial.continue}
+          </button>
+          <button
+            type="button"
+            onClick={() => setPaused(true)}
+            aria-expanded={paused}
+            className="focus-ring min-h-11 rounded px-2 py-2 text-sm font-semibold text-muted underline-offset-4 hover:underline"
+          >
+            {t.interstitial.pauseLink}
+          </button>
+        </div>
+        {paused && <div className="mt-4">{pausePanel}</div>}
+      </CenteredStep>
     );
   }
 
   const item = items[index];
   const selected = answers[item.key];
+  const headingId = "test-question";
+  const parts: FlowPart[] = tests.map((test, i) => ({
+    id: test.id,
+    name: t.parts[test.id],
+    state: i < item.testIndex ? "done" : i === item.testIndex ? "current" : "upcoming",
+    count: test.questions.length,
+    countLabel: fmtCount(t.questionsCount, test.questions.length),
+    progress: i === item.testIndex ? Math.round(((item.number - 1) / test.questions.length) * 100) : undefined,
+    counter: i === item.testIndex ? fmt(t.blockProgress, { n: item.number, total: test.questions.length }) : undefined,
+  }));
 
   return (
-    <div className="mx-auto max-w-2xl px-4 pt-6">
-      <StageBreadcrumb current="test" labels={stages} />
-      <div className="mt-2 flex items-baseline justify-between gap-3 text-sm">
-        <p className="font-semibold text-brand-600">
-          {fmt(t.partOf, { n: item.testIndex + 1, total: tests.length })} · {t.parts[item.test.id]}
-        </p>
-        <p className="shrink-0 text-muted">{fmt(t.blockProgress, { n: item.number, total: item.test.questions.length })}</p>
-      </div>
-      <ProgressBar value={progress} />
-
-      <p className="mt-8 text-sm text-muted">{t.prompts[item.test.id]}</p>
-      {/* Высота с запасом, чтобы кнопки не прыгали между короткими и длинными вопросами.
-          tabIndex=-1 + ref: после ответа фокус явно переставляется сюда (см. useEffect выше). */}
-      <h1
-        ref={headingRef}
-        tabIndex={-1}
-        className="mt-2 min-h-[5.5rem] text-xl font-bold leading-snug sm:text-2xl"
-        aria-live="polite"
-      >
-        {item.text}
-      </h1>
-
-      <div className="mt-4 grid gap-2.5" role="group" aria-label={t.prompts[item.test.id]}>
-        {item.test.scaleLabels.map((s) => {
-          const active = selected === s.value;
-          return (
-            <OptionButton
-              key={s.value}
-              active={active}
-              disabled={locked}
-              leading={<ScaleBadge value={s.value} active={active} />}
-              onClick={() => answer(s.value)}
-            >
-              {s.label}
-            </OptionButton>
-          );
-        })}
-      </div>
-
-      <div className="mt-6 space-y-4">
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-          <BackButton label={t.back} onClick={back} disabled={index === 0 || locked} />
-          <button type="button" onClick={() => setPaused((p) => !p)} className="focus-ring min-h-11 rounded py-2 font-semibold text-muted">
-            {t.pause}
-          </button>
+    <div className="mx-auto max-w-[640px] px-4 pb-12 pt-4 lg:max-w-6xl lg:pt-6">
+      <div className="yw-flow">
+        <div className="yw-flow-back">
+          <BackIconButton label={t.back} onClick={back} disabled={index === 0 || locked} />
         </div>
-        <PausePanel
-          open={paused}
-          onResume={() => setPaused(false)}
-          texts={{ button: t.pause, title: t.pauseTitle, text: t.pauseText, resume: t.pauseResume, backHome: t.pauseBackHome }}
-        />
-        {saveStatus}
+        <div className="yw-flow-pause justify-self-end">
+          <PauseButton label={t.pause} onClick={() => setPaused((p) => !p)} expanded={paused} />
+        </div>
+        <div className="yw-flow-panel mt-4 empty:hidden">{pausePanel}</div>
+        <aside className="yw-flow-parts mt-5 lg:mt-8">
+          <PartsNav label={flowLabel} parts={parts} doneLabel={flow.partDone} />
+          <p className="mt-10 hidden rounded-3xl bg-sand p-4 text-sm leading-relaxed text-muted lg:block">
+            <KeyHint text={t.keyboardHint} />
+          </p>
+        </aside>
+        <section className="yw-flow-main mt-5 lg:mt-8 lg:pl-24">
+          <div className="lg:max-w-[760px]">
+            <div className="mb-5 hidden items-center gap-4 lg:flex">
+              <BackIconButton label={t.back} onClick={back} disabled={index === 0 || locked} />
+              <p className="text-sm text-muted">{fmt(t.questionOf, { n: item.number, total: item.test.questions.length })}</p>
+            </div>
+            <div className="rounded-[28px] border border-line bg-white p-5 sm:p-7 lg:px-11 lg:py-10">
+              <p id="test-prompt" key={`p-${item.test.id}`} className="yw-rise text-sm font-bold text-teal lg:text-base">
+                {t.prompts[item.test.id]}
+              </p>
+              {/* Высота с запасом, чтобы шкала не прыгала между короткими и длинными вопросами.
+                  tabIndex=-1 + ref: после ответа фокус явно переставляется сюда (см. useEffect выше).
+                  Сам h1 не пересоздаётся (живая область), анимируется только текст внутри. */}
+              <h1
+                id={headingId}
+                ref={headingRef}
+                tabIndex={-1}
+                className="mt-3 min-h-[6.5rem] rounded-md text-2xl font-bold leading-[1.2] focus-visible:outline-offset-4 sm:text-[26px] lg:min-h-[8.5rem] lg:text-[34px]"
+                aria-live="polite"
+              >
+                <span key={item.key} className="yw-rise block">
+                  {item.text}
+                </span>
+              </h1>
+            </div>
+            <div className="mt-8 lg:mt-10">
+              <LikertScale
+                key={item.key}
+                options={item.test.scaleLabels}
+                value={selected}
+                onPick={answer}
+                disabled={locked}
+                labelledBy={headingId}
+                placeholder={t.chooseAnswer}
+              />
+            </div>
+          </div>
+        </section>
+        <div className="yw-flow-status mt-8 lg:mr-4 lg:mt-0 lg:max-w-md lg:justify-self-end">{saveStatus}</div>
       </div>
     </div>
   );
 }
 
-function ProgressBar({ value }: { value: number }) {
+// Одна колонка по центру (до 640px): экраны между частями и «тест пройден».
+function CenteredStep({ children }: { children: ReactNode }) {
+  return <div className="mx-auto max-w-[640px] px-4 pb-12 pt-6 lg:pt-10">{children}</div>;
+}
+
+// Четыре сегмента общего прогресса: пройденные — терракотой. Подпись — строкой ниже.
+function PartSegments({ done, total, label }: { done: number; total: number; label: string }) {
   return (
-    <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}>
-      <div className="h-full rounded-full bg-brand-500 transition-[width] duration-300" style={{ width: `${value}%` }} />
+    <div>
+      <div className="flex gap-1.5" aria-hidden>
+        {Array.from({ length: total }, (_, i) => (
+          <span key={i} className={"h-1.5 flex-1 rounded-full " + (i < done ? "bg-brand-500" : "bg-line")} />
+        ))}
+      </div>
+      <p className="mt-2 text-sm text-muted">{label}</p>
     </div>
   );
 }
 
-function BackButton({ label, onClick, disabled }: { label: string; onClick: () => void; disabled: boolean }) {
+// Направления разлёта точек-конфетти (px) и их цвета.
+const CONFETTI: { dx: number; dy: number; color: string }[] = [
+  { dx: -108, dy: -52, color: "bg-brand-500" },
+  { dx: -104, dy: 44, color: "bg-sun" },
+  { dx: -40, dy: -94, color: "bg-teal" },
+  { dx: 36, dy: -96, color: "bg-sun" },
+  { dx: 98, dy: -60, color: "bg-brand-500" },
+  { dx: 120, dy: 8, color: "bg-teal" },
+  { dx: 100, dy: 56, color: "bg-sun" },
+  { dx: 14, dy: 86, color: "bg-brand-500" },
+  { dx: -122, dy: 0, color: "bg-teal" },
+  { dx: -62, dy: 76, color: "bg-brand-500" },
+];
+
+// Бирюзовый круг с галочкой: «выскакивает» и вокруг разлетаются точки (CSS, ~1.5 с, один раз).
+// При «уменьшить движение» — просто круг, без конфетти (см. globals.css).
+function DoneBurst() {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      className="focus-ring min-h-11 rounded py-2 font-semibold text-brand-600 disabled:text-slate-300"
-    >
-      ← {label}
-    </button>
+    <div className="relative mx-auto mt-10 flex size-28 items-center justify-center lg:mt-14 lg:size-32" aria-hidden>
+      {CONFETTI.map((c, i) => (
+        <span
+          key={i}
+          className={"yw-confetti absolute left-1/2 top-1/2 -ml-1.5 -mt-1.5 size-3 rounded-full " + c.color}
+          style={{ "--dx": `${c.dx}px`, "--dy": `${c.dy}px` } as CSSProperties}
+        />
+      ))}
+      <span className="yw-pop flex size-full items-center justify-center rounded-full bg-teal text-white">
+        <CheckIcon className="size-12" />
+      </span>
+    </div>
+  );
+}
+
+// Карточка части на экране «Перед началом»: цветной номер, название, подпись, число вопросов.
+function PrepPart({ n, name, hint, count, wide = false }: { n: number; name: string; hint?: string; count: string; wide?: boolean }) {
+  if (wide) {
+    return (
+      <li className="flex flex-col rounded-[28px] border border-line bg-white p-6">
+        <PartNumber n={n} size="lg" />
+        <p className="mt-4 font-display text-xl font-bold leading-tight">{name}</p>
+        {hint && <p className="mt-2 text-muted">{hint}</p>}
+        <p className="mt-2 text-sm text-muted">{count}</p>
+      </li>
+    );
+  }
+  return (
+    <li className="flex items-center gap-3.5 rounded-3xl border border-line bg-white p-4">
+      <PartNumber n={n} />
+      <div className="min-w-0 flex-1">
+        <p className="font-display font-bold leading-tight">{name}</p>
+        {hint && <p className="mt-0.5 text-sm leading-snug text-muted">{hint}</p>}
+      </div>
+      <p className="shrink-0 text-sm text-muted">{count}</p>
+    </li>
+  );
+}
+
+// «…клавиши от 1 до 5»: цифры в подсказке — жирным.
+function KeyHint({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(\d)/).map((part, i) =>
+        /^\d$/.test(part) ? (
+          <b key={i} className="font-bold text-ink">
+            {part}
+          </b>
+        ) : (
+          part
+        ),
+      )}
+    </>
   );
 }

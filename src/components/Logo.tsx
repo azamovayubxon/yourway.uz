@@ -6,13 +6,18 @@
 
 const RING_MIN_SIZE = 40;
 
+// animated — только для экрана ожидания бесплатного результата (TeaserGenerator): кольцо медленно
+// вращается, роза покачивается ±40° и возвращается на север (globals.css, .yw-compass-*). В логотипе
+// знак всегда неподвижен.
 export function CompassMark({
   size = 32,
   variant = "light",
+  animated = false,
   className = "",
 }: {
   size?: number;
   variant?: "light" | "dark";
+  animated?: boolean;
   className?: string;
 }) {
   const ring = size >= RING_MIN_SIZE;
@@ -41,16 +46,19 @@ export function CompassMark({
           strokeLinecap="round"
           strokeDasharray="0.1 8.8"
           opacity="0.5"
+          className={animated ? "yw-compass-ring" : undefined}
         />
       )}
-      <path d="M60 7 L48 48 L60 60Z" fill={c.n1} />
-      <path d="M60 7 L72 48 L60 60Z" fill={c.n2} />
-      <path d="M96 60 L72 48 L60 60Z" fill={c.a} />
-      <path d="M96 60 L72 72 L60 60Z" fill={c.b} />
-      <path d="M60 96 L72 72 L60 60Z" fill={c.b} />
-      <path d="M60 96 L48 72 L60 60Z" fill={c.a} />
-      <path d="M24 60 L48 72 L60 60Z" fill={c.b} />
-      <path d="M24 60 L48 48 L60 60Z" fill={c.a} />
+      <g className={animated ? "yw-compass-rose" : undefined}>
+        <path d="M60 7 L48 48 L60 60Z" fill={c.n1} />
+        <path d="M60 7 L72 48 L60 60Z" fill={c.n2} />
+        <path d="M96 60 L72 48 L60 60Z" fill={c.a} />
+        <path d="M96 60 L72 72 L60 60Z" fill={c.b} />
+        <path d="M60 96 L72 72 L60 60Z" fill={c.b} />
+        <path d="M60 96 L48 72 L60 60Z" fill={c.a} />
+        <path d="M24 60 L48 72 L60 60Z" fill={c.b} />
+        <path d="M24 60 L48 48 L60 60Z" fill={c.a} />
+      </g>
     </svg>
   );
 }
