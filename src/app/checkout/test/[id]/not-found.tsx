@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { PageShell } from "@/components/ui";
+import { CtaButton, PageShell } from "@/components/ui";
 import { getI18n } from "@/i18n/server";
 
 // Закрытый доступ к тестовой оплате (ТЗ аудита §13, этап C2): чужой id, несуществующий платёж или
@@ -9,9 +8,7 @@ export default async function TestPaymentNotFound() {
   return (
     <PageShell title={t.accessDenied.title}>
       <p className="text-muted">{t.accessDenied.checkoutText}</p>
-      <Link href="/checkout" className="inline-flex min-h-11 items-center font-semibold text-brand-600">
-        {t.accessDenied.checkoutCta} →
-      </Link>
+      <CtaButton href="/checkout">{t.accessDenied.checkoutCta} →</CtaButton>
     </PageShell>
   );
 }

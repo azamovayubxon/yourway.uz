@@ -543,6 +543,8 @@ export const uz: Dictionary = {
     metaTitle: "{type} — yourway.uz",
   },
   checkout: {
+    // Этап 3: метка над заголовком оплаты (заглавными — через CSS).
+    kicker: "Kasb yoʻli · Toʻliq hisobot",
     title: "Toʻliq hisobotni tanlang",
     subtitle:
       "Portretingiz tayyor. Toʻliq hisobot — bu harakat rejasi: maqsad, qadamlar, muddat va xarajat (taxminiy), zaxira yoʻllar va sizni hayron qoldirishi mumkin boʻlgan yoʻnalish.",

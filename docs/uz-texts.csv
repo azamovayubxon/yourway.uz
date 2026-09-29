@@ -404,6 +404,7 @@ ui.sharePage.ogLabel,Интерфейс сайта (sharePage),Мой тип:,Me
 ui.sharePage.ctaTitle,Интерфейс сайта (sharePage),Узнайте и свой тип — бесплатно,Siz ham oʻz tipingizni bilib oling — bepul,
 ui.sharePage.cta,Интерфейс сайта (sharePage),Начать тест,Testni boshlash,
 ui.sharePage.metaTitle,Интерфейс сайта (sharePage),{type} — yourway.uz,{type} — yourway.uz,
+ui.checkout.kicker,Страница оплаты (/checkout),Путь профессии · Полный отчёт,Kasb yoʻli · Toʻliq hisobot,
 ui.checkout.title,Страница оплаты (/checkout),Выберите полный отчёт,Toʻliq hisobotni tanlang,
 ui.checkout.subtitle,Страница оплаты (/checkout),"Портрет у вас уже есть. Полный отчёт — это план действий: цель, шаги, сроки и деньги (ориентировочно), запасные варианты и неожиданное направление.","Portretingiz tayyor. Toʻliq hisobot — bu harakat rejasi: maqsad, qadamlar, muddat va xarajat (taxminiy), zaxira yoʻllar va sizni hayron qoldirishi mumkin boʻlgan yoʻnalish.",
 ui.checkout.reportLanguageLabel,Страница оплаты (/checkout),Язык отчёта,Hisobot tili,
