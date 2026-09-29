@@ -29,13 +29,17 @@ const nextConfig: NextConfig = {
   },
   // Узбекский глоссарий и эталонные тексты читаются сервером из docs/ при генерации тизера
   // (src/lib/ai/uz-resources.ts). Явно включаем их в сборку, чтобы они были на сервере.
-  // Шрифт для PDF-отчёта (src/lib/pdf/fonts.ts) — по той же причине.
+  // Шрифт для PDF-отчёта (src/lib/pdf/fonts.ts) и картинок «Поделиться» (src/lib/og) — по той же причине.
   outputFileTracingIncludes: {
     "/**": [
       "./docs/uz-glossary.md",
       "./docs/uz-teaser-examples.md",
       "./src/lib/pdf/fonts/NotoSans-Regular.ttf",
       "./src/lib/pdf/fonts/NotoSans-Bold.ttf",
+      // Шрифты картинок «Поделиться» (src/lib/og, next/og читает только ttf/otf/woff).
+      "./src/lib/og/fonts/Commissioner-ExtraBold.ttf",
+      "./src/lib/og/fonts/Onest-Regular.ttf",
+      "./src/lib/og/fonts/Onest-Bold.ttf",
     ],
   },
 };

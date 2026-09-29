@@ -54,8 +54,9 @@ jobs:
       VERCEL_ENV: preview
       PAYMENTS_TEST_MODE: "true"
       # e2ecompare — отдельный суперадмин для e2e/admin-compare.spec.ts (слепое сравнение моделей),
-      # e2ehome — для e2e/home.spec.ts (таблица «Интерес к направлениям» в /admin/analytics).
-      SUPERADMIN_LOGINS: e2eadmin,e2ecompare,e2ehome
+      # e2ehome — для e2e/home.spec.ts (таблица «Интерес к направлениям» в /admin/analytics),
+      # e2eshare — для e2e/share.spec.ts (строки «Поделились» и «Сохранили картинку» там же).
+      SUPERADMIN_LOGINS: e2eadmin,e2ecompare,e2ehome,e2eshare
     steps:
       - uses: actions/checkout@v5
 

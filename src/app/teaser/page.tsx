@@ -12,8 +12,10 @@ import { getCurrentSession } from "@/lib/session";
 import { getPricesSafe } from "@/lib/payments";
 import { canGenerateInLocale, getSessionTeasers } from "@/lib/teaser";
 import type { Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
 import { getI18n } from "@/i18n/server";
+import { ShareActions } from "./ShareActions";
 import { TeaserGenerator } from "./TeaserGenerator";
 import { TeaserView } from "./TeaserView";
 
@@ -93,7 +95,23 @@ export default async function TeaserPage({ searchParams }: { searchParams: Promi
       mock={shown.aiMode === "mock"}
       sixteenType={`${code} · ${typeName}`}
       riasecScores={profile.riasec.scores}
-      shareActions={null}
+      shareActions={
+        <ShareActions
+          teaserId={shown.id}
+          texts={{
+            share: t.teaser.share,
+            saveImage: t.teaser.saveImage,
+            // Текст сообщения — на языке тизера: в нём название типа на этом же языке.
+            message: fmt(getDictionary(teaserLocale).teaser.shareText, { type: content.personality_type_label }),
+            telegram: t.teaser.shareTelegram,
+            copyLink: t.teaser.copyLink,
+            linkCopied: t.teaser.linkCopied,
+            note: t.teaser.shareNote,
+            error: t.teaser.shareError,
+            close: t.teaser.close,
+          }}
+        />
+      }
       features={t.checkout.levels[profile.level].features}
       recommendedLevel={profile.level}
       recommendedPrice={prices[profile.level] ?? null}

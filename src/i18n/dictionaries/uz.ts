@@ -310,6 +310,7 @@ export const uz: Dictionary = {
         "6. Toʻlovlar. Bank kartasi maʼlumotlari Ijrochiga berilmaydi va saqlanmaydi: ularni toʻlov tizimi (Payme/Click/Uzum) qayta ishlaydi. Biz faqat toʻlov identifikatorini, summasini va holatini saqlaymiz.",
         "7. Cookie fayllari. Sayt texnik cookie fayllardan foydalanadi: interfeys tilini, testlardan oʻtishning anonim sessiyasini va akkauntga kirishni eslab qolish uchun. Sayt reklama va kuzatuv uchun cookie ishlatmaydi.",
         "8. Foydalanuvchi huquqlari. Foydalanuvchi istalgan vaqtda «Shaxsiy kabinet» boʻlimida akkauntini barcha maʼlumotlari bilan birga oʻchirishi mumkin. Oʻchirilgandan keyin maʼlumotlarni qayta tiklash mumkin emas.",
+        "8a. «Ulashish» tugmasi. Agar «Ulashish» tugmasini bossangiz, faqat tipingiz nomi va uchta kuchli tomoningiz koʻrsatilgan ochiq sahifa yaratiladi. Portretingiz, yoʻnalishlaringiz va javoblaringiz unda koʻrinmaydi. Akkaunt yoki sessiya oʻchirilganda bu sahifa ham oʻchadi. Sahifa qidiruv tizimlarida koʻrsatilmaydi; unga faqat havolani olgan odam kira oladi. [YURIST TOʻLDIRADI: ochiq sahifaga rozilik shakli yetarliligini tasdiqlash.]",
         "9. Xatolar va texnik diagnostika. Server texnik xatolari jurnalida testlarga javoblar, profil, hisobot matnlari va parollar boʻlmaydi — u yerga faqat nosozlikni bartaraf etish uchun kerak boʻlgan xizmat maʼlumotlari yoziladi.",
         "10. Siyosatga oʻzgarishlar. Amaldagi tahrir doim /privacy sahifasida boʻladi. Muhim oʻzgarishlar haqida saytda xabar beriladi.",
         "11. Maʼlumotlarni qayta ishlash boʻyicha aloqa. [YURIST TOʻLDIRADI: shaxsga doir maʼlumotlar boʻyicha murojaatlar uchun elektron pochta va/yoki manzil, shuningdek Oʻzbekiston qonunchiligiga koʻra maʼlumotlarni qayta ishlash uchun masʼul shaxs tayinlash kerakligini aniqlash.]",
@@ -522,6 +523,24 @@ export const uz: Dictionary = {
       names: { R: "Amaliy", I: "Tadqiqotchi", A: "Ijodiy", S: "Ijtimoiy", E: "Tadbirkor", C: "Tartibli" },
     },
     directionLabel: "{n}-yoʻnalish",
+    // Этап 2б: «Поделиться» и «Сохранить картинку».
+    share: "Ulashish",
+    saveImage: "Rasmni saqlash",
+    shareText: "Mening tipim — {type}. Siz ham oʻz tipingizni bilib oling:",
+    shareTelegram: "Telegram",
+    copyLink: "Havolani nusxalash",
+    linkCopied: "Havola nusxalandi",
+    shareNote: "Havolada faqat tipingiz nomi va uchta kuchli tomoningiz koʻrinadi.",
+    shareError: "Havolani yaratib boʻlmadi. Yana bir bor urinib koʻring.",
+    close: "Yopish",
+  },
+  // Этап 2б: открытая страница «Поделиться» (/t/[code]) и картинки для Telegram и сторис.
+  sharePage: {
+    label: "Tip",
+    ogLabel: "Mening tipim:",
+    ctaTitle: "Siz ham oʻz tipingizni bilib oling — bepul",
+    cta: "Testni boshlash",
+    metaTitle: "{type} — yourway.uz",
   },
   checkout: {
     title: "Toʻliq hisobotni tanlang",
