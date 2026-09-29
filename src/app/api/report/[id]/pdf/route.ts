@@ -1,7 +1,7 @@
 import type { ReportContent } from "@/lib/ai/report-schema";
 import { getCurrentUser } from "@/lib/auth";
 import { getUserReport } from "@/lib/report";
-import { buildFirstScreen, presentReport, reportLanguageNote } from "@/lib/report/present";
+import { buildFirstScreen, presentReport, reportLanguageNote, reportLanguageShort } from "@/lib/report/present";
 import { renderReportPdf } from "@/lib/pdf/render";
 import type { Locale } from "@/i18n/config";
 import { getI18n } from "@/i18n/server";
@@ -27,6 +27,8 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   const reportLocale = report.locale as Locale;
 
   const content = report.content as unknown as ReportContent;
+  // Название типа на обложке — из тизера (как в кабинете и на странице результата), если он есть.
+  const teaserLabel = (report.teaser as { personality_type_label?: unknown } | null)?.personality_type_label;
   const pdf = await renderReportPdf({
     content,
     t: t.report,
@@ -36,6 +38,8 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     date: presentation.date,
     mockNote,
     languageNote: reportLanguageNote(reportLocale, t),
+    languageShort: reportLanguageShort(reportLocale, t),
+    typeLabel: typeof teaserLabel === "string" && teaserLabel.trim() ? teaserLabel : content.portrait.type_label,
     summary: buildFirstScreen(content),
   });
 

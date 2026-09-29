@@ -96,7 +96,7 @@ export default async function AccountPage() {
                       {levelName}
                     </span>
                     <span className="text-muted">
-                      {t.report.languageNames[r.locale as "ru" | "uz"] ?? r.locale} · {dateOf(r.createdAt)}
+                      {t.checkout.reportLanguageNames[r.locale as "ru" | "uz"] ?? r.locale} · {dateOf(r.createdAt)}
                     </span>
                     <span
                       className={
