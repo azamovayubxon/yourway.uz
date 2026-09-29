@@ -856,6 +856,9 @@ export const uz: Dictionary = {
       toTests: "Testlardan oʻtish",
       logout: "Chiqish",
       logoutNote: "Chiqib ketsangiz ham, javoblaringiz va portretingiz akkauntingizda saqlanib qoladi. Ularga qaytish uchun yana kirsangiz boʻldi.",
+      // Этап 3: кнопка под карточкой последнего результата и ссылка на второй пакет с ценой из базы.
+      openResult: "Natijani ochish",
+      offerCta: "Ochish — {sum}",
       lastResultTitle: "Oxirgi natija",
       surveyPending: "Testlar tugadi — anketani toʻldirish qoldi",
       toSurvey: "Anketani toʻldirish",
@@ -867,7 +870,7 @@ export const uz: Dictionary = {
       reportStatus: { pending: "yozilmoqda…", generating: "yozilmoqda…", ready: "tayyor", failed: "qaytadan yozish kerak" },
       open: "Ochish",
       pdf: "PDF",
-      retake: "Testlardan qaytadan oʻtish",
+      retake: "Testni qaytadan topshirish",
       settingsTitle: "Akkaunt sozlamalari",
       changePasswordLink: "Parolni almashtirish",
       deleteAccountLink: "Akkauntni oʻchirish",
