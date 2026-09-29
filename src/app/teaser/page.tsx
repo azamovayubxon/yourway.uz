@@ -12,8 +12,10 @@ import { getCurrentSession } from "@/lib/session";
 import { getPricesSafe } from "@/lib/payments";
 import { canGenerateInLocale, getSessionTeasers } from "@/lib/teaser";
 import type { Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
 import { getI18n } from "@/i18n/server";
+import { ShareActions } from "./ShareActions";
 import { TeaserGenerator } from "./TeaserGenerator";
 import { TeaserView } from "./TeaserView";
 
@@ -69,12 +71,12 @@ export default async function TeaserPage({ searchParams }: { searchParams: Promi
   if (teaserLocale !== locale) {
     const canRegen = await canGenerateInLocale(session.id, locale);
     otherLanguage = (
-      <div className="mb-5 rounded-2xl bg-slate-50 p-4 text-sm">
+      <div className="mb-5 rounded-3xl bg-sand p-4 text-sm">
         <p className="text-muted">{fmt(t.teaser.otherLanguage, { lang: t.teaser.languageNames[teaserLocale] })}</p>
         {canRegen ? (
           <Link
             href="/teaser?generate=1"
-            className="mt-1 inline-flex min-h-11 items-center font-semibold text-brand-600"
+            className="focus-ring mt-1 inline-flex min-h-11 items-center font-semibold text-brand-600"
           >
             {fmt(t.teaser.makeInLanguage, { lang: t.teaser.languageNames[locale] })} →
           </Link>
@@ -92,6 +94,24 @@ export default async function TeaserPage({ searchParams }: { searchParams: Promi
       teaserLocale={teaserLocale}
       mock={shown.aiMode === "mock"}
       sixteenType={`${code} · ${typeName}`}
+      riasecScores={profile.riasec.scores}
+      shareActions={
+        <ShareActions
+          teaserId={shown.id}
+          texts={{
+            share: t.teaser.share,
+            saveImage: t.teaser.saveImage,
+            // Текст сообщения — на языке тизера: в нём название типа на этом же языке.
+            message: fmt(getDictionary(teaserLocale).teaser.shareText, { type: content.personality_type_label }),
+            telegram: t.teaser.shareTelegram,
+            copyLink: t.teaser.copyLink,
+            linkCopied: t.teaser.linkCopied,
+            note: t.teaser.shareNote,
+            error: t.teaser.shareError,
+            close: t.teaser.close,
+          }}
+        />
+      }
       features={t.checkout.levels[profile.level].features}
       recommendedLevel={profile.level}
       recommendedPrice={prices[profile.level] ?? null}
@@ -105,7 +125,7 @@ export default async function TeaserPage({ searchParams }: { searchParams: Promi
         <div className="mt-8 space-y-1 text-center">
           <Link
             href="/start?new=1"
-            className="inline-flex min-h-11 items-center text-sm font-semibold text-muted underline"
+            className="focus-ring inline-flex min-h-11 items-center text-sm font-semibold text-muted underline"
           >
             {t.start.restart}
           </Link>

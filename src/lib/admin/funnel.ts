@@ -10,7 +10,16 @@ import { SOON_DIRECTIONS, SOON_EVENT_PREFIX, soonEvent, type SoonDirection } fro
 // (FunnelEvent) нужен только для двух шагов, для которых своей таблицы нет: заход на сайт и
 // скачивание PDF (см. logVisit/logPdfDownload и schema.prisma).
 
-export type FunnelStepKey = "visit" | "testStart" | "testDone" | "teaser" | "register" | "payment" | "pdf";
+export type FunnelStepKey =
+  | "visit"
+  | "testStart"
+  | "testDone"
+  | "teaser"
+  | "share"
+  | "shareImage"
+  | "register"
+  | "payment"
+  | "pdf";
 
 export interface FunnelRow {
   key: FunnelStepKey;
@@ -34,11 +43,15 @@ function toByLocale(rows: { locale: string; _count: { _all: number } }[]): {
 
 export async function getFunnel(): Promise<FunnelRow[]> {
   const db = getDb();
-  const [visit, testStart, testDone, teaser, register, payment, pdf] = await Promise.all([
+  const [visit, testStart, testDone, teaser, share, shareImage, register, payment, pdf] = await Promise.all([
     db.funnelEvent.groupBy({ by: ["locale"], where: { event: "visit" }, _count: { _all: true } }),
     db.testSession.groupBy({ by: ["locale"], _count: { _all: true } }),
     db.testSession.groupBy({ by: ["locale"], where: { testsDoneAt: { not: null } }, _count: { _all: true } }),
     db.teaser.groupBy({ by: ["locale"], where: { status: "ready" }, _count: { _all: true } }),
+    // Этап 2б: «Поделились» — сколько открытых карточек создано (одна на тизер), по языку карточки;
+    // «Сохранили картинку» — событие share_image (каждое скачивание, см. /api/share/image).
+    db.shareCard.groupBy({ by: ["locale"], _count: { _all: true } }),
+    db.funnelEvent.groupBy({ by: ["locale"], where: { event: SHARE_IMAGE_EVENT }, _count: { _all: true } }),
     db.user.groupBy({ by: ["locale"], _count: { _all: true } }),
     db.payment.groupBy({ by: ["locale"], where: { status: "paid" }, _count: { _all: true } }),
     db.funnelEvent.groupBy({ by: ["locale"], where: { event: "pdf" }, _count: { _all: true } }),
@@ -49,6 +62,8 @@ export async function getFunnel(): Promise<FunnelRow[]> {
     { key: "testStart", label: "Начали тесты", rows: testStart },
     { key: "testDone", label: "Закончили тесты", rows: testDone },
     { key: "teaser", label: "Получили тизер", rows: teaser },
+    { key: "share", label: "Поделились", rows: share },
+    { key: "shareImage", label: "Сохранили картинку", rows: shareImage },
     { key: "register", label: "Зарегистрировались", rows: register },
     { key: "payment", label: "Оплатили отчёт", rows: payment },
     { key: "pdf", label: "Скачали PDF", rows: pdf },
@@ -73,6 +88,17 @@ export async function logPdfDownload(locale: Locale, sessionId: string | null): 
     await getDb().funnelEvent.create({ data: { event: "pdf", locale, sessionId } });
   } catch (e) {
     void logError("funnel-pdf", e);
+  }
+}
+
+// «Сохранить картинку» на странице результата (этап 2б) — событие share_image в том же журнале.
+export const SHARE_IMAGE_EVENT = "share_image";
+
+export async function logShareImage(locale: Locale, sessionId: string | null): Promise<void> {
+  try {
+    await getDb().funnelEvent.create({ data: { event: SHARE_IMAGE_EVENT, locale, sessionId } });
+  } catch (e) {
+    void logError("funnel-share-image", e);
   }
 }
 

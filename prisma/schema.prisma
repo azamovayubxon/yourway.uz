@@ -95,8 +95,27 @@ model Teaser {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
   aiCalls       AiCall[]
+  shareCard     ShareCard?
 
   @@unique([sessionId, locale])
+}
+
+// Открытая карточка «Поделиться» (этап 2б): страница /t/[code] и картинка-превью для Telegram.
+// Решение владельца: публично видно ТОЛЬКО название типа и три сильные стороны — снимок на момент
+// нажатия кнопки. Портрет, направления, ответы и 16-тип сюда не копируются. Создаётся только
+// нажатием «Поделиться» (POST /api/share), одна на тизер. Удаляется вместе с тизером — то есть
+// при удалении сессии или аккаунта (каскад User → TestSession → Teaser → ShareCard).
+model ShareCard {
+  // Случайный код из ссылки (12 знаков без двусмысленных букв и цифр, src/lib/share).
+  code      String   @id
+  teaserId  String   @unique
+  teaser    Teaser   @relation(fields: [teaserId], references: [id], onDelete: Cascade)
+  // Язык карточки = язык тизера (uz | ru); на нём же показывается страница /t/[code].
+  locale    String
+  typeLabel String
+  // Три сильные стороны (массив строк) — снимок на момент нажатия.
+  strengths Json
+  createdAt DateTime @default(now())
 }
 
 // Журнал каждого обращения к ИИ: модель, токены, примерная стоимость (для себестоимости в админке, этап 8).
@@ -329,7 +348,8 @@ model ModelOverride {
 // регистрация, оплата) считаются напрямую по TestSession/Teaser/User/Payment — так короче и без дублей.
 model FunnelEvent {
   id        String   @id @default(uuid())
-  // visit | pdf | soon:<id> (интерес к направлению «Скоро» на главной, id — src/lib/directions.ts)
+  // visit | pdf | soon:<id> (интерес к направлению «Скоро» на главной, id — src/lib/directions.ts) |
+  // share_image («Сохранить картинку» на странице результата, этап 2б)
   event     String
   locale    String
   sessionId String?
