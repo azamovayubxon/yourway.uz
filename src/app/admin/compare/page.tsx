@@ -17,7 +17,7 @@ import {
   type ComparePart,
   type CompareVerdict,
 } from "@/lib/compare/logic";
-import { presentReport, reportLanguageNote } from "@/lib/report/present";
+import { presentReport, reportLanguageNote, reportLanguageShort } from "@/lib/report/present";
 import { getDictionary } from "@/i18n/dictionaries";
 import { AdminShell, Card, DataTable, Notice } from "../ui";
 import { rateComparisonAction } from "./actions";
@@ -276,6 +276,7 @@ function VariantBody({ comparison, variant }: { comparison: ComparisonRow; varia
         date={presentation.date}
         mockBadge={mockBadge}
         languageNote={reportLanguageNote("uz", t)}
+        languageShort={reportLanguageShort("uz", t)}
         footer={null}
         sections={PART_SECTIONS[part]}
       />

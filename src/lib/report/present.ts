@@ -55,6 +55,12 @@ export function reportLanguageNote(reportLocale: Locale, t: Dictionary): string 
   return fmt(t.report.languageNote, { lang: t.report.languageNames[reportLocale] });
 }
 
+// Короткая «таблетка» языка в шапке отчёта (этап 3): «Hisobot tili: oʻzbek». Полная строка
+// reportLanguageNote показывается там же на странице — внизу, рядом с дисклеймером.
+export function reportLanguageShort(reportLocale: Locale, t: Dictionary): string {
+  return fmt(t.report.languageShort, { lang: t.report.languageNames[reportLocale] });
+}
+
 export interface ReportFirstScreen {
   // 1–2 предложения — выдержка из уже написанного портрета, а не отдельное поле от ИИ
   // (ТЗ аудита §9: слой отображения над текущей схемой, без изменения генерации).

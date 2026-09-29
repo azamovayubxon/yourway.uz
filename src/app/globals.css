@@ -301,3 +301,45 @@ dialog.yw-dialog::backdrop {
     display: none;
   }
 }
+
+/* «Qisqacha aytganda» на странице отчёта (этап 3). Один DOM, две раскладки:
+   • телефон и планшет — вывод, плитки, кнопки сверху вниз;
+   • компьютер — вывод и под ним кнопки слева, плитки справа. */
+.yw-first {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "text"
+    "tiles"
+    "cta";
+}
+.yw-first-text {
+  grid-area: text;
+}
+.yw-first-tiles {
+  grid-area: tiles;
+}
+.yw-first-cta {
+  grid-area: cta;
+}
+@media (min-width: 64rem) {
+  .yw-first {
+    column-gap: 1.75rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 17rem);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "text tiles"
+      "cta tiles";
+  }
+  .yw-first-cta {
+    align-self: end;
+  }
+  .yw-first-tiles {
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+  }
+  .yw-first-tiles > div {
+    grid-column: auto;
+  }
+}

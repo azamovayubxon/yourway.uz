@@ -647,6 +647,11 @@ export const uz: Dictionary = {
     createdAt: "Tuzilgan sana: {date}",
     languageNote: "Hisobot tili: {lang}. Sayt tilini almashtirish faqat matn atrofidagi koʻrinishni oʻzgartiradi, hisobotning oʻzini emas.",
     languageNames: { uz: "oʻzbek", ru: "rus" },
+    // Этап 3: «таблетка» языка в шапке отчёта (полная строка languageNote — внизу, у дисклеймера),
+    // счётчик прочитанных разделов под оглавлением и подпись к типу в разделе портрета.
+    languageShort: "Hisobot tili: {lang}",
+    readProgress: "Oʻqildi: {n} / {total}",
+    yourType: "Sizning tipingiz",
     toc: "Mundarija",
     sectionsButton: "Boʻlimlar",
     firstScreen: {
