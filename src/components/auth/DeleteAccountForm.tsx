@@ -18,13 +18,13 @@ export function DeleteAccountForm({ t }: { t: AuthDict }) {
   return (
     <form action={action} className="space-y-4">
       <PasswordField label={t.deleteAccount.passwordLabel} autoComplete="current-password" t={t} />
-      <label htmlFor={checkboxId} className="flex items-start gap-3 rounded-2xl border-2 border-slate-200 p-4">
+      <label htmlFor={checkboxId} className="flex cursor-pointer items-start gap-3 rounded-3xl border-2 border-line bg-white p-4 has-[:checked]:border-danger">
         <input
           id={checkboxId}
           type="checkbox"
           checked={confirmed}
           onChange={(e) => setConfirmed(e.target.checked)}
-          className="mt-0.5 size-5 shrink-0 accent-rose-600"
+          className="mt-0.5 size-5 shrink-0 accent-[#b42318]"
         />
         <span className="font-medium">{t.deleteAccount.confirmLabel}</span>
       </label>
@@ -40,7 +40,7 @@ function DeleteButton({ label, disabled }: { label: string; disabled: boolean })
     <button
       type="submit"
       disabled={disabled || pending}
-      className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-rose-600 px-6 text-base font-bold text-white shadow-lg shadow-rose-600/25 transition-colors hover:bg-rose-700 disabled:cursor-not-allowed disabled:opacity-50"
+      className="focus-ring inline-flex min-h-12 w-full items-center justify-center rounded-full bg-danger px-6 text-base font-bold text-white transition-colors hover:bg-[#912018] disabled:cursor-not-allowed disabled:opacity-50"
     >
       {label}
     </button>

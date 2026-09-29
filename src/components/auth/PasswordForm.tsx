@@ -13,7 +13,7 @@ export function PasswordForm({ t }: { t: AuthDict }) {
   const [state, action] = useActionState(changePasswordAction, idle);
 
   if (state.status === "success") {
-    return <p className="rounded-2xl bg-emerald-50 px-4 py-3 font-medium text-emerald-900">{t.password.success}</p>;
+    return <p role="status" className="rounded-3xl bg-teal-50 px-5 py-4 font-medium text-ink">{t.password.success}</p>;
   }
 
   return (

@@ -11,7 +11,7 @@ import type { AuthFormState } from "@/app/account/actions";
 type AuthDict = Dictionary["auth"];
 
 const inputClass =
-  "block min-h-12 w-full rounded-2xl border-2 border-slate-200 bg-white px-4 text-base outline-none transition-colors focus:border-brand-500 focus-visible:ring-4 focus-visible:ring-brand-500/30";
+  "block min-h-12 w-full rounded-full border-2 border-line bg-white px-5 text-base outline-none transition-colors focus:border-brand-500 focus-visible:ring-4 focus-visible:ring-brand-500/30";
 
 export function TextField({
   name,
@@ -95,7 +95,7 @@ export function PasswordField({
           onClick={() => setVisible((v) => !v)}
           aria-label={visible ? t.hidePassword : t.showPassword}
           aria-pressed={visible}
-          className="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-muted hover:text-ink"
+          className="focus-ring absolute inset-y-0 right-1 flex w-12 items-center justify-center rounded-full text-muted hover:text-ink"
         >
           <EyeIcon crossed={visible} />
         </button>
@@ -115,7 +115,7 @@ export function SubmitButton({ label, t }: { label: string; t: AuthDict }) {
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-brand-500 px-6 text-base font-bold text-white shadow-lg shadow-brand-500/25 transition-colors hover:bg-brand-600 active:bg-brand-700 disabled:opacity-60"
+      className="focus-ring inline-flex min-h-12 w-full items-center justify-center rounded-full bg-brand-500 px-6 text-base font-bold text-white transition-colors hover:bg-brand-600 active:bg-brand-700 disabled:opacity-60"
     >
       {pending ? t.sending : label}
     </button>
@@ -125,7 +125,7 @@ export function SubmitButton({ label, t }: { label: string; t: AuthDict }) {
 export function FormError({ state, t }: { state: AuthFormState; t: AuthDict }) {
   if (state.status !== "error") return null;
   return (
-    <p role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-900">
+    <p role="alert" className="rounded-2xl bg-brand-50 px-4 py-3 text-sm font-medium text-brand-700">
       {fmt(t.errors[state.error], { min: state.minutes ?? 15 })}
     </p>
   );
@@ -136,7 +136,7 @@ export function FormError({ state, t }: { state: AuthFormState; t: AuthDict }) {
 export function ErrorNote({ error, t }: { error: keyof AuthDict["errors"] | null; t: AuthDict }) {
   if (!error) return null;
   return (
-    <p role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-900">
+    <p role="alert" className="rounded-2xl bg-brand-50 px-4 py-3 text-sm font-medium text-brand-700">
       {t.errors[error]}
     </p>
   );

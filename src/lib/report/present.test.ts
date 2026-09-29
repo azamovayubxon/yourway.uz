@@ -6,7 +6,7 @@ import { uz } from "@/i18n/dictionaries/uz";
 // src/lib/report/ownership.test.ts. present.ts тянет его транзитивно через @/lib/payments.
 vi.mock("server-only", () => ({}));
 
-const { presentReport, reportLanguageNote, buildFirstScreen } = await import("./present");
+const { presentReport, reportLanguageNote, buildFirstScreen, reportTypeLabel } = await import("./present");
 
 // presentReport/reportLanguageNote — общее для онлайн-страницы отчёта и PDF (аудит UX-06):
 // оболочка (название уровня, 16-тип, стиль обучения, дата, строка о языке) всегда на языке
@@ -121,5 +121,36 @@ describe("buildFirstScreen — report-2.0: takeaway и limitations как отд
     const s = buildFirstScreen(newContent);
     expect(s.takeaway).toBe("Готовый краткий вывод от ИИ, а не вырезка из портрета.");
     expect(s.constraints).toBe("Бюджет ограничен · Нужен английский B1");
+  });
+});
+
+describe("reportTypeLabel — один источник названия типа для страницы отчёта и обложки PDF", () => {
+  const content = { portrait: { type_label: "Тип из отчёта" } } as Parameters<typeof reportTypeLabel>[0]["content"];
+
+  it("берёт название из бесплатного результата (тизера), если оно там есть", () => {
+    expect(reportTypeLabel({ teaser: { personality_type_label: "Izlanuvchan ijodkor" }, content, locale: "ru" })).toEqual({
+      label: "Izlanuvchan ijodkor",
+      lang: "uz", // язык строки — по самой строке (тизер мог быть на другом языке, чем отчёт)
+    });
+    expect(reportTypeLabel({ teaser: { personality_type_label: " Исследователь-Творец " }, content, locale: "uz" })).toEqual({
+      label: "Исследователь-Творец",
+      lang: "ru",
+    });
+  });
+
+  it("без тизера или с пустым названием — из портрета самого отчёта, на языке отчёта", () => {
+    for (const teaser of [null, undefined, {}, { personality_type_label: "  " }, { personality_type_label: 42 }]) {
+      expect(reportTypeLabel({ teaser, content, locale: "ru" })).toEqual({ label: "Тип из отчёта", lang: "ru" });
+    }
+    expect(reportTypeLabel({ teaser: null, content, locale: "uz" }).lang).toBe("uz");
+  });
+
+  it("страница отчёта и PDF берут название только через reportTypeLabel", async () => {
+    const { readFileSync } = await import("node:fs");
+    for (const file of ["src/app/report/[id]/page.tsx", "src/app/api/report/[id]/pdf/route.ts"]) {
+      const source = readFileSync(file, "utf8");
+      expect(source, file).toMatch(/reportTypeLabel\(\{ teaser: report\.teaser, content, locale: report\.locale \}\)/);
+      expect(source, file).not.toMatch(/personality_type_label|portrait\.type_label/);
+    }
   });
 });

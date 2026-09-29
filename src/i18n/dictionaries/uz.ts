@@ -543,6 +543,8 @@ export const uz: Dictionary = {
     metaTitle: "{type} — yourway.uz",
   },
   checkout: {
+    // Этап 3: метка над заголовком оплаты (заглавными — через CSS).
+    kicker: "Kasb yoʻli · Toʻliq hisobot",
     title: "Toʻliq hisobotni tanlang",
     subtitle:
       "Portretingiz tayyor. Toʻliq hisobot — bu harakat rejasi: maqsad, qadamlar, muddat va xarajat (taxminiy), zaxira yoʻllar va sizni hayron qoldirishi mumkin boʻlgan yoʻnalish.",
@@ -627,6 +629,9 @@ export const uz: Dictionary = {
       title: "Toʻliq hisobotingizni yozyapmiz…",
       paid: "Toʻlov oʻtdi — hisobot endi doim sizniki.",
       steps: ["Portret va maqsad", "Asosiy yoʻl", "Boshqa yoʻnalishlar va birinchi qadamlar"],
+      // Этап 3: состояние части на экране генерации (части реальные, см. ReportGenerator).
+      stepWriting: "yozilmoqda",
+      stepDone: "tayyor",
       partOf: "Tayyor qismlar: {total} tadan {n} tasi",
       wait: "Hisobot katta: odatda 3 daqiqadan 8 daqiqagacha vaqt oladi. Sahifani yopmaganingiz maʼqul. Yopsangiz ham hech narsa yoʻqolmaydi: hisobot akkauntingizda turibdi, uni ochganingizda davom ettiramiz.",
       longWait:
@@ -642,6 +647,11 @@ export const uz: Dictionary = {
     createdAt: "Tuzilgan sana: {date}",
     languageNote: "Hisobot tili: {lang}. Sayt tilini almashtirish faqat matn atrofidagi koʻrinishni oʻzgartiradi, hisobotning oʻzini emas.",
     languageNames: { uz: "oʻzbek", ru: "rus" },
+    // Этап 3: «таблетка» языка в шапке отчёта (полная строка languageNote — внизу, у дисклеймера),
+    // счётчик прочитанных разделов под оглавлением и подпись к типу в разделе портрета.
+    languageShort: "Hisobot tili: {lang}",
+    readProgress: "Oʻqildi: {n} / {total}",
+    yourType: "Sizning tipingiz",
     toc: "Mundarija",
     sectionsButton: "Boʻlimlar",
     firstScreen: {
@@ -846,6 +856,9 @@ export const uz: Dictionary = {
       toTests: "Testlardan oʻtish",
       logout: "Chiqish",
       logoutNote: "Chiqib ketsangiz ham, javoblaringiz va portretingiz akkauntingizda saqlanib qoladi. Ularga qaytish uchun yana kirsangiz boʻldi.",
+      // Этап 3: кнопка под карточкой последнего результата и ссылка на второй пакет с ценой из базы.
+      openResult: "Natijani ochish",
+      offerCta: "Ochish — {sum}",
       lastResultTitle: "Oxirgi natija",
       surveyPending: "Testlar tugadi — anketani toʻldirish qoldi",
       toSurvey: "Anketani toʻldirish",
@@ -857,7 +870,10 @@ export const uz: Dictionary = {
       reportStatus: { pending: "yozilmoqda…", generating: "yozilmoqda…", ready: "tayyor", failed: "qaytadan yozish kerak" },
       open: "Ochish",
       pdf: "PDF",
-      retake: "Testlardan qaytadan oʻtish",
+      retake: "Testni qaytadan topshirish",
+      // Подпись под «пройти заново»: полные отчёты привязаны к аккаунту и остаются в кабинете
+      // (прежний бесплатный результат после пересдачи отсюда не открывается — о нём не обещаем).
+      retakeNote: "Toʻliq hisobotlaringiz kabinetda qoladi",
       settingsTitle: "Akkaunt sozlamalari",
       changePasswordLink: "Parolni almashtirish",
       deleteAccountLink: "Akkauntni oʻchirish",

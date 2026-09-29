@@ -9,6 +9,7 @@ import { activePaymentProvider } from "@/lib/payments/providers";
 import type { PathType } from "@/lib/assessment/tests";
 import { getCurrentSession } from "@/lib/session";
 import { getI18n } from "@/i18n/server";
+import { FlowLabel } from "@/components/flow";
 import { CheckoutForm } from "./CheckoutForm";
 
 export const dynamic = "force-dynamic";
@@ -55,17 +56,21 @@ export default async function CheckoutPage({
   ) ?? [];
 
   return (
-    <div className="mx-auto max-w-xl px-4 pb-12 pt-6">
-      <Link href="/teaser" className="inline-flex min-h-11 items-center text-sm font-semibold text-muted">
+    <div className="mx-auto max-w-xl px-4 pb-14 pt-6 lg:max-w-5xl lg:pt-8">
+      <Link href="/teaser" className="focus-ring inline-flex min-h-11 items-center rounded text-sm font-semibold text-muted hover:text-ink">
         ← {t.checkout.backToPortrait}
       </Link>
-      <h1 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">{t.checkout.title}</h1>
-      <p className="mt-2 leading-relaxed text-muted">{t.checkout.subtitle}</p>
-      <Link href="/#sample" className="mt-1 inline-flex min-h-11 items-center text-sm font-semibold text-brand-600 underline">
+      <FlowLabel className="mt-2">{t.checkout.kicker}</FlowLabel>
+      <h1 className="mt-2 text-[28px] font-extrabold leading-tight tracking-tight lg:text-[40px]">{t.checkout.title}</h1>
+      <p className="mt-2 max-w-2xl leading-relaxed text-muted">{t.checkout.subtitle}</p>
+      <Link
+        href="/#sample"
+        className="focus-ring mt-1 inline-flex min-h-11 items-center rounded text-sm font-bold text-brand-500 underline hover:text-brand-600"
+      >
         {t.checkout.exampleLinkLabel} →
       </Link>
       {notice && (
-        <p className="mt-5 rounded-2xl bg-amber-50 px-4 py-3 text-sm font-medium text-amber-900" role="status">
+        <p className="mt-4 rounded-3xl bg-sun-50 px-5 py-3.5 text-sm font-medium text-sun-ink" role="status">
           {notice}
         </p>
       )}

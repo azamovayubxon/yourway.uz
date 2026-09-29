@@ -1,7 +1,7 @@
 import type { ReportContent } from "@/lib/ai/report-schema";
 import { getCurrentUser } from "@/lib/auth";
 import { getUserReport } from "@/lib/report";
-import { buildFirstScreen, presentReport, reportLanguageNote } from "@/lib/report/present";
+import { buildFirstScreen, presentReport, reportLanguageNote, reportLanguageShort, reportTypeLabel } from "@/lib/report/present";
 import { renderReportPdf } from "@/lib/pdf/render";
 import type { Locale } from "@/i18n/config";
 import { getI18n } from "@/i18n/server";
@@ -36,6 +36,9 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     date: presentation.date,
     mockNote,
     languageNote: reportLanguageNote(reportLocale, t),
+    languageShort: reportLanguageShort(reportLocale, t),
+    // Тот же источник, что на странице отчёта: тизер, иначе портрет отчёта.
+    typeLabel: reportTypeLabel({ teaser: report.teaser, content, locale: report.locale }).label,
     summary: buildFirstScreen(content),
   });
 
