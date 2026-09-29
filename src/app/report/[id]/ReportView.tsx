@@ -4,7 +4,7 @@ import { MockBadge } from "@/app/teaser/MockBadge";
 import { FlowLabel } from "@/components/flow";
 import { CompassMark } from "@/components/Logo";
 import type { ReportContent, ReportRoute } from "@/lib/ai/report-schema";
-import { buildFirstScreen } from "@/lib/report/present";
+import { buildFirstScreen, type ReportTypeLabel } from "@/lib/report/present";
 import { splitIntoParagraphs } from "@/lib/report/paragraphs";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
@@ -22,6 +22,8 @@ interface Props {
   id: string;
   t: ReportDict;
   content: ReportContent;
+  // Название типа — reportTypeLabel (src/lib/report/present.ts): тот же источник, что у обложки PDF.
+  typeLabel: ReportTypeLabel;
   reportLocale: string;
   levelName: string;
   sixteenType: string;
@@ -68,6 +70,7 @@ export function ReportView({
   id,
   t,
   content,
+  typeLabel,
   reportLocale,
   levelName,
   sixteenType,
@@ -198,8 +201,12 @@ export function ReportView({
                 <CompassMark size={30} variant="dark" />
                 <span className="min-w-0">
                   <span className="block text-xs text-on-teal-muted">{t.yourType}</span>
-                  <span lang={lang} className="block break-words font-display text-lg font-bold leading-tight">
-                    {portrait.type_label}
+                  <span
+                    lang={typeLabel.lang}
+                    data-testid="report-type"
+                    className="block break-words font-display text-lg font-bold leading-tight"
+                  >
+                    {typeLabel.label}
                   </span>
                   <span className="block text-xs text-on-teal-muted">{sixteenType}</span>
                 </span>

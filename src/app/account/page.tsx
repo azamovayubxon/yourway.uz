@@ -161,14 +161,20 @@ export default async function AccountPage() {
         )}
       </section>
 
-      {/* Пересдача: новая сессия (/start?new=1). Подписи «прежние результаты сохранятся» нет
-          намеренно: полные отчёты остаются в кабинете, но прежний бесплатный результат после
-          пересдачи из кабинета больше не открывается (карточка выше показывает текущую сессию). */}
+      {/* Пересдача: новая сессия (/start?new=1). Подпись — только про полные отчёты: они привязаны
+          к аккаунту и остаются в кабинете. Прежний бесплатный результат после пересдачи отсюда
+          больше не открывается (карточка выше показывает текущую сессию), поэтому «все прежние
+          результаты сохранятся» не пишем. */}
       <Link
         href="/start?new=1"
-        className="focus-ring mt-6 flex min-h-14 items-center justify-between gap-3 rounded-3xl bg-sand px-5 py-4 font-bold transition-colors hover:bg-brand-50"
+        className="focus-ring mt-6 flex min-h-14 items-center justify-between gap-3 rounded-3xl bg-sand px-5 py-4 transition-colors hover:bg-brand-50"
       >
-        {a.retake}
+        <span className="min-w-0">
+          <span className="block font-bold">{a.retake}</span>
+          <span className="mt-0.5 block text-sm text-muted">
+            {a.retakeNote}
+          </span>
+        </span>
         <span aria-hidden className="text-lg text-brand-500">
           →
         </span>

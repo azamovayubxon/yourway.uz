@@ -5,7 +5,7 @@ import type { ReportContent } from "@/lib/ai/report-schema";
 import { getCurrentUser } from "@/lib/auth";
 import { REPORT_PARTS } from "@/lib/ai/prompts";
 import { getUserReport } from "@/lib/report";
-import { presentReport, reportLanguageNote, reportLanguageShort } from "@/lib/report/present";
+import { presentReport, reportLanguageNote, reportLanguageShort, reportTypeLabel } from "@/lib/report/present";
 import { partsDone } from "@/lib/report/progress";
 import type { Locale } from "@/i18n/config";
 import { getI18n } from "@/i18n/server";
@@ -46,12 +46,14 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
 
   const reportLocale = report.locale as Locale;
   const presentation = presentReport(report, locale, t);
+  const content = report.content as unknown as ReportContent;
 
   return (
     <ReportView
       id={report.id}
       t={t.report}
-      content={report.content as unknown as ReportContent}
+      content={content}
+      typeLabel={reportTypeLabel({ teaser: report.teaser, content, locale: report.locale })}
       reportLocale={reportLocale}
       levelName={presentation.levelName}
       sixteenType={presentation.sixteenType}

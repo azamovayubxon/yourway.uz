@@ -17,7 +17,7 @@ import {
   type ComparePart,
   type CompareVerdict,
 } from "@/lib/compare/logic";
-import { presentReport, reportLanguageNote, reportLanguageShort } from "@/lib/report/present";
+import { presentReport, reportLanguageNote, reportLanguageShort, reportTypeLabel } from "@/lib/report/present";
 import { getDictionary } from "@/i18n/dictionaries";
 import { AdminShell, Card, DataTable, Notice } from "../ui";
 import { rateComparisonAction } from "./actions";
@@ -269,6 +269,8 @@ function VariantBody({ comparison, variant }: { comparison: ComparisonRow; varia
         id={`compare-${comparison.id}-${variant.slot}`}
         t={t.report}
         content={content}
+        // Сравниваются тексты ИИ — здесь название типа из самой части отчёта (тизера у сравнения нет).
+        typeLabel={reportTypeLabel({ teaser: null, content, locale: "uz" })}
         reportLocale="uz"
         levelName={presentation.levelName}
         sixteenType={presentation.sixteenType}

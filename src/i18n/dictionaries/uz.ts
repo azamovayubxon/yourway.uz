@@ -871,6 +871,9 @@ export const uz: Dictionary = {
       open: "Ochish",
       pdf: "PDF",
       retake: "Testni qaytadan topshirish",
+      // Подпись под «пройти заново»: полные отчёты привязаны к аккаунту и остаются в кабинете
+      // (прежний бесплатный результат после пересдачи отсюда не открывается — о нём не обещаем).
+      retakeNote: "Toʻliq hisobotlaringiz kabinetda qoladi",
       settingsTitle: "Akkaunt sozlamalari",
       changePasswordLink: "Parolni almashtirish",
       deleteAccountLink: "Akkauntni oʻchirish",

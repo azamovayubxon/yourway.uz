@@ -61,6 +61,29 @@ export function reportLanguageShort(reportLocale: Locale, t: Dictionary): string
   return fmt(t.report.languageShort, { lang: t.report.languageNames[reportLocale] });
 }
 
+// Название типа для отчёта — ОДИН источник для страницы отчёта и PDF (обложка): из бесплатного
+// результата (тизера, JSON сохранён в отчёте при оплате), как в кабинете и на /teaser; если в тизере
+// его нет — из портрета самого отчёта. lang — язык этой строки для атрибута lang: у тизера он может
+// отличаться от языка отчёта (тизер берётся на языке отчёта, если такой есть, иначе первый готовый),
+// а сайт двуязычный — узбекский только латиницей, русский кириллицей.
+export interface ReportTypeLabel {
+  label: string;
+  lang: Locale;
+}
+
+export function reportTypeLabel(report: {
+  teaser: unknown;
+  content: Pick<ReportContent, "portrait">;
+  locale: string;
+}): ReportTypeLabel {
+  const fromTeaser = (report.teaser as { personality_type_label?: unknown } | null)?.personality_type_label;
+  if (typeof fromTeaser === "string" && fromTeaser.trim()) {
+    const label = fromTeaser.trim();
+    return { label, lang: /[А-Яа-яЁё]/.test(label) ? "ru" : "uz" };
+  }
+  return { label: report.content.portrait.type_label, lang: report.locale === "ru" ? "ru" : "uz" };
+}
+
 export interface ReportFirstScreen {
   // 1–2 предложения — выдержка из уже написанного портрета, а не отдельное поле от ИИ
   // (ТЗ аудита §9: слой отображения над текущей схемой, без изменения генерации).

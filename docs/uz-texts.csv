@@ -697,6 +697,7 @@ ui.auth.account.reportStatus.failed,"Формы аккаунта: вход, ре
 ui.auth.account.open,"Формы аккаунта: вход, регистрация, восстановление, выход",Открыть,Ochish,
 ui.auth.account.pdf,"Формы аккаунта: вход, регистрация, восстановление, выход",PDF,PDF,
 ui.auth.account.retake,"Формы аккаунта: вход, регистрация, восстановление, выход",Пройти тесты заново,Testni qaytadan topshirish,
+ui.auth.account.retakeNote,"Формы аккаунта: вход, регистрация, восстановление, выход",Полные отчёты останутся в кабинете,Toʻliq hisobotlaringiz kabinetda qoladi,
 ui.auth.account.settingsTitle,"Формы аккаунта: вход, регистрация, восстановление, выход",Настройки аккаунта,Akkaunt sozlamalari,
 ui.auth.account.changePasswordLink,"Формы аккаунта: вход, регистрация, восстановление, выход",Сменить пароль,Parolni almashtirish,
 ui.auth.account.deleteAccountLink,"Формы аккаунта: вход, регистрация, восстановление, выход",Удалить аккаунт,Akkauntni oʻchirish,

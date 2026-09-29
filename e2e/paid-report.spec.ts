@@ -145,6 +145,9 @@ for (const locale of ["uz", "ru"] as const) {
     // ── Готовый отчёт, телефон ──
     await expect(page.getByRole("status")).toHaveCount(0, { timeout: 60_000 });
     await expect(page.getByText(r.firstScreen.title)).toBeVisible();
+    // Название типа — из бесплатного результата, как в кабинете (reportTypeLabel); сверяем ниже.
+    const reportType = (await page.getByTestId("report-type").innerText()).trim();
+    expect(reportType).not.toBe("");
     await assertNoHorizontalOverflow(page, "отчёт");
     await assertNoOverflowAt375(page, "отчёт");
 
@@ -206,6 +209,8 @@ for (const locale of ["uz", "ru"] as const) {
       await page.goto("/account");
       await assertNoHorizontalOverflow(page, `кабинет ${width}`);
       await expect(page.getByText(a.lastResultTitle)).toBeVisible();
+      // Тип в карточке результата (тизер) и на странице отчёта — одно и то же название.
+      await expect(page.getByText(reportType, { exact: true })).toBeVisible();
       await expect(page.getByRole("link", { name: a.openResult })).toHaveAttribute("href", "/teaser");
       const open = page.locator(`a[href="/report/${reportId}"]`);
       await expect(open).toHaveCount(1);
@@ -215,6 +220,7 @@ for (const locale of ["uz", "ru"] as const) {
       // Куплен только «Маршрут» — предложение «Навигатора» с ценой из базы.
       await expect(page.locator('a[href="/checkout"]', { hasText: t.checkout.levels.navigator.name })).toBeVisible();
       await expect(page.getByRole("link", { name: a.retake })).toHaveAttribute("href", "/start?new=1");
+      await expect(page.getByText(a.retakeNote)).toBeVisible();
     }
     await assertNoOverflowAt375(page, "кабинет");
     await context.close();
