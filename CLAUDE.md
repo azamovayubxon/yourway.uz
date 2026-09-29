@@ -291,7 +291,7 @@ yourway.uz — платформа, которая помогает увидет�
 - «Сохранить картинку» — `GET /api/share/image?teaser=<id>`: PNG 1080×1350 (карточка типа + логотип), файл `yourway-tip.png`. **Только владельцу тизера** (cookie сессии; чужой и без сессии — 404), открытую страницу не создаёт, пишет событие `FunnelEvent.event = "share_image"`.
 - Картинки рисует `next/og` (`src/lib/og/share-images.tsx`). Шрифты — статичные TTF Commissioner 800 и Onest 400/700 в `src/lib/og/fonts` (Satori не читает woff2 и переменные шрифты), включены в сборку через `outputFileTracingIncludes`. Тест `src/lib/og/fonts.test.ts` проверяет в них ʻ (U+02BB), ʼ (U+02BC) и кириллицу — при замене шрифта он обязан пройти.
 - Политика конфиденциальности — пункт 8а (оба языка). `/admin/analytics`: строки «Поделились» (создано `ShareCard`) и «Сохранили картинку» (`share_image`).
-- Проверка — `e2e/share.spec.ts` (нужен суперадмин `e2eshare` в `SUPERADMIN_LOGINS`).
+- Проверка — `e2e/share.spec.ts` (суперадмин — тот же `e2ehome`, что в `e2e/home.spec.ts`: весь прогон e2e идёт с одного IP, а регистрация ограничена 20 аккаунтами в час).
 
 <!-- BEGIN:nextjs-agent-rules -->
 

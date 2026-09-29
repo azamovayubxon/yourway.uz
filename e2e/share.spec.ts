@@ -10,11 +10,13 @@ import { uz } from "../src/i18n/dictionaries/uz";
 //  • «Сохранить картинку»: у владельца PNG, у чужой сессии и без сессии — 404;
 //  • после удаления аккаунта /t/[code] и его картинка — 404 (каскадное удаление);
 //  • в /admin/analytics растут «Поделились» и «Сохранили картинку».
-// Требует SUPERADMIN_LOGINS с e2eshare (см. .github/workflows/e2e.yml).
+// Суперадмин — тот же e2ehome, что в e2e/home.spec.ts (SUPERADMIN_LOGINS в .github/workflows/e2e.yml):
+// отдельный аккаунт не заводим, потому что регистрация ограничена 20 аккаунтами с одного IP в час
+// (AUTH_REGISTER_PER_IP_PER_HOUR), а весь прогон e2e идёт с одного адреса.
 
 const BASE = "http://localhost:3000";
 const PASSWORD = "correct-horse-battery-9";
-const ADMIN_LOGIN = "e2eshare";
+const ADMIN_LOGIN = "e2ehome";
 const DICT = { uz, ru } as const;
 
 function uniqueLogin(prefix: string): string {
